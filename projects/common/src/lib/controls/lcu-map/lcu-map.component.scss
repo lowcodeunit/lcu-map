@@ -1,0 +1,32 @@
+mat-icon {
+    font-size: 30px;
+}
+
+.icon-list {
+    padding: 5px;
+}
+
+.hamburger-icon {
+    position: absolute;
+    left: 10px;
+    @media(max-width: 600px) {
+        position: relative;
+    }
+}
+
+.chevron-icon {
+    position: absolute;
+    right: 10px;
+}
+
+.bottom-icon-set {
+    width: 80%;
+    margin: auto;
+    @media(max-width: 600px) {
+        margin-left: 10px;
+    }
+}
+
+agm-map {
+    height: 700px;
+}

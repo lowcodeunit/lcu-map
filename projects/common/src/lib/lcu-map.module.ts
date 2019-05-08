@@ -6,9 +6,10 @@ import { MatIconModule, MatSelectModule, MatDialogModule, MatButtonModule, MatIn
 import { AddMapMarkerComponent } from './controls/lcu-map/add-map-marker/add-map-marker.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent],
+  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
@@ -22,6 +23,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   exports: [LcuMapComponent],
-  entryComponents: [LcuMapComponent, AddMapMarkerComponent]
+  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent]
 })
 export class LcuMapModule { }

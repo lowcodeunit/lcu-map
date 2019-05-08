@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IndividualMap } from '@lcu-ide/dynamic-map-common/lcu.api';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { IndividualMap } from '../../../models/individual-map.model';
 
 @Component({
   selector: 'lcu-save-map',

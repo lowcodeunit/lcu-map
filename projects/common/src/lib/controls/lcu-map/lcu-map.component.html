@@ -6,13 +6,13 @@
     </div>
     <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="space-around" fxLayoutGap.lt-sm="50px">
       <mat-icon>search</mat-icon>
-      <mat-icon >add</mat-icon>
+      <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       <mat-icon>layers</mat-icon>
     </div>
   </div>
 </div>
 
-<agm-map [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng" [title]="CurrentMapModel.title" [zoom]="CurrentMapModel.zoom"
+<agm-map #map [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng" [title]="CurrentMapModel.title" [zoom]="CurrentMapModel.zoom"
   (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)">
   <div *ngFor="let marker of CurrentMapModel.locationList">
     <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [iconUrl]="marker.iconImageUrl"></agm-marker>

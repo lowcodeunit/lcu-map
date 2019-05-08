@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { IndividualMap } from '../../models/individual-map.model';
 import { AddMapMarkerComponent } from './add-map-marker/add-map-marker.component';
 import { MapService } from '../../services/map.service';
+import { SaveMapComponent } from './save-map/save-map.component';
 
 @Component({
   selector: 'lcu-map',
@@ -52,8 +53,13 @@ export class LcuMapComponent implements OnInit {
     ]
   };
 
+  @Output('MapSaved')
+  public MapSaved: EventEmitter<IndividualMap>;
+
   // CONSTRUCTORS
-  constructor(private dialog: MatDialog, private mapService: MapService) { }
+  constructor(private dialog: MatDialog, private mapService: MapService) {
+    this.MapSaved = new EventEmitter;
+  }
 
   // LIFE CYCLE
   ngOnInit() {
@@ -100,11 +106,28 @@ export class LcuMapComponent implements OnInit {
    */
   public OnMapDoubleClicked(event) {
     this.isDoubleClick = true;
-    console.log('double clicked');
     setTimeout(x => {
       this.isDoubleClick = false;
     },500); // about after enough time it takes to zoom, turn off the "double-clicked" flag
   }
+
+  public ActivateSaveMapDialog(map) {
+    const dialogRef = this.dialog.open(SaveMapComponent, {
+      data: {
+        map: map,
+        locationMarkers: this.CurrentMapModel.locationList
+      }
+    });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        if (res) {
+          this.MapSaved.emit(res);
+        }
+      }
+    });
+  }
   // HELPERS
+
+
 
 }

@@ -6,9 +6,9 @@ export class MapMarker {
     title: string;
 
     /**
-     * The icon name to be displayed in a list of icon names
+     * The icon name that should match the iconLookup in the MarkerInfo model
      */
-    iconName: string | null | {};
+    iconName: string;
 
     /**
      * The latitude of the map marker
@@ -21,9 +21,11 @@ export class MapMarker {
     lng: number;
 
     /**
-     * The path to the image in the file system
+     * The object representing all the necessary data to display an icon on the map
+     * 
+     * It is not passed in with the markers, but will be populated by the map service
      */
-    iconImageUrl: string | {};
+    iconImageObject?: {};
 
     /**
      * 
@@ -32,7 +34,6 @@ export class MapMarker {
     constructor(icon: MapMarker) {
         this.title = icon.title;
         this.iconName = icon.iconName;
-        this.iconImageUrl = icon.iconImageUrl;
         this.lat = icon.lat;
         this.lng = icon.lng;
     }

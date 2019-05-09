@@ -39,17 +39,28 @@ export class LcuMapComponent implements OnInit {
     origin: { lat: 40.037757, lng: -105.278324 },
     zoom: 13,
     locationList: [
-      // these image urls will not work as a default for projects that bring this in and don't have these exact names / icons
-      { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant', iconImageUrl: './assets/restaurant.png' },
-      { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO', iconImageUrl: './assets/UNESCO.png' },
-      { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum', iconImageUrl: './assets/museum.png' },
-      { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery', iconImageUrl: './assets/brewery.png' },
-      { title: 'Favorite ski area', lat: 40.057557, lng: -105.288199, iconName: 'ski area', iconImageUrl: './assets/ski area.png' },
-      { title: 'Favorite vineyard', lat: 40.060657, lng: -105.298199, iconName: 'vineyard', iconImageUrl: './assets/vineyard.png' },
-      { title: 'Nice golf course', lat: 40.037757, lng: -105.258199, iconName: 'golf course', iconImageUrl: './assets/golf course.png' },
-      { title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging', iconImageUrl: './assets/lodging.png' },
-      { title: 'Nice national park', lat: 40.060657, lng: -105.278199, iconName: 'national park', iconImageUrl: './assets/national park.png' },
-      { title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar', iconImageUrl: './assets/bar.png' }
+      { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
+      { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
+      { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
+      { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+      { title: 'Favorite ski area', lat: 40.057557, lng: -105.288199, iconName: 'ski area' },
+      { title: 'Favorite vineyard', lat: 40.060657, lng: -105.298199, iconName: 'vineyard' },
+      { title: 'Nice golf course', lat: 40.037757, lng: -105.258199, iconName: 'golf course' },
+      { title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging' },
+      { title: 'Nice national park', lat: 40.060657, lng: -105.278199, iconName: 'national park' },
+      { title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar' }
+    ],
+    mapMarkerSet: [ // right now, this is part of a map - later break it out into its own piece in ambl_on app
+      { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png'},
+      { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png'},
+      { iconLookup: 'museum', iconName: 'Museum', iconUrl: './assets/museum.png'},
+      { iconLookup: 'brewery', iconName: 'Brewery', iconUrl: './assets/brewery.png'},
+      { iconLookup: 'ski area', iconName: 'Ski Area', iconUrl: './assets/ski area.png'},
+      { iconLookup: 'vineyard', iconName: 'Vineyard', iconUrl: './assets/vineyard.png'},
+      { iconLookup: 'golf course', iconName: 'Golf Course', iconUrl: './assets/golf course.png'},
+      { iconLookup: 'lodging', iconName: 'Lodging', iconUrl: './assets/lodging.png'},
+      { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png'},
+      { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png'}
     ]
   };
 
@@ -65,7 +76,7 @@ export class LcuMapComponent implements OnInit {
   ngOnInit() {
     this.CurrentMapModel = this.mapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
-      loc.iconImageUrl = this.mapService.ConvertIconUrl(loc.iconImageUrl);
+      loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.CurrentMapModel.mapMarkerSet);
     });
   }
 
@@ -84,7 +95,7 @@ export class LcuMapComponent implements OnInit {
           data: {
             lat: event.coords.lat,
             lng: event.coords.lng,
-            iconList: this.mapModel.locationList
+            iconList: this.CurrentMapModel.mapMarkerSet
           }
         });
         dialogRef.afterClosed().subscribe(res => {
@@ -115,7 +126,8 @@ export class LcuMapComponent implements OnInit {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
-        locationMarkers: this.CurrentMapModel.locationList
+        locationMarkers: this.CurrentMapModel.locationList,
+        mapMarkerSet: this.CurrentMapModel.mapMarkerSet
       }
     });
     dialogRef.afterClosed().subscribe(res => {

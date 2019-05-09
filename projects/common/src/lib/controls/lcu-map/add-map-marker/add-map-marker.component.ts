@@ -42,7 +42,6 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker = {
       title: '',
       iconName: null,
-      iconImageUrl: '',
       lat: 0,
       lng: 0
     }
@@ -60,8 +59,7 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
     this.NewMarker.lat = this.passedData.lat;
     this.NewMarker.lng = this.passedData.lng;
-    this.NewMarker.iconImageUrl = this.mapService.ConvertIconUrl(this.NewMarkerForm.value.icon.iconImageUrl.url);
-
+    this.NewMarker.iconImageObject = this.mapService.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
   }
   // HELPERS
 }

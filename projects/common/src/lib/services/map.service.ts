@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MarkerInfo } from '../models/marker-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,15 @@ export class MapService {
    * 
    * @param icon The icon to be converted to a path
    * 
-   * Converts icon path to object for use in displaying custom icon as map location marker
+   * Converts an icon lookup to the object necessary to display custom icons as map location markers
    */
-  public ConvertIconUrl(iconUrl) {
-    return { url: iconUrl, scaledSize: { width: 40, height: 60 } };
+  public ConvertIconObject(iconUrl: string, markerSet: MarkerInfo[]): {} {
+    let markerObject = {url: '', scaledSize: { width: 40, height: 60 } };
+    markerSet.forEach(marker => {
+      if (marker.iconLookup === iconUrl) {
+        markerObject.url = marker.iconUrl;
+      }
+    });
+    return markerObject;
   }
 }

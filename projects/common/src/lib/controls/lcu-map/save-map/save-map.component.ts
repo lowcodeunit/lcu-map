@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { IndividualMap } from '../../../models/individual-map.model';
+import { MarkerInfo } from '../../../models/marker-info.model';
 
 @Component({
   selector: 'lcu-save-map',
@@ -24,7 +25,8 @@ export class SaveMapComponent implements OnInit {
       title: '',
       origin: { lat: 0, lng: 0 },
       zoom: 0,
-      locationList: []
+      locationList: [],
+      mapMarkerSet: new Array<MarkerInfo>()
     }
   }
 
@@ -33,6 +35,7 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.zoom = this.passedData.map.zoom;
     this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
     this.NewMap.locationList = this.passedData.locationMarkers;
+    this.NewMap.mapMarkerSet = this.passedData.mapMarkerSet;
   }
 
 }

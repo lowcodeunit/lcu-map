@@ -4,6 +4,7 @@ import { IndividualMap } from '../../models/individual-map.model';
 import { AddMapMarkerComponent } from './add-map-marker/add-map-marker.component';
 import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
+import { MarkerInfo } from '../../models/marker-info.model';
 
 @Component({
   selector: 'lcu-map',
@@ -20,7 +21,7 @@ export class LcuMapComponent implements OnInit {
   public CurrentMapModel: IndividualMap;
 
   // PROPERTIES
-  
+
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
    */
@@ -31,10 +32,23 @@ export class LcuMapComponent implements OnInit {
    */
   private expectedDoubleClickElapsedTime: number = 500;
 
+  @Input() MapMarkerSet: MarkerInfo[] = [ // sets a default set of icons if non passed in
+    { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png' },
+    { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png' },
+    { iconLookup: 'museum', iconName: 'Museum', iconUrl: './assets/museum.png' },
+    { iconLookup: 'brewery', iconName: 'Brewery', iconUrl: './assets/brewery.png' },
+    { iconLookup: 'ski area', iconName: 'Ski Area', iconUrl: './assets/ski area.png' },
+    { iconLookup: 'vineyard', iconName: 'Vineyard', iconUrl: './assets/vineyard.png' },
+    { iconLookup: 'golf course', iconName: 'Golf Course', iconUrl: './assets/golf course.png' },
+    { iconLookup: 'lodging', iconName: 'Lodging', iconUrl: './assets/lodging.png' },
+    { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png' },
+    { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png' }
+  ]
+
   /**
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
-  @Input() mapModel?: IndividualMap = {
+  @Input() mapModel?: IndividualMap = { // sets a default map if none passed in
     title: 'Default Map',
     origin: { lat: 40.037757, lng: -105.278324 },
     zoom: 13,
@@ -49,21 +63,12 @@ export class LcuMapComponent implements OnInit {
       { title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging' },
       { title: 'Nice national park', lat: 40.060657, lng: -105.278199, iconName: 'national park' },
       { title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar' }
-    ],
-    mapMarkerSet: [ // right now, this is part of a map - later break it out into its own piece in ambl_on app
-      { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png'},
-      { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png'},
-      { iconLookup: 'museum', iconName: 'Museum', iconUrl: './assets/museum.png'},
-      { iconLookup: 'brewery', iconName: 'Brewery', iconUrl: './assets/brewery.png'},
-      { iconLookup: 'ski area', iconName: 'Ski Area', iconUrl: './assets/ski area.png'},
-      { iconLookup: 'vineyard', iconName: 'Vineyard', iconUrl: './assets/vineyard.png'},
-      { iconLookup: 'golf course', iconName: 'Golf Course', iconUrl: './assets/golf course.png'},
-      { iconLookup: 'lodging', iconName: 'Lodging', iconUrl: './assets/lodging.png'},
-      { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png'},
-      { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png'}
     ]
   };
 
+  /**
+   * The even emitted when a map is saved (the saved map is emitted)
+   */
   @Output('MapSaved')
   public MapSaved: EventEmitter<IndividualMap>;
 
@@ -76,7 +81,7 @@ export class LcuMapComponent implements OnInit {
   ngOnInit() {
     this.CurrentMapModel = this.mapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.CurrentMapModel.mapMarkerSet);
+      loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
   }
 
@@ -95,7 +100,7 @@ export class LcuMapComponent implements OnInit {
           data: {
             lat: event.coords.lat,
             lng: event.coords.lng,
-            iconList: this.CurrentMapModel.mapMarkerSet
+            iconList: this.MapMarkerSet
           }
         });
         dialogRef.afterClosed().subscribe(res => {
@@ -119,15 +124,18 @@ export class LcuMapComponent implements OnInit {
     this.isDoubleClick = true;
     setTimeout(x => {
       this.isDoubleClick = false;
-    },500); // about after enough time it takes to zoom, turn off the "double-clicked" flag
+    }, 500); // about after enough time it takes to zoom, turn off the "double-clicked" flag
   }
 
+  /**
+   * Activates the dialog for user to enter name of map which will then be 'saved'
+   */
   public ActivateSaveMapDialog(map) {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
         locationMarkers: this.CurrentMapModel.locationList,
-        mapMarkerSet: this.CurrentMapModel.mapMarkerSet
+        mapMarkerSet: this.MapMarkerSet
       }
     });
     dialogRef.afterClosed().subscribe(res => {
@@ -139,7 +147,5 @@ export class LcuMapComponent implements OnInit {
     });
   }
   // HELPERS
-
-
 
 }

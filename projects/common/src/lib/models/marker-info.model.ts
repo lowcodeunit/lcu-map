@@ -15,6 +15,10 @@ export class MarkerInfo {
      */
     iconUrl: string;
 
+    /**
+     * 
+     * @param icon The object containing lookup (iconLookup), display (iconName), and path (iconUrl) data for an icon
+     */
     constructor(icon) {
         this.iconLookup = icon.iconLookup;
         this.iconName = icon.iconName;

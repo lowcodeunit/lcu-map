@@ -25,8 +25,6 @@ export class IndividualMap {
      */
     locationList: MapMarker[];
 
-    mapMarkerSet: MarkerInfo[];
-
     /**
      * 
      * @param mapInfo The object containing the necessary data for displaying a map (<agm-map>)
@@ -36,6 +34,5 @@ export class IndividualMap {
         this.origin = mapInfo.origin;
         this.zoom = mapInfo.zoom;
         this.locationList = mapInfo.locationList;
-        this.mapMarkerSet = mapInfo.mapMarkerSet;
     }
 }

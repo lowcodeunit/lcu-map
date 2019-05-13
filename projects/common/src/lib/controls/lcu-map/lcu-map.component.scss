@@ -28,5 +28,14 @@ mat-icon {
 }
 
 agm-map {
-    height: 700px;
+    height: 500px;
+    width: 500px;
+}
+
+mat-icon {
+    cursor: pointer;
+}
+
+mat-checkbox {
+    display: block;
 }

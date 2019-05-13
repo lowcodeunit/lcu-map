@@ -7,15 +7,21 @@
     <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="space-around" fxLayoutGap.lt-sm="50px">
       <mat-icon>search</mat-icon>
       <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
-      <mat-icon>layers</mat-icon>
+      <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>
     </div>
   </div>
 </div>
 
-<agm-map #map [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng" [title]="CurrentMapModel.title" [zoom]="CurrentMapModel.zoom"
-  (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)">
+<agm-map #map [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng"
+  [title]="CurrentMapModel.title" [zoom]="CurrentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)"
+  (mapClick)="OnChoseLocation($event)">
   <div *ngFor="let marker of CurrentMapModel.locationList">
-    <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title" [iconUrl]="marker.iconImageObject"></agm-marker>
+    <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+      [iconUrl]="marker.iconImageObject"></agm-marker>
   </div>
 </agm-map>
 
+<!-- the menu for the map layers button -->
+<mat-menu #layerMenu="matMenu" id="layer-menu">
+    <mat-checkbox (click)="$event.stopPropagation()" *ngFor="let map of SecondaryMaps">{{ map.title }}</mat-checkbox>
+</mat-menu>

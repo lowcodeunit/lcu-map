@@ -1,17 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { IndividualMap } from '../../models/individual-map.model';
 import { AddMapMarkerComponent } from './add-map-marker/add-map-marker.component';
 import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lcu-map',
   templateUrl: './lcu-map.component.html',
   styleUrls: ['./lcu-map.component.scss']
 })
-export class LcuMapComponent implements OnInit {
+export class LcuMapComponent implements OnInit, OnDestroy {
 
   // FIELDS
 
@@ -32,6 +33,11 @@ export class LcuMapComponent implements OnInit {
    */
   private expectedDoubleClickElapsedTime: number = 500;
 
+  /**
+   * The map subscription for latitude / longitude changes
+   */
+  private mapSubscription: Subscription;
+
   @Input() MapMarkerSet: MarkerInfo[] = [ // sets a default set of icons if non passed in
     { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png' },
     { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png' },
@@ -49,7 +55,7 @@ export class LcuMapComponent implements OnInit {
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
   @Input() mapModel?: IndividualMap = { // sets a default map if none passed in
-    title: 'Default Map',
+    title: 'Default Map (Primary)',
     origin: { lat: 40.037757, lng: -105.278324 },
     zoom: 13,
     locationList: [
@@ -65,6 +71,47 @@ export class LcuMapComponent implements OnInit {
       { title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar' }
     ]
   };
+
+  @Input() SecondaryMaps: IndividualMap[] = [
+    {
+      title: 'Sec Map 1',
+      origin: { lat: 40.037757, lng: -105.378324 },
+      zoom: 13,
+      locationList: [
+        { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
+        { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
+        { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
+        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+      ]
+    },
+    {
+      title: 'Sec Map 2',
+      origin: { lat: 40.027757, lng: -105.378324 },
+      zoom: 13,
+      locationList: [
+        { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
+        { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
+        { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
+        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+      ]
+    },
+    {
+      title: 'Sec Map 3',
+      origin: { lat: 40.037757, lng: -105.278324 },
+      zoom: 13,
+      locationList: [
+        { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
+        { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
+        { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
+        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+      ]
+    }
+  ]
+
+  /**
+   * A map service containing code for lat/lng changes
+   */
+  @Input() outsideMapService;
 
   /**
    * The even emitted when a map is saved (the saved map is emitted)
@@ -82,6 +129,10 @@ export class LcuMapComponent implements OnInit {
     this.CurrentMapModel = this.mapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+    });
+    this.mapSubscription = this.outsideMapService.latLngChange.subscribe(coords => {
+      this.CurrentMapModel.origin.lat = coords.lat;
+      this.CurrentMapModel.origin.lng = coords.lng;
     });
   }
 
@@ -145,6 +196,10 @@ export class LcuMapComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.mapSubscription.unsubscribe();
   }
   // HELPERS
 

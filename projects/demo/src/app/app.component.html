@@ -1,3 +1,4 @@
 <h1>Demo project</h1>
 
-<lcu-map></lcu-map>
+<lcu-map [mapModel]="MapConfig" [MapMarkerSet]="IconSet" (MapSaved)="MapSaved($event)"
+[outsideMapService]="OutsideMapService"></lcu-map>

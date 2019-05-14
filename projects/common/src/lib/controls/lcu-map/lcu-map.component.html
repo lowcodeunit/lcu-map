@@ -18,10 +18,15 @@
   <div *ngFor="let marker of CurrentMapModel.locationList">
     <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
       [iconUrl]="marker.iconImageObject"></agm-marker>
+    <div *ngFor="let marker of SecondaryLocations">
+      <agm-marker *ngIf="marker.showMarker" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+        [iconUrl]="marker.iconImageObject"></agm-marker>
+    </div>
   </div>
 </agm-map>
 
 <!-- the menu for the map layers button -->
 <mat-menu #layerMenu="matMenu" id="layer-menu">
-    <mat-checkbox (click)="$event.stopPropagation()" *ngFor="let map of SecondaryMaps">{{ map.title }}</mat-checkbox>
+  <mat-checkbox (click)="$event.stopPropagation();LayerClicked(map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
+  </mat-checkbox>
 </mat-menu>

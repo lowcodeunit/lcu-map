@@ -9,9 +9,10 @@ export class OutsideMapService {
   latLngChange = new Subject<{}>();
 
   constructor() {
-    setTimeout(x => {
-      this.latLngChange.next({ lat: 0, lng: 100 });
-    }, 2000)
+    // setTimeout(x => {
+    //   console.log(this.latLngChange)
+    //   this.latLngChange.next({ lat: 0, lng: 100 });
+    // }, 2000)
   }
 
   ngOnInit() {

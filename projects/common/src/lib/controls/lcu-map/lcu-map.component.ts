@@ -6,6 +6,7 @@ import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { Subscription } from 'rxjs';
+import { GoogleMapsAPIWrapper } from '@agm/core';
 
 @Component({
   selector: 'lcu-map',
@@ -15,6 +16,18 @@ import { Subscription } from 'rxjs';
 export class LcuMapComponent implements OnInit, OnDestroy {
 
   // FIELDS
+  
+  protected _outsideMapService: any;
+
+  @Input('outside-map-service')
+  public get OutsideMapService(): any {
+    return this._outsideMapService;
+  }
+
+  public set OutsideMapService(val: any) {
+    if (!val) { return; }
+    this._outsideMapService = val;
+  }
 
   /**
    * The public map model converted from the passed IndividualMap input
@@ -115,7 +128,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   /**
    * A map service containing code for lat/lng changes
    */
-  @Input() outsideMapService;
+  // @Input() outsideMapService;
 
   /**
    * The even emitted when a map is saved (the saved map is emitted)
@@ -124,8 +137,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public MapSaved: EventEmitter<IndividualMap>;
 
   // CONSTRUCTORS
-  constructor(private dialog: MatDialog, private mapService: MapService) {
+  constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
+    console.log(this.wrapper);
   }
 
   // LIFE CYCLE
@@ -134,7 +148,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.mapSubscription = this.outsideMapService.latLngChange.subscribe(coords => {
+    this.mapSubscription = this.OutsideMapService.latLngChange.subscribe(coords => {
       this.CurrentMapModel.origin.lat = coords.lat;
       this.CurrentMapModel.origin.lng = coords.lng;
     });
@@ -202,6 +216,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * Activates the dialog for user to enter name of map which will then be 'saved'
    */
   public ActivateSaveMapDialog(map) {
+    console.log(this.wrapper)
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
@@ -219,8 +234,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   public LayerClicked(layer) {
-    console.log('SecondaryLocations: ', this.SecondaryLocations)
-    console.log('layer: ', layer);
     this.SecondaryLocations.forEach(loc => {
       if (layer.title === loc.mapTitle) {
         loc.showMarker = loc.showMarker === true ? false : true;
@@ -228,9 +241,17 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     })
   }
 
+  public boundsChange(e) {
+    // console.log(e.getNorthEast().lat())
+    // console.log(e.getNorthEast().lng())
+    // console.log(e.getSouthWest().lat())
+    // console.log(e.getSouthWest().lng())
+  }
+
   ngOnDestroy() {
     this.mapSubscription.unsubscribe();
   }
+
   // HELPERS
 
 }

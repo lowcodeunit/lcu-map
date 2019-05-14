@@ -7,6 +7,7 @@ import { AddMapMarkerComponent } from './controls/lcu-map/add-map-marker/add-map
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
+import { GoogleMapsAPIWrapper } from '@agm/core';
 
 @NgModule({
   declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent],
@@ -24,6 +25,7 @@ import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component
     MatMenuModule,
     MatCheckboxModule
   ],
+  providers: [GoogleMapsAPIWrapper],
   exports: [LcuMapComponent],
   entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent]
 })

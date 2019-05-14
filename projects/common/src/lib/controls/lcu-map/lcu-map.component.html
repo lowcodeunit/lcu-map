@@ -14,7 +14,7 @@
 
 <agm-map #map [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng"
   [title]="CurrentMapModel.title" [zoom]="CurrentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)"
-  (mapClick)="OnChoseLocation($event)" [usePanning]="true">
+  (mapClick)="OnChoseLocation($event)" [usePanning]="true" [fullscreenControl]='true' [mapTypeControl]='true'>
   <div *ngFor="let marker of CurrentMapModel.locationList">
     <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
       [iconUrl]="marker.iconImageObject"></agm-marker>

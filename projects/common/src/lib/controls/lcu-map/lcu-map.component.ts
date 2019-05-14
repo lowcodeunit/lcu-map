@@ -17,18 +17,19 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   // FIELDS
   
-  // uncomment this later and figure out if map service is getting passed in
-  // protected _outsideMapService: any;
+  protected _outsideMapService: any;
 
-  // @Input('outside-map-service')
-  // public get OutsideMapService(): any {
-  //   return this._outsideMapService;
-  // }
+  @Input('outside-map-service')
+  public get OutsideMapService(): any {
+    console.log('get OutsideMapService');
+    return this._outsideMapService;
+  }
 
-  // public set OutsideMapService(val: any) {
-  //   if (!val) { return; }
-  //   this._outsideMapService = val;
-  // }
+  public set OutsideMapService(val: any) {
+    console.log('set outside map service');
+    if (!val) { return; }
+    this._outsideMapService = val;
+  }
 
   /**
    * The public map model converted from the passed IndividualMap input
@@ -129,7 +130,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   /**
    * A map service containing code for lat/lng changes
    */
-  @Input() outsideMapService;
+  // @Input() outsideMapService;
 
   /**
    * The even emitted when a map is saved (the saved map is emitted)
@@ -148,9 +149,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    console.log('outside map service: ', this.outsideMapService);
-    console.log('the Subject: ', this.outsideMapService.latLngChange)
-    this.mapSubscription = this.outsideMapService.latLngChange.subscribe(coords => {
+    console.log('outside map service: ', this.OutsideMapService);
+    console.log('the Subject: ', this.OutsideMapService.latLngChange)
+    this.mapSubscription = this.OutsideMapService.latLngChange.subscribe(coords => {
       console.log('inside subscription');
       console.log('coords: ', coords);
       console.log('coords.lat: ', coords.lat);

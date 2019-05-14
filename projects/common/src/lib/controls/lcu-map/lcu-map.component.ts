@@ -6,6 +6,7 @@ import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lcu-map',
@@ -118,7 +119,7 @@ export class LcuMapComponent implements OnInit {
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
   }
-
+mapSubscription = new Subscription;
   // LIFE CYCLE
   ngOnInit() {
     this.CurrentMapModel = this.mapModel;
@@ -139,7 +140,7 @@ export class LcuMapComponent implements OnInit {
           }
         )
       })
-    })
+    });
   }
 
   // API METHODS
@@ -218,6 +219,11 @@ export class LcuMapComponent implements OnInit {
     // console.log(e.getNorthEast().lng())
     // console.log(e.getSouthWest().lat())
     // console.log(e.getSouthWest().lng())
+  }
+
+  public UpdateLatLng(lat,lng) {
+    this.CurrentMapModel.origin.lat = lat;
+    this.CurrentMapModel.origin.lng = lng;
   }
 
   // HELPERS

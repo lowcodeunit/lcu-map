@@ -254,6 +254,18 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     // console.log(e.getSouthWest().lng())
   }
 
+  ngOnChanges() {
+    console.log('ng on changes');
+    this.mapSubscription = this.OutsideMapService.latLngChange.subscribe(coords => {
+      console.log('inside subscription');
+      console.log('coords: ', coords);
+      console.log('coords.lat: ', coords.lat);
+      console.log('coords.lng: ', coords.lng);
+      this.CurrentMapModel.origin.lat = coords.lat;
+      this.CurrentMapModel.origin.lng = coords.lng;
+    });
+  }
+
   ngOnDestroy() {
     this.mapSubscription.unsubscribe();
   }

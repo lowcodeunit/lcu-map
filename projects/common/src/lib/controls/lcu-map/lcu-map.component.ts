@@ -140,7 +140,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   // CONSTRUCTORS
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
-    console.log(this.wrapper);
   }
 
   // LIFE CYCLE
@@ -149,6 +148,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
+    console.log('outside map service: ', this.outsideMapService);
+    console.log('the Subject: ', this.outsideMapService.latLngChange)
     this.mapSubscription = this.outsideMapService.latLngChange.subscribe(coords => {
       console.log('inside subscription');
       console.log('coords: ', coords);
@@ -172,7 +173,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         )
       })
     })
-    console.log(this.SecondaryLocations)
   }
 
   // API METHODS

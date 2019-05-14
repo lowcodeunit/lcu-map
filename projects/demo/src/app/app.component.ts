@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IndividualMap } from '@lcu-ide/dynamic-map-common/lcu.api';
 import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.model';
-import { OutsideMapService } from './outside-map.service';
 
 @Component({
   selector: 'lcu-root',
@@ -9,8 +8,6 @@ import { OutsideMapService } from './outside-map.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-
-  constructor(public OutsideMapService: OutsideMapService) {}
   
   public MapConfig: IndividualMap;
 

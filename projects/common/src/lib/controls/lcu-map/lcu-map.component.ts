@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { IndividualMap } from '../../models/individual-map.model';
 import { AddMapMarkerComponent } from './add-map-marker/add-map-marker.component';
 import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
-import { Subscription } from 'rxjs';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 
 @Component({
@@ -13,23 +12,10 @@ import { GoogleMapsAPIWrapper } from '@agm/core';
   templateUrl: './lcu-map.component.html',
   styleUrls: ['./lcu-map.component.scss']
 })
-export class LcuMapComponent implements OnInit, OnDestroy {
+export class LcuMapComponent implements OnInit {
 
   // FIELDS
   
-  // uncomment this later and figure out if map service is getting passed in
-  // protected _outsideMapService: any;
-
-  // @Input('outside-map-service')
-  // public get OutsideMapService(): any {
-  //   return this._outsideMapService;
-  // }
-
-  // public set OutsideMapService(val: any) {
-  //   if (!val) { return; }
-  //   this._outsideMapService = val;
-  // }
-
   /**
    * The public map model converted from the passed IndividualMap input
    */
@@ -49,10 +35,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   private expectedDoubleClickElapsedTime: number = 500;
 
-  /**
-   * The map subscription for latitude / longitude changes
-   */
-  private mapSubscription: Subscription;
 
   @Input() MapMarkerSet: MarkerInfo[] = [ // sets a default set of icons if non passed in
     { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png' },
@@ -127,11 +109,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   ]
 
   /**
-   * A map service containing code for lat/lng changes
-   */
-  @Input() outsideMapService;
-
-  /**
    * The even emitted when a map is saved (the saved map is emitted)
    */
   @Output('MapSaved')
@@ -140,7 +117,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   // CONSTRUCTORS
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
-    console.log(this.wrapper);
   }
 
   // LIFE CYCLE
@@ -148,10 +124,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.CurrentMapModel = this.mapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
-    });
-    this.mapSubscription = this.outsideMapService.latLngChange.subscribe(coords => {
-      this.CurrentMapModel.origin.lat = coords.lat;
-      this.CurrentMapModel.origin.lng = coords.lng;
     });
     this.SecondaryLocations = [];
     this.SecondaryMaps.forEach(map => {
@@ -168,7 +140,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         )
       })
     })
-    console.log(this.SecondaryLocations)
   }
 
   // API METHODS
@@ -247,10 +218,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     // console.log(e.getNorthEast().lng())
     // console.log(e.getSouthWest().lat())
     // console.log(e.getSouthWest().lng())
-  }
-
-  ngOnDestroy() {
-    this.mapSubscription.unsubscribe();
   }
 
   // HELPERS

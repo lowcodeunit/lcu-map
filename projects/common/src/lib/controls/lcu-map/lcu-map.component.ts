@@ -21,6 +21,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public CurrentMapModel: IndividualMap;
 
+  public SecondaryLocations: Array<any>;
+
   // PROPERTIES
 
   /**
@@ -74,36 +76,38 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   @Input() SecondaryMaps: IndividualMap[] = [
     {
-      title: 'Sec Map 1',
+      title: 'Boulder Booze',
       origin: { lat: 40.037757, lng: -105.378324 },
       zoom: 13,
       locationList: [
-        { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
-        { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
-        { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
+        { title: 'Brewsky\'s', lat: 40.012557, lng: -105.268199, iconName: 'brewery' },
+        { title: 'Phat Bar', lat: 40.022657, lng: -105.268199, iconName: 'bar' },
+        { title: 'Bar of the Rockies', lat: 40.026757, lng: -105.277199, iconName: 'bar' },
         { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
       ]
     },
     {
-      title: 'Sec Map 2',
+      title: 'Broomfield Food',
       origin: { lat: 40.027757, lng: -105.378324 },
       zoom: 13,
       locationList: [
-        { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
-        { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
-        { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
-        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+        { title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant' },
+        { title: 'Inauthentic Hibachi', lat: 39.922598, lng: -105.136252, iconName: 'restaurant' },
+        { title: 'Nachito\'s Burritos', lat: 39.931016, lng: -105.131439, iconName: 'restaurant' },
+        { title: 'Good brewery', lat: 39.927743, lng: -105.026432, iconName: 'brewery' },
+        { title: 'Good bar', lat: 39.938869, lng: -105.082696, iconName: 'bar' }
       ]
     },
     {
-      title: 'Sec Map 3',
+      title: 'Boulder Sightseeing',
       origin: { lat: 40.037757, lng: -105.278324 },
       zoom: 13,
       locationList: [
-        { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
-        { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
-        { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
-        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+        { title: 'Favorite Ski Resort', lat: 40.017557, lng: -105.278199, iconName: 'ski area' },
+        { title: 'Favorite hiking trail', lat: 40.027657, lng: -105.288199, iconName: 'national park' },
+        { title: 'Nice museum', lat: 40.037757, lng: -105.244199, iconName: 'museum' },
+        { title: 'Good park', lat: 40.047857, lng: -105.268199, iconName: 'national park' },
+        { title: 'Cheap Hotel', lat: 40.041857, lng: -105.268199, iconName: 'lodging' }
       ]
     }
   ]
@@ -134,6 +138,22 @@ export class LcuMapComponent implements OnInit, OnDestroy {
       this.CurrentMapModel.origin.lat = coords.lat;
       this.CurrentMapModel.origin.lng = coords.lng;
     });
+    this.SecondaryLocations = [];
+    this.SecondaryMaps.forEach(map => {
+      map.locationList.forEach(loc => {
+        this.SecondaryLocations.push(
+          {
+            title: loc.title,
+            lat: loc.lat,
+            lng: loc.lng,
+            iconName: loc.iconName,
+            iconImageObject: this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet),
+            mapTitle: map.title
+          }
+        )
+      })
+    })
+    console.log(this.SecondaryLocations)
   }
 
   // API METHODS
@@ -196,6 +216,16 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  public LayerClicked(layer) {
+    console.log('SecondaryLocations: ', this.SecondaryLocations)
+    console.log('layer: ', layer);
+    this.SecondaryLocations.forEach(loc => {
+      if (layer.title === loc.mapTitle) {
+        loc.showMarker = loc.showMarker === true ? false : true;
+      }
+    })
   }
 
   ngOnDestroy() {

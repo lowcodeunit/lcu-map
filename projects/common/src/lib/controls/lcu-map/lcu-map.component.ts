@@ -7,7 +7,7 @@ import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Subscription } from 'rxjs';
-import { MapMarker } from '@lcu-ide/dynamic-map-common/lcu.api';
+import { MapMarker } from '../../models/map-marker.model';
 
 @Component({
   selector: 'lcu-map',

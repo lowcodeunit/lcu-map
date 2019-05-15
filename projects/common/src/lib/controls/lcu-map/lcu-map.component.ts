@@ -207,6 +207,7 @@ export class LcuMapComponent implements OnInit {
       data: {
         map: map,
         locationMarkers: this.stripOutsideLocations(this.CurrentMapModel.locationList, this.currentBounds),
+        secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }
     });
@@ -245,6 +246,7 @@ export class LcuMapComponent implements OnInit {
   public UpdateLatLng(lat, lng) {
     this.CurrentMapModel.origin.lat = lat;
     this.CurrentMapModel.origin.lng = lng;
+    this.CurrentMapModel.zoom = 15;
   }
 
   // HELPERS

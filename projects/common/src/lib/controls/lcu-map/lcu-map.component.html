@@ -12,11 +12,12 @@
   </div>
 </div>
 
-<agm-map [mapTypeId]="chosenView" (boundsChange)="boundsChange($event)" #map [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng"
-  [title]="CurrentMapModel.title" [zoom]="CurrentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)"
-  (mapClick)="OnChoseLocation($event)" [usePanning]="true">
+<agm-map [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
+  [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng" [title]="CurrentMapModel.title"
+  [zoom]="CurrentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
+  [usePanning]="true">
   <div *ngFor="let marker of CurrentMapModel.locationList">
-    <agm-marker *ngIf="primaryMarkersSelected" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+    <agm-marker *ngIf="PrimaryMarkersSelected" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
       [iconUrl]="marker.iconImageObject"></agm-marker>
     <div *ngFor="let marker of SecondaryLocations">
       <agm-marker *ngIf="marker.showMarker" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
@@ -27,11 +28,14 @@
 
 <!-- the menu for the map layers button -->
 <mat-menu #layerMenu="matMenu" id="layer-menu">
-  <mat-radio-group [(ngModel)]="chosenView">
-    <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of mapViews" [value]="view.value">{{view.display}}</mat-radio-button>
+  <mat-radio-group [(ngModel)]="CurrentMapViewType">
+    <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
+      {{view.display}}</mat-radio-button>
   </mat-radio-group>
   <mat-divider></mat-divider>
-  <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="primaryMarkersSelected" matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">Primary</mat-checkbox>
+  <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="PrimaryMarkersSelected"
+    matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">
+    Primary</mat-checkbox>
   <mat-divider></mat-divider>
   <mat-checkbox (click)="$event.stopPropagation();LayerClicked(map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
   </mat-checkbox>

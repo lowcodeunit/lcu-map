@@ -10,6 +10,10 @@ import { IndividualMap } from '../../../models/individual-map.model';
 })
 export class SaveMapComponent implements OnInit {
 
+  // FIELDS
+
+  // PROPERTIES
+
   /**
    * Reactive form to accept data from user about map to be saved
    */
@@ -20,7 +24,11 @@ export class SaveMapComponent implements OnInit {
    */
   public NewMap: IndividualMap;
 
+  // CONSTRUCTORS
+
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private dialogRef: MatDialogRef<SaveMapComponent>) { }
+
+  // LIFE CYCLE
 
   ngOnInit() {
     this.NewMapForm = new FormGroup({
@@ -33,6 +41,8 @@ export class SaveMapComponent implements OnInit {
       locationList: []
     }
   }
+
+  // API METHODS
 
   /**
    * Sets entered map data to this.NewMap, which is then returned upon closing modal with affirmative button
@@ -56,5 +66,7 @@ export class SaveMapComponent implements OnInit {
   public Close() {
     this.dialogRef.close();
   }
+
+  // HELPERS
 
 }

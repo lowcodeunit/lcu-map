@@ -10,7 +10,10 @@ import { MapService } from '../../../services/map.service';
   styleUrls: ['./add-map-marker.component.css']
 })
 export class AddMapMarkerComponent implements OnInit {
+
   // FIELDS
+
+  // PROPERTIES
 
   /**
    * The form used to input data about map marker
@@ -27,12 +30,12 @@ export class AddMapMarkerComponent implements OnInit {
    */
   public IconList: string[];
 
-  // PROPERTIES
-  
   // CONSTRUCTORS
+
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private mapService: MapService) { }
-  
+
   // LIFE CYCLE
+
   ngOnInit() {
     this.NewMarkerForm = new FormGroup({
       title: new FormControl('', { validators: [Validators.required] }),
@@ -45,10 +48,10 @@ export class AddMapMarkerComponent implements OnInit {
       lat: 0,
       lng: 0
     }
-    
-    this.IconList = this.passedData.iconList; 
+
+    this.IconList = this.passedData.iconList;
   }
-  
+
   // API METHODS
 
   /**
@@ -61,5 +64,7 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.lng = this.passedData.lng;
     this.NewMarker.iconImageObject = this.mapService.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
   }
+
   // HELPERS
+
 }

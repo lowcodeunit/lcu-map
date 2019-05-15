@@ -7,6 +7,7 @@ import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Subscription } from 'rxjs';
+import { MapMarker } from '@lcu-ide/dynamic-map-common/lcu.api';
 
 @Component({
   selector: 'lcu-map',
@@ -15,14 +16,25 @@ import { Subscription } from 'rxjs';
 })
 export class LcuMapComponent implements OnInit {
 
+  chosenView: string = 'roadmap';
+  mapViews: {}[] = [
+    { value: 'roadmap', display: 'Standard' },
+    { value: 'satellite', display: 'Satellite' },
+    { value: 'terrain', display: 'Topographical' }
+  ]
+
+  public primaryMarkersSelected: boolean = true;
+
   // FIELDS
-  
+
   /**
    * The public map model converted from the passed IndividualMap input
    */
   public CurrentMapModel: IndividualMap;
 
   public SecondaryLocations: Array<any>;
+
+  private currentBounds: any;
 
   // PROPERTIES
 
@@ -119,7 +131,7 @@ export class LcuMapComponent implements OnInit {
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
   }
-mapSubscription = new Subscription;
+  mapSubscription = new Subscription;
   // LIFE CYCLE
   ngOnInit() {
     this.CurrentMapModel = this.mapModel;
@@ -141,6 +153,7 @@ mapSubscription = new Subscription;
         )
       })
     });
+    this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 }
   }
 
   // API METHODS
@@ -193,7 +206,7 @@ mapSubscription = new Subscription;
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
-        locationMarkers: this.CurrentMapModel.locationList,
+        locationMarkers: this.stripOutsideLocations(this.CurrentMapModel.locationList, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }
     });
@@ -201,6 +214,7 @@ mapSubscription = new Subscription;
       if (res) {
         if (res) {
           this.MapSaved.emit(res);
+          console.log('saved map: ', res)
         }
       }
     });
@@ -215,17 +229,42 @@ mapSubscription = new Subscription;
   }
 
   public boundsChange(e) {
-    // console.log(e.getNorthEast().lat())
-    // console.log(e.getNorthEast().lng())
-    // console.log(e.getSouthWest().lat())
-    // console.log(e.getSouthWest().lng())
+    this.currentBounds.neLat = e.getNorthEast().lat();
+    this.currentBounds.neLng = e.getNorthEast().lng();
+    this.currentBounds.swLat = e.getSouthWest().lat();
+    this.currentBounds.swLng = e.getSouthWest().lng();
   }
 
-  public UpdateLatLng(lat,lng) {
+  /**
+   * 
+   * @param lat The latitude to pan to
+   * @param lng The longitude to pan to
+   * 
+   * Takes a lat / lng and pans to that point on the map
+   */
+  public UpdateLatLng(lat, lng) {
     this.CurrentMapModel.origin.lat = lat;
     this.CurrentMapModel.origin.lng = lng;
   }
 
   // HELPERS
+
+  /**
+   * 
+   * @param locationList The list of locations that come with the map that should be stripped
+   * @param bounds The bounds used to determine which locations to strip
+   * 
+   * Strips locations that don't exist within the bounds and returns the altered array
+   * 
+   * TODO: write the edge case for locations that exist on map where lat or lng overlap
+   */
+  private stripOutsideLocations(locationList: Array<MapMarker>, bounds: any) {
+    return locationList.filter(loc =>
+      loc.lat <= bounds.neLat &&
+      loc.lat >= bounds.swLat &&
+      loc.lng <= bounds.neLng &&
+      loc.lng >= bounds.swLng
+    )
+  }
 
 }

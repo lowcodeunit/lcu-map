@@ -8,6 +8,8 @@ import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.m
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+
+  @ViewChild('lcuMap') viewChildMap: any;
   
   public MapConfig: IndividualMap;
 
@@ -42,5 +44,9 @@ export class AppComponent implements OnInit{
 
   public MapSaved(map) {
     console.log(map);
+  }
+
+  public clickk(lat,lng) {
+    this.viewChildMap.UpdateLatLng(lat,lng)
   }
 }

@@ -72,7 +72,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
    */
-  @Input() public set PanTo(value: {lat: number, lng: number, zoom: number}) { // why doesn't this trigger every time PanTo changes?
+  @Input() public set PanTo(value: {lat: number, lng: number, zoom: number}) { 
     this._panTo = value;
     if (this.CurrentMapModel) {
       this.CurrentMapModel.origin.lat = value.lat;
@@ -172,10 +172,17 @@ export class LcuMapComponent implements OnInit {
   @Output('MapSaved')
   public MapSaved: EventEmitter<IndividualMap>;
 
+  /**
+   * The event emitted when a layer is clicked - emits list of active secondary locations
+   */
+  @Output('VisibleSecondaryLocationListChanged')
+  public VisibleSecondaryLocationListChanged: EventEmitter<MapMarker[]>;
+
   // CONSTRUCTORS
 
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
+    this.VisibleSecondaryLocationListChanged = new EventEmitter;
   }
 
   // LIFE CYCLE
@@ -279,6 +286,9 @@ export class LcuMapComponent implements OnInit {
         loc.showMarker = loc.showMarker === true ? false : true;
       }
     })
+    // next two lines send out the list of currently active locations through @Output
+    let activeSecondaryLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
+    this.VisibleSecondaryLocationListChanged.emit(activeSecondaryLocations);
   }
 
   /**
@@ -293,20 +303,6 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
   }
-
-  // this is commented out for now to see if the @Input can be used to pan/ zoom
-  // /**
-  //  * 
-  //  * @param lat The latitude to pan to
-  //  * @param lng The longitude to pan to
-  //  * 
-  //  * Takes a lat / lng and pans to that point on the map
-  //  */
-  // public UpdateLatLng(lat, lng) {
-  //   this.CurrentMapModel.origin.lat = lat;
-  //   this.CurrentMapModel.origin.lng = lng;
-  //   this.CurrentMapModel.zoom = 15;
-  // }
 
   // HELPERS
 

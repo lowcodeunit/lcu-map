@@ -14,11 +14,6 @@ export class AppComponent implements OnInit {
   // PROPERTIES
 
   /**
-   * The map instance
-   */
-  @ViewChild('lcuMap') viewChildMap: any;
-
-  /**
    * The map configuration to pass in to the map instance
    */
   public MapConfig: IndividualMap;
@@ -58,9 +53,6 @@ export class AppComponent implements OnInit {
       { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png' },
       { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png' }
     ]
-    setTimeout(x => {
-      this.RandomPan = { lat: 30, lng: -103, zoom: 15 };
-    }, 5000)
   }
 
   // API METHODS
@@ -70,7 +62,7 @@ export class AppComponent implements OnInit {
    * @param map The function run when the map is successfully saved
    */
   public MapSaved(map) {
-    console.log(map);
+    console.log('saved map: ', map);
   }
 
   /**
@@ -80,12 +72,12 @@ export class AppComponent implements OnInit {
    * 
    * Upon clicking, the map will pan to the given location (0,0)
    */
-  public GoTo00(lat, lng) {
-    // this.viewChildMap.UpdateLatLng(lat, lng)
-    this.RandomPan.zoom = Math.floor(Math.random() * 20);
-    this.RandomPan.lat = Math.floor(Math.random() * 50);
-    console.log(this.RandomPan);
+  public GoToRandomLoc() {
     this.RandomPan = {lat: Math.floor(Math.random() * 50), lng: -103, zoom: Math.floor(Math.random() * 50)}
+  }
+
+  public ListChanged(list) {
+    console.log('list of secondary locs: ', list);
   }
 
   // HELPERS

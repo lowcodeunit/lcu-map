@@ -32,6 +32,11 @@ export class LcuMapComponent implements OnInit {
    * The NE and SW lat/lng set of the current map
    */
   private currentBounds: any;
+  
+  /**
+   * Input property that allows panning to a certain lat/lng and zoom level on the current map
+   */
+  private _panTo: {lat: number, lng: number, zoom: number};
 
   // PROPERTIES
 
@@ -62,7 +67,26 @@ export class LcuMapComponent implements OnInit {
   /**
    * A conglomerated list of all the map markers of all the secondary (non-primary) maps
    */
-  public SecondaryLocations: Array<any>;
+  public SecondaryLocations: Array<any>;  
+
+  /**
+   * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
+   */
+  @Input() public set PanTo(value: {lat: number, lng: number, zoom: number}) { // why doesn't this trigger every time PanTo changes?
+    this._panTo = value;
+    if (this.CurrentMapModel) {
+      this.CurrentMapModel.origin.lat = value.lat;
+      this.CurrentMapModel.origin.lng = value.lng;
+      this.CurrentMapModel.zoom = value.zoom;
+    }
+  }
+
+  /**
+   * Getter for the field '_panTo'
+   */
+  public get PanTo() {
+    return this._panTo;
+  }
 
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
@@ -270,18 +294,19 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.swLng = event.getSouthWest().lng();
   }
 
-  /**
-   * 
-   * @param lat The latitude to pan to
-   * @param lng The longitude to pan to
-   * 
-   * Takes a lat / lng and pans to that point on the map
-   */
-  public UpdateLatLng(lat, lng) {
-    this.CurrentMapModel.origin.lat = lat;
-    this.CurrentMapModel.origin.lng = lng;
-    this.CurrentMapModel.zoom = 15;
-  }
+  // this is commented out for now to see if the @Input can be used to pan/ zoom
+  // /**
+  //  * 
+  //  * @param lat The latitude to pan to
+  //  * @param lng The longitude to pan to
+  //  * 
+  //  * Takes a lat / lng and pans to that point on the map
+  //  */
+  // public UpdateLatLng(lat, lng) {
+  //   this.CurrentMapModel.origin.lat = lat;
+  //   this.CurrentMapModel.origin.lng = lng;
+  //   this.CurrentMapModel.zoom = 15;
+  // }
 
   // HELPERS
 

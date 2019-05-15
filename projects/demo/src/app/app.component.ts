@@ -8,13 +8,30 @@ import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.m
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+  
+  // FIELDS
 
+  // PROPERTIES
+
+  /**
+   * The map instance
+   */
   @ViewChild('lcuMap') viewChildMap: any;
   
+  /**
+   * The map configuration to pass in to the map instance
+   */
   public MapConfig: IndividualMap;
-
+  
+  /**
+   * The icon set to pass in that will determine the available icons for the map
+   */
   public IconSet: MarkerInfo[];
-
+  
+  // CONSTRUCTORS
+  
+  // LIFE CYCLE
+  
   ngOnInit() {
     this.MapConfig = {
       title: 'Default Map',
@@ -27,7 +44,6 @@ export class AppComponent implements OnInit{
         { title: 'Nice national park', lat: 40.051657, lng: -105.278199, iconName: 'national park' }
       ]
     };
-
     this.IconSet = [ // this should be calling a service here
       { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png'},
       { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png'},
@@ -41,12 +57,28 @@ export class AppComponent implements OnInit{
       { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png'}
     ]
   }
-
+  
+  // API METHODS
+  
+  /**
+   * 
+   * @param map The function run when the map is successfully saved
+   */
   public MapSaved(map) {
     console.log(map);
   }
 
-  public clickk(lat,lng) {
+  /**
+   * 
+   * @param lat The latitude to pan to
+   * @param lng The longitude to pan to
+   * 
+   * Upon clicking, the map will pan to the given location (0,0)
+   */
+  public GoTo00(lat,lng) {
     this.viewChildMap.UpdateLatLng(lat,lng)
   }
+  
+  // HELPERS
+  
 }

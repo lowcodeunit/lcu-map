@@ -14,7 +14,7 @@ import { GoogleMapsAPIWrapper } from '@agm/core';
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
-    AgmCoreModule.forRoot({apiKey: 'AIzaSyCvvqYY9pMUpRSKl721rPEiN4KlKIpCImg'}),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyCvvqYY9pMUpRSKl721rPEiN4KlKIpCImg' }),
     MatIconModule,
     MatSelectModule,
     MatDialogModule,

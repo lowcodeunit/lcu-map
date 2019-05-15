@@ -16,27 +16,7 @@ import { MapMarker } from '../../models/map-marker.model';
 })
 export class LcuMapComponent implements OnInit {
 
-  chosenView: string = 'roadmap';
-  mapViews: {}[] = [
-    { value: 'roadmap', display: 'Standard' },
-    { value: 'satellite', display: 'Satellite' },
-    { value: 'terrain', display: 'Topographical' }
-  ]
-
-  public primaryMarkersSelected: boolean = true;
-
-  // FIELDS
-
-  /**
-   * The public map model converted from the passed IndividualMap input
-   */
-  public CurrentMapModel: IndividualMap;
-
-  public SecondaryLocations: Array<any>;
-
-  private currentBounds: any;
-
-  // PROPERTIES
+  // FIELDS  
 
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
@@ -48,7 +28,45 @@ export class LcuMapComponent implements OnInit {
    */
   private expectedDoubleClickElapsedTime: number = 500;
 
+  /**
+   * The NE and SW lat/lng set of the current map
+   */
+  private currentBounds: any;
 
+  // PROPERTIES
+
+  /**
+   * The map type (standard, satellite, topographical) - default is standard ('roadmap')
+   */
+  public CurrentMapViewType: string = 'roadmap';
+
+  /**
+   * The array of available map views to be chosen by the user (default is standard)
+   */
+  public MapViewTypes: {}[] = [
+    { value: 'roadmap', display: 'Standard' },
+    { value: 'satellite', display: 'Satellite' },
+    { value: 'terrain', display: 'Topographical' }
+  ]
+
+  /**
+   * Boolean that determines whether or not to show the markers of the current map (primary map)
+   */
+  public PrimaryMarkersSelected: boolean = true;
+
+  /**
+   * The public map model converted from the passed IndividualMap input
+   */
+  public CurrentMapModel: IndividualMap;
+
+  /**
+   * A conglomerated list of all the map markers of all the secondary (non-primary) maps
+   */
+  public SecondaryLocations: Array<any>;
+
+  /**
+   * The set of map markers and image paths that will be used to determine available map markers for current map
+   */
   @Input() MapMarkerSet: MarkerInfo[] = [ // sets a default set of icons if non passed in
     { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png' },
     { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png' },
@@ -65,7 +83,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
-  @Input() mapModel?: IndividualMap = { // sets a default map if none passed in
+  @Input() MapModel?: IndividualMap = { // sets a default map if none passed in
     title: 'Default Map (Primary)',
     origin: { lat: 40.037757, lng: -105.278324 },
     zoom: 13,
@@ -83,6 +101,9 @@ export class LcuMapComponent implements OnInit {
     ]
   };
 
+  /**
+   * The array of secondary (non-primary) maps to be shown as 'layers' whose markers will be displayed on the current map
+   */
   @Input() SecondaryMaps: IndividualMap[] = [
     {
       title: 'Boulder Booze',
@@ -128,13 +149,15 @@ export class LcuMapComponent implements OnInit {
   public MapSaved: EventEmitter<IndividualMap>;
 
   // CONSTRUCTORS
+
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
   }
-  mapSubscription = new Subscription;
+
   // LIFE CYCLE
+
   ngOnInit() {
-    this.CurrentMapModel = this.mapModel;
+    this.CurrentMapModel = this.MapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
@@ -202,7 +225,6 @@ export class LcuMapComponent implements OnInit {
    * Activates the dialog for user to enter name of map which will then be 'saved'
    */
   public ActivateSaveMapDialog(map) {
-    console.log(this.wrapper)
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
@@ -221,6 +243,12 @@ export class LcuMapComponent implements OnInit {
     });
   }
 
+  /**
+   * 
+   * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked
+   * 
+   * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
+   */
   public LayerClicked(layer) {
     this.SecondaryLocations.forEach(loc => {
       if (layer.title === loc.mapTitle) {
@@ -229,11 +257,17 @@ export class LcuMapComponent implements OnInit {
     })
   }
 
-  public boundsChange(e) {
-    this.currentBounds.neLat = e.getNorthEast().lat();
-    this.currentBounds.neLng = e.getNorthEast().lng();
-    this.currentBounds.swLat = e.getSouthWest().lat();
-    this.currentBounds.swLng = e.getSouthWest().lng();
+  /**
+   * 
+   * @param event The event sent every time the boundary of the map changes
+   * 
+   * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes
+   */
+  public BoundsChange(event) {
+    this.currentBounds.neLat = event.getNorthEast().lat();
+    this.currentBounds.neLng = event.getNorthEast().lng();
+    this.currentBounds.swLat = event.getSouthWest().lat();
+    this.currentBounds.swLng = event.getSouthWest().lng();
   }
 
   /**

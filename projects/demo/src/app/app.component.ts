@@ -7,8 +7,8 @@ import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.m
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
-  
+export class AppComponent implements OnInit {
+
   // FIELDS
 
   // PROPERTIES
@@ -17,21 +17,23 @@ export class AppComponent implements OnInit{
    * The map instance
    */
   @ViewChild('lcuMap') viewChildMap: any;
-  
+
   /**
    * The map configuration to pass in to the map instance
    */
   public MapConfig: IndividualMap;
-  
+
   /**
    * The icon set to pass in that will determine the available icons for the map
    */
   public IconSet: MarkerInfo[];
-  
+
+  public RandomPan: { lat: number, lng: number, zoom: number } = { lat: 40, lng: -105, zoom: 10 }
+
   // CONSTRUCTORS
-  
+
   // LIFE CYCLE
-  
+
   ngOnInit() {
     this.MapConfig = {
       title: 'Default Map',
@@ -45,21 +47,24 @@ export class AppComponent implements OnInit{
       ]
     };
     this.IconSet = [ // this should be calling a service here
-      { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png'},
-      { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png'},
-      { iconLookup: 'museum', iconName: 'Museum', iconUrl: './assets/museum.png'},
-      { iconLookup: 'brewery', iconName: 'Brewery', iconUrl: './assets/brewery.png'},
-      { iconLookup: 'ski area', iconName: 'Ski Area', iconUrl: './assets/ski area.png'},
-      { iconLookup: 'vineyard', iconName: 'Vineyard', iconUrl: './assets/vineyard.png'},
-      { iconLookup: 'golf course', iconName: 'Golf Course', iconUrl: './assets/golf course.png'},
-      { iconLookup: 'lodging', iconName: 'Lodging', iconUrl: './assets/lodging.png'},
-      { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png'},
-      { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png'}
+      { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png' },
+      { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png' },
+      { iconLookup: 'museum', iconName: 'Museum', iconUrl: './assets/museum.png' },
+      { iconLookup: 'brewery', iconName: 'Brewery', iconUrl: './assets/brewery.png' },
+      { iconLookup: 'ski area', iconName: 'Ski Area', iconUrl: './assets/ski area.png' },
+      { iconLookup: 'vineyard', iconName: 'Vineyard', iconUrl: './assets/vineyard.png' },
+      { iconLookup: 'golf course', iconName: 'Golf Course', iconUrl: './assets/golf course.png' },
+      { iconLookup: 'lodging', iconName: 'Lodging', iconUrl: './assets/lodging.png' },
+      { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png' },
+      { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png' }
     ]
+    setTimeout(x => {
+      this.RandomPan = { lat: 30, lng: -103, zoom: 15 };
+    }, 5000)
   }
-  
+
   // API METHODS
-  
+
   /**
    * 
    * @param map The function run when the map is successfully saved
@@ -75,10 +80,14 @@ export class AppComponent implements OnInit{
    * 
    * Upon clicking, the map will pan to the given location (0,0)
    */
-  public GoTo00(lat,lng) {
-    this.viewChildMap.UpdateLatLng(lat,lng)
+  public GoTo00(lat, lng) {
+    // this.viewChildMap.UpdateLatLng(lat, lng)
+    this.RandomPan.zoom = Math.floor(Math.random() * 20);
+    this.RandomPan.lat = Math.floor(Math.random() * 50);
+    console.log(this.RandomPan);
+    this.RandomPan = {lat: Math.floor(Math.random() * 50), lng: -103, zoom: Math.floor(Math.random() * 50)}
   }
-  
+
   // HELPERS
-  
+
 }

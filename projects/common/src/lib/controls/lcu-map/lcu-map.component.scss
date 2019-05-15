@@ -29,13 +29,13 @@ mat-icon {
 
 agm-map {
     height: 500px;
-    width: 500px;
 }
 
 mat-icon {
     cursor: pointer;
 }
 
-mat-checkbox {
+mat-checkbox, mat-radio-button {
     display: block;
+    margin: 6px;
 }

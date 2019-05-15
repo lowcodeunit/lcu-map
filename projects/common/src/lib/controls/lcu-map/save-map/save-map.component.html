@@ -1,9 +1,12 @@
-<h1 mat-dialog-title>Save Map</h1>
+<div>
+  <h1 mat-dialog-title>Create New Map</h1>
+  <mat-icon (click)="Close()" matTooltip="Close">close</mat-icon>
+</div>
 
 <mat-dialog-content>
   <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMapForm" fxLayoutGap="30px">
-    <h4>Map Title:</h4>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Name Map:</mat-label>
       <input type="text" matInput formControlName="title">
       <mat-hint>The title for the map</mat-hint>
       <mat-error>Invalid or missing title</mat-error>
@@ -12,5 +15,4 @@
 </mat-dialog-content>
 
 <button mat-raised-button color="primary" [mat-dialog-close]="NewMap" (click)="SetMapData()"
-  [disabled]="NewMapForm.invalid">Add Map</button>
-<button mat-raised-button color="accent" [mat-dialog-close]="false">Cancel</button>
+  [disabled]="NewMapForm.invalid">Create</button>

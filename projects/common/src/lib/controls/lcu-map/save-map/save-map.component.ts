@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IndividualMap } from '../../../models/individual-map.model';
 
 @Component({
@@ -20,7 +20,7 @@ export class SaveMapComponent implements OnInit {
    */
   public NewMap: IndividualMap;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private dialogRef: MatDialogRef<SaveMapComponent>) { }
 
   ngOnInit() {
     this.NewMapForm = new FormGroup({
@@ -42,6 +42,19 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.zoom = this.passedData.map.zoom;
     this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
     this.NewMap.locationList = this.passedData.locationMarkers;
+    // the below adds visible secondary location markers as well as primary
+    this.passedData.secondaryMarkers.forEach(loc => {
+      if (loc.showMarker === true) {
+        this.NewMap.locationList.push(loc);
+      }
+    });
+  }
+
+  /**
+   * Closes the mat dialog box
+   */
+  public Close() {
+    this.dialogRef.close();
   }
 
 }

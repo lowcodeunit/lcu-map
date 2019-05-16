@@ -1,4 +1,4 @@
-import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lcu.api';
+import { MarkerInfo } from '../../models/marker-info.model';
 import { IndividualMap } from '../../models/individual-map.model';
 
 export class Constants {

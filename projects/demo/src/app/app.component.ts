@@ -23,6 +23,9 @@ export class AppComponent implements OnInit {
    */
   public IconSet: MarkerInfo[];
 
+  /**
+   * Passed to the @Input for panning, generates a random 'pan to' location and zoom level
+   */
   public RandomPan: { lat: number, lng: number, zoom: number } = { lat: 40, lng: -105, zoom: 10 }
 
   // CONSTRUCTORS
@@ -76,6 +79,12 @@ export class AppComponent implements OnInit {
     this.RandomPan = {lat: Math.floor(Math.random() * 50), lng: -103, zoom: Math.floor(Math.random() * 50)}
   }
 
+  /**
+   * 
+   * @param list The new list of active secondary locations
+   * 
+   * Logs to the console the updated list of active secondary locations
+   */
   public ListChanged(list) {
     console.log('list of secondary locs: ', list);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapService } from '../../../services/map.service';
@@ -32,7 +32,7 @@ export class AddMapMarkerComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private mapService: MapService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private mapService: MapService, private dialogRef: MatDialogRef<AddMapMarkerComponent>) { }
 
   // LIFE CYCLE
 
@@ -63,6 +63,13 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.lat = this.passedData.lat;
     this.NewMarker.lng = this.passedData.lng;
     this.NewMarker.iconImageObject = this.mapService.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
+  }
+  
+  /**
+   * Closes the mat dialog box
+   */
+  public Close() {
+    this.dialogRef.close();
   }
 
   // HELPERS

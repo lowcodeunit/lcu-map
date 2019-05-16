@@ -5,12 +5,14 @@
 
 <mat-dialog-content>
   <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMapForm" fxLayoutGap="30px">
+
     <mat-form-field appearance="outline">
       <mat-label>Name Map:</mat-label>
       <input type="text" matInput formControlName="title">
       <mat-hint>The title for the map</mat-hint>
       <mat-error>Invalid or missing title</mat-error>
     </mat-form-field>
+
   </form>
 </mat-dialog-content>
 

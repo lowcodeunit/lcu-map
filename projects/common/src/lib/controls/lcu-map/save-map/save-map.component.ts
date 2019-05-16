@@ -47,7 +47,7 @@ export class SaveMapComponent implements OnInit {
   /**
    * Sets entered map data to this.NewMap, which is then returned upon closing modal with affirmative button
    */
-  public SetMapData() {
+  public SetMapData(): void {
     this.NewMap.title = this.NewMapForm.value.title;
     this.NewMap.zoom = this.passedData.map.zoom;
     this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
@@ -63,7 +63,7 @@ export class SaveMapComponent implements OnInit {
   /**
    * Closes the mat dialog box
    */
-  public Close() {
+  public Close(): void {
     this.dialogRef.close();
   }
 

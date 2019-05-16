@@ -68,7 +68,7 @@ export class AddMapMarkerComponent implements OnInit {
   /**
    * Closes the mat dialog box
    */
-  public Close() {
+  public Close(): void {
     this.dialogRef.close();
   }
 

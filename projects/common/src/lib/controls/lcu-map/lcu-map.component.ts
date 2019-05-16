@@ -6,7 +6,6 @@ import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { Subscription } from 'rxjs';
 import { MapMarker } from '../../models/map-marker.model';
 
 @Component({
@@ -245,7 +244,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * This is necessary because when the events 'mapClick' and 'mapDblClick' appear on the same component, both will be fired
    */
-  public OnMapDoubleClicked(event) {
+  public OnMapDoubleClicked(event): void {
     this.isDoubleClick = true;
     setTimeout(x => {
       this.isDoubleClick = false;
@@ -255,7 +254,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Activates the dialog for user to enter name of map which will then be 'saved'
    */
-  public ActivateSaveMapDialog(map) {
+  public ActivateSaveMapDialog(map): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
@@ -280,7 +279,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(layer) {
+  public LayerClicked(layer): void {
     this.SecondaryLocations.forEach(loc => {
       if (layer.title === loc.mapTitle) {
         loc.showMarker = loc.showMarker === true ? false : true;
@@ -297,7 +296,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes
    */
-  public BoundsChange(event) {
+  public BoundsChange(event): void {
     this.currentBounds.neLat = event.getNorthEast().lat();
     this.currentBounds.neLng = event.getNorthEast().lng();
     this.currentBounds.swLat = event.getSouthWest().lat();
@@ -315,7 +314,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
-  private stripOutsideLocations(locationList: Array<MapMarker>, bounds: any) {
+  private stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
     return locationList.filter(loc =>
       loc.lat <= bounds.neLat &&
       loc.lat >= bounds.swLat &&

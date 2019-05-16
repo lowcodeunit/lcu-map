@@ -23,6 +23,32 @@ export class AppComponent implements OnInit {
    */
   public IconSet: MarkerInfo[];
 
+  public SecMaps: Array<IndividualMap> = [
+    {
+      title: 'Boulder Bars and Breweries',
+      origin: { lat: 40.037757, lng: -105.378324 },
+      zoom: 13,
+      locationList: [
+        { title: 'Brewsky\'s', lat: 40.012557, lng: -105.268199, iconName: 'brewery' },
+        { title: 'Phat Bar', lat: 40.022657, lng: -105.268199, iconName: 'bar' },
+        { title: 'Bar of the Rockies', lat: 40.026757, lng: -105.277199, iconName: 'bar' },
+        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+      ]
+    },
+    {
+      title: 'Broomfield Restaurants',
+      origin: { lat: 40.027757, lng: -105.378324 },
+      zoom: 13,
+      locationList: [
+        { title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant' },
+        { title: 'Inauthentic Hibachi', lat: 39.922598, lng: -105.136252, iconName: 'restaurant' },
+        { title: 'Nachito\'s Burritos', lat: 39.931016, lng: -105.131439, iconName: 'restaurant' },
+        { title: 'Good brewery', lat: 39.927743, lng: -105.026432, iconName: 'brewery' },
+        { title: 'Good bar', lat: 39.938869, lng: -105.082696, iconName: 'bar' }
+      ]
+    }
+  ]
+
   /**
    * Passed to the @Input for panning, generates a random 'pan to' location and zoom level
    */
@@ -76,7 +102,7 @@ export class AppComponent implements OnInit {
    * Upon clicking, the map will pan to the given location (0,0)
    */
   public GoToRandomLoc() {
-    this.RandomPan = {lat: Math.floor(Math.random() * 50), lng: -103, zoom: Math.floor(Math.random() * 50)}
+    this.RandomPan = { lat: Math.floor(Math.random() * 50), lng: -103, zoom: Math.floor(Math.random() * 50) }
   }
 
   /**

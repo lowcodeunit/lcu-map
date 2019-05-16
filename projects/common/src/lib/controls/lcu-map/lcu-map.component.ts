@@ -7,6 +7,7 @@ import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
+import { Constants } from '../../utils/constants/constants';
 
 @Component({
   selector: 'lcu-map',
@@ -30,7 +31,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The NE and SW lat/lng set of the current map
    */
-  private currentBounds: any;
+  private currentBounds: { neLat: number, neLng: number, swLat: number, swLng: number };
   
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
@@ -90,80 +91,17 @@ export class LcuMapComponent implements OnInit {
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
-  @Input() MapMarkerSet: MarkerInfo[] = [ // sets a default set of icons if non passed in
-    { iconLookup: 'restaurant', iconName: 'Restaurant', iconUrl: './assets/restaurant.png' },
-    { iconLookup: 'UNESCO', iconName: 'UNESCO', iconUrl: './assets/UNESCO.png' },
-    { iconLookup: 'museum', iconName: 'Museum', iconUrl: './assets/museum.png' },
-    { iconLookup: 'brewery', iconName: 'Brewery', iconUrl: './assets/brewery.png' },
-    { iconLookup: 'ski area', iconName: 'Ski Area', iconUrl: './assets/ski area.png' },
-    { iconLookup: 'vineyard', iconName: 'Vineyard', iconUrl: './assets/vineyard.png' },
-    { iconLookup: 'golf course', iconName: 'Golf Course', iconUrl: './assets/golf course.png' },
-    { iconLookup: 'lodging', iconName: 'Lodging', iconUrl: './assets/lodging.png' },
-    { iconLookup: 'national park', iconName: 'National Park', iconUrl: './assets/national park.png' },
-    { iconLookup: 'bar', iconName: 'Bar', iconUrl: './assets/bar.png' }
-  ]
+  @Input() MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
 
   /**
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
-  @Input() MapModel?: IndividualMap = { // sets a default map if none passed in
-    title: 'Default Map (Primary)',
-    origin: { lat: 40.037757, lng: -105.278324 },
-    zoom: 13,
-    locationList: [
-      { title: 'Favorite steak house', lat: 40.017557, lng: -105.278199, iconName: 'restaurant' },
-      { title: 'Favorite UNESCO', lat: 40.027657, lng: -105.288199, iconName: 'UNESCO' },
-      { title: 'Nice museum', lat: 40.037757, lng: -105.298199, iconName: 'museum' },
-      { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
-      { title: 'Favorite ski area', lat: 40.057557, lng: -105.288199, iconName: 'ski area' },
-      { title: 'Favorite vineyard', lat: 40.060657, lng: -105.298199, iconName: 'vineyard' },
-      { title: 'Nice golf course', lat: 40.037757, lng: -105.258199, iconName: 'golf course' },
-      { title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging' },
-      { title: 'Nice national park', lat: 40.060657, lng: -105.278199, iconName: 'national park' },
-      { title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar' }
-    ]
-  };
+  @Input() MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
 
   /**
    * The array of secondary (non-primary) maps to be shown as 'layers' whose markers will be displayed on the current map
    */
-  @Input() SecondaryMaps: IndividualMap[] = [
-    {
-      title: 'Boulder Booze',
-      origin: { lat: 40.037757, lng: -105.378324 },
-      zoom: 13,
-      locationList: [
-        { title: 'Brewsky\'s', lat: 40.012557, lng: -105.268199, iconName: 'brewery' },
-        { title: 'Phat Bar', lat: 40.022657, lng: -105.268199, iconName: 'bar' },
-        { title: 'Bar of the Rockies', lat: 40.026757, lng: -105.277199, iconName: 'bar' },
-        { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
-      ]
-    },
-    {
-      title: 'Broomfield Food',
-      origin: { lat: 40.027757, lng: -105.378324 },
-      zoom: 13,
-      locationList: [
-        { title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant' },
-        { title: 'Inauthentic Hibachi', lat: 39.922598, lng: -105.136252, iconName: 'restaurant' },
-        { title: 'Nachito\'s Burritos', lat: 39.931016, lng: -105.131439, iconName: 'restaurant' },
-        { title: 'Good brewery', lat: 39.927743, lng: -105.026432, iconName: 'brewery' },
-        { title: 'Good bar', lat: 39.938869, lng: -105.082696, iconName: 'bar' }
-      ]
-    },
-    {
-      title: 'Boulder Sightseeing',
-      origin: { lat: 40.037757, lng: -105.278324 },
-      zoom: 13,
-      locationList: [
-        { title: 'Favorite Ski Resort', lat: 40.017557, lng: -105.278199, iconName: 'ski area' },
-        { title: 'Favorite hiking trail', lat: 40.027657, lng: -105.288199, iconName: 'national park' },
-        { title: 'Nice museum', lat: 40.037757, lng: -105.244199, iconName: 'museum' },
-        { title: 'Good park', lat: 40.047857, lng: -105.268199, iconName: 'national park' },
-        { title: 'Cheap Hotel', lat: 40.041857, lng: -105.268199, iconName: 'lodging' }
-      ]
-    }
-  ]
+  @Input() SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
 
   /**
    * The even emitted when a map is saved (the saved map is emitted)
@@ -259,6 +197,7 @@ export class LcuMapComponent implements OnInit {
       data: {
         map: map,
         locationMarkers: this.stripOutsideLocations(this.CurrentMapModel.locationList, this.currentBounds),
+        // for now, we include all displayed secondary map markers in a newly created map:
         secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }

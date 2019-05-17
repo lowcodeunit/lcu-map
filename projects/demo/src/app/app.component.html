@@ -1,5 +1,5 @@
 <h1>Demo project</h1>
 
-<lcu-map [MapModel]="MapConfig" [SecondaryMaps]="SecMaps" [MapMarkerSet]="IconSet" (VisibleSecondaryLocationListChanged)="ListChanged($event)" [PanTo]="RandomPan" (MapSaved)="MapSaved($event)"></lcu-map>
+<lcu-map [MapModel]="MapConfig" [SecondaryMaps]="SecMaps" [MapMarkerSet]="IconSet" (VisibleLocationListChanged)="ListChanged($event)" [PanTo]="RandomPan" (MapSaved)="MapSaved($event)"></lcu-map>
 
 <button (click)="GoToRandomLoc()">0 / 0</button>

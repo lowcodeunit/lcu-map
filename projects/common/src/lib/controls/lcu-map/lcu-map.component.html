@@ -33,7 +33,7 @@
       {{view.display}}</mat-radio-button>
   </mat-radio-group>
   <mat-divider></mat-divider>
-  <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="PrimaryMarkersSelected"
+  <mat-checkbox (click)="$event.stopPropagation();LayerClicked()" [(ngModel)]="PrimaryMarkersSelected"
     matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">
     Primary</mat-checkbox>
   <mat-divider></mat-divider>

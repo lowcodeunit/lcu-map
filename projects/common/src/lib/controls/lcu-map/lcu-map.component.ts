@@ -112,14 +112,14 @@ export class LcuMapComponent implements OnInit {
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
    */
-  @Output('VisibleSecondaryLocationListChanged')
-  public VisibleSecondaryLocationListChanged: EventEmitter<MapMarker[]>;
+  @Output('VisibleLocationListChanged')
+  public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
   // CONSTRUCTORS
 
   constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
-    this.VisibleSecondaryLocationListChanged = new EventEmitter;
+    this.VisibleLocationListChanged = new EventEmitter;
   }
 
   // LIFE CYCLE
@@ -218,15 +218,25 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(layer): void {
-    this.SecondaryLocations.forEach(loc => {
-      if (layer.title === loc.mapTitle) {
-        loc.showMarker = loc.showMarker === true ? false : true;
+  public LayerClicked(layer?): void {
+    if (layer) {
+      this.SecondaryLocations.forEach(loc => {
+        if (layer.title === loc.mapTitle) {
+          loc.showMarker = loc.showMarker === true ? false : true;
+        }
+      })
+    }
+    
+    let currentlyDisplayedLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
+    setTimeout(x => {
+      if (this.PrimaryMarkersSelected) {
+        this.CurrentMapModel.locationList.forEach(loc => {
+          currentlyDisplayedLocations.push(loc);
+        })
       }
-    })
-    // next two lines send out the list of currently active locations through @Output
-    let activeSecondaryLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
-    this.VisibleSecondaryLocationListChanged.emit(activeSecondaryLocations);
+      // emits the currently visible map markers for use in legend
+      this.VisibleLocationListChanged.emit(currentlyDisplayedLocations);
+    },0)
   }
 
   /**

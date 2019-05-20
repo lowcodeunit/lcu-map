@@ -8,6 +8,7 @@ import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
+import { MapConversions } from '../../utils/conversions';
 
 @Component({
   selector: 'lcu-map',
@@ -21,22 +22,22 @@ export class LcuMapComponent implements OnInit {
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
    */
-  private isDoubleClick: boolean = false;
+  protected isDoubleClick: boolean = false;
 
   /**
    * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
    */
-  private expectedDoubleClickElapsedTime: number = 500;
+  protected expectedDoubleClickElapsedTime: number = 500;
 
   /**
    * The NE and SW lat/lng set of the current map
    */
-  private currentBounds: { neLat: number, neLng: number, swLat: number, swLng: number };
+  protected currentBounds: { neLat: number, neLng: number, swLat: number, swLng: number };
   
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  private _panTo: {lat: number, lng: number, zoom: number};
+  protected _panTo: {lat: number, lng: number, zoom: number};
 
   // PROPERTIES
 
@@ -72,7 +73,8 @@ export class LcuMapComponent implements OnInit {
   /**
    * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
    */
-  @Input() public set PanTo(value: {lat: number, lng: number, zoom: number}) { 
+  @Input('pan-to')
+  public set PanTo(value: {lat: number, lng: number, zoom: number}) { 
     this._panTo = value;
     if (this.CurrentMapModel) {
       this.CurrentMapModel.origin.lat = value.lat;
@@ -91,33 +93,36 @@ export class LcuMapComponent implements OnInit {
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
-  @Input() MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
+  @Input('map-marker-set') 
+  MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
 
   /**
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
-  @Input() MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
+  @Input('map-model') 
+  MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
 
   /**
    * The array of secondary (non-primary) maps to be shown as 'layers' whose markers will be displayed on the current map
    */
-  @Input() SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
+  @Input('secondary-maps') 
+  SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
 
   /**
    * The even emitted when a map is saved (the saved map is emitted)
    */
-  @Output('MapSaved')
+  @Output('map-saved')
   public MapSaved: EventEmitter<IndividualMap>;
 
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
    */
-  @Output('VisibleLocationListChanged')
+  @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
   // CONSTRUCTORS
 
-  constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
+  constructor(private dialog: MatDialog, private mapConverions: MapConversions, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
   }
@@ -127,7 +132,7 @@ export class LcuMapComponent implements OnInit {
   ngOnInit() {
     this.CurrentMapModel = this.MapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.SecondaryLocations = [];
     this.SecondaryMaps.forEach(map => {
@@ -138,7 +143,7 @@ export class LcuMapComponent implements OnInit {
             lat: loc.lat,
             lng: loc.lng,
             iconName: loc.iconName,
-            iconImageObject: this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet),
+            iconImageObject: this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet),
             mapTitle: map.title
           }
         )
@@ -195,14 +200,14 @@ export class LcuMapComponent implements OnInit {
   public ActivateSaveMapDialog(map): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
-        map: map,
+        map,
         locationMarkers: this.stripOutsideLocations(this.CurrentMapModel.locationList, this.currentBounds),
         // for now, we include all displayed secondary map markers in a newly created map:
         secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }
     });
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res: any) => {
       if (res) {
         if (res) {
           this.MapSaved.emit(res);
@@ -218,9 +223,9 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(layer?): void {
+  public LayerClicked(layer?: IndividualMap): void {
     if (layer) {
-      this.SecondaryLocations.forEach(loc => {
+      this.SecondaryLocations.forEach((loc) => {
         if (layer.title === loc.mapTitle) {
           loc.showMarker = loc.showMarker === true ? false : true;
         }
@@ -230,7 +235,7 @@ export class LcuMapComponent implements OnInit {
     let currentlyDisplayedLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
     setTimeout(x => {
       if (this.PrimaryMarkersSelected) {
-        this.CurrentMapModel.locationList.forEach(loc => {
+        this.CurrentMapModel.locationList.forEach((loc: MapMarker) => {
           currentlyDisplayedLocations.push(loc);
         })
       }
@@ -257,14 +262,15 @@ export class LcuMapComponent implements OnInit {
   /**
    * 
    * @param locationList The list of locations that come with the map that should be stripped
+   * 
    * @param bounds The bounds used to determine which locations to strip
    * 
    * Strips locations that don't exist within the bounds and returns the altered array
    * 
    * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
-  private stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
-    return locationList.filter(loc =>
+  protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
+    return locationList.filter((loc: MapMarker) =>
       loc.lat <= bounds.neLat &&
       loc.lat >= bounds.swLat &&
       loc.lng <= bounds.neLng &&

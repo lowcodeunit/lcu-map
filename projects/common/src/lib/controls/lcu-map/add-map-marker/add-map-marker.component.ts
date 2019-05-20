@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapService } from '../../../services/map.service';
+import { MapConversions } from '../../../utils/conversions';
 
 @Component({
   selector: 'lcu-add-map-marker',
@@ -32,7 +33,7 @@ export class AddMapMarkerComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private mapService: MapService, private dialogRef: MatDialogRef<AddMapMarkerComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private mapConverions: MapConversions, private dialogRef: MatDialogRef<AddMapMarkerComponent>) { }
 
   // LIFE CYCLE
 
@@ -62,7 +63,7 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
     this.NewMarker.lat = this.passedData.lat;
     this.NewMarker.lng = this.passedData.lng;
-    this.NewMarker.iconImageObject = this.mapService.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
+    this.NewMarker.iconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
   }
   
   /**

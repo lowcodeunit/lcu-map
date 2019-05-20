@@ -21,22 +21,22 @@ export class LcuMapComponent implements OnInit {
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
    */
-  private isDoubleClick: boolean = false;
+  protected isDoubleClick: boolean = false;
 
   /**
    * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
    */
-  private expectedDoubleClickElapsedTime: number = 500;
+  protected expectedDoubleClickElapsedTime: number = 500;
 
   /**
    * The NE and SW lat/lng set of the current map
    */
-  private currentBounds: { neLat: number, neLng: number, swLat: number, swLng: number };
+  protected currentBounds: { neLat: number, neLng: number, swLat: number, swLng: number };
   
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  private _panTo: {lat: number, lng: number, zoom: number};
+  protected _panTo: {lat: number, lng: number, zoom: number};
 
   // PROPERTIES
 
@@ -267,7 +267,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
-  private stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
+  protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
     return locationList.filter(loc =>
       loc.lat <= bounds.neLat &&
       loc.lat >= bounds.swLat &&

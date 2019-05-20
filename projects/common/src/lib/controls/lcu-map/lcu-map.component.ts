@@ -196,7 +196,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Activates the dialog for user to enter name of map which will then be 'saved'
    */
-  public ActivateSaveMapDialog(map): void {
+  public ActivateSaveMapDialog(map: IndividualMap): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map: map,
@@ -222,9 +222,9 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(layer?): void {
+  public LayerClicked(layer?: IndividualMap): void {
     if (layer) {
-      this.SecondaryLocations.forEach(loc => {
+      this.SecondaryLocations.forEach((loc) => {
         if (layer.title === loc.mapTitle) {
           loc.showMarker = loc.showMarker === true ? false : true;
         }
@@ -234,7 +234,7 @@ export class LcuMapComponent implements OnInit {
     let currentlyDisplayedLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
     setTimeout(x => {
       if (this.PrimaryMarkersSelected) {
-        this.CurrentMapModel.locationList.forEach(loc => {
+        this.CurrentMapModel.locationList.forEach((loc: MapMarker) => {
           currentlyDisplayedLocations.push(loc);
         })
       }
@@ -268,7 +268,7 @@ export class LcuMapComponent implements OnInit {
    * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
   protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
-    return locationList.filter(loc =>
+    return locationList.filter((loc: MapMarker) =>
       loc.lat <= bounds.neLat &&
       loc.lat >= bounds.swLat &&
       loc.lng <= bounds.neLng &&

@@ -72,7 +72,8 @@ export class LcuMapComponent implements OnInit {
   /**
    * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
    */
-  @Input() public set PanTo(value: {lat: number, lng: number, zoom: number}) { 
+  @Input('pan-to')
+  public set PanTo(value: {lat: number, lng: number, zoom: number}) { 
     this._panTo = value;
     if (this.CurrentMapModel) {
       this.CurrentMapModel.origin.lat = value.lat;
@@ -91,28 +92,31 @@ export class LcuMapComponent implements OnInit {
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
-  @Input() MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
+  @Input('map-marker-set') 
+  MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
 
   /**
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
-  @Input() MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
+  @Input('map-model') 
+  MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
 
   /**
    * The array of secondary (non-primary) maps to be shown as 'layers' whose markers will be displayed on the current map
    */
-  @Input() SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
+  @Input('secondary-maps') 
+  SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
 
   /**
    * The even emitted when a map is saved (the saved map is emitted)
    */
-  @Output('MapSaved')
+  @Output('map-saved')
   public MapSaved: EventEmitter<IndividualMap>;
 
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
    */
-  @Output('VisibleLocationListChanged')
+  @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
   // CONSTRUCTORS
@@ -202,7 +206,7 @@ export class LcuMapComponent implements OnInit {
         mapMarkerSet: this.MapMarkerSet
       }
     });
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe((res: any) => {
       if (res) {
         if (res) {
           this.MapSaved.emit(res);

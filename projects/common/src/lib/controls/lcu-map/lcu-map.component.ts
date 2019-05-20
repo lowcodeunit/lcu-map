@@ -8,6 +8,7 @@ import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
+import { MapConversions } from '../../utils/conversions';
 
 @Component({
   selector: 'lcu-map',
@@ -121,7 +122,7 @@ export class LcuMapComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(private dialog: MatDialog, private mapService: MapService, private wrapper: GoogleMapsAPIWrapper) {
+  constructor(private dialog: MatDialog, private mapConverions: MapConversions, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
   }
@@ -131,7 +132,7 @@ export class LcuMapComponent implements OnInit {
   ngOnInit() {
     this.CurrentMapModel = this.MapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.SecondaryLocations = [];
     this.SecondaryMaps.forEach(map => {
@@ -142,7 +143,7 @@ export class LcuMapComponent implements OnInit {
             lat: loc.lat,
             lng: loc.lng,
             iconName: loc.iconName,
-            iconImageObject: this.mapService.ConvertIconObject(loc.iconName, this.MapMarkerSet),
+            iconImageObject: this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet),
             mapTitle: map.title
           }
         )
@@ -196,10 +197,10 @@ export class LcuMapComponent implements OnInit {
   /**
    * Activates the dialog for user to enter name of map which will then be 'saved'
    */
-  public ActivateSaveMapDialog(map: IndividualMap): void {
+  public ActivateSaveMapDialog(map): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
-        map: map,
+        map,
         locationMarkers: this.stripOutsideLocations(this.CurrentMapModel.locationList, this.currentBounds),
         // for now, we include all displayed secondary map markers in a newly created map:
         secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),

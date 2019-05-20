@@ -261,6 +261,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * 
    * @param locationList The list of locations that come with the map that should be stripped
+   * 
    * @param bounds The bounds used to determine which locations to strip
    * 
    * Strips locations that don't exist within the bounds and returns the altered array

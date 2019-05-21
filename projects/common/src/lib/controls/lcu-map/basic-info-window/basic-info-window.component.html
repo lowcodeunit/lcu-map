@@ -1,0 +1,10 @@
+<div fxLayout="column" class="basic-info-window">
+  <h3>{{passedData.marker.title}}</h3>
+  <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
+    <li>Latitude: {{passedData.marker.lat}}</li>
+    <li>Longitude: {{passedData.marker.lng}}</li>
+  </div>
+  <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
+    <button class="more-info-button"  type="button" disabled="true">More Info</button>
+  </div>
+</div>

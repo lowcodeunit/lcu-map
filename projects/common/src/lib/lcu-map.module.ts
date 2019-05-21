@@ -8,13 +8,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/basic-info-window.component';
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent],
+  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyCvvqYY9pMUpRSKl721rPEiN4KlKIpCImg', libraries: ['places'] }),
+    AgmSnazzyInfoWindowModule,
     MatIconModule,
     MatSelectModule,
     MatDialogModule,
@@ -29,7 +32,7 @@ import { GoogleMapsAPIWrapper } from '@agm/core';
     MatTooltipModule
   ],
   providers: [GoogleMapsAPIWrapper],
-  exports: [LcuMapComponent],
-  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent]
+  exports: [LcuMapComponent, BasicInfoWindowComponent],
+  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent]
 })
 export class LcuMapModule { }

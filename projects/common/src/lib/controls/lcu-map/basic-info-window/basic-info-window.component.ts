@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MapMarker } from '../../../models/map-marker.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
@@ -10,8 +9,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export class BasicInfoWindowComponent implements OnInit {
   //FIELDS
   //PROPERTIES
-
-  //@Input('marker') markerInfo: MapMarker;
 
   //CONSTRUCTORS
  
@@ -28,4 +25,5 @@ export class BasicInfoWindowComponent implements OnInit {
   }
 }
 //API METHODS
+
 //HELPERS

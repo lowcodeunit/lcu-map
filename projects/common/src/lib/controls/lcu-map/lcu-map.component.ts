@@ -12,6 +12,8 @@ import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 // @ts-ignore
 import { } from '@types/googlemaps';
+import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lcu-map',
@@ -41,6 +43,11 @@ export class LcuMapComponent implements OnInit {
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
   protected _panTo: { lat: number, lng: number, zoom: number };
+
+  /**
+   * The subscription for the basic-info-window modal
+   */
+  protected markerInfoSubscription: Subscription;
 
   // PROPERTIES
 
@@ -294,6 +301,15 @@ export class LcuMapComponent implements OnInit {
    */
   public TempSearchMarkerClicked() {
     this.ShowTempSearchMarker = false;
+  }
+
+  public DisplayMarkerInfo(marker:MapMarker){
+    console.log("Marker Title = " + marker.title);
+    console.log("Marker = " + marker);
+
+    const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
+    this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
+      data => console.log("Dialog output:", data));
   }
 
   // HELPERS

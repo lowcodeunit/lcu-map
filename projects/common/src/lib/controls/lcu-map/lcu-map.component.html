@@ -24,10 +24,12 @@
   [usePanning]="true">
   <div *ngFor="let marker of CurrentMapModel.locationList">
     <agm-marker *ngIf="PrimaryMarkersSelected" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-      [iconUrl]="marker.iconImageObject"></agm-marker>
+      [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
+    </agm-marker>
     <div *ngFor="let marker of SecondaryLocations">
       <agm-marker *ngIf="marker.showMarker" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-        [iconUrl]="marker.iconImageObject"></agm-marker>
+        [iconUrl]="marker.iconImageObject">
+      </agm-marker>
     </div>
     <agm-marker *ngIf="ShowTempSearchMarker" [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng"
     (markerClick)="TempSearchMarkerClicked()" [title]="'Click to remove marker'"></agm-marker>

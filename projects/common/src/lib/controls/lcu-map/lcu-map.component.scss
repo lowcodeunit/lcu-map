@@ -39,3 +39,20 @@ mat-checkbox, mat-radio-button {
     display: block;
     margin: 6px;
 }
+
+#search-bar {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    input {    
+        width: 80%;
+        margin: auto;
+        display: block;
+        margin-top: 10px;
+        border-color: #673ab7;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+    }
+}

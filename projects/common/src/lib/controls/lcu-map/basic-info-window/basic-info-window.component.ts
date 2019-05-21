@@ -20,7 +20,7 @@ export class BasicInfoWindowComponent implements OnInit {
   //LIFE CYCLE
 
   ngOnInit() {
-    console.log("Hello " + this.passedData.marker.title);
+    //console.log("Hello " + this.passedData.marker.title);
   }
 
   public Close(): void {
@@ -28,4 +28,4 @@ export class BasicInfoWindowComponent implements OnInit {
   }
 }
 //API METHODS
-  //HELPERS
+//HELPERS

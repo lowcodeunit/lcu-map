@@ -302,11 +302,13 @@ export class LcuMapComponent implements OnInit {
   public TempSearchMarkerClicked() {
     this.ShowTempSearchMarker = false;
   }
-
+  /**
+   * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
+   * 
+   * @param marker holds the MapMarker with all its information to be displayed in the basic info window
+   */
   public DisplayMarkerInfo(marker:MapMarker){
     console.log("Marker Title = " + marker.title);
-    console.log("Marker = " + marker);
-
     const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
     this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
       data => console.log("Dialog output:", data));

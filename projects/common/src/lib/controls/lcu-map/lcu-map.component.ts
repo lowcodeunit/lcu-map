@@ -1,14 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { IndividualMap } from '../../models/individual-map.model';
 import { AddMapMarkerComponent } from './add-map-marker/add-map-marker.component';
-import { MapService } from '../../services/map.service';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
 import { MapConversions } from '../../utils/conversions';
+import { FormControl } from '@angular/forms';
+import { MapsAPILoader } from '@agm/core';
+// @ts-ignore
+import { } from '@types/googlemaps';
 
 @Component({
   selector: 'lcu-map',
@@ -33,13 +36,15 @@ export class LcuMapComponent implements OnInit {
    * The NE and SW lat/lng set of the current map
    */
   protected currentBounds: { neLat: number, neLng: number, swLat: number, swLng: number };
-  
+
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  protected _panTo: {lat: number, lng: number, zoom: number};
+  protected _panTo: { lat: number, lng: number, zoom: number };
 
   // PROPERTIES
+
+  public ShowSearchBar: boolean = false;
 
   /**
    * The map type (standard, satellite, topographical) - default is standard ('roadmap')
@@ -68,13 +73,29 @@ export class LcuMapComponent implements OnInit {
   /**
    * A conglomerated list of all the map markers of all the secondary (non-primary) maps
    */
-  public SecondaryLocations: Array<any>;  
+  public SecondaryLocations: Array<any>;
+  
+  /**
+   * The search input box
+   */
+  @ViewChild('search')
+  public SearchElementRef: ElementRef;
+
+  /**
+   * The form control for the location search box
+   */
+  public SearchControl: FormControl;
+
+  /**
+   * Indicates whether temporary marker will be shown over the searched location
+   */
+  public ShowTempSearchMarker: boolean = false;
 
   /**
    * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
    */
   @Input('pan-to')
-  public set PanTo(value: {lat: number, lng: number, zoom: number}) { 
+  public set PanTo(value: { lat: number, lng: number, zoom: number }) {
     this._panTo = value;
     if (this.CurrentMapModel) {
       this.CurrentMapModel.origin.lat = value.lat;
@@ -93,19 +114,19 @@ export class LcuMapComponent implements OnInit {
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
-  @Input('map-marker-set') 
+  @Input('map-marker-set')
   MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
 
   /**
    * The map model object (IndividualMap model) containing all the settings for the map to be displayed
    */
-  @Input('map-model') 
+  @Input('map-model')
   MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
 
   /**
    * The array of secondary (non-primary) maps to be shown as 'layers' whose markers will be displayed on the current map
    */
-  @Input('secondary-maps') 
+  @Input('secondary-maps')
   SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
 
   /**
@@ -122,7 +143,9 @@ export class LcuMapComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(private dialog: MatDialog, private mapConverions: MapConversions, private wrapper: GoogleMapsAPIWrapper) {
+  constructor(private dialog: MatDialog, private mapConverions: MapConversions,
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
   }
@@ -149,10 +172,19 @@ export class LcuMapComponent implements OnInit {
         )
       })
     });
-    this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 }
+    this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
+    // set up the listener for the location search box:
+    this.runAutocompleteSearchPrep();
   }
 
   // API METHODS
+
+  /**
+   * Toggles the location search bar hidden / shown
+   */
+  public ShowLocationSearchBarClicked() {
+    this.ShowSearchBar = this.ShowSearchBar === true ? false : true;
+  }
 
   /**
    * 
@@ -231,7 +263,7 @@ export class LcuMapComponent implements OnInit {
         }
       })
     }
-    
+
     let currentlyDisplayedLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
     setTimeout(x => {
       if (this.PrimaryMarkersSelected) {
@@ -241,7 +273,7 @@ export class LcuMapComponent implements OnInit {
       }
       // emits the currently visible map markers for use in legend
       this.VisibleLocationListChanged.emit(currentlyDisplayedLocations);
-    },0)
+    }, 0)
   }
 
   /**
@@ -255,6 +287,13 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.neLng = event.getNorthEast().lng();
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
+  }
+  
+  /**
+   * When a location search is performed and a location is chosen, a marker will temporarily display over the chosen location
+   */
+  public TempSearchMarkerClicked() {
+    this.ShowTempSearchMarker = false;
   }
 
   // HELPERS
@@ -276,6 +315,30 @@ export class LcuMapComponent implements OnInit {
       loc.lng <= bounds.neLng &&
       loc.lng >= bounds.swLng
     )
+  }
+
+  /**
+   * Runs the boiler plate code that sets up location searching for AGM Google Maps
+   */
+  protected runAutocompleteSearchPrep() {
+    this.SearchControl = new FormControl();
+    this.mapsAPILoader.load().then(() => {
+      const autocomplete = new google.maps.places.Autocomplete(this.SearchElementRef.nativeElement, {
+        types: []
+      });
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+          this.CurrentMapModel.origin.lat = place.geometry.location.lat();
+          this.CurrentMapModel.origin.lng = place.geometry.location.lng();
+          this.CurrentMapModel.zoom = 16;
+          this.ShowTempSearchMarker = true;
+        });
+      });
+    });
   }
 
 }

@@ -5,13 +5,19 @@
       <mat-icon class="chevron-icon">chevron_left</mat-icon>
     </div>
     <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="space-around">
-      <mat-icon>search</mat-icon>
+      <mat-icon (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+
+      
+
       <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>
     </div>
   </div>
 </div>
 
+<div [hidden]="!ShowSearchBar" id="search-bar">
+  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [formControl]="SearchControl">
+</div>
 <agm-map [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
   [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng" [title]="CurrentMapModel.title"
   [zoom]="CurrentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
@@ -23,6 +29,8 @@
       <agm-marker *ngIf="marker.showMarker" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
         [iconUrl]="marker.iconImageObject"></agm-marker>
     </div>
+    <agm-marker *ngIf="ShowTempSearchMarker" [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng"
+    (markerClick)="TempSearchMarkerClicked()" [title]="'Click to remove marker'"></agm-marker>
   </div>
 </agm-map>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IndividualMap } from '@lcu-ide/dynamic-map-common/lcu.api';
 import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.model';
+import { IndividualMap } from 'projects/common/src/lcu.api';
 
 @Component({
   selector: 'lcu-root',

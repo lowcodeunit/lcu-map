@@ -8,7 +8,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/basic-info-window.component';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/b
     FathymSharedModule,
     FlexLayoutModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyCvvqYY9pMUpRSKl721rPEiN4KlKIpCImg', libraries: ['places'] }),
-    AgmSnazzyInfoWindowModule,
     MatIconModule,
     MatSelectModule,
     MatDialogModule,

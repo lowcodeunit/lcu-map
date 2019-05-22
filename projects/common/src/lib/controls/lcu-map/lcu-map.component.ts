@@ -104,6 +104,9 @@ export class LcuMapComponent implements OnInit {
    */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker){
+    console.log("val = " + val);
+    console.log("val.title = " + val.title);
+
     this.DisplayMarkerInfo(val);
   }
 
@@ -112,6 +115,7 @@ export class LcuMapComponent implements OnInit {
    */
   @Input('pan-to')
   public set PanTo(value: { lat: number, lng: number, zoom: number }) {
+    console.log("value = " + value);
     this._panTo = value;
     if (this.CurrentMapModel) {
       this.CurrentMapModel.origin.lat = value.lat;

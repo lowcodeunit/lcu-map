@@ -14,8 +14,7 @@ import { MapsAPILoader } from '@agm/core';
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
-// import { MapService } from '@ambl-on/lcu-ambl-on-common/';
-//@ambl-on/lcu-ambl-on-common
+
 
 @Component({
   selector: 'lcu-map',
@@ -100,7 +99,9 @@ export class LcuMapComponent implements OnInit {
    */
   public ShowTempSearchMarker: boolean = false;
 
-
+  /**
+   * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
+   */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker){
     this.DisplayMarkerInfo(val);

@@ -21,6 +21,30 @@ export class MapMarker {
     lng: number;
 
     /**
+     * Optional phone number for a place
+     */
+    phoneNumber?: string;
+    
+    /**
+     * Optional link to instagram account
+     */
+    instagram?: string;
+
+    /**
+     * Optional town associated with with location
+     */
+    town?: string;
+
+    /**
+     * Optional country associated with location
+     */
+    country?: string;
+    /**
+     * Optional link to website
+     */
+    website?: string;
+
+    /**
      * The object representing all the necessary data to display an icon on the map
      * 
      * It is not passed in with the markers, but will be populated by the map service
@@ -36,5 +60,12 @@ export class MapMarker {
         this.iconName = icon.iconName;
         this.lat = icon.lat;
         this.lng = icon.lng;
+        this.phoneNumber = icon.phoneNumber;
+        this.instagram = icon.instagram;
+        this.town = icon.town;
+        this.country = icon.country;
+        this.website = icon.website;
     }
+
+    
 }

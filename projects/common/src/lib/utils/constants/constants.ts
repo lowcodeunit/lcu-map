@@ -17,7 +17,7 @@ export class Constants {
             { title: 'Favorite ski area', lat: 40.057557, lng: -105.288199, iconName: 'ski area' },
             { title: 'Favorite vineyard', lat: 40.060657, lng: -105.298199, iconName: 'vineyard' },
             { title: 'Nice golf course', lat: 40.037757, lng: -105.258199, iconName: 'golf course' },
-            { title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging' },
+            { title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging', town:'Boulder', country:'USA' },
             { title: 'Nice national park', lat: 40.060657, lng: -105.278199, iconName: 'national park' },
             { title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar' }
         ]

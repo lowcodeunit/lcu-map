@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
-import { MapService } from '../../../services/map.service';
 import { MapConversions } from '../../../utils/conversions';
 
 @Component({

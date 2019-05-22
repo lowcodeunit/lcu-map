@@ -14,6 +14,8 @@ import { MapsAPILoader } from '@agm/core';
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
+// import { MapService } from '@ambl-on/lcu-ambl-on-common/';
+//@ambl-on/lcu-ambl-on-common
 
 @Component({
   selector: 'lcu-map',
@@ -98,6 +100,12 @@ export class LcuMapComponent implements OnInit {
    */
   public ShowTempSearchMarker: boolean = false;
 
+
+  @Input('display-basic-info-window')
+  public set DisplayBasicInfoWindow(val: MapMarker){
+    this.DisplayMarkerInfo(val);
+  }
+
   /**
    * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
    */
@@ -110,6 +118,7 @@ export class LcuMapComponent implements OnInit {
       this.CurrentMapModel.zoom = value.zoom;
     }
   }
+
 
   /**
    * Getter for the field '_panTo'
@@ -155,6 +164,7 @@ export class LcuMapComponent implements OnInit {
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper) {
     this.MapSaved = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
+    
   }
 
   // LIFE CYCLE

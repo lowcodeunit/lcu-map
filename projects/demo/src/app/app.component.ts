@@ -66,8 +66,8 @@ export class AppComponent implements OnInit {
       locationList: [
         { title: 'Favorite UNESCO', lat: 40.011657, lng: -105.288199, iconName: 'UNESCO' },
         { title: 'Nice museum', lat: 40.049757, lng: -105.298199, iconName: 'museum' },
-        { title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging' },
-        { title: 'Nice national park', lat: 40.051657, lng: -105.278199, iconName: 'national park' }
+        { title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging', town: 'Boulder', country:'USA', phoneNumber:'303-123-4567', instagram:'www', website:'www'},
+        { title: 'Nice national park', lat: 40.051657, lng: -105.278199, iconName: 'national park', town: 'Boulder', country:'USA', phoneNumber:'303-123-4567', instagram:'www' }
       ]
     };
     this.IconSet = [ // this should be calling a service here

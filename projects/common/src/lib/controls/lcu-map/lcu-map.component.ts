@@ -319,7 +319,7 @@ export class LcuMapComponent implements OnInit {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   public DisplayMarkerInfo(marker:MapMarker){
-    console.log("Marker Title = " + marker.title);
+    //console.log("Marker Title = " + marker.title);
     const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
     this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
       data => console.log("Dialog output:", data));

@@ -1,26 +1,28 @@
-import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MapMarker } from '../../../models/map-marker.model';
 
 @Component({
   selector: 'lcu-basic-info-window',
   templateUrl: './basic-info-window.component.html',
   styleUrls: ['./basic-info-window.component.scss']
 })
-export class BasicInfoWindowComponent implements OnInit {
+export class BasicInfoWindowComponent implements AfterViewInit {
   //FIELDS
   //PROPERTIES
-
+  public BasicInfoData: MapMarker;
   //CONSTRUCTORS
  
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, 
-  protected dialogRef: MatDialogRef<BasicInfoWindowComponent>, 
-  protected changeDetector: ChangeDetectorRef) { 
+  protected dialogRef: MatDialogRef<BasicInfoWindowComponent>) { 
+    console.log("Constructor " , passedData);
   }
  
   //LIFE CYCLE
 
-  ngOnInit() {
-    this.forceChangeDetection();
+  ngAfterViewInit() {
+    this.BasicInfoData = this.passedData;
+    console.log("NgViewInit " , this.BasicInfoData);
   }
 
 
@@ -35,10 +37,5 @@ export class BasicInfoWindowComponent implements OnInit {
 
 //HELPERS
 
-/**
-  * Force change detection, using this to reset items under *ngIf
-  */
- protected forceChangeDetection(): void {
-  this.changeDetector.detectChanges();
- }
+ 
 }

@@ -1,13 +1,17 @@
-<div id="dialogRef" fxLayout="column"  class="basic-info-window" >
-  <h3 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h3>
-  
+<div id="dialogRef" fxLayout="column" class="basic-info-window">
+  <div class="head" fxLayout="row" fxLayoutAlign="space-between">
+    <h3 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h3>
+    <mat-icon (click)="Close()" matTooltip="Close">close</mat-icon>
+  </div>
+
   <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
     <p *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</p>
-    <p *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}} {{BasicInfoData?.country}}</p>
+    <p *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
+      {{BasicInfoData?.country}}</p>
     <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>{{BasicInfoData?.website}}</a>
     <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
   </div>
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
-    <button mat-button class="more-info-button"  type="button" disabled="true">More Info</button>
+    <button mat-button class="more-info-button" type="button" disabled="true">More Info</button>
   </div>
 </div>

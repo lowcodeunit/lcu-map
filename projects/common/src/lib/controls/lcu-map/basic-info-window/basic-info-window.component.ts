@@ -22,10 +22,12 @@ export class BasicInfoWindowComponent implements AfterViewInit {
     //TODO: Change so we don't use set timeout.
     setTimeout(() => {
       this.BasicInfoData = this.passedData.marker;
-    }, 500);
+    }, 50);
   }
 
+  ngOnDestroy() {
 
+  }
 
   //API METHODS
 

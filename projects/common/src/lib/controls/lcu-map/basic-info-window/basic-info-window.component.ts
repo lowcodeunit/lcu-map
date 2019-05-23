@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
@@ -12,18 +12,34 @@ export class BasicInfoWindowComponent implements OnInit {
 
   //CONSTRUCTORS
  
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private dialogRef: MatDialogRef<BasicInfoWindowComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, 
+  protected dialogRef: MatDialogRef<BasicInfoWindowComponent>, 
+  protected changeDetector: ChangeDetectorRef) { 
+    this.forceChangeDetection();
+  }
  
   //LIFE CYCLE
 
   ngOnInit() {
-    //console.log("Hello " + this.passedData.marker.title);
+    this.forceChangeDetection();
   }
+
+
+
+  //API METHODS
 
   public Close(): void {
     this.dialogRef.close();
   }
-}
-//API METHODS
+
+
 
 //HELPERS
+
+/**
+  * Force change detection, using this to reset items under *ngIf
+  */
+ protected forceChangeDetection(): void {
+  this.changeDetector.detectChanges();
+ }
+}

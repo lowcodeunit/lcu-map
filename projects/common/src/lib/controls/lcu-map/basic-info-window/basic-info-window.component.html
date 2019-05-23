@@ -1,11 +1,11 @@
 <div fxLayout="column"  class="basic-info-window" >
-  <h3 *ngIf="BasicInfoData.marker.title">{{BasicInfoData.marker.title}}</h3>
+  <h3 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h3>
   
   <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
-    <p *ngIf="BasicInfoData.marker.phoneNumber">Phone: {{BasicInfoData.marker.phoneNumber}}</p>
-    <p *ngIf="BasicInfoData.marker.town || BasicInfoData.marker.country">Located: {{BasicInfoData.marker.town}} {{BasicInfoData.marker.country}}</p>
-    <a *ngIf="BasicInfoData.marker.website" href={{BasicInfoData.marker.website}}>{{BasicInfoData.marker.website}}</a>
-    <a *ngIf="BasicInfoData.marker.instagram" href={{BasicInfoData.marker.instagram}} class="fa fa-instagram"></a>
+    <p *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</p>
+    <p *ngIf="BasicInfoData?.town || BasicInfoData?.country">Located: {{BasicInfoData?.town}} {{BasicInfoData?.country}}</p>
+    <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>{{BasicInfoData?.website}}</a>
+    <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
   </div>
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
     <button class="more-info-button"  type="button" disabled="true">More Info</button>

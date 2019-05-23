@@ -11,17 +11,18 @@ export class BasicInfoWindowComponent implements AfterViewInit {
   //PROPERTIES
   public BasicInfoData: any;
   //CONSTRUCTORS
- 
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, 
-  protected dialogRef: MatDialogRef<BasicInfoWindowComponent>) { 
-    console.log("Constructor " , passedData);
+
+  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
+    protected dialogRef: MatDialogRef<BasicInfoWindowComponent>) {
   }
- 
+
   //LIFE CYCLE
 
   ngAfterViewInit() {
-    this.BasicInfoData = this.passedData;
-    console.log("NgViewInit " , this.BasicInfoData);
+    //TODO: Change so we don't use set timeout.
+    setTimeout(() => {
+      this.BasicInfoData = this.passedData.marker;
+    }, 500);
   }
 
 
@@ -34,7 +35,7 @@ export class BasicInfoWindowComponent implements AfterViewInit {
 
 
 
-//HELPERS
+  //HELPERS
 
- 
+
 }

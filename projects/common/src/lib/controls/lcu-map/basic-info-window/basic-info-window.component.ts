@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { MapMarker } from '../../../models/map-marker.model';
 
 @Component({
   selector: 'lcu-basic-info-window',
@@ -10,7 +9,7 @@ import { MapMarker } from '../../../models/map-marker.model';
 export class BasicInfoWindowComponent implements AfterViewInit {
   //FIELDS
   //PROPERTIES
-  public BasicInfoData: MapMarker;
+  public BasicInfoData: any;
   //CONSTRUCTORS
  
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, 

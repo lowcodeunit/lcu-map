@@ -14,7 +14,6 @@ import { MapsAPILoader } from '@agm/core';
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
-import { isUndefined } from 'util';
 
 
 @Component({
@@ -105,9 +104,7 @@ export class LcuMapComponent implements OnInit {
    */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker){
-    if(val){
     this.DisplayMarkerInfo(val);
-    }
   }
 
   /**
@@ -322,12 +319,14 @@ export class LcuMapComponent implements OnInit {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   public DisplayMarkerInfo(marker:MapMarker){    
-    const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
-    this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-      data => {
-        console.log("Dialog output:", data)
-        console.log(dialogRef);
-      })
+    if(marker){
+      const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
+      this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
+        data => {
+          console.log("Dialog output:", data)
+          console.log(dialogRef);
+        })
+    }
   }
 
   // HELPERS

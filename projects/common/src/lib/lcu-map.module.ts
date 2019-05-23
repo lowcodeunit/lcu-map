@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/basic-info-window.component';
 
 @NgModule({
@@ -15,7 +16,7 @@ import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/b
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyCvvqYY9pMUpRSKl721rPEiN4KlKIpCImg', libraries: ['places'] }),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', libraries: ['places'] }),
     MatIconModule,
     MatSelectModule,
     MatDialogModule,
@@ -27,7 +28,8 @@ import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/b
     MatCheckboxModule,
     MatRadioModule,
     MatDividerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    HttpClientModule
   ],
   providers: [GoogleMapsAPIWrapper],
   exports: [LcuMapComponent, BasicInfoWindowComponent],

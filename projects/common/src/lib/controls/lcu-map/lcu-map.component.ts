@@ -10,10 +10,12 @@ import { Constants } from '../../utils/constants/constants';
 import { MapConversions } from '../../utils/conversions';
 import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
+import { HttpClient } from '@angular/common/http';
 // @ts-ignore
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
+import { MapService } from '../../services/map.service';
 
 
 @Component({
@@ -82,7 +84,7 @@ export class LcuMapComponent implements OnInit {
    * A conglomerated list of all the map markers of all the secondary (non-primary) maps
    */
   public SecondaryLocations: Array<any>;
-  
+
   /**
    * The search input box
    */
@@ -103,7 +105,7 @@ export class LcuMapComponent implements OnInit {
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
    */
   @Input('display-basic-info-window')
-  public set DisplayBasicInfoWindow(val: MapMarker){
+  public set DisplayBasicInfoWindow(val: MapMarker) {
     this.DisplayMarkerInfo(val);
   }
 
@@ -162,10 +164,11 @@ export class LcuMapComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private mapConverions: MapConversions,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper) {
+    private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
+    private mapService: MapService) {
     this.MapSaved = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
-    
+
   }
 
   // LIFE CYCLE
@@ -213,18 +216,47 @@ export class LcuMapComponent implements OnInit {
   public OnChoseLocation(event): void {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
-        const dialogRef = this.dialog.open(AddMapMarkerComponent, {
-          data: {
-            lat: event.coords.lat,
-            lng: event.coords.lng,
-            iconList: this.MapMarkerSet
-          }
-        });
-        dialogRef.afterClosed().subscribe(res => {
-          if (res) {
-            this.CurrentMapModel.locationList.push(res);
-          }
-        });
+
+        let closestEstablishment;
+
+        this.mapService.GetSurroundingLocations(event.coords.lat, event.coords.lng)
+          .subscribe((data: any) => {
+            let allSurroundingLocations;
+            allSurroundingLocations = data.results;
+
+            closestEstablishment = this.getClosestEstablishment(allSurroundingLocations);
+
+            console.log(closestEstablishment)
+
+            this.mapService.GetPlaceDetails(closestEstablishment.place_id)
+            .subscribe((data: any) => {
+              console.log(data)
+              this.DisplayMarkerInfo(new MapMarker({
+                title: closestEstablishment.name,
+                iconName: closestEstablishment.geometry.icon,
+                lat: closestEstablishment.geometry.location.lat,
+                lng: closestEstablishment.geometry.location.lng,
+                phoneNumber: data.result.formatted_phone_number,
+                website: data.result.website
+              }));
+            })
+
+
+            // const dialogRef = this.dialog.open(AddMapMarkerComponent, {
+            //   data: {
+            //     lat: event.coords.lat,
+            //     lng: event.coords.lng,
+            //     iconList: this.MapMarkerSet,
+            //     closestEstablishment
+            //   }
+            // });
+
+            // dialogRef.afterClosed().subscribe(res => {
+            //   if (res) {
+            //     this.CurrentMapModel.locationList.push(res);
+            //   }
+            // });
+          }); // end of 'subscribe' to mapService
       }
     }, this.expectedDoubleClickElapsedTime);
   }
@@ -306,7 +338,7 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
   }
-  
+
   /**
    * When a location search is performed and a location is chosen, a marker will temporarily display over the chosen location
    */
@@ -372,6 +404,12 @@ export class LcuMapComponent implements OnInit {
         });
       });
     });
+  }
+
+  protected getClosestEstablishment(locations: Array<any>) {
+    let filteredLoc = locations.filter(loc => loc.types.includes('establishment'));
+    return filteredLoc[0];
+    // TODO: further refine this later to make sure the returned location is the closest to the clicked lat/lng
   }
 
 }

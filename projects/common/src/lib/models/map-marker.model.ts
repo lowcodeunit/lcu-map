@@ -43,6 +43,10 @@ export class MapMarker {
      * Optional link to website
      */
     website?: string;
+    /**
+     * The url to the icon
+     */
+    iconUrl?: string;
 
     /**
      * The object representing all the necessary data to display an icon on the map
@@ -65,6 +69,7 @@ export class MapMarker {
         this.town = icon.town;
         this.country = icon.country;
         this.website = icon.website;
+        this.iconUrl = icon.iconUrl;
     }
 
     

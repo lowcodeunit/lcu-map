@@ -1,5 +1,5 @@
 <div fxLayout="column"  class="basic-info-window" >
-  <h3>{{passedData.marker.title}}</h3>
+  <h3 *ngIf="passedData.marker.title">{{passedData.marker.title}}</h3>
   
   <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
     <p *ngIf="passedData.marker.phoneNumber">Phone: {{passedData.marker.phoneNumber}}</p>

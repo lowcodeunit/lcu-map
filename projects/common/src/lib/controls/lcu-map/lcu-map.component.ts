@@ -321,13 +321,13 @@ export class LcuMapComponent implements OnInit {
    * 
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
-  public DisplayMarkerInfo(marker:MapMarker){
-    //console.log("Marker Title = " + marker.title);
-    //let tempLoc: MapMarker = new MapMarker({title: 'title', lat: 100, lng: 100, iconName: 'iconName', phoneNumber: '303-123-1234', website:'www', instagram: 'insta', town:'Boulder', country: 'USA'});
-
+  public DisplayMarkerInfo(marker:MapMarker){    
     const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
     this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-      data => console.log("Dialog output:", data));
+      data => {
+        console.log("Dialog output:", data)
+        console.log(dialogRef);
+      })
   }
 
   // HELPERS

@@ -15,7 +15,6 @@ export class BasicInfoWindowComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, 
   protected dialogRef: MatDialogRef<BasicInfoWindowComponent>, 
   protected changeDetector: ChangeDetectorRef) { 
-    this.forceChangeDetection();
   }
  
   //LIFE CYCLE

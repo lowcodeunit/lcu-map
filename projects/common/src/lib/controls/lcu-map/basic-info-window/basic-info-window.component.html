@@ -2,10 +2,14 @@
   <h3>{{passedData.marker.title}}</h3>
   
   <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
-    <p *ngIf="passedData.marker.phoneNumber">Phone: {{passedData.marker.phoneNumber}}</p>
+    <!-- <p *ngIf="passedData.marker.phoneNumber">Phone: {{passedData.marker.phoneNumber}}</p>
     <p *ngIf="passedData.marker.town || passedData.marker.country">Located: {{passedData.marker.town}} {{passedData.marker.country}}</p>
     <a *ngIf="passedData.marker.website" href={{passedData.marker.website}}>{{passedData.marker.website}}</a>
-    <a *ngIf="passedData.marker.instagram" href={{passedData.marker.instagram}} class="fa fa-instagram"></a>
+    <a *ngIf="passedData.marker.instagram" href={{passedData.marker.instagram}} class="fa fa-instagram"></a> -->
+    <p>Phone: {{passedData.marker.phoneNumber}}</p>
+    <p>Located: {{passedData.marker.town}} {{passedData.marker.country}}</p>
+    <a  href={{passedData.marker.website}}>{{passedData.marker.website}}</a>
+    <a  href={{passedData.marker.instagram}} class="fa fa-instagram"></a>
   </div>
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
     <button class="more-info-button"  type="button" disabled="true">More Info</button>

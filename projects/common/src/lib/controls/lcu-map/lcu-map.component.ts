@@ -14,6 +14,7 @@ import { MapsAPILoader } from '@agm/core';
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
+import { isUndefined } from 'util';
 
 
 @Component({
@@ -104,10 +105,11 @@ export class LcuMapComponent implements OnInit {
    */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker){
+    if(!isUndefined(val)){
     console.log("val = " + val);
     console.log("val.title = " + val.title);
-
     this.DisplayMarkerInfo(val);
+    }
   }
 
   /**

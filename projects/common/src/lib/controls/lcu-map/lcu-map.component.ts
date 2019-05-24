@@ -97,11 +97,6 @@ export class LcuMapComponent implements OnInit {
   public SearchControl: FormControl;
 
   /**
-   * Indicates whether temporary marker will be shown over the searched location
-   */
-  public ShowTempSearchMarker: boolean = false;
-
-  /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
    */
   @Input('display-basic-info-window')
@@ -242,20 +237,20 @@ export class LcuMapComponent implements OnInit {
         //     })
 
 
-            const dialogRef = this.dialog.open(AddMapMarkerComponent, {
-              data: {
-                lat: event.coords.lat,
-                lng: event.coords.lng,
-                iconList: this.MapMarkerSet
-              }
-            });
+        const dialogRef = this.dialog.open(AddMapMarkerComponent, {
+          data: {
+            lat: event.coords.lat,
+            lng: event.coords.lng,
+            iconList: this.MapMarkerSet
+          }
+        });
 
-            dialogRef.afterClosed().subscribe(res => {
-              if (res) {
-                this.CurrentMapModel.locationList.push(res);
-              }
-            });
-          // }); // end of 'subscribe' to mapService
+        dialogRef.afterClosed().subscribe(res => {
+          if (res) {
+            this.CurrentMapModel.locationList.push(res);
+          }
+        });
+        // }); // end of 'subscribe' to mapService
       }
     }, this.expectedDoubleClickElapsedTime);
   }
@@ -342,7 +337,7 @@ export class LcuMapComponent implements OnInit {
    * When a location search is performed and a location is chosen, a marker will temporarily display over the chosen location
    */
   public TempSearchMarkerClicked() {
-    this.ShowTempSearchMarker = false;
+    // delete later
   }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
@@ -351,15 +346,15 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
 
-  public DisplayMarkerInfo(marker:MapMarker){    
-    if(marker){
+  public DisplayMarkerInfo(marker: MapMarker) {
+    if (marker) {
       setTimeout(() => {
-      const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
-      this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-        data => {
-          console.log("Dialog output:", data)
-          console.log(dialogRef);
-        })
+        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker } });
+        this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
+          data => {
+            console.log("Dialog output:", data)
+            console.log(dialogRef);
+          })
       }, 50);
     }
   }
@@ -403,7 +398,17 @@ export class LcuMapComponent implements OnInit {
           this.CurrentMapModel.origin.lat = place.geometry.location.lat();
           this.CurrentMapModel.origin.lng = place.geometry.location.lng();
           this.CurrentMapModel.zoom = 16;
-          this.ShowTempSearchMarker = true;
+
+          this.DisplayMarkerInfo(new MapMarker({
+            title: place.name,
+            iconName: place.icon,
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+            phoneNumber: place.formatted_phone_number,
+            website: place.website,
+            town: place.address_components[3].long_name,
+            country: place.address_components[6].long_name
+          }));
         });
       });
     });

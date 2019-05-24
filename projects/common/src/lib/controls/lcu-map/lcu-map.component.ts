@@ -217,46 +217,45 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        let closestEstablishment;
+        // let closestEstablishment;
 
-        this.mapService.GetSurroundingLocations(event.coords.lat, event.coords.lng)
-          .subscribe((data: any) => {
-            let allSurroundingLocations;
-            allSurroundingLocations = data.results;
+        // this.mapService.GetSurroundingLocations(event.coords.lat, event.coords.lng)
+        //   .subscribe((data: any) => {
+        //     let allSurroundingLocations;
+        //     allSurroundingLocations = data.results;
 
-            closestEstablishment = this.getClosestEstablishment(allSurroundingLocations);
+        //     closestEstablishment = this.getClosestEstablishment(allSurroundingLocations);
 
-            console.log(closestEstablishment)
+        //     console.log(closestEstablishment)
 
-            this.mapService.GetPlaceDetails(closestEstablishment.place_id)
-            .subscribe((data: any) => {
-              console.log(data)
-              this.DisplayMarkerInfo(new MapMarker({
-                title: closestEstablishment.name,
-                iconName: closestEstablishment.geometry.icon,
-                lat: closestEstablishment.geometry.location.lat,
-                lng: closestEstablishment.geometry.location.lng,
-                phoneNumber: data.result.formatted_phone_number,
-                website: data.result.website
-              }));
-            })
+        //     this.mapService.GetPlaceDetails(closestEstablishment.place_id)
+        //     .subscribe((data: any) => {
+        //       console.log(data)
+        //       this.DisplayMarkerInfo(new MapMarker({
+        //         title: closestEstablishment.name,
+        //         iconName: closestEstablishment.geometry.icon,
+        //         lat: closestEstablishment.geometry.location.lat,
+        //         lng: closestEstablishment.geometry.location.lng,
+        //         phoneNumber: data.result.formatted_phone_number,
+        //         website: data.result.website
+        //       }));
+        //     })
 
 
-            // const dialogRef = this.dialog.open(AddMapMarkerComponent, {
-            //   data: {
-            //     lat: event.coords.lat,
-            //     lng: event.coords.lng,
-            //     iconList: this.MapMarkerSet,
-            //     closestEstablishment
-            //   }
-            // });
+            const dialogRef = this.dialog.open(AddMapMarkerComponent, {
+              data: {
+                lat: event.coords.lat,
+                lng: event.coords.lng,
+                iconList: this.MapMarkerSet
+              }
+            });
 
-            // dialogRef.afterClosed().subscribe(res => {
-            //   if (res) {
-            //     this.CurrentMapModel.locationList.push(res);
-            //   }
-            // });
-          }); // end of 'subscribe' to mapService
+            dialogRef.afterClosed().subscribe(res => {
+              if (res) {
+                this.CurrentMapModel.locationList.push(res);
+              }
+            });
+          // }); // end of 'subscribe' to mapService
       }
     }, this.expectedDoubleClickElapsedTime);
   }

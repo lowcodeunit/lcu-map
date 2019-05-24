@@ -31,8 +31,6 @@
         [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
       </agm-marker>
     </div>
-    <agm-marker *ngIf="ShowTempSearchMarker" [latitude]="CurrentMapModel.origin.lat" [longitude]="CurrentMapModel.origin.lng"
-    (markerClick)="TempSearchMarkerClicked()" [title]="'Click to remove marker'"></agm-marker>
   </div>
 </agm-map>
 

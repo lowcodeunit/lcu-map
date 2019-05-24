@@ -352,12 +352,14 @@ export class LcuMapComponent implements OnInit {
    */
   public DisplayMarkerInfo(marker:MapMarker){    
     if(marker){
+      setTimeout(() => {
       const dialogRef = this.dialog.open(BasicInfoWindowComponent, {data: {marker: marker}});
       this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
         data => {
           console.log("Dialog output:", data)
           console.log(dialogRef);
         })
+      }, 50);
     }
   }
 

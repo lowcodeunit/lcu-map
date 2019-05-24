@@ -350,6 +350,8 @@ export class LcuMapComponent implements OnInit {
    * 
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
+  //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
+
   public DisplayMarkerInfo(marker:MapMarker){    
     if(marker){
       setTimeout(() => {

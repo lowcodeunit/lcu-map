@@ -19,7 +19,7 @@ export class BasicInfoWindowComponent implements AfterViewInit {
   //LIFE CYCLE
 
   ngAfterViewInit() {
-    //TODO: Change so we don't use set timeout.
+    //TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
       this.BasicInfoData = this.passedData.marker;
     }, 50);

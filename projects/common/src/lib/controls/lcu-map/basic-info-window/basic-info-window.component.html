@@ -1,9 +1,33 @@
 <div id="dialogRef" fxLayout="column" class="basic-info-window">
-  <div class="head" fxLayout="row" fxLayoutAlign="space-between">
-    <h3 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h3>
-    <mat-icon (click)="Close()" matTooltip="Close">close</mat-icon>
+
+  <!-- close button -->
+  <div fxLayout="row">
+    <mat-icon fxFlex fxLayoutAlign="end" (click)="Close()" matTooltip="Close">close</mat-icon>
   </div>
 
+  <!-- form data -->
+  <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
+    <mat-form-field>
+      <mat-label>Marker Title</mat-label>
+      <input type="text" matInput formControlName="title">
+      <mat-hint>The title for the map marker</mat-hint>
+      <mat-error>Invalid or missing title</mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field>
+      <mat-label>Icon</mat-label>
+      <mat-select formControlName="icon">
+        <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <div style="width: 100%">
+      <div fxLayout="row wrap" fxLayoutGap="10px">
+        <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
+          src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
+      </div>
+    </div>
+  </form>
+
+  <!-- display data -->
   <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
     <p *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</p>
     <p *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
@@ -12,6 +36,14 @@
     <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
   </div>
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
+    <button mat-button mat-raised-button [mat-dialog-close]="NewMarker" (click)="SetMarkerData()"
+      [disabled]="NewMarkerForm.invalid">Save Marker</button>
     <button mat-button class="more-info-button" type="button" disabled="true">More Info</button>
   </div>
 </div>
+
+
+<!-- ok to delete? -->
+<!-- <div class="head" fxLayout="row" fxLayoutAlign="space-between">
+    <h3 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h3>
+  </div> -->

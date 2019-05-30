@@ -1,7 +1,12 @@
 import { MapMarker } from '../models/map-marker.model';
-import { MarkerInfo } from './marker-info.model';
 
 export class IndividualMap {
+
+    /**
+     * The id of the map
+     */
+    id: number;
+
     /**
      * The title of the map
      */

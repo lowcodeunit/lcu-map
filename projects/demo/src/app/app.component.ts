@@ -118,6 +118,16 @@ export class AppComponent implements OnInit {
     console.log('list of secondary locs: ', list);
   }
 
+  /**
+   * 
+   * @param map The updated version of the primary map
+   * 
+   * Runs when the primary map is changed
+   */
+  public PrimMapChanged(map) {
+    console.log(map);
+  }
+
   // HELPERS
 
 }

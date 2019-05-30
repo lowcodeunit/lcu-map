@@ -69,8 +69,8 @@ export class AppComponent implements OnInit {
       locationList: [
         { title: 'Favorite UNESCO', lat: 40.011657, lng: -105.288199, iconName: 'UNESCO' },
         { title: 'Nice museum', lat: 40.049757, lng: -105.298199, iconName: 'museum' },
-        { title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging', town: 'Boulder', country:'USA', phoneNumber:'303-123-4567', instagram:'www', website:'www'},
-        { title: 'Nice national park', lat: 40.051657, lng: -105.278199, iconName: 'national park', town: 'Boulder', country:'USA', phoneNumber:'303-123-4567', instagram:'www' }
+        { title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging', town: 'Boulder', country: 'USA', phoneNumber: '303-123-4567', instagram: 'www', website: 'www' },
+        { title: 'Nice national park', lat: 40.051657, lng: -105.278199, iconName: 'national park', town: 'Boulder', country: 'USA', phoneNumber: '303-123-4567', instagram: 'www' }
       ]
     };
     this.IconSet = [ // this should be calling a service here
@@ -126,6 +126,65 @@ export class AppComponent implements OnInit {
    */
   public PrimMapChanged(map) {
     console.log(map);
+  }
+
+  public GoToRandomMap() {
+    this.MapConfig = {
+      id: 2,
+      title: 'Broomfield Food',
+      origin: { lat: 39.923587, lng: -105.087146 },
+      zoom: 13,
+      locationList: [
+        { title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant' },
+        { title: 'Inauthentic Hibachi', lat: 39.922598, lng: -105.136252, iconName: 'restaurant' },
+        { title: 'Nachito\'s Burritos', lat: 39.931016, lng: -105.131439, iconName: 'restaurant' },
+        { title: 'Good brewery', lat: 39.927743, lng: -105.026432, iconName: 'brewery' },
+        { title: 'Good bar', lat: 39.938869, lng: -105.082696, iconName: 'bar' }
+      ]
+    }
+  }
+
+  public LoadSecMaps() {
+    this.SecMaps = [
+      {
+        id: 1,
+        title: 'Boulder Booze',
+        origin: { lat: 40.037757, lng: -105.378324 },
+        zoom: 13,
+        locationList: [
+            { title: 'Brewsky\'s', lat: 40.012557, lng: -105.268199, iconName: 'brewery' },
+            { title: 'Phat Bar', lat: 40.022657, lng: -105.268199, iconName: 'bar' },
+            { title: 'Bar of the Rockies', lat: 40.026757, lng: -105.277199, iconName: 'bar' },
+            { title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery' },
+        ]
+    },
+    {
+        id: 2,
+        title: 'Broomfield Food',
+        origin: { lat: 39.923587, lng: -105.087146 },
+        zoom: 13,
+        locationList: [
+            { title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant' },
+            { title: 'Inauthentic Hibachi', lat: 39.922598, lng: -105.136252, iconName: 'restaurant' },
+            { title: 'Nachito\'s Burritos', lat: 39.931016, lng: -105.131439, iconName: 'restaurant' },
+            { title: 'Good brewery', lat: 39.927743, lng: -105.026432, iconName: 'brewery' },
+            { title: 'Good bar', lat: 39.938869, lng: -105.082696, iconName: 'bar' }
+        ]
+    },
+    {
+        id: 3,
+        title: 'Boulder Sightseeing',
+        origin: { lat: 40.037757, lng: -105.278324 },
+        zoom: 13,
+        locationList: [
+            { title: 'Favorite Ski Resort', lat: 40.017557, lng: -105.278199, iconName: 'ski area' },
+            { title: 'Favorite hiking trail', lat: 40.027657, lng: -105.288199, iconName: 'national park' },
+            { title: 'Nice museum', lat: 40.037757, lng: -105.244199, iconName: 'museum' },
+            { title: 'Good park', lat: 40.047857, lng: -105.268199, iconName: 'national park' },
+            { title: 'Cheap Hotel', lat: 40.041857, lng: -105.268199, iconName: 'lodging' }
+        ]
+    }
+    ]
   }
 
   // HELPERS

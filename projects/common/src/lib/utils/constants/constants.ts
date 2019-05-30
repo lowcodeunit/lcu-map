@@ -40,7 +40,7 @@ export class Constants {
         {
             id: 2,
             title: 'Broomfield Food',
-            origin: { lat: 40.027757, lng: -105.378324 },
+            origin: { lat: 39.923587, lng: -105.087146 },
             zoom: 13,
             locationList: [
                 { title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant' },

@@ -198,6 +198,21 @@ export class LcuMapComponent implements OnInit {
     this.runAutocompleteSearchPrep();
   }
 
+  ngOnChanges(value) {
+    console.log(value)
+    if (value.MapModel) {
+      this.CurrentMapModel = value.MapModel.currentValue;
+      this.CurrentMapModel.origin.lat = value.MapModel.currentValue.origin.lat;
+      this.CurrentMapModel.origin.lng = value.MapModel.currentValue.origin.lng;
+      this.CurrentMapModel.locationList.forEach(loc => {
+        loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+      });
+    }
+    if (value.SecondaryMaps) {
+      this.SecondaryMaps = value.SecondaryMaps.currentValue;
+    }
+  }
+
   // API METHODS
 
   /**

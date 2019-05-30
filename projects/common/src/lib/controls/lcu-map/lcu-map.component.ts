@@ -142,10 +142,16 @@ export class LcuMapComponent implements OnInit {
   SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
 
   /**
-   * The even emitted when a map is saved (the saved map is emitted)
+   * The event emitted when a map is saved (the saved map is emitted)
    */
   @Output('map-saved')
   public MapSaved: EventEmitter<IndividualMap>;
+
+    /**
+   * The event emitted when the primary map's location list is altered (the new map is emitted)
+   */
+  @Output('primary-map-location-list-changed')
+  public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
 
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
@@ -159,7 +165,8 @@ export class LcuMapComponent implements OnInit {
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService) {
-    this.MapSaved = new EventEmitter;
+    this.MapSaved = new EventEmitter,
+    this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
 
   }
@@ -225,6 +232,7 @@ export class LcuMapComponent implements OnInit {
         dialogRef.afterClosed().subscribe(res => {
           if (res) {
             this.CurrentMapModel.locationList.push(res);
+            this.PrimaryMapLocationListChanged.emit(this.CurrentMapModel);
           }
         });
         // END for saving points on map that are NOT Google Maps POIs:
@@ -335,9 +343,7 @@ export class LcuMapComponent implements OnInit {
             // console.log(dialogRef);
             if (data !== undefined && data !== null) {
               this.CurrentMapModel.locationList.push(data);
-              // make a call to "save/ edit function instead of just pushing"
-
-              // also make @Output to emit map with new version of location list
+              this.PrimaryMapLocationListChanged.emit(this.CurrentMapModel);
             }
           })
       }, 50);

@@ -6,6 +6,7 @@ export class Constants {
     // DEFAULTS
 
     public static readonly DEFAULT_PRIMARY_MAP_CONFIGURATION: IndividualMap = {
+        id: 0,
         title: 'Default Map (Primary)',
         origin: { lat: 40.037757, lng: -105.278324 },
         zoom: 13,
@@ -25,6 +26,7 @@ export class Constants {
 
     public static readonly DEFAULT_SECONDARY_MAP_ARRAY: Array<IndividualMap> = [
         {
+            id: 1,
             title: 'Boulder Booze',
             origin: { lat: 40.037757, lng: -105.378324 },
             zoom: 13,
@@ -36,6 +38,7 @@ export class Constants {
             ]
         },
         {
+            id: 2,
             title: 'Broomfield Food',
             origin: { lat: 40.027757, lng: -105.378324 },
             zoom: 13,
@@ -48,6 +51,7 @@ export class Constants {
             ]
         },
         {
+            id: 3,
             title: 'Boulder Sightseeing',
             origin: { lat: 40.037757, lng: -105.278324 },
             zoom: 13,

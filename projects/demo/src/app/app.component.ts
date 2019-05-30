@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
 
   public SecMaps: Array<IndividualMap> = [
     {
+      id: 123,
       title: 'Boulder Bars and Breweries',
       origin: { lat: 40.037757, lng: -105.378324 },
       zoom: 13,
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
       ]
     },
     {
+      id: 456,
       title: 'Broomfield Restaurants',
       origin: { lat: 40.027757, lng: -105.378324 },
       zoom: 13,
@@ -60,6 +62,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.MapConfig = {
+      id: 789,
       title: 'Default Map',
       origin: { lat: 40.037757, lng: -105.278324 },
       zoom: 13,

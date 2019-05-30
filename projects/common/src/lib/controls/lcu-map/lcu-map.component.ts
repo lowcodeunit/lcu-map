@@ -356,6 +356,9 @@ export class LcuMapComponent implements OnInit {
             // console.log(dialogRef);
             if (data !== undefined && data !== null) {
               this.CurrentMapModel.locationList.push(data);
+              // make a call to "save/ edit function instead of just pushing"
+
+              // also make @Output to emit map with new version of location list
             }
           })
       }, 50);

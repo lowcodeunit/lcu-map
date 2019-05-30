@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IndividualMap } from '../../../models/individual-map.model';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'lcu-save-map',
@@ -35,6 +36,7 @@ export class SaveMapComponent implements OnInit {
       title: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMap = {
+      id: 0,
       title: '',
       origin: { lat: 0, lng: 0 },
       zoom: 0,
@@ -48,6 +50,7 @@ export class SaveMapComponent implements OnInit {
    * Sets entered map data to this.NewMap, which is then returned upon closing modal with affirmative button
    */
   public SetMapData(): void {
+    this.NewMap.id = uuid.v4();
     this.NewMap.title = this.NewMapForm.value.title;
     this.NewMap.zoom = this.passedData.map.zoom;
     this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };

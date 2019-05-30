@@ -18,12 +18,24 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public BasicInfoData: any;
 
+  /**
+   * The set of available marker icons and paths to those icons
+   */
   public MarkerSet: Array<MarkerInfo>;
 
+  /**
+   * The form used to get data from user and set the location's data to it
+   */
   public NewMarkerForm: FormGroup;
 
+  /**
+   * The marker whose data will be set and created
+   */
   public NewMarker: MapMarker;
 
+  /**
+   * The chosen icon for the current location marker
+   */
   public ChosenIcon: MarkerInfo;
 
   // CONSTRUCTORS
@@ -51,7 +63,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
-      console.log(this.passedData.marker)
       this.BasicInfoData = this.passedData.marker;
       this.MarkerSet = this.passedData.markerSet;
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.title })
@@ -66,10 +77,16 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // API METHODS
 
+  /**
+   * Closes the modal
+   */
   public Close(): void {
     this.dialogRef.close();
   }
 
+  /**
+   * Sets the marker data to the user entered data
+   */
   public SetMarkerData() {
     this.NewMarker = this.passedData.marker;
     this.NewMarker.title = this.NewMarkerForm.value.title;
@@ -77,6 +94,12 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     this.NewMarker.iconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.iconLookup, this.passedData.markerSet);
   }
 
+  /**
+   * 
+   * @param icon The icon chosen by the user
+   * 
+   * Sets the current ChosenIcon to the icon the user selected
+   */
   public SetIcon(icon) {
     if (this.ChosenIcon === icon) {
       this.ChosenIcon = null;
@@ -87,6 +110,12 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // HELPERS
 
+  /**
+   * 
+   * @param iconName The name of the current icon
+   * 
+   * Initially sets the current ChosenIcon to the associated marker for recognition of active status
+   */
   protected setChosenIconIfExists(iconName: string) {
     this.MarkerSet.forEach(marker => {
       if (marker.iconLookup === iconName) {

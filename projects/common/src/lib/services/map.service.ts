@@ -8,8 +8,14 @@ export class MapService {
 
   // FIELDS
 
+  /**
+   * Temporary CORS proxy to prepend to call and avoid CORS errors
+   */
   protected corsProxy: string = 'https://cors-anywhere.herokuapp.com/';
 
+  /**
+   * API key for Google maps
+   */
   protected apiKey: string = 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU';
 
   // PROPERTIES
@@ -22,6 +28,13 @@ export class MapService {
 
   // API METHODS
 
+  /**
+   * 
+   * @param lat Latitude
+   * @param lng Longitude
+   * 
+   * Gets surrounding POIs within 5 meters of the passed latitude and longitude
+   */
   public GetSurroundingLocations(lat: number, lng: number) {
     let baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
     let radius = 'radius=5';
@@ -33,6 +46,12 @@ export class MapService {
     return this.http.get(fullUrl);
   }
 
+  /**
+   * 
+   * @param pID The place ID of the requested Google Maps POI
+   * 
+   * Returns the data for a given place ID for a Google Maps POI
+   */
   public GetPlaceDetails(pID) {
     let baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json?';
     let placeId = `placeid=${pID}`;

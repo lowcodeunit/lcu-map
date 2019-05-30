@@ -10,7 +10,6 @@ import { Constants } from '../../utils/constants/constants';
 import { MapConversions } from '../../utils/conversions';
 import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
-import { HttpClient } from '@angular/common/http';
 // @ts-ignore
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
@@ -25,7 +24,7 @@ import { MapService } from '../../services/map.service';
 })
 export class LcuMapComponent implements OnInit {
 
-  // FIELDS  
+  // FIELDS
 
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
@@ -116,7 +115,6 @@ export class LcuMapComponent implements OnInit {
       this.CurrentMapModel.zoom = value.zoom;
     }
   }
-
 
   /**
    * Getter for the field '_panTo'
@@ -212,31 +210,10 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        // let closestEstablishment;
+        // TODO: find way to get place_id of POI and call for data for just that point
 
-        // this.mapService.GetSurroundingLocations(event.coords.lat, event.coords.lng)
-        //   .subscribe((data: any) => {
-        //     let allSurroundingLocations;
-        //     allSurroundingLocations = data.results;
-
-        //     closestEstablishment = this.getClosestEstablishment(allSurroundingLocations);
-
-        //     console.log(closestEstablishment)
-
-        //     this.mapService.GetPlaceDetails(closestEstablishment.place_id)
-        //     .subscribe((data: any) => {
-        //       console.log(data)
-        //       this.DisplayMarkerInfo(new MapMarker({
-        //         title: closestEstablishment.name,
-        //         iconName: closestEstablishment.geometry.icon,
-        //         lat: closestEstablishment.geometry.location.lat,
-        //         lng: closestEstablishment.geometry.location.lng,
-        //         phoneNumber: data.result.formatted_phone_number,
-        //         website: data.result.website
-        //       }));
-        //     })
-
-
+        // for saving points on map that are NOT Google Maps POIs:
+        // TODO: disable this when user clicks on Google Maps POI:
         const dialogRef = this.dialog.open(AddMapMarkerComponent, {
           data: {
             lat: event.coords.lat,
@@ -250,6 +227,8 @@ export class LcuMapComponent implements OnInit {
             this.CurrentMapModel.locationList.push(res);
           }
         });
+        // END for saving points on map that are NOT Google Maps POIs:
+
         // }); // end of 'subscribe' to mapService
       }
     }, this.expectedDoubleClickElapsedTime);
@@ -339,13 +318,13 @@ export class LcuMapComponent implements OnInit {
   public TempSearchMarkerClicked() {
     // delete later
   }
+
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
-
   public DisplayMarkerInfo(marker: MapMarker) {
     if (marker) {
       setTimeout(() => {
@@ -420,6 +399,12 @@ export class LcuMapComponent implements OnInit {
     });
   }
 
+  /**
+   * 
+   * @param locations An array of locations
+   * 
+   * Returns the first item of the array of locations that is of type "establishment"
+   */
   protected getClosestEstablishment(locations: Array<any>) {
     let filteredLoc = locations.filter(loc => loc.types.includes('establishment'));
     return filteredLoc[0];

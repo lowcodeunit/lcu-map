@@ -36,7 +36,7 @@ export class SaveMapComponent implements OnInit {
       title: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMap = {
-      id: 0,
+      id: '0',
       title: '',
       origin: { lat: 0, lng: 0 },
       zoom: 0,
@@ -56,11 +56,11 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
     this.NewMap.locationList = this.passedData.locationMarkers;
     // the below adds visible secondary location markers as well as primary
-    this.passedData.secondaryMarkers.forEach(loc => {
-      if (loc.showMarker === true) {
-        this.NewMap.locationList.push(loc);
-      }
-    });
+    // this.passedData.secondaryMarkers.forEach(loc => {
+    //   if (loc.showMarker === true) {
+    //     this.NewMap.locationList.push(loc);
+    //   }
+    // });
   }
 
   /**

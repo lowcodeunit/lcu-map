@@ -5,7 +5,7 @@ export class IndividualMap {
     /**
      * The id of the map
      */
-    id: number;
+    id: string;
 
     /**
      * The title of the map

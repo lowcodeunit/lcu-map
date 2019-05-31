@@ -24,6 +24,10 @@ import { MapService } from '../../services/map.service';
 })
 export class LcuMapComponent implements OnInit {
 
+
+  public CurrentlyActiveLayers: Array<IndividualMap>;
+  public CurrentlyActiveLocations: Array<MapMarker>;
+
   // FIELDS
 
   /**
@@ -82,7 +86,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * A conglomerated list of all the map markers of all the secondary (non-primary) maps
    */
-  public SecondaryLocations: Array<any>;
+  // public SecondaryLocations: Array<any>;
 
   /**
    * The search input box
@@ -147,9 +151,9 @@ export class LcuMapComponent implements OnInit {
   @Output('map-saved')
   public MapSaved: EventEmitter<IndividualMap>;
 
-    /**
-   * The event emitted when the primary map's location list is altered (the new map is emitted)
-   */
+  /**
+ * The event emitted when the primary map's location list is altered (the new map is emitted)
+ */
   @Output('primary-map-location-list-changed')
   public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
 
@@ -166,40 +170,39 @@ export class LcuMapComponent implements OnInit {
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService) {
     this.MapSaved = new EventEmitter,
-    this.PrimaryMapLocationListChanged = new EventEmitter;
+      this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
-
+    this.CurrentlyActiveLocations = new Array<MapMarker>();
+    this.CurrentlyActiveLayers = new Array<IndividualMap>();
   }
 
   // LIFE CYCLE
-
   ngOnInit() {
     this.CurrentMapModel = this.MapModel;
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.SecondaryLocations = [];
-    this.SecondaryMaps.forEach(map => {
-      map.locationList.forEach(loc => {
-        this.SecondaryLocations.push(
-          {
-            title: loc.title,
-            lat: loc.lat,
-            lng: loc.lng,
-            iconName: loc.iconName,
-            iconImageObject: this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet),
-            mapTitle: map.title
-          }
-        )
-      })
-    });
+    // this.SecondaryLocations = [];
+    // this.SecondaryMaps.forEach(map => {
+    //   map.locationList.forEach(loc => {
+    //     this.SecondaryLocations.push(
+    //       {
+    //         title: loc.title,
+    //         lat: loc.lat,
+    //         lng: loc.lng,
+    //         iconName: loc.iconName,
+    //         iconImageObject: this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet),
+    //         mapTitle: map.title
+    //       }
+    //     )
+    //   })
+    // });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
-    // set up the listener for the location search box:
-    this.runAutocompleteSearchPrep();
+    this.runAutocompleteSearchPrep(); // set up the listener for the location search box:
+    this.toggleActiveMapLayer(this.CurrentMapModel);
   }
 
   ngOnChanges(value) {
-    console.log(value)
     if (value.MapModel) {
       this.CurrentMapModel = value.MapModel.currentValue;
       this.CurrentMapModel.origin.lat = value.MapModel.currentValue.origin.lat;
@@ -240,14 +243,19 @@ export class LcuMapComponent implements OnInit {
           data: {
             lat: event.coords.lat,
             lng: event.coords.lng,
-            iconList: this.MapMarkerSet
+            iconList: this.MapMarkerSet,
+            primary_map_id: this.CurrentMapModel.id
           }
         });
 
         dialogRef.afterClosed().subscribe(res => {
           if (res) {
             this.CurrentMapModel.locationList.push(res);
+            if (this.CurrentlyActiveLayers.filter(map => map.id === this.CurrentMapModel.id).length > 0) {
+              this.CurrentlyActiveLocations.push(res); // if primary map is being shown, show new icon as well
+            }
             this.PrimaryMapLocationListChanged.emit(this.CurrentMapModel);
+            this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
           }
         });
         // END for saving points on map that are NOT Google Maps POIs:
@@ -279,9 +287,9 @@ export class LcuMapComponent implements OnInit {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map,
-        locationMarkers: this.stripOutsideLocations(this.CurrentMapModel.locationList, this.currentBounds),
+        locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
         // for now, we include all displayed secondary map markers in a newly created map:
-        secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
+        // secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }
     });
@@ -289,7 +297,7 @@ export class LcuMapComponent implements OnInit {
       if (res) {
         if (res) {
           this.MapSaved.emit(res);
-          console.log('saved map: ', res)
+          // console.log('saved map: ', res)
         }
       }
     });
@@ -302,23 +310,13 @@ export class LcuMapComponent implements OnInit {
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
   public LayerClicked(layer?: IndividualMap): void {
-    if (layer) {
-      this.SecondaryLocations.forEach((loc) => {
-        if (layer.title === loc.mapTitle) {
-          loc.showMarker = loc.showMarker === true ? false : true;
-        }
-      })
-    }
 
-    let currentlyDisplayedLocations = this.SecondaryLocations.filter(loc => loc.showMarker === true);
+    this.toggleActiveMapLayer(layer);
+
+    // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
-      if (this.PrimaryMarkersSelected) {
-        this.CurrentMapModel.locationList.forEach((loc: MapMarker) => {
-          currentlyDisplayedLocations.push(loc);
-        })
-      }
       // emits the currently visible map markers for use in legend
-      this.VisibleLocationListChanged.emit(currentlyDisplayedLocations);
+      this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
   }
 
@@ -351,7 +349,7 @@ export class LcuMapComponent implements OnInit {
   public DisplayMarkerInfo(marker: MapMarker) {
     if (marker) {
       setTimeout(() => {
-        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet } });
+        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this.CurrentMapModel.id } });
         this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
           data => {
             // console.log("Dialog output:", data)
@@ -406,6 +404,7 @@ export class LcuMapComponent implements OnInit {
           this.CurrentMapModel.zoom = 16;
 
           this.DisplayMarkerInfo(new MapMarker({
+            map_id: this.CurrentMapModel.id,
             title: place.name,
             iconName: place.icon,
             lat: place.geometry.location.lat(),
@@ -430,6 +429,37 @@ export class LcuMapComponent implements OnInit {
     let filteredLoc = locations.filter(loc => loc.types.includes('establishment'));
     return filteredLoc[0];
     // TODO: further refine this later to make sure the returned location is the closest to the clicked lat/lng
+  }
+
+  protected toggleActiveMapLayer(layer?: IndividualMap) {
+    if (layer) { // in other words, if the layer click was a secondary layer
+      if (this.CurrentlyActiveLayers.filter(map => map.id === layer.id).length === 0) {
+        this.CurrentlyActiveLayers.push(layer);
+        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, layer);
+      } else {
+        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== layer.id);
+        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, layer);
+      }
+    } else { // if the layer clicked was the primary layer
+      if (this.CurrentlyActiveLayers.filter(map => map.id === this.CurrentMapModel.id).length === 0) {
+        this.CurrentlyActiveLayers.push(this.CurrentMapModel);
+        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this.CurrentMapModel);
+      } else {
+        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this.CurrentMapModel.id);
+        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this.CurrentMapModel);
+      }
+    }
+  }
+
+  protected addLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
+    layer.locationList.forEach(loc => {
+      locList.push(loc)
+    });
+    return locList;
+  }
+
+  protected removeLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
+    return locList.filter(loc => loc.map_id !== layer.id);
   }
 
 }

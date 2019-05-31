@@ -200,6 +200,7 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box:
     this.toggleActiveMapLayer(this.CurrentMapModel);
+    this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 
   ngOnChanges(value) {

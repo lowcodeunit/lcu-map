@@ -1,6 +1,11 @@
 export class MapMarker {
 
     /**
+     * The map id which associates an individual marker with a single map
+     */
+    map_id: string;
+
+    /**
      * The title of the marker which will show upon mouseover
      */
     title: string;

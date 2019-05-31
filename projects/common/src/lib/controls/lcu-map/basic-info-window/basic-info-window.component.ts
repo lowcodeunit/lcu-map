@@ -53,6 +53,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       // icon: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMarker = {
+      map_id: '0',
       title: '',
       iconName: '',
       lat: 0,
@@ -89,6 +90,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public SetMarkerData() {
     this.NewMarker = this.passedData.marker;
+    this.NewMarker.map_id = this.passedData.primary_map_id;
     this.NewMarker.title = this.NewMarkerForm.value.title;
     this.NewMarker.iconName = this.ChosenIcon.iconLookup;
     this.NewMarker.iconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.iconLookup, this.passedData.markerSet);

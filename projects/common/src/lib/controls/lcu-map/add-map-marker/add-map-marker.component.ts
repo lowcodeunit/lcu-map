@@ -43,6 +43,7 @@ export class AddMapMarkerComponent implements OnInit {
     });
 
     this.NewMarker = {
+      map_id: '0',
       title: '',
       iconName: null,
       lat: 0,
@@ -62,6 +63,7 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
     this.NewMarker.lat = this.passedData.lat;
     this.NewMarker.lng = this.passedData.lng;
+    this.NewMarker.map_id = this.passedData.primary_map_id,
     this.NewMarker.iconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
   }
   

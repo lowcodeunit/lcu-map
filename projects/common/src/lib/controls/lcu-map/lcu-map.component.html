@@ -6,9 +6,6 @@
     </div>
     <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="space-around">
       <mat-icon (click)="ShowLocationSearchBarClicked()">search</mat-icon>
-
-      
-
       <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>
     </div>
@@ -23,11 +20,8 @@
   [zoom]="CurrentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
   [usePanning]="true">
   <div *ngFor="let marker of CurrentMapModel.locationList">
-    <agm-marker *ngIf="PrimaryMarkersSelected" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-      [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-    </agm-marker>
-    <div *ngFor="let marker of SecondaryLocations">
-      <agm-marker *ngIf="marker.showMarker" [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+    <div *ngFor="let marker of CurrentlyActiveLocations">
+      <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
         [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
       </agm-marker>
     </div>
@@ -43,7 +37,7 @@
   <mat-divider></mat-divider>
   <mat-checkbox (click)="$event.stopPropagation();LayerClicked()" [(ngModel)]="PrimaryMarkersSelected"
     matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">
-    Primary</mat-checkbox>
+    {{CurrentMapModel.title}} (Primary)</mat-checkbox>
   <mat-divider></mat-divider>
   <mat-checkbox (click)="$event.stopPropagation();LayerClicked(map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
   </mat-checkbox>

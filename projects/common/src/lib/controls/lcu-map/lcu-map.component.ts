@@ -438,6 +438,9 @@ export class LcuMapComponent implements OnInit {
         this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this.CurrentMapModel);
       }
     }
+    this.CurrentlyActiveLocations.forEach(loc => {
+      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+    });
   }
 
   protected addLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {

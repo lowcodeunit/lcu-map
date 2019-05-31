@@ -182,28 +182,14 @@ export class LcuMapComponent implements OnInit {
     this.CurrentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    // this.SecondaryLocations = [];
-    // this.SecondaryMaps.forEach(map => {
-    //   map.locationList.forEach(loc => {
-    //     this.SecondaryLocations.push(
-    //       {
-    //         title: loc.title,
-    //         lat: loc.lat,
-    //         lng: loc.lng,
-    //         iconName: loc.iconName,
-    //         iconImageObject: this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet),
-    //         mapTitle: map.title
-    //       }
-    //     )
-    //   })
-    // });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box:
-    this.toggleActiveMapLayer(this.CurrentMapModel);
+    // this.toggleActiveMapLayer(this.CurrentMapModel);
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 
   ngOnChanges(value) {
+    this.CurrentlyActiveLocations = [];
     if (value.MapModel) {
       this.CurrentMapModel = value.MapModel.currentValue;
       this.CurrentMapModel.origin.lat = value.MapModel.currentValue.origin.lat;
@@ -215,6 +201,8 @@ export class LcuMapComponent implements OnInit {
     if (value.SecondaryMaps) {
       this.SecondaryMaps = value.SecondaryMaps.currentValue;
     }
+    this.toggleActiveMapLayer();
+    this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 
   // API METHODS

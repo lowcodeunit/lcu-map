@@ -204,6 +204,7 @@ export class LcuMapComponent implements OnInit {
   }
 
   ngOnChanges(value) {
+    this.CurrentlyActiveLayers = [];
     if (value.MapModel) {
       this.CurrentMapModel = value.MapModel.currentValue;
       this.CurrentMapModel.origin.lat = value.MapModel.currentValue.origin.lat;
@@ -211,10 +212,13 @@ export class LcuMapComponent implements OnInit {
       this.CurrentMapModel.locationList.forEach(loc => {
         loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
       });
+      this.CurrentlyActiveLayers.push(this.CurrentMapModel);
     }
     if (value.SecondaryMaps) {
       this.SecondaryMaps = value.SecondaryMaps.currentValue;
+      this.SecondaryMaps.forEach(map => this.CurrentlyActiveLayers.push(map));
     }
+    this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations) // emit the locations
   }
 
   // API METHODS

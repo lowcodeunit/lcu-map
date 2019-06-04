@@ -49,6 +49,11 @@ export class LcuMapComponent implements OnInit {
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
   protected _panTo: { lat: number, lng: number, zoom: number };
+  
+  /**
+   * Input property that represents the current secondary maps (layers)
+   */
+  protected _secondaryMaps;
 
   /**
    * The subscription for the basic-info-window modal
@@ -140,10 +145,20 @@ export class LcuMapComponent implements OnInit {
   MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
 
   /**
-   * The array of secondary (non-primary) maps to be shown as 'layers' whose markers will be displayed on the current map
+   * Setter for the input field '_secondaryMaps'
    */
   @Input('secondary-maps')
-  SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
+  // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
+  public set SecondaryMaps(value: Array<IndividualMap>) {
+    this._secondaryMaps = value;
+  }
+
+  /**
+   * Getter for the input field '._secondaryMaps'
+   */
+  public get SecondaryMaps() {
+    return this._secondaryMaps;
+  }
 
   /**
    * The event emitted when a map is saved (the saved map is emitted)
@@ -189,19 +204,14 @@ export class LcuMapComponent implements OnInit {
   }
 
   ngOnChanges(value) {
-    this.CurrentlyActiveLocations = [];
     if (value.MapModel) {
+      this.CurrentlyActiveLocations = [];
       this.CurrentMapModel = value.MapModel.currentValue;
-      this.CurrentMapModel.origin.lat = value.MapModel.currentValue.origin.lat;
-      this.CurrentMapModel.origin.lng = value.MapModel.currentValue.origin.lng;
       this.CurrentMapModel.locationList.forEach(loc => {
         loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
       });
+      this.toggleActiveMapLayer(this.CurrentMapModel);
     }
-    if (value.SecondaryMaps) {
-      this.SecondaryMaps = value.SecondaryMaps.currentValue;
-    }
-    this.toggleActiveMapLayer();
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 

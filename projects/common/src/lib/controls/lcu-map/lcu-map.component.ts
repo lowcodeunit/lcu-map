@@ -246,30 +246,32 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        // TODO: find way to get place_id of POI and call for data for just that point
+        // TODO: when user clicks on POI, 
+        // 1) display the data for that POI and...
+        // 2) disable Google's little default info window
 
-        // for saving points on map that are NOT Google Maps POIs:
-        // TODO: disable this when user clicks on Google Maps POI:
-        const dialogRef = this.dialog.open(AddMapMarkerComponent, {
-          data: {
-            lat: event.coords.lat,
-            lng: event.coords.lng,
-            iconList: this.MapMarkerSet,
-            primary_map_id: this._currentMapModel.id
-          }
-        });
+        // this is temporarily disabled (adding a random map marker to any lat/lng on the map)
+        // it will be commented back in at a later sprint when it is required again:
+        
+        // const dialogRef = this.dialog.open(AddMapMarkerComponent, {
+        //   data: {
+        //     lat: event.coords.lat,
+        //     lng: event.coords.lng,
+        //     iconList: this.MapMarkerSet,
+        //     primary_map_id: this._currentMapModel.id
+        //   }
+        // });
 
-        dialogRef.afterClosed().subscribe(res => {
-          if (res) {
-            this._currentMapModel.locationList.push(res);
-            if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length > 0) {
-              this.CurrentlyActiveLocations.push(res); // if primary map is being shown, show new icon as well
-            }
-            this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-            this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-          }
-        });
-        // END for saving points on map that are NOT Google Maps POIs:
+        // dialogRef.afterClosed().subscribe(res => {
+        //   if (res) {
+        //     this._currentMapModel.locationList.push(res);
+        //     if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length > 0) {
+        //       this.CurrentlyActiveLocations.push(res); // if primary map is being shown, show new icon as well
+        //     }
+        //     this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+        //     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+        //   }
+        // }); // END for saving points on map that are NOT Google Maps POIs:
 
         // }); // end of 'subscribe' to mapService
       }

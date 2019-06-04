@@ -56,6 +56,11 @@ export class LcuMapComponent implements OnInit {
   protected _secondaryMaps;
 
   /**
+   * Input property that represents the current primary map
+   */
+  public _currentMapModel;
+
+  /**
    * The subscription for the basic-info-window modal
    */
   protected markerInfoSubscription: Subscription;
@@ -118,10 +123,10 @@ export class LcuMapComponent implements OnInit {
   @Input('pan-to')
   public set PanTo(value: { lat: number, lng: number, zoom: number }) {
     this._panTo = value;
-    if (this.CurrentMapModel) {
-      this.CurrentMapModel.origin.lat = value.lat;
-      this.CurrentMapModel.origin.lng = value.lng;
-      this.CurrentMapModel.zoom = value.zoom;
+    if (this._currentMapModel) {
+      this._currentMapModel.origin.lat = value.lat;
+      this._currentMapModel.origin.lng = value.lng;
+      this._currentMapModel.zoom = value.zoom;
     }
   }
 
@@ -139,10 +144,25 @@ export class LcuMapComponent implements OnInit {
   MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
 
   /**
-   * The map model object (IndividualMap model) containing all the settings for the map to be displayed
+   * The setter for the current map model
    */
   @Input('map-model')
-  MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
+  // MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
+  public set MapModel(value: IndividualMap) {
+    this._currentMapModel = value;
+    this.CurrentlyActiveLocations = [];
+    this._currentMapModel.locationList.forEach(loc => {
+      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+    });
+    this.toggleActiveMapLayer(this._currentMapModel);
+  }
+
+  /**
+   * The getter for the current map model
+   */
+  public get MapModel() {
+    return this._currentMapModel;
+  }
 
   /**
    * Setter for the input field '_secondaryMaps'
@@ -193,24 +213,16 @@ export class LcuMapComponent implements OnInit {
 
   // LIFE CYCLE
   ngOnInit() {
-    this.CurrentMapModel = this.MapModel;
-    this.CurrentMapModel.locationList.forEach(loc => {
+    this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
-    this.runAutocompleteSearchPrep(); // set up the listener for the location search box:
-    // this.toggleActiveMapLayer(this.CurrentMapModel);
+    this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 
   ngOnChanges(value) {
     if (value.MapModel) {
-      this.CurrentlyActiveLocations = [];
-      this.CurrentMapModel = value.MapModel.currentValue;
-      this.CurrentMapModel.locationList.forEach(loc => {
-        loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
-      });
-      this.toggleActiveMapLayer(this.CurrentMapModel);
     }
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
@@ -243,17 +255,17 @@ export class LcuMapComponent implements OnInit {
             lat: event.coords.lat,
             lng: event.coords.lng,
             iconList: this.MapMarkerSet,
-            primary_map_id: this.CurrentMapModel.id
+            primary_map_id: this._currentMapModel.id
           }
         });
 
         dialogRef.afterClosed().subscribe(res => {
           if (res) {
-            this.CurrentMapModel.locationList.push(res);
-            if (this.CurrentlyActiveLayers.filter(map => map.id === this.CurrentMapModel.id).length > 0) {
+            this._currentMapModel.locationList.push(res);
+            if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length > 0) {
               this.CurrentlyActiveLocations.push(res); // if primary map is being shown, show new icon as well
             }
-            this.PrimaryMapLocationListChanged.emit(this.CurrentMapModel);
+            this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
             this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
           }
         });
@@ -348,14 +360,14 @@ export class LcuMapComponent implements OnInit {
   public DisplayMarkerInfo(marker: MapMarker) {
     if (marker) {
       setTimeout(() => {
-        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this.CurrentMapModel.id } });
+        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id } });
         this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
           data => {
             // console.log("Dialog output:", data)
             // console.log(dialogRef);
             if (data !== undefined && data !== null) {
-              this.CurrentMapModel.locationList.push(data);
-              this.PrimaryMapLocationListChanged.emit(this.CurrentMapModel);
+              this._currentMapModel.locationList.push(data);
+              this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
             }
           })
       }, 50);
@@ -398,12 +410,12 @@ export class LcuMapComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          this.CurrentMapModel.origin.lat = place.geometry.location.lat();
-          this.CurrentMapModel.origin.lng = place.geometry.location.lng();
-          this.CurrentMapModel.zoom = 16;
+          this._currentMapModel.origin.lat = place.geometry.location.lat();
+          this._currentMapModel.origin.lng = place.geometry.location.lng();
+          this._currentMapModel.zoom = 16;
 
           this.DisplayMarkerInfo(new MapMarker({
-            map_id: this.CurrentMapModel.id,
+            map_id: this._currentMapModel.id,
             title: place.name,
             iconName: place.icon,
             lat: place.geometry.location.lat(),
@@ -440,12 +452,12 @@ export class LcuMapComponent implements OnInit {
         this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, layer);
       }
     } else { // if the layer clicked was the primary layer
-      if (this.CurrentlyActiveLayers.filter(map => map.id === this.CurrentMapModel.id).length === 0) {
-        this.CurrentlyActiveLayers.push(this.CurrentMapModel);
-        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this.CurrentMapModel);
+      if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length === 0) {
+        this.CurrentlyActiveLayers.push(this._currentMapModel);
+        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
       } else {
-        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this.CurrentMapModel.id);
-        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this.CurrentMapModel);
+        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this._currentMapModel.id);
+        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
       }
     }
     this.CurrentlyActiveLocations.forEach(loc => {

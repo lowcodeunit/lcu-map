@@ -52,10 +52,11 @@ export class MapMarker {
      * The url to the icon
      */
     iconUrl?: string;
+
     /**
      * The order in which the locations are saved
      */
-    orderIndex?: number= Number.MAX_VALUE;
+    orderIndex?: number;
 
     /**
      * The object representing all the necessary data to display an icon on the map

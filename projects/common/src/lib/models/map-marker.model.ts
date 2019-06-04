@@ -55,7 +55,7 @@ export class MapMarker {
     /**
      * The order in which the locations are saved
      */
-    orderIndex?: number;
+    orderIndex?: number= Number.MAX_VALUE;
 
     /**
      * The object representing all the necessary data to display an icon on the map

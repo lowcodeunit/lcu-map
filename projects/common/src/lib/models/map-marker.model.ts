@@ -52,6 +52,10 @@ export class MapMarker {
      * The url to the icon
      */
     iconUrl?: string;
+    /**
+     * The order in which the locations are saved
+     */
+    orderIndex?: number;
 
     /**
      * The object representing all the necessary data to display an icon on the map
@@ -75,6 +79,7 @@ export class MapMarker {
         this.country = icon.country;
         this.website = icon.website;
         this.iconUrl = icon.iconUrl;
+        this.orderIndex = icon.orderIndex;
     }
 
     

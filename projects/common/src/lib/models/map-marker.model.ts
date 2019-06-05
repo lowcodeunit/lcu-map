@@ -59,6 +59,42 @@ export class MapMarker {
     orderIndex?: number;
 
     /**
+     * The street address for the location
+     */
+    address?: string;
+
+    /**
+     * the link to book reservations for that location
+     */
+    reservations?: string;
+
+    /**
+     * The link to the menu for the location
+     */
+    menu?: string;
+
+    /**
+     * The star rating for that location
+     */
+    starRating?: number;
+
+    /**
+     * The awards for that location
+     */
+    awards?: string;
+
+    /**
+     * A link to media pertaining to the location
+     */
+    media?: string;
+
+    /**
+     * General info in the location
+     */
+    generalInfo?: string;
+
+
+    /**
      * The object representing all the necessary data to display an icon on the map
      * 
      * It is not passed in with the markers, but will be populated by the map service
@@ -81,6 +117,13 @@ export class MapMarker {
         this.website = icon.website;
         this.iconUrl = icon.iconUrl;
         this.orderIndex = icon.orderIndex;
+        this.address = icon.address;
+        this.reservations = icon.reservations;
+        this.menu = icon.menu;
+        this.starRating = icon.starRating;
+        this.awards = icon.awards;
+        this.media = icon.media;
+        this.generalInfo = icon.generalInfo;
     }
 
     

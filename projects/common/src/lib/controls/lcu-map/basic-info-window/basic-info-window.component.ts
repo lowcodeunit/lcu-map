@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -15,6 +15,11 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   // FIELDS
 
   // PROPERTIES
+
+  /**
+   * Gives an idea of the state of the expansion panel
+   */
+  public panelOpenState = false;
 
   public BasicInfoData: any;
 
@@ -78,6 +83,27 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // API METHODS
 
+/**
+ * Change position of the dialog box to the bottom 
+ */
+  public changePositionToRHS() {
+    this.dialogRef.updatePosition({ top:'auto', right: '10px' });
+}
+
+/**
+ * Change position of the dialog box to the center 
+ */
+public changePositionToCenter() {
+  this.dialogRef.updatePosition({ top:'100px', bottom:'100px' });
+}
+
+/**
+ * Change position of the dialog box to the bottom 
+ */
+public changePositionToFooter() {
+  this.dialogRef.updatePosition({ top:'auto' });
+  this.dialogRef.updateSize( 'width = 100%' );
+}
   /**
    * Closes the modal
    */

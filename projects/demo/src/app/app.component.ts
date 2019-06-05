@@ -115,7 +115,7 @@ export class AppComponent implements OnInit {
    * Logs to the console the updated list of active secondary locations
    */
   public ListChanged(list) {
-    console.log('list of secondary locs: ', list);
+    // console.log('list of secondary locs: ', list);
   }
 
   /**

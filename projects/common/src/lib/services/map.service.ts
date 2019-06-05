@@ -22,43 +22,44 @@ export class MapService {
 
   // CONSTRUCTORS
 
-  constructor(private http: HttpClient) { }
+  constructor(protected http: HttpClient) { }
 
   // LIFE CYCLE
 
   // API METHODS
 
   /**
-   * 
+   *
    * @param lat Latitude
-   * @param lng Longitude
    * 
+   * @param lng Longitude
+   *
    * Gets surrounding POIs within 5 meters of the passed latitude and longitude
    */
   public GetSurroundingLocations(lat: number, lng: number) {
-    let baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-    let radius = 'radius=5';
-    let apiKey = `&key=${this.apiKey}`;
-    let location = `&location=${lat},${lng}`;
+    const baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+    const radius = 'radius=5';
+    const apiKey = `&key=${this.apiKey}`;
+    const location = `&location=${lat},${lng}`;
 
-    let fullUrl = `${this.corsProxy}${baseUrl}${radius}${location}${apiKey}`;
+    const fullUrl = `${this.corsProxy}${baseUrl}${radius}${location}${apiKey}`;
 
     return this.http.get(fullUrl);
   }
 
   /**
-   * 
+   *
    * @param pID The place ID of the requested Google Maps POI
-   * 
+   *
    * Returns the data for a given place ID for a Google Maps POI
    */
   public GetPlaceDetails(pID) {
-    let baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json?';
-    let placeId = `placeid=${pID}`;
-    let apiKey = `&key=${this.apiKey}`;
-    let fields = '&fields=name,formatted_phone_number,adr_address,url,website,address_component,formatted_address';
+    const baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json?';
+    const placeId = `placeid=${pID}`;
+    const apiKey = `&key=${this.apiKey}`;
+    const fields = '&fields=name,formatted_phone_number,adr_address,url,website,address_component,formatted_address,geometry';
 
-    let fullUrl = `${this.corsProxy}${baseUrl}${placeId}${apiKey}${fields}`;
+    const fullUrl = `${this.corsProxy}${baseUrl}${placeId}${apiKey}${fields}`;
 
     return this.http.get(fullUrl);
   }

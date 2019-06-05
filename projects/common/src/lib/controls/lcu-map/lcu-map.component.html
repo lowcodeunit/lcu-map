@@ -15,7 +15,7 @@
 <div [hidden]="!ShowSearchBar" id="search-bar">
   <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [formControl]="SearchControl">
 </div>
-<agm-map [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
+<agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
   [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
   [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
   [usePanning]="true">

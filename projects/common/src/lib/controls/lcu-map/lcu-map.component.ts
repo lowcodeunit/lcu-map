@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { IndividualMap } from '../../models/individual-map.model';
-import { AddMapMarkerComponent } from './add-map-marker/add-map-marker.component';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
@@ -24,11 +23,14 @@ import { MapService } from '../../services/map.service';
 })
 export class LcuMapComponent implements OnInit {
 
-
-  public CurrentlyActiveLayers: Array<IndividualMap>;
-  public CurrentlyActiveLocations: Array<MapMarker>;
-
   // FIELDS
+
+  /**
+   * The place id of the location the user clicked on
+   * 
+   * This will be replaced by a direct call when AGM team puts out fix that allows user's click event to return place id directly from (mapClick)
+   */
+  protected placeId;
 
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
@@ -49,16 +51,11 @@ export class LcuMapComponent implements OnInit {
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
   protected _panTo: { lat: number, lng: number, zoom: number };
-  
+
   /**
    * Input property that represents the current secondary maps (layers)
    */
   protected _secondaryMaps;
-
-  /**
-   * Input property that represents the current primary map
-   */
-  public _currentMapModel;
 
   /**
    * The subscription for the basic-info-window modal
@@ -67,6 +64,25 @@ export class LcuMapComponent implements OnInit {
 
   // PROPERTIES
 
+
+  /**
+   * Input property that represents the current primary map
+   */
+  public _currentMapModel;
+
+  /**
+   * The maps (in layer form) that are currently being displayed
+   */
+  public CurrentlyActiveLayers: Array<IndividualMap>;
+
+  /**
+   * The location markers that are currently being displayed
+   */
+  public CurrentlyActiveLocations: Array<MapMarker>;
+
+  /**
+   * Boolean that determines whether or not the search bar should be shown
+   */
   public ShowSearchBar: boolean = false;
 
   /**
@@ -246,13 +262,29 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        // TODO: when user clicks on POI, 
-        // 1) display the data for that POI and...
-        // 2) disable Google's little default info window
+      // this service call gets the place_id from the click listener attached to the 
+      // mapReady event... this (along with the mapReady click listener) will be
+      // switched out for the normal mapClick event once the AGM team releases the 
+      // version where the place_id is passed back from there
+      this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
+          if (res.result !== undefined && res !== null) {
+            const marker = {
+              title: res.result.name,
+              lat: res.result.geometry.location.lat,
+              lng: res.result.geometry.location.lng,
+              map_id: this._currentMapModel,
+              iconName: '',
+              phoneNumber: res.result.formatted_phone_number,
+              town: res.result.address_components[3].long_name,
+              country: res.result.address_components[6].long_name
+            };
+            this.DisplayMarkerInfo(marker);
+          }
+        });
 
         // this is temporarily disabled (adding a random map marker to any lat/lng on the map)
         // it will be commented back in at a later sprint when it is required again:
-        
+
         // const dialogRef = this.dialog.open(AddMapMarkerComponent, {
         //   data: {
         //     lat: event.coords.lat,
@@ -374,6 +406,22 @@ export class LcuMapComponent implements OnInit {
           })
       }, 50);
     }
+  }
+
+  /**
+   * 
+   * @param map The map onto which the click event listener will be attached
+   * 
+   * Attaches a click listener to the map that returns an object that includes the place id
+   * 
+   * The place id is then assigned to the placeId field for use in the (mapClick) event
+   * 
+   * This will be removed once AGM team releases code that passes back the place id on (mapClick) directly
+   */
+  public OnMapReady(map) {
+    map.addListener('click', (loc) => {
+      this.placeId = loc.placeId;
+    });
   }
 
   // HELPERS

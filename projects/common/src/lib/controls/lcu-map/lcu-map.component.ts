@@ -401,6 +401,7 @@ export class LcuMapComponent implements OnInit {
             // console.log(dialogRef);
             if (data !== undefined && data !== null) {
               this._currentMapModel.locationList.push(data);
+              this.CurrentlyActiveLocations.push(data);
               this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
             }
           })

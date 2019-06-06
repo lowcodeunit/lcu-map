@@ -19,7 +19,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   /**
    * Gives an idea of the state of the expansion panel
    */
-  public panelOpenState = false;
+  public panelOpenState = "closed";
 
   public BasicInfoData: any;
 

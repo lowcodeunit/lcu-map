@@ -421,6 +421,7 @@ export class LcuMapComponent implements OnInit {
    */
   public OnMapReady(map) {
     map.addListener('click', (loc) => {
+      loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
     });
   }

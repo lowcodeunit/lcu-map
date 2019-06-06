@@ -87,7 +87,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
  * Change position of the dialog box to the bottom 
  */
   public changePositionToRHS() {
-    this.dialogRef.updatePosition({ top:'auto', right: '10px' });
+    this.dialogRef.updatePosition({ bottom:'auto', right: '0px' });
 }
 
 /**

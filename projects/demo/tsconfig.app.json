@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    //"paths": { "angular-star-rating/*": ["../node_modules/angular-star-rating/*"] },
     "outDir": "../../out-tsc/app",
     "types": []
   },

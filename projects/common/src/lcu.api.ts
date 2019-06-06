@@ -5,3 +5,4 @@ export * from './lib/models/map-marker.model';
 export * from './lib/models/marker-info.model'
 
 export * from './lib/lcu-map.module';
+export * from 'angular-star-rating';

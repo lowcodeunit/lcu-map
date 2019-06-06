@@ -32,7 +32,7 @@ import { StarRatingModule } from 'angular-star-rating';
     MatTooltipModule,
     HttpClientModule,
     MatExpansionModule,
-    StarRatingModule.forRoot()
+    StarRatingModule.forRoot(),
   ],
   providers: [GoogleMapsAPIWrapper],
   exports: [LcuMapComponent, BasicInfoWindowComponent],

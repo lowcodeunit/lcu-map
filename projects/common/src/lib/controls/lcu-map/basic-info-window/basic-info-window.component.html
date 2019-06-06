@@ -6,7 +6,7 @@
   </div>
 
   <!-- form data -->
-  <div *ngIf="panelOpenState === false" class="basic-info" [hidden]="changePositionToCenter()">
+  <div *ngIf="panelOpenState === 'closed'" class="basic-info" [hidden]="changePositionToCenter()">
     <!-- <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
       <mat-form-field>
         <mat-label>Marker Title</mat-label>
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div *ngIf="panelOpenState === addToMap"  [hidden]="changePositionToCenter()">
+  <div *ngIf="panelOpenState === 'addToMap'"  [hidden]="changePositionToCenter()">
       <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
           <mat-form-field>
             <mat-label>Marker Title</mat-label>
@@ -65,13 +65,13 @@
   <!-- More Info expansion panel -->
   <div class="expansion-panel-container">
     <mat-accordion>
-      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel (opened)="panelOpenState = 'open'" (closed)="panelOpenState = 'closed'">
         <mat-expansion-panel-header>
           <mat-panel-title>
             More Info
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div fxLayout="column" fxLayoutAlign="start start" class="marker-more-info-container"  *ngIf="panelOpenState === true" [hidden]="changePositionToRHS()">
+        <div fxLayout="column" fxLayoutAlign="start start" class="marker-more-info-container"  *ngIf="panelOpenState === 'open'" [hidden]="changePositionToRHS()">
           <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2>
           <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
           <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
@@ -96,7 +96,7 @@
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
     <button mat-button mat-raised-button [mat-dialog-close]="NewMarker" (click)="SetMarkerData()"
       [disabled]="NewMarkerForm.invalid">Save Marker</button>
-      <button mat-button mat-raised-button (click)="panelOpenState = addToMap"
+      <button mat-button mat-raised-button (click)="panelOpenState = 'addToMap'"
       >Add To Map</button>
   </div>
 </div>

@@ -7,35 +7,59 @@
 
   <!-- form data -->
   <div *ngIf="panelOpenState === false" class="basic-info" [hidden]="changePositionToCenter()">
-    <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
+    <!-- <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
       <mat-form-field>
         <mat-label>Marker Title</mat-label>
         <input type="text" matInput formControlName="title">
         <mat-hint>The title for the map marker</mat-hint>
         <mat-error>Invalid or missing title</mat-error>
       </mat-form-field>
-      <!-- <mat-form-field>
+      <mat-form-field>
       <mat-label>Icon</mat-label>
       <mat-select formControlName="icon">
         <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
       </mat-select>
-    </mat-form-field> -->
+    </mat-form-field>
       <div style="width: 100%">
         <div fxLayout="row wrap" fxLayoutGap="10px">
           <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
             src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
         </div>
       </div>
-    </form>
+    </form> -->
 
     <!-- display basic data -->
     <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
+        <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2>
       <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
       <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
         {{BasicInfoData?.country}}</div>
       <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
       <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
     </div>
+  </div>
+
+  <div *ngIf="panelOpenState === addToMap"  [hidden]="changePositionToCenter()">
+      <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
+          <mat-form-field>
+            <mat-label>Marker Title</mat-label>
+            <input type="text" matInput formControlName="title">
+            <mat-hint>The title for the map marker</mat-hint>
+            <mat-error>Invalid or missing title</mat-error>
+          </mat-form-field>
+          <!-- <mat-form-field>
+          <mat-label>Icon</mat-label>
+          <mat-select formControlName="icon">
+            <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+          <div style="width: 100%">
+            <div fxLayout="row wrap" fxLayoutGap="10px">
+              <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
+                src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
+            </div>
+          </div>
+        </form>
   </div>
 
   <!-- More Info expansion panel -->
@@ -47,8 +71,6 @@
             More Info
           </mat-panel-title>
         </mat-expansion-panel-header>
-
-
         <div fxLayout="column" fxLayoutAlign="start start" class="marker-more-info-container"  *ngIf="panelOpenState === true" [hidden]="changePositionToRHS()">
           <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2>
           <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
@@ -74,5 +96,7 @@
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
     <button mat-button mat-raised-button [mat-dialog-close]="NewMarker" (click)="SetMarkerData()"
       [disabled]="NewMarkerForm.invalid">Save Marker</button>
+      <button mat-button mat-raised-button (click)="panelOpenState = addToMap"
+      >Add To Map</button>
   </div>
 </div>

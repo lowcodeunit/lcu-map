@@ -102,7 +102,7 @@ public changePositionToCenter() {
  */
 public changePositionToFooter() {
   this.dialogRef.updatePosition({ top:'auto' });
-  this.dialogRef.updateSize( 'width = 100%' );
+  this.dialogRef.updateSize( '100vw' );
 }
   /**
    * Closes the modal

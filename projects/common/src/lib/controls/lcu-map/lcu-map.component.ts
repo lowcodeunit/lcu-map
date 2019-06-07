@@ -491,7 +491,6 @@ export class LcuMapComponent implements OnInit {
             }
           });
 
-
           this.DisplayMarkerInfo(new MapMarker({
             map_id: this._currentMapModel.id,
             title: place.name,

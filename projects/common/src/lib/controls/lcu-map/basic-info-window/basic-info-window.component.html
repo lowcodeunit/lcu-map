@@ -1,102 +1,96 @@
+<!-- Modal -->
 <div id="dialogRef" fxLayout="column" class="basic-info-window">
 
   <!-- close button -->
   <div fxLayout="row">
     <mat-icon fxFlex fxLayoutAlign="end" (click)="Close()" matTooltip="Close">close</mat-icon>
   </div>
-
-  <!-- form data -->
-  <div *ngIf="panelOpenState === 'closed'" class="basic-info" [hidden]="changePositionToCenter()">
-    <!-- <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
-      <mat-form-field>
-        <mat-label>Marker Title</mat-label>
-        <input type="text" matInput formControlName="title">
-        <mat-hint>The title for the map marker</mat-hint>
-        <mat-error>Invalid or missing title</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-      <mat-label>Icon</mat-label>
-      <mat-select formControlName="icon">
-        <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-      <div style="width: 100%">
-        <div fxLayout="row wrap" fxLayoutGap="10px">
-          <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
-            src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
-        </div>
-      </div>
-    </form> -->
-
+  <mat-dialog-content class="mat-dialog-content">
     <!-- display basic data -->
-    <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
+    <div *ngIf="panelOpenState === 'closed'" class="basic-info" [hidden]="changePositionToCenter()">
+      <div fxLayout="column" fxLayoutAlign="start start" class="marker-info-container">
         <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2>
-      <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
-        {{BasicInfoData?.country}}</div>
-      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
-      <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
+        <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
+        <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
+          {{BasicInfoData?.country}}</div>
+        <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
+        <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
+      </div>
     </div>
-  </div>
 
-  <div *ngIf="panelOpenState === 'addToMap'"  [hidden]="changePositionToCenter()">
+    <!-- form data add to map -->
+    <div *ngIf="panelOpenState === 'addToMap'" [hidden]="changePositionToCenter()">
       <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
-          <mat-form-field>
-            <mat-label>Marker Title</mat-label>
-            <input type="text" matInput formControlName="title">
-            <mat-hint>The title for the map marker</mat-hint>
-            <mat-error>Invalid or missing title</mat-error>
-          </mat-form-field>
-          <!-- <mat-form-field>
+        <mat-form-field>
+          <mat-label>Marker Title</mat-label>
+          <input type="text" matInput formControlName="title">
+          <mat-hint>The title for the map marker</mat-hint>
+          <mat-error>Invalid or missing title</mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field>
           <mat-label>Icon</mat-label>
           <mat-select formControlName="icon">
             <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
           </mat-select>
         </mat-form-field> -->
-          <div style="width: 100%">
-            <div fxLayout="row wrap" fxLayoutGap="10px">
-              <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
-                src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
-            </div>
+        <div style="width: 100%">
+          <div fxLayout="row wrap" fxLayoutGap="10px">
+            <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}"
+              *ngFor="let icon of MarkerSet" src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
           </div>
-        </form>
-  </div>
-
-  <!-- More Info expansion panel -->
-  <div class="expansion-panel-container">
-    <mat-accordion>
-      <mat-expansion-panel (opened)="panelOpenState = 'open'" (closed)="panelOpenState = 'closed'">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            More Info
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div fxLayout="column" fxLayoutAlign="start start" class="marker-more-info-container"  *ngIf="panelOpenState === 'open'" [hidden]="changePositionToRHS()">
-          <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2>
-          <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
-          <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
-            {{BasicInfoData?.country}}</div>
-          <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
-          <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
-          <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
-          <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}}>Reservations</a>
-          <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}}>Menu</a>
-          <!-- https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
-          <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
-            speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
-          </star-rating>
-          <div *ngIf="BasicInfoData?.awards">Awards: {{BasicInfoData?.awards}}</div>
-          <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a>
-          <p *ngIf="BasicInfoData?.generalInfo">General Info: {{BasicInfoData?.generalInfo}}</p>
         </div>
+        <!-- <mat-form-field>
+            <mat-label>Notes</mat-label>
+            <input type="text" matInput formControlName="notes">
+            <mat-hint>Add Notes for this location</mat-hint>
+          </mat-form-field> -->
+      </form>
+    </div>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+    <!-- More Info expansion panel -->
+    <div class="expansion-panel-container" *ngIf="panelOpenState != 'addToMap'">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = 'open'" (closed)="panelOpenState = 'closed'">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              More Info
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div fxLayout="column" fxLayoutAlign="start start" class="marker-more-info-container"
+            *ngIf="panelOpenState === 'open'" [hidden]="changePositionToRHS()">
+            <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2>
+            <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
+            <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
+              {{BasicInfoData?.country}}</div>
+            <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
+            <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
+            <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
+            <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}}>Reservations</a>
+            <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}}>Menu</a>
+            <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
+            <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
+              speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
+            </star-rating>
+            <div *ngIf="BasicInfoData?.awards">Awards: {{BasicInfoData?.awards}}</div>
+            <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a>
+            <p *ngIf="BasicInfoData?.notes">Notes: {{BasicInfoData?.notes}}</p>
+            <div *ngIf="BasicInfoData?.photos" class="info-photo-container">Photos:
+              <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}"/>
+            </div>
+            <p *ngIf="BasicInfoData?.generalInfo">General Info: {{BasicInfoData?.generalInfo}}</p>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </mat-dialog-content>
+  <!-- Buttons -->
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
     <button mat-button mat-raised-button [mat-dialog-close]="NewMarker" (click)="SetMarkerData()"
-      [disabled]="NewMarkerForm.invalid">Save Marker</button>
-      <button mat-button mat-raised-button (click)="panelOpenState = 'addToMap'"
-      >Add To Map</button>
+      [disabled]="NewMarkerForm.invalid">Save</button>
+    <button *ngIf="panelOpenState != 'addToMap'" mat-button mat-raised-button
+      (click)="panelOpenState = 'addToMap'">Edit</button>
+    <button *ngIf="panelOpenState === 'addToMap'" mat-button mat-raised-button (click)="panelOpenState = 'closed'">Basic
+      info</button>
   </div>
+
 </div>

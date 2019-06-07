@@ -262,12 +262,24 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-      // this service call gets the place_id from the click listener attached to the 
-      // mapReady event... this (along with the mapReady click listener) will be
-      // switched out for the normal mapClick event once the AGM team releases the 
-      // version where the place_id is passed back from there
-      this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
+        // this service call gets the place_id from the click listener attached to the 
+        // mapReady event... this (along with the mapReady click listener) will be
+        // switched out for the normal mapClick event once the AGM team releases the 
+        // version where the place_id is passed back from there
+        this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
+            let townIndex = -1;
+            let countryIndex = -1;
+            res.result.address_components.forEach((comp, idx) => {
+              if (comp.types.length > 0) {
+                if (comp.types.includes('locality')) {
+                  townIndex = idx;
+                }
+                if (comp.types.includes('country')) {
+                  countryIndex = idx;
+                }
+              }
+            });
             const marker = {
               title: res.result.name,
               lat: res.result.geometry.location.lat,
@@ -275,8 +287,8 @@ export class LcuMapComponent implements OnInit {
               map_id: this._currentMapModel,
               iconName: '',
               phoneNumber: res.result.formatted_phone_number,
-              town: res.result.address_components[3].long_name,
-              country: res.result.address_components[6].long_name
+              town: res.result.address_components[townIndex].long_name,
+              country: res.result.address_components[countryIndex].long_name
             };
             this.DisplayMarkerInfo(marker);
           }
@@ -466,6 +478,20 @@ export class LcuMapComponent implements OnInit {
           this._currentMapModel.origin.lng = place.geometry.location.lng();
           this._currentMapModel.zoom = 16;
 
+          let townIndex = -1;
+          let countryIndex = -1;
+          place.address_components.forEach((comp, idx) => {
+            if (comp.types.length > 0) {
+              if (comp.types.includes('locality')) {
+                townIndex = idx;
+              }
+              if (comp.types.includes('country')) {
+                countryIndex = idx;
+              }
+            }
+          });
+
+
           this.DisplayMarkerInfo(new MapMarker({
             map_id: this._currentMapModel.id,
             title: place.name,
@@ -474,8 +500,8 @@ export class LcuMapComponent implements OnInit {
             lng: place.geometry.location.lng(),
             phoneNumber: place.formatted_phone_number,
             website: place.website,
-            town: place.address_components[3].long_name,
-            country: place.address_components[6].long_name
+            town: place.address_components[townIndex].long_name,
+            country: place.address_components[countryIndex].long_name
           }));
         });
       });

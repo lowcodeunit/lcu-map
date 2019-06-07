@@ -89,9 +89,19 @@ export class MapMarker {
     media?: string;
 
     /**
-     * General info in the location
+     * A link to photos pertaining to the location
+     */
+    photos?: Array<string>;
+
+    /**
+     * General info on the location
      */
     generalInfo?: string;
+
+    /**
+     * notes on the location
+     */
+    notes?: string;
 
 
     /**
@@ -124,6 +134,8 @@ export class MapMarker {
         this.awards = icon.awards;
         this.media = icon.media;
         this.generalInfo = icon.generalInfo;
+        this.photos = icon.photos;
+        this.notes = icon.notes;
     }
 
     

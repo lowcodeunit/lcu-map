@@ -28,6 +28,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public MarkerSet: Array<MarkerInfo>;
 
+
   /**
    * The form used to get data from user and set the location's data to it
    */
@@ -87,7 +88,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
  * Change position of the dialog box to the bottom 
  */
   public changePositionToRHS() {
-    this.dialogRef.updatePosition({ bottom:'auto', right: '0px' });
+    this.dialogRef.updatePosition({ right: '0px' });
 }
 
 /**

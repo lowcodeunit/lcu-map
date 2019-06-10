@@ -41,7 +41,7 @@ export class SaveMapComponent implements OnInit {
       origin: { lat: 0, lng: 0 },
       zoom: 0,
       locationList: []
-    }
+    };
   }
 
   // API METHODS

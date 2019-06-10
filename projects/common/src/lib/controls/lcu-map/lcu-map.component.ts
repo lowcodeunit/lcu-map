@@ -14,6 +14,7 @@ import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
 import { MapService } from '../../services/map.service';
+import * as uuid from 'uuid';
 
 
 @Component({
@@ -281,6 +282,7 @@ export class LcuMapComponent implements OnInit {
               }
             });
             const marker = {
+              id: uuid.v4(),
               title: res.result.name,
               lat: res.result.geometry.location.lat,
               lng: res.result.geometry.location.lng,
@@ -492,6 +494,7 @@ export class LcuMapComponent implements OnInit {
           });
 
           this.DisplayMarkerInfo(new MapMarker({
+            id: uuid.v4(),
             map_id: this._currentMapModel.id,
             title: place.name,
             iconName: place.icon,

@@ -55,6 +55,9 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.zoom = this.passedData.map.zoom;
     this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
     this.NewMap.locationList = this.passedData.locationMarkers;
+    this.NewMap.locationList.forEach(loc => {
+      loc.map_id = this.NewMap.id;
+    });
     // the below adds visible secondary location markers as well as primary
     // this.passedData.secondaryMarkers.forEach(loc => {
     //   if (loc.showMarker === true) {

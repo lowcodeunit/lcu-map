@@ -1,6 +1,11 @@
 export class MapMarker {
 
     /**
+     * The unique id of the individual map marker
+     */
+    id: string;
+
+    /**
      * The map id which associates an individual marker with a single map
      */
     map_id: string;

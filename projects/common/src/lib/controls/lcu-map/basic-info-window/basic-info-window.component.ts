@@ -4,6 +4,7 @@ import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'lcu-basic-info-window',
@@ -56,9 +57,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.NewMarkerForm = new FormGroup({
       title: new FormControl('', { validators: [Validators.required] })
-      // icon: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMarker = {
+      id: '',
       map_id: '0',
       title: '',
       iconName: '',
@@ -73,7 +74,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.BasicInfoData = this.passedData.marker;
       this.MarkerSet = this.passedData.markerSet;
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.title })
-      this.NewMarker = this.passedData.marker;
+      this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.iconName);
     }, 50);
   }
@@ -116,7 +117,7 @@ public changePositionToFooter() {
    * Sets the marker data to the user entered data
    */
   public SetMarkerData() {
-    this.NewMarker = this.passedData.marker;
+    this.NewMarker.id = uuid.v4();
     this.NewMarker.map_id = this.passedData.primary_map_id;
     this.NewMarker.title = this.NewMarkerForm.value.title;
     this.NewMarker.iconName = this.ChosenIcon.iconLookup;

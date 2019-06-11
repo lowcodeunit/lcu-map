@@ -24,6 +24,9 @@ import * as uuid from 'uuid';
 })
 export class LcuMapComponent implements OnInit {
 
+  public PrimaryChecked;
+  public SecondaryChecked;
+
   // FIELDS
 
   /**
@@ -99,11 +102,13 @@ export class LcuMapComponent implements OnInit {
     { value: 'satellite', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
-
+  public primClicked(e) {
+    console.log(e)
+  }
   /**
    * Boolean that determines whether or not to show the markers of the current map (primary map)
    */
-  public PrimaryMarkersSelected: boolean = true;
+  // public PrimaryMarkersSelected: boolean = true;
 
   /**
    * The public map model converted from the passed IndividualMap input
@@ -171,7 +176,8 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.toggleActiveMapLayer(this._currentMapModel);
+    this.resetMapCheckedState();
+    // this.toggleActiveMapLayer(this._currentMapModel);
   }
 
   /**
@@ -188,6 +194,7 @@ export class LcuMapComponent implements OnInit {
   // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
   public set SecondaryMaps(value: Array<IndividualMap>) {
     this._secondaryMaps = value;
+    this.resetMapCheckedState();
   }
 
   /**
@@ -228,6 +235,15 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
   }
 
+  protected resetMapCheckedState() {
+    this.PrimaryChecked = true;
+    this.SecondaryChecked = false;
+    this.CurrentlyActiveLocations = [];
+    this._currentMapModel.locationList.forEach(loc => {
+      this.CurrentlyActiveLocations.push(loc);
+    });
+  }
+
   // LIFE CYCLE
   ngOnInit() {
     this._currentMapModel.locationList.forEach(loc => {
@@ -236,6 +252,7 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    this.resetMapCheckedState();
   }
 
   ngOnChanges(value) {
@@ -368,13 +385,39 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(layer?: IndividualMap): void {
+  public LayerClicked(event, layer?: IndividualMap): void {
+    if (layer) { // (if user clicked a secondary checkbox)
+      if (event.checked === true) { // (if user checked the box)
+        layer.locationList.forEach(loc => {
+          this.CurrentlyActiveLocations.push(loc);
+        });
+      } else { // (if user un-checked the box)
+        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+          return loc.map_id !== layer.id;
+        });
+      }
+    } else { // (if user clicked the primary checkbox)
+      if (event.checked === true) { // (if user checked the box)
+        this._currentMapModel.locationList.forEach(loc => {
+          this.CurrentlyActiveLocations.push(loc);
+        });
+      } else { // (if user un-checked the box)
+        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+          return loc.map_id !== this._currentMapModel.id;
+        });
+      }
+    }
 
-    this.toggleActiveMapLayer(layer);
+    this.CurrentlyActiveLocations.forEach(loc => {
+      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+    });
+
+    // this.toggleActiveMapLayer(layer);
 
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend
+      console.log('emitted locations: ', this.CurrentlyActiveLocations);
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
   }
@@ -523,26 +566,27 @@ export class LcuMapComponent implements OnInit {
   }
 
   protected toggleActiveMapLayer(layer?: IndividualMap) {
-    if (layer) { // in other words, if the layer click was a secondary layer
-      if (this.CurrentlyActiveLayers.filter(map => map.id === layer.id).length === 0) {
-        this.CurrentlyActiveLayers.push(layer);
-        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, layer);
-      } else {
-        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== layer.id);
-        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, layer);
-      }
-    } else { // if the layer clicked was the primary layer
-      if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length === 0) {
-        this.CurrentlyActiveLayers.push(this._currentMapModel);
-        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
-      } else {
-        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this._currentMapModel.id);
-        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
-      }
-    }
-    this.CurrentlyActiveLocations.forEach(loc => {
-      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
-    });
+
+    //   if (layer) { // in other words, if the layer click was a secondary layer
+    //     if (this.CurrentlyActiveLayers.filter(map => map.id === layer.id).length === 0) {
+    //       this.CurrentlyActiveLayers.push(layer);
+    //       this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, layer);
+    //     } else {
+    //       this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== layer.id);
+    //       this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, layer);
+    //     }
+    //   } else { // if the layer clicked was the primary layer
+    //     if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length === 0) {
+    //       this.CurrentlyActiveLayers.push(this._currentMapModel);
+    //       this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
+    //     } else {
+    //       this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this._currentMapModel.id);
+    //       this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
+    //     }
+    //   }
+    //   this.CurrentlyActiveLocations.forEach(loc => {
+    //     loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+    //   });
   }
 
   protected addLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {

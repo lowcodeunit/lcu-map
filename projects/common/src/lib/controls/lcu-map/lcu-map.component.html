@@ -13,20 +13,22 @@
 </div>
 
 <div [hidden]="!ShowSearchBar" id="search-bar">
-  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [formControl]="SearchControl">
+  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search
+    [formControl]="SearchControl">
 </div>
 <agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
   [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
   [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
   [usePanning]="true">
-  <div *ngFor="let marker of _currentMapModel.locationList">
-    <div *ngFor="let marker of CurrentlyActiveLocations">
-      <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-        [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-      </agm-marker>
-    </div>
+  <!-- <div *ngFor="let marker of _currentMapModel.locationList"> -->
+  <div *ngFor="let marker of CurrentlyActiveLocations">
+    <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+      [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
+    </agm-marker>
   </div>
+  <!-- </div> -->
 </agm-map>
+<span>Current Map: {{_currentMapModel.title}}</span>
 
 <!-- the menu for the map layers button -->
 <mat-menu #layerMenu="matMenu" id="layer-menu">
@@ -35,10 +37,11 @@
       {{view.display}}</mat-radio-button>
   </mat-radio-group>
   <mat-divider></mat-divider>
-  <mat-checkbox (click)="$event.stopPropagation();LayerClicked()" [(ngModel)]="PrimaryMarkersSelected"
+  <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
     matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">
     {{_currentMapModel.title}} (Primary)</mat-checkbox>
   <mat-divider></mat-divider>
-  <mat-checkbox (click)="$event.stopPropagation();LayerClicked(map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
+  <mat-checkbox id="map_id_{{map.id}}" (click)="$event.stopPropagation()" [checked]="SecondaryChecked"
+    (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
   </mat-checkbox>
 </mat-menu>

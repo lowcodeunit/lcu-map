@@ -18,10 +18,10 @@ export class AppComponent implements OnInit {
       origin: { lat: 40.037757, lng: -105.378324 },
       zoom: 13,
       locationList: [
-        { id: '49', title: 'Brewsky\'s', lat: 40.012557, lng: -105.268199, iconName: 'brewery', map_id: '1' },
-        { id: '50', title: 'Phat Bar', lat: 40.022657, lng: -105.268199, iconName: 'bar', map_id: '1' },
-        { id: '51', title: 'Bar of the Rockies', lat: 40.026757, lng: -105.277199, iconName: 'bar', map_id: '1' },
-        { id: '52', title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery', map_id: '1' },
+        { id: '49', title: 'Brewsky\'s', lat: 40.012557, lng: -105.268199, iconName: 'brewery', map_id: '1', town: 'Boulder', country: 'US' },
+        { id: '50', title: 'Phat Bar', lat: 40.022657, lng: -105.268199, iconName: 'bar', map_id: '1', town: 'Boulder', country: 'US' },
+        { id: '51', title: 'Bar of the Rockies', lat: 40.026757, lng: -105.277199, iconName: 'bar', map_id: '1', town: 'Boulder', country: 'US' },
+        { id: '52', title: 'Good brewery', lat: 40.047857, lng: -105.268199, iconName: 'brewery', map_id: '1', town: 'Boulder', country: 'US' },
       ]
     },
     {

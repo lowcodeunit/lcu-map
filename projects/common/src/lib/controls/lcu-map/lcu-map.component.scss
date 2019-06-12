@@ -56,3 +56,37 @@ mat-checkbox, mat-radio-button {
         font-size: 16px;
     }
 }
+
+mat-option {
+    height: 31px;
+    border-top: lightgrey 1px solid;
+    padding: 6px;
+}
+
+.dropdown-marker-image {
+    height: 15px;
+}
+
+.dropdown-marker-title-text {
+    color: black;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    margin-left: 3px;
+}
+
+.dropdown-marker-location-text {
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    line-height: 30px;
+    color: #999;
+}
+
+.search-method-radio-group {
+    position: relative;
+    left: 10%;
+    background: rgba(255,255,255,.5);
+    max-width: 9%;
+    padding: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

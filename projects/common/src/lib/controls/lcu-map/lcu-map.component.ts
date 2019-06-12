@@ -12,9 +12,10 @@ import { MapsAPILoader } from '@agm/core';
 // @ts-ignore
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import * as uuid from 'uuid';
+import { map, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -26,6 +27,9 @@ export class LcuMapComponent implements OnInit {
 
   public PrimaryChecked;
   public SecondaryChecked;
+
+  public SearchMethod: string;
+  public SearchMethods: string[] = ['Custom Markers', 'Google Locations'];
 
   // FIELDS
 
@@ -233,6 +237,7 @@ export class LcuMapComponent implements OnInit {
     this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
+    this.SearchMethod = 'Google Locations';
   }
 
   protected resetMapCheckedState() {
@@ -253,11 +258,16 @@ export class LcuMapComponent implements OnInit {
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     this.resetMapCheckedState();
+    this.options = this.CurrentlyActiveLocations;
+    this.FilteredLocations = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.title),
+        map(title => title ? this._filter(title) : this.options.slice()),
+      );
   }
 
   ngOnChanges(value) {
-    if (value.MapModel) {
-    }
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 
@@ -377,6 +387,12 @@ export class LcuMapComponent implements OnInit {
         }
       }
     });
+  }
+
+  public DropdownItemChosen(loc) {
+    this._currentMapModel.origin.lat = loc.lat;
+    this._currentMapModel.origin.lng = loc.lng;
+    this.DisplayMarkerInfo(loc);
   }
 
   /**
@@ -598,6 +614,20 @@ export class LcuMapComponent implements OnInit {
 
   protected removeLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
     return locList.filter(loc => loc.map_id !== layer.id);
+  }
+
+  myControl = new FormControl();
+  options: MapMarker[] = this.CurrentlyActiveLocations;
+  FilteredLocations: Observable<MapMarker[]>;
+
+  displayFn(marker?: MapMarker): string | undefined {
+    return marker ? marker.title : undefined;
+  }
+
+  private _filter(title: string): MapMarker[] {
+    const filterValue = title.toLowerCase();
+
+    return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
   }
 
 }

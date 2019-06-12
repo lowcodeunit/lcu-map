@@ -13,8 +13,33 @@
 </div>
 
 <div [hidden]="!ShowSearchBar" id="search-bar">
-  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search
-    [formControl]="SearchControl">
+
+  <div [hidden]="SearchMethod !== 'Google Locations'">
+    <input placeholder="search for Google location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search
+      [formControl]="SearchControl">
+  </div>
+
+  <form [hidden]="SearchMethod !== 'Custom Markers'">
+    <input type="text" placeholder="search for custom location" aria-label="Assignee" [formControl]="myControl"
+      [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
+        [value]="location">
+        <span><img class="dropdown-marker-image" src="{{location.iconImageObject.url}}"></span>
+        <span class="dropdown-marker-title-text">{{ location.title }}</span>&nbsp;
+        <span class="dropdown-marker-location-text">{{ location.town }}, {{ location.country }}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </form>
+
+  <div class="search-method-radio-group">
+    <mat-radio-group [(ngModel)]="SearchMethod">
+      <mat-radio-button *ngFor="let method of SearchMethods" [value]="method">
+        {{method}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
 </div>
 <agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
   [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"

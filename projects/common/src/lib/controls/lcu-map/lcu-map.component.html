@@ -22,7 +22,7 @@
   <form [hidden]="SearchMethod !== 'Custom Markers'">
     <input type="text" placeholder="search for custom location" aria-label="Assignee" [formControl]="CustomLocationControl"
       [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn">
       <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
         [value]="location">
         <span><img class="dropdown-marker-image" src="{{location.iconImageObject.url}}"></span>

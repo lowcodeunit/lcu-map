@@ -37,7 +37,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The list of custom marker options for use in the custom marker location search
    */
-  protected options: MapMarker[] = this.CurrentlyActiveLocations;
+  protected options: MapMarker[];
 
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
@@ -478,6 +478,13 @@ export class LcuMapComponent implements OnInit {
   }
 
   /**
+   * Angular function for use in custom marker location search
+   */
+  public DisplayFn(marker?: MapMarker): string | undefined {
+    return marker ? marker.title : undefined;
+  }
+
+  /**
    * When a location search is performed and a location is chosen, a marker will temporarily display over the chosen location
    */
   public TempSearchMarkerClicked() {
@@ -503,7 +510,7 @@ export class LcuMapComponent implements OnInit {
               this.CurrentlyActiveLocations.push(data);
               this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
             }
-          })
+          });
       }, 50);
     }
   }
@@ -605,13 +612,6 @@ export class LcuMapComponent implements OnInit {
     let filteredLoc = locations.filter(loc => loc.types.includes('establishment'));
     return filteredLoc[0];
     // TODO: further refine this later to make sure the returned location is the closest to the clicked lat/lng
-  }
-
-  /**
-   * Angular function for use in custom marker location search
-   */
-  protected displayFn(marker?: MapMarker): string | undefined {
-    return marker ? marker.title : undefined;
   }
 
   /**

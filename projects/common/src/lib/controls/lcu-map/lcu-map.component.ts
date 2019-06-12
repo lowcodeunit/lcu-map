@@ -25,12 +25,6 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class LcuMapComponent implements OnInit {
 
-  public PrimaryChecked;
-  public SecondaryChecked;
-
-  public SearchMethod: string;
-  public SearchMethods: string[] = ['Custom Markers', 'Google Locations'];
-
   // FIELDS
 
   /**
@@ -39,6 +33,11 @@ export class LcuMapComponent implements OnInit {
    * This will be replaced by a direct call when AGM team puts out fix that allows user's click event to return place id directly from (mapClick)
    */
   protected placeId;
+
+  /**
+   * The list of custom marker options for use in the custom marker location search
+   */
+  protected options: MapMarker[];
 
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
@@ -72,6 +71,25 @@ export class LcuMapComponent implements OnInit {
 
   // PROPERTIES
 
+  /**
+   * Boolean that controls the checked/unchecked state of the primary checkbox (layer)
+   */
+  public PrimaryChecked: boolean;
+
+  /**
+   * Boolean that controls the checked/unchecked state of all the secondary checkboxes (layers)
+   */
+  public SecondaryChecked: boolean;
+
+  /**
+   * The user's chosen search method for the location search (custom or native Google locations)
+   */
+  public SearchMethod: string;
+
+  /**
+   * The list of choices of location search methods for user to choose
+   */
+  public SearchMethods: string[] = ['Custom Markers', 'Google Locations'];
 
   /**
    * Input property that represents the current primary map
@@ -106,9 +124,7 @@ export class LcuMapComponent implements OnInit {
     { value: 'satellite', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
-  public primClicked(e) {
-    console.log(e)
-  }
+  
   /**
    * Boolean that determines whether or not to show the markers of the current map (primary map)
    */
@@ -118,6 +134,16 @@ export class LcuMapComponent implements OnInit {
    * The public map model converted from the passed IndividualMap input
    */
   public CurrentMapModel: IndividualMap;
+
+  /**
+   * The form control for searching custom marker locations
+   */
+  public CustomLocationControl = new FormControl();
+
+  /**
+   * The current locations based on the current state of the custom location search form control
+   */
+  public FilteredLocations: Observable<MapMarker[]>;
 
   /**
    * A conglomerated list of all the map markers of all the secondary (non-primary) maps
@@ -181,7 +207,6 @@ export class LcuMapComponent implements OnInit {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.resetMapCheckedState();
-    // this.toggleActiveMapLayer(this._currentMapModel);
   }
 
   /**
@@ -259,7 +284,7 @@ export class LcuMapComponent implements OnInit {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     this.resetMapCheckedState();
     this.options = this.CurrentlyActiveLocations;
-    this.FilteredLocations = this.myControl.valueChanges
+    this.FilteredLocations = this.CustomLocationControl.valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : value.title),
@@ -389,6 +414,9 @@ export class LcuMapComponent implements OnInit {
     });
   }
 
+  /**
+   * Run when user clicks a custom location marker from custom location search
+   */
   public DropdownItemChosen(loc) {
     this._currentMapModel.origin.lat = loc.lat;
     this._currentMapModel.origin.lng = loc.lng;
@@ -428,8 +456,6 @@ export class LcuMapComponent implements OnInit {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
     });
 
-    // this.toggleActiveMapLayer(layer);
-
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend
@@ -449,6 +475,13 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.neLng = event.getNorthEast().lng();
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
+  }
+
+  /**
+   * Angular function for use in custom marker location search
+   */
+  public DisplayFn(marker?: MapMarker): string | undefined {
+    return marker ? marker.title : undefined;
   }
 
   /**
@@ -476,8 +509,9 @@ export class LcuMapComponent implements OnInit {
               this._currentMapModel.locationList.push(data);
               this.CurrentlyActiveLocations.push(data);
               this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+              this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
             }
-          })
+          });
       }, 50);
     }
   }
@@ -581,52 +615,11 @@ export class LcuMapComponent implements OnInit {
     // TODO: further refine this later to make sure the returned location is the closest to the clicked lat/lng
   }
 
-  protected toggleActiveMapLayer(layer?: IndividualMap) {
-
-    //   if (layer) { // in other words, if the layer click was a secondary layer
-    //     if (this.CurrentlyActiveLayers.filter(map => map.id === layer.id).length === 0) {
-    //       this.CurrentlyActiveLayers.push(layer);
-    //       this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, layer);
-    //     } else {
-    //       this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== layer.id);
-    //       this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, layer);
-    //     }
-    //   } else { // if the layer clicked was the primary layer
-    //     if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length === 0) {
-    //       this.CurrentlyActiveLayers.push(this._currentMapModel);
-    //       this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
-    //     } else {
-    //       this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this._currentMapModel.id);
-    //       this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
-    //     }
-    //   }
-    //   this.CurrentlyActiveLocations.forEach(loc => {
-    //     loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
-    //   });
-  }
-
-  protected addLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
-    layer.locationList.forEach(loc => {
-      locList.push(loc)
-    });
-    return locList;
-  }
-
-  protected removeLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
-    return locList.filter(loc => loc.map_id !== layer.id);
-  }
-
-  myControl = new FormControl();
-  options: MapMarker[] = this.CurrentlyActiveLocations;
-  FilteredLocations: Observable<MapMarker[]>;
-
-  displayFn(marker?: MapMarker): string | undefined {
-    return marker ? marker.title : undefined;
-  }
-
-  private _filter(title: string): MapMarker[] {
+  /**
+   * Filter for use in custom marker location search
+   */
+  protected _filter(title: string): MapMarker[] {
     const filterValue = title.toLowerCase();
-
     return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
   }
 

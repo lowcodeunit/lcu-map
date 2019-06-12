@@ -509,6 +509,7 @@ export class LcuMapComponent implements OnInit {
               this._currentMapModel.locationList.push(data);
               this.CurrentlyActiveLocations.push(data);
               this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+              this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
             }
           });
       }, 50);

@@ -498,16 +498,31 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker) {
+    let isEdit: boolean = false;
+    if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
+      isEdit = true;
+    }
     if (marker) {
       setTimeout(() => {
-        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id } });
+        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit } });
         this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
           data => {
             // console.log("Dialog output:", data)
             // console.log(dialogRef);
             if (data !== undefined && data !== null) {
-              this._currentMapModel.locationList.push(data);
-              this.CurrentlyActiveLocations.push(data);
+              if (!isEdit) {
+                this._currentMapModel.locationList.push(data);
+                this.CurrentlyActiveLocations.push(data);
+              } else {
+                let idx = this._currentMapModel.locationList.findIndex(loc => {
+                  return loc.id === marker.id;
+                });
+                this._currentMapModel.locationList.splice(idx, 1, data);
+                idx = this.CurrentlyActiveLocations.findIndex(loc => {
+                  return loc.id === marker.id;
+                });
+                this.CurrentlyActiveLocations.splice(idx, 1, data);
+              }
               this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
               this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
             }

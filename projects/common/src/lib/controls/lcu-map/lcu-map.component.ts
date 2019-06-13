@@ -126,11 +126,6 @@ export class LcuMapComponent implements OnInit {
   ]
 
   /**
-   * Boolean that determines whether or not to show the markers of the current map (primary map)
-   */
-  // public PrimaryMarkersSelected: boolean = true;
-
-  /**
    * The public map model converted from the passed IndividualMap input
    */
   public CurrentMapModel: IndividualMap;
@@ -144,11 +139,6 @@ export class LcuMapComponent implements OnInit {
    * The current locations based on the current state of the custom location search form control
    */
   public FilteredLocations: Observable<MapMarker[]>;
-
-  /**
-   * A conglomerated list of all the map markers of all the secondary (non-primary) maps
-   */
-  // public SecondaryLocations: Array<any>;
 
   /**
    * The search input box
@@ -283,13 +273,7 @@ export class LcuMapComponent implements OnInit {
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     this.resetMapCheckedState();
-    this.options = this.CurrentlyActiveLocations;
-    this.FilteredLocations = this.CustomLocationControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value.title),
-        map(title => title ? this._filter(title) : this.options.slice()),
-      );
+    this.setUpCustomMarkerSearch();
   }
 
   ngOnChanges(value) {
@@ -315,22 +299,20 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        // this service call gets the place_id from the click listener attached to the 
-        // mapReady event... this (along with the mapReady click listener) will be
-        // switched out for the normal mapClick event once the AGM team releases the 
-        // version where the place_id is passed back from there
         this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
             let townIndex = -1;
             let countryIndex = -1;
             res.result.address_components.forEach((comp, idx) => {
-              if (comp.types.length > 0) {
-                if (comp.types.includes('locality')) {
-                  townIndex = idx;
-                }
-                if (comp.types.includes('country')) {
-                  countryIndex = idx;
-                }
+              if (comp.types.includes('locality')) {
+                townIndex = idx;
+              }
+              if (comp.types.includes('country')) {
+                countryIndex = idx;
+              }
+              if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
+                // if location is outside a "town", set it to "county"
+                townIndex = idx;
               }
             });
             const marker = {
@@ -399,8 +381,6 @@ export class LcuMapComponent implements OnInit {
       data: {
         map,
         locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
-        // for now, we include all displayed secondary map markers in a newly created map:
-        // secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }
     });
@@ -485,13 +465,6 @@ export class LcuMapComponent implements OnInit {
   }
 
   /**
-   * When a location search is performed and a location is chosen, a marker will temporarily display over the chosen location
-   */
-  public TempSearchMarkerClicked() {
-    // delete later
-  }
-
-  /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
@@ -549,6 +522,19 @@ export class LcuMapComponent implements OnInit {
   }
 
   // HELPERS
+
+  /**
+   * Sets up the search filtering for the custom marker search
+   */
+  protected setUpCustomMarkerSearch() {
+    this.options = this.CurrentlyActiveLocations;
+    this.FilteredLocations = this.CustomLocationControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.title),
+        map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
+      );
+  }
 
   /**
    * 
@@ -633,7 +619,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Filter for use in custom marker location search
    */
-  protected _filter(title: string): MapMarker[] {
+  protected filterCustomLocations(title: string): MapMarker[] {
     const filterValue = title.toLowerCase();
     return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
   }

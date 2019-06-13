@@ -29,6 +29,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public MarkerSet: Array<MarkerInfo>;
 
+  /**
+   * Reflects whether the incoming location marker exists or not (if it exists, IsEdit is true)
+   */
   public IsEdit: boolean = false;
 
   /**

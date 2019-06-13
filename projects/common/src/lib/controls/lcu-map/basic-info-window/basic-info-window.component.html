@@ -75,7 +75,7 @@
             <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a>
             <p *ngIf="BasicInfoData?.notes">Notes: {{BasicInfoData?.notes}}</p>
             <div *ngIf="BasicInfoData?.photos" class="info-photo-container">Photos:
-              <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}"/>
+              <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}" />
             </div>
             <p *ngIf="BasicInfoData?.generalInfo">General Info: {{BasicInfoData?.generalInfo}}</p>
           </div>
@@ -85,10 +85,12 @@
   </mat-dialog-content>
   <!-- Buttons -->
   <div class="button-container" fxLayout="row" fxLayoutAlign="center end">
-    <button mat-button mat-raised-button [mat-dialog-close]="NewMarker" (click)="SetMarkerData()"
-      [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="panelOpenState != 'addToMap'" mat-button mat-raised-button
-      (click)="panelOpenState = 'addToMap'">Edit</button>
+    <button *ngIf="panelOpenState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
+      (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
+    <button *ngIf="panelOpenState !== 'addToMap' && !IsEdit" mat-button mat-raised-button (click)="panelOpenState = 'addToMap'">Add
+      Marker</button>
+    <button *ngIf="panelOpenState !== 'addToMap' && IsEdit" mat-button mat-raised-button
+      (click)="panelOpenState = 'addToMap'">Edit Marker</button>
     <button *ngIf="panelOpenState === 'addToMap'" mat-button mat-raised-button (click)="panelOpenState = 'closed'">Basic
       info</button>
   </div>

@@ -124,7 +124,7 @@ export class LcuMapComponent implements OnInit {
     { value: 'satellite', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
-  
+
   /**
    * Boolean that determines whether or not to show the markers of the current map (primary map)
    */
@@ -498,11 +498,11 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker) {
-    let isEdit: boolean = false;
-    if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
-      isEdit = true;
-    }
     if (marker) {
+      let isEdit: boolean = false;
+      if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
+        isEdit = true;
+      }
       setTimeout(() => {
         const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit } });
         this.markerInfoSubscription = dialogRef.afterClosed().subscribe(

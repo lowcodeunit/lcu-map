@@ -59,6 +59,7 @@ export class LocationInfoFormComponent implements OnInit {
       // icon: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMarker = {
+      id: '',
       map_id: '0',
       title: '',
       iconName: '',

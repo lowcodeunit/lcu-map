@@ -32,7 +32,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * This will be replaced by a direct call when AGM team puts out fix that allows user's click event to return place id directly from (mapClick)
    */
-  protected placeId;
+  protected placeId: string;
 
   /**
    * The list of custom marker options for use in the custom marker location search
@@ -62,7 +62,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Input property that represents the current secondary maps (layers)
    */
-  protected _secondaryMaps;
+  protected _secondaryMaps: Array<IndividualMap>;
 
   /**
    * The subscription for the basic-info-window modal
@@ -89,12 +89,12 @@ export class LcuMapComponent implements OnInit {
   /**
    * The list of choices of location search methods for user to choose
    */
-  public SearchMethods: string[] = ['Custom Markers', 'Google Locations'];
+  public SearchMethods: Array<string> = ['Custom Markers', 'Google Locations'];
 
   /**
    * Input property that represents the current primary map
    */
-  public _currentMapModel;
+  public _currentMapModel: any;
 
   /**
    * The maps (in layer form) that are currently being displayed
@@ -119,7 +119,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The array of available map views to be chosen by the user (default is standard)
    */
-  public MapViewTypes: {}[] = [
+  public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },
     { value: 'satellite', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
@@ -133,7 +133,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The form control for searching custom marker locations
    */
-  public CustomLocationControl = new FormControl();
+  public CustomLocationControl: FormControl = new FormControl();
 
   /**
    * The current locations based on the current state of the custom location search form control
@@ -202,7 +202,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The getter for the current map model
    */
-  public get MapModel() {
+  public get MapModel(): IndividualMap {
     return this._currentMapModel;
   }
 
@@ -219,7 +219,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Getter for the input field '._secondaryMaps'
    */
-  public get SecondaryMaps() {
+  public get SecondaryMaps(): Array<IndividualMap> {
     return this._secondaryMaps;
   }
 
@@ -243,25 +243,16 @@ export class LcuMapComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(private dialog: MatDialog, private mapConverions: MapConversions,
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
-    private mapService: MapService) {
+  constructor(protected dialog: MatDialog, protected mapConverions: MapConversions,
+    protected mapsAPILoader: MapsAPILoader,
+    protected ngZone: NgZone, protected wrapper: GoogleMapsAPIWrapper,
+    protected mapService: MapService) {
     this.MapSaved = new EventEmitter,
       this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.SearchMethod = 'Google Locations';
-  }
-
-  protected resetMapCheckedState() {
-    this.PrimaryChecked = true;
-    this.SecondaryChecked = false;
-    this.CurrentlyActiveLocations = [];
-    this._currentMapModel.locationList.forEach(loc => {
-      this.CurrentlyActiveLocations.push(loc);
-    });
   }
 
   // LIFE CYCLE
@@ -285,7 +276,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Toggles the location search bar hidden / shown
    */
-  public ShowLocationSearchBarClicked() {
+  public ShowLocationSearchBarClicked(): void {
     this.ShowSearchBar = this.ShowSearchBar === true ? false : true;
   }
 
@@ -388,7 +379,6 @@ export class LcuMapComponent implements OnInit {
       if (res) {
         if (res) {
           this.MapSaved.emit(res);
-          // console.log('saved map: ', res)
         }
       }
     });
@@ -397,7 +387,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Run when user clicks a custom location marker from custom location search
    */
-  public DropdownItemChosen(loc) {
+  public DropdownItemChosen(loc): void {
     this._currentMapModel.origin.lat = loc.lat;
     this._currentMapModel.origin.lng = loc.lng;
     this.DisplayMarkerInfo(loc);
@@ -470,7 +460,7 @@ export class LcuMapComponent implements OnInit {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
-  public DisplayMarkerInfo(marker: MapMarker) {
+  public DisplayMarkerInfo(marker: MapMarker): void {
     if (marker) {
       let isEdit: boolean = false;
       if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
@@ -514,7 +504,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * This will be removed once AGM team releases code that passes back the place id on (mapClick) directly
    */
-  public OnMapReady(map) {
+  public OnMapReady(map): void {
     map.addListener('click', (loc) => {
       loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
@@ -526,7 +516,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Sets up the search filtering for the custom marker search
    */
-  protected setUpCustomMarkerSearch() {
+  protected setUpCustomMarkerSearch(): void {
     this.options = this.CurrentlyActiveLocations;
     this.FilteredLocations = this.CustomLocationControl.valueChanges
       .pipe(
@@ -558,7 +548,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Runs the boiler plate code that sets up location searching for AGM Google Maps
    */
-  protected runAutocompleteSearchPrep() {
+  protected runAutocompleteSearchPrep(): void {
     this.SearchControl = new FormControl();
     this.mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(this.SearchElementRef.nativeElement, {
@@ -584,6 +574,10 @@ export class LcuMapComponent implements OnInit {
               if (comp.types.includes('country')) {
                 countryIndex = idx;
               }
+              if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
+                // if location is outside a "town", set it to "county"
+                townIndex = idx;
+              }
             }
           });
 
@@ -605,23 +599,23 @@ export class LcuMapComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param locations An array of locations
-   * 
-   * Returns the first item of the array of locations that is of type "establishment"
+   * Filter for use in custom marker location search
    */
-  protected getClosestEstablishment(locations: Array<any>) {
-    let filteredLoc = locations.filter(loc => loc.types.includes('establishment'));
-    return filteredLoc[0];
-    // TODO: further refine this later to make sure the returned location is the closest to the clicked lat/lng
+  protected filterCustomLocations(title: string): Array<MapMarker> {
+    const filterValue = title.toLowerCase();
+    return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
   }
 
   /**
-   * Filter for use in custom marker location search
+   * Sets primary layer to checked and secondary layers to unchecked and resets active location
    */
-  protected filterCustomLocations(title: string): MapMarker[] {
-    const filterValue = title.toLowerCase();
-    return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
+  protected resetMapCheckedState(): void {
+    this.PrimaryChecked = true;
+    this.SecondaryChecked = false;
+    this.CurrentlyActiveLocations = [];
+    this._currentMapModel.locationList.forEach(loc => {
+      this.CurrentlyActiveLocations.push(loc);
+    });
   }
 
 }

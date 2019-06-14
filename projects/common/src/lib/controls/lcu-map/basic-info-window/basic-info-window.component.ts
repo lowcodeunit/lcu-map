@@ -125,7 +125,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   /**
    * Sets the marker data to the user entered data
    */
-  public SetMarkerData() {
+  public SetMarkerData(): void {
     if (!this.IsEdit) {
       this.NewMarker.id = uuid.v4();
     }
@@ -141,7 +141,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * 
    * Sets the current ChosenIcon to the icon the user selected
    */
-  public SetIcon(icon) {
+  public SetIcon(icon): void {
     if (this.ChosenIcon === icon) {
       this.ChosenIcon = null;
     } else {
@@ -157,7 +157,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * 
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
-  protected setChosenIconIfExists(iconName: string) {
+  protected setChosenIconIfExists(iconName: string): void {
     this.MarkerSet.forEach(marker => {
       if (marker.iconLookup === iconName) {
         this.ChosenIcon = marker;

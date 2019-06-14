@@ -4,6 +4,9 @@ import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'lcu-basic-info-window',
@@ -14,12 +17,24 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // FIELDS
 
+  
+
   // PROPERTIES
 
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches)
+    );
+
+
   /**
-   * Gives an idea of the state of the expansion panel
+   * determine what state the modal is in
+   * 
+   * basic = basic info
+   * 
+   * addToMap = able to edit the location
    */
-  public panelOpenState = "closed";
+  public ModalState = "basic";
 
   public BasicInfoData: any;
 
@@ -48,7 +63,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
     protected dialogRef: MatDialogRef<BasicInfoWindowComponent>,
-    protected mapConversions: MapConversions) {
+    protected mapConversions: MapConversions,
+    protected breakpointObserver: BreakpointObserver) {
   }
 
   // LIFE CYCLE
@@ -84,27 +100,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // API METHODS
 
-/**
- * Change position of the dialog box to the bottom 
- */
-  public changePositionToRHS() {
-    this.dialogRef.updatePosition({ right: '0px' });
-}
-
-/**
- * Change position of the dialog box to the center 
- */
-public changePositionToCenter() {
-  this.dialogRef.updatePosition({ top:'100px', bottom:'100px' });
-}
-
-/**
- * Change position of the dialog box to the bottom 
- */
-public changePositionToFooter() {
-  this.dialogRef.updatePosition({ top:'auto' });
-  this.dialogRef.updateSize( '100vw' );
-}
   /**
    * Closes the modal
    */

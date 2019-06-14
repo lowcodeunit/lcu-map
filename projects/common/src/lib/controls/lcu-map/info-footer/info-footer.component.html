@@ -1,0 +1,18 @@
+  <div *ngIf="FormView === 'basic' || FormView === 'moreInfo'">
+    <div class="nav-icons" fxLayout="row" fxLayoutAlign="space-between">
+      <mat-icon *ngIf="FormView === 'basic'" fxFlex fxLayoutAlign="center" matTooltip="More Info"
+        (click)="ShowMoreInfo()">keyboard_arrow_up</mat-icon>
+      <mat-icon *ngIf="FormView === 'moreInfo'" fxFlex fxLayoutAlign="center" matTooltip="More Info"
+        (click)="ShowBasicInfo()">keyboard_arrow_down</mat-icon>
+      <mat-icon (click)="Close()" matTooltip="Close">close</mat-icon>
+    </div>
+    <mat-card *ngIf="FormView === 'basic'" (swipeup)="SwipedUp()" (swipedown)="SwipeToClose()">
+      <mat-card-header fxLayout="column" fxLayoutAlign="space-between start">
+        <mat-card-title *ngIf="Marker.title" fxLayout="row" fxLayoutAlign="start">{{Marker.title}}</mat-card-title>
+        <mat-card-subtitle *ngIf="Marker.town || Marker.country">Location: {{Marker.town}} {{Marker.country}}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <lcu-location-info-form [MarkerData]="MarkerData" [FormView]="FormView" (swipedown)="SwipedDown()"></lcu-location-info-form>
+  </div>

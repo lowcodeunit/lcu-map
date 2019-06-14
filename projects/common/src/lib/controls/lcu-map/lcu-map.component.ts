@@ -14,6 +14,9 @@ import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription } from 'rxjs';
 import { MapService } from '../../services/map.service';
+import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
+import { InfoDisplayService } from '../../services/info-display.service';
+import { MarkerData } from '../../models/marker-data.model';
 
 
 @Component({
@@ -24,6 +27,8 @@ import { MapService } from '../../services/map.service';
 export class LcuMapComponent implements OnInit {
 
   // FIELDS
+
+
 
   /**
    * The place id of the location the user clicked on
@@ -62,8 +67,28 @@ export class LcuMapComponent implements OnInit {
    */
   protected markerInfoSubscription: Subscription;
 
-  // PROPERTIES
 
+  protected observerSubscription: Subscription;
+
+
+
+
+  // PROPERTIES 
+
+  public MarkerData: MarkerData;
+  /**
+   * Is true when screen size is small or xs, false otherwise
+   */
+  public IsMobile: boolean;
+  /**
+   * The boolean that is passed to the footer to display or not display the footer
+   */
+   public DisplayFooter: boolean;
+
+  /**
+   * The current map marker that someone has selected to diplay info
+   */
+  public CurrentMapMarker: MapMarker;
 
   /**
    * Input property that represents the current primary map
@@ -124,6 +149,19 @@ export class LcuMapComponent implements OnInit {
    * The form control for the location search box
    */
   public SearchControl: FormControl;
+
+  /**
+    * Breakpoints for screen sizes
+    */
+  protected monitorBreakpoints(): void {
+    this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
+      .subscribe((result: BreakpointState) => {
+        console.log(result.matches);
+        console.log(result);
+        this.IsMobile = result.matches;
+        this.observerSubscription.unsubscribe();
+      });
+  }
 
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
@@ -219,12 +257,16 @@ export class LcuMapComponent implements OnInit {
   constructor(private dialog: MatDialog, private mapConverions: MapConversions,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
-    private mapService: MapService) {
+    private mapService: MapService,
+    private infoDisplayService: InfoDisplayService,
+    protected breakpointObserver: BreakpointObserver) {
     this.MapSaved = new EventEmitter,
       this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
+    this.monitorBreakpoints();
+
   }
 
   // LIFE CYCLE
@@ -397,6 +439,9 @@ export class LcuMapComponent implements OnInit {
     // delete later
   }
 
+  public ShowFooter(val: boolean):void{
+    this.DisplayFooter = val;
+  }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
@@ -404,20 +449,31 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker) {
-    if (marker) {
-      setTimeout(() => {
-        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id } });
-        this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-          data => {
-            // console.log("Dialog output:", data)
-            // console.log(dialogRef);
-            if (data !== undefined && data !== null) {
-              this._currentMapModel.locationList.push(data);
-              this.CurrentlyActiveLocations.push(data);
-              this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-            }
-          })
-      }, 50);
+     //this.CurrentMapMarker = marker;
+    // this.CurrentMapMarker = this.infoDisplayService.CurrentMapMarker;
+    // this.infoDisplayService.ShowFooter = true;
+    //console.log("marker raw = ", marker);
+    this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id);
+    console.log("Marker lcu-map = ", this.MarkerData.marker);
+    if(this.IsMobile){
+      this.ShowFooter(true);
+    }
+    if (this.IsMobile === false) {
+      if (marker) {
+        setTimeout(() => {
+          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id } });
+          this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
+            data => {
+              // console.log("Dialog output:", data)
+              // console.log(dialogRef);
+              if (data !== undefined && data !== null) {
+                this._currentMapModel.locationList.push(data);
+                this.CurrentlyActiveLocations.push(data);
+                this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+              }
+            })
+        }, 50);
+      }
     }
   }
 

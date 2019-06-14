@@ -439,9 +439,9 @@ export class LcuMapComponent implements OnInit {
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend
-      console.log('emitted locations: ', this.CurrentlyActiveLocations);
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
+    this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
 
   /**

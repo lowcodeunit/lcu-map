@@ -26,10 +26,17 @@
   <p *ngIf="Marker.generalInfo">General Info: {{Marker.generalInfo}}</p>
   <!-- </mat-card-content> -->
   <!-- </div> -->
+
+
+  <!-- Buttons -->
+<mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
+  <button *ngIf="FormView === 'moreInfo'" mat-button mat-raised-button (click)="FormView = 'addToMap'">Edit</button>
+</mat-dialog-actions>
 </mat-card>
 
 <!-- form data add to map -->
 <div *ngIf="FormView === 'addToMap'">
+  <mat-card>
   <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
     <mat-form-field>
       <mat-label>Marker Title</mat-label>
@@ -55,11 +62,10 @@
             <mat-hint>Add Notes for this location</mat-hint>
           </mat-form-field> -->
   </form>
+  <mat-dialog-actions>
+  <button *ngIf="FormView === 'addToMap'" mat-button mat-raised-button  (click)="SetMarkerData()"
+        [disabled]="NewMarkerForm.invalid">Save</button>
+      </mat-dialog-actions>
+    </mat-card>
 </div>
 
-<!-- Buttons -->
-<mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
-  <!-- <button *ngIf="FormView === 'addToMap'" mat-button mat-raised-button  (click)="SetMarkerData()"
-        [disabled]="NewMarkerForm.invalid">Save</button> -->
-  <button *ngIf="FormView === 'moreInfo'" mat-button mat-raised-button (click)="FormView = 'addToMap'">Edit</button>
-</mat-dialog-actions>

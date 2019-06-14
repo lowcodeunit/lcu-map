@@ -12,16 +12,17 @@
   </div>
 </div>
 
+<!-- the search bar -->
 <div [hidden]="!ShowSearchBar" id="search-bar">
-
+  <!-- the native Google API for POI location search -->
   <div [hidden]="SearchMethod !== 'Google Locations'">
     <input placeholder="search for Google location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
       #search [formControl]="SearchControl">
   </div>
-
+  <!-- the custom marker search bar -->
   <form [hidden]="SearchMethod !== 'Custom Markers'">
-    <input type="text" placeholder="search for custom location" aria-label="Assignee" [formControl]="CustomLocationControl"
-      [matAutocomplete]="auto">
+    <input type="text" placeholder="search for custom location" aria-label="Assignee"
+      [formControl]="CustomLocationControl" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn">
       <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
         [value]="location">
@@ -31,7 +32,7 @@
       </mat-option>
     </mat-autocomplete>
   </form>
-
+  <!-- the radio buttons for search type (custom markers vs Google POI locations) -->
   <div class="search-method-radio-group">
     <mat-radio-group [(ngModel)]="SearchMethod">
       <mat-radio-button *ngFor="let method of SearchMethods" [value]="method">
@@ -39,21 +40,19 @@
       </mat-radio-button>
     </mat-radio-group>
   </div>
+</div> <!-- END search bar section -->
 
-</div>
+<!-- the map -->
 <agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
   [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
   [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
   [usePanning]="true">
-  <!-- <div *ngFor="let marker of _currentMapModel.locationList"> -->
   <div *ngFor="let marker of CurrentlyActiveLocations">
     <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
       [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
     </agm-marker>
   </div>
-  <!-- </div> -->
 </agm-map>
-<span>Current Map: {{_currentMapModel.title}}</span>
 
 <!-- the menu for the map layers button -->
 <mat-menu #layerMenu="matMenu" id="layer-menu">

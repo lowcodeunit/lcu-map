@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'lcu-add-map-marker',
@@ -43,6 +44,7 @@ export class AddMapMarkerComponent implements OnInit {
     });
 
     this.NewMarker = {
+      id: '',
       map_id: '0',
       title: '',
       iconName: null,
@@ -59,6 +61,7 @@ export class AddMapMarkerComponent implements OnInit {
    * Converts data from the form to an icon to be placed on the map
    */
   public SetMarkerData(): void {
+    this.NewMarker.id = uuid.v4();
     this.NewMarker.title = this.NewMarkerForm.value.title;
     this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
     this.NewMarker.lat = this.passedData.lat;

@@ -12,11 +12,14 @@ import { MapsAPILoader } from '@agm/core';
 // @ts-ignore
 import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { InfoDisplayService } from '../../services/info-display.service';
 import { MarkerData } from '../../models/marker-data.model';
+import * as uuid from 'uuid';
+import { map, startWith } from 'rxjs/operators';
+
 
 
 @Component({
@@ -35,7 +38,12 @@ export class LcuMapComponent implements OnInit {
    * 
    * This will be replaced by a direct call when AGM team puts out fix that allows user's click event to return place id directly from (mapClick)
    */
-  protected placeId;
+  protected placeId: string;
+
+  /**
+   * The list of custom marker options for use in the custom marker location search
+   */
+  protected options: MapMarker[];
 
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
@@ -60,12 +68,13 @@ export class LcuMapComponent implements OnInit {
   /**
    * Input property that represents the current secondary maps (layers)
    */
-  protected _secondaryMaps;
+  protected _secondaryMaps: Array<IndividualMap>;
 
   /**
    * The subscription for the basic-info-window modal
    */
   protected markerInfoSubscription: Subscription;
+
 
 
   protected observerSubscription: Subscription;
@@ -89,11 +98,30 @@ export class LcuMapComponent implements OnInit {
    * The current map marker that someone has selected to diplay info
    */
   public CurrentMapMarker: MapMarker;
+  /**
+   * Boolean that controls the checked/unchecked state of the primary checkbox (layer)
+   */
+  public PrimaryChecked: boolean;
+
+  /**
+   * Boolean that controls the checked/unchecked state of all the secondary checkboxes (layers)
+   */
+  public SecondaryChecked: boolean;
+
+  /**
+   * The user's chosen search method for the location search (custom or native Google locations)
+   */
+  public SearchMethod: string;
+
+  /**
+   * The list of choices of location search methods for user to choose
+   */
+  public SearchMethods: Array<string> = ['Custom Markers', 'Google Locations'];
 
   /**
    * Input property that represents the current primary map
    */
-  public _currentMapModel;
+  public _currentMapModel: any;
 
   /**
    * The maps (in layer form) that are currently being displayed
@@ -118,16 +146,11 @@ export class LcuMapComponent implements OnInit {
   /**
    * The array of available map views to be chosen by the user (default is standard)
    */
-  public MapViewTypes: {}[] = [
+  public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },
     { value: 'satellite', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
-
-  /**
-   * Boolean that determines whether or not to show the markers of the current map (primary map)
-   */
-  public PrimaryMarkersSelected: boolean = true;
 
   /**
    * The public map model converted from the passed IndividualMap input
@@ -135,9 +158,14 @@ export class LcuMapComponent implements OnInit {
   public CurrentMapModel: IndividualMap;
 
   /**
-   * A conglomerated list of all the map markers of all the secondary (non-primary) maps
+   * The form control for searching custom marker locations
    */
-  // public SecondaryLocations: Array<any>;
+  public CustomLocationControl: FormControl = new FormControl();
+
+  /**
+   * The current locations based on the current state of the custom location search form control
+   */
+  public FilteredLocations: Observable<MapMarker[]>;
 
   /**
    * The search input box
@@ -208,13 +236,13 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.toggleActiveMapLayer(this._currentMapModel);
+    this.resetMapCheckedState();
   }
 
   /**
    * The getter for the current map model
    */
-  public get MapModel() {
+  public get MapModel(): IndividualMap {
     return this._currentMapModel;
   }
 
@@ -225,12 +253,13 @@ export class LcuMapComponent implements OnInit {
   // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
   public set SecondaryMaps(value: Array<IndividualMap>) {
     this._secondaryMaps = value;
+    this.resetMapCheckedState();
   }
 
   /**
    * Getter for the input field '._secondaryMaps'
    */
-  public get SecondaryMaps() {
+  public get SecondaryMaps(): Array<IndividualMap> {
     return this._secondaryMaps;
   }
 
@@ -254,6 +283,7 @@ export class LcuMapComponent implements OnInit {
 
   // CONSTRUCTORS
 
+
   constructor(private dialog: MatDialog, private mapConverions: MapConversions,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
@@ -266,7 +296,7 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.monitorBreakpoints();
-
+    this.SearchMethod = 'Google Locations';
   }
 
   // LIFE CYCLE
@@ -277,11 +307,11 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    this.resetMapCheckedState();
+    this.setUpCustomMarkerSearch();
   }
 
   ngOnChanges(value) {
-    if (value.MapModel) {
-    }
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 
@@ -290,7 +320,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Toggles the location search bar hidden / shown
    */
-  public ShowLocationSearchBarClicked() {
+  public ShowLocationSearchBarClicked(): void {
     this.ShowSearchBar = this.ShowSearchBar === true ? false : true;
   }
 
@@ -304,25 +334,24 @@ export class LcuMapComponent implements OnInit {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        // this service call gets the place_id from the click listener attached to the 
-        // mapReady event... this (along with the mapReady click listener) will be
-        // switched out for the normal mapClick event once the AGM team releases the 
-        // version where the place_id is passed back from there
         this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
             let townIndex = -1;
             let countryIndex = -1;
             res.result.address_components.forEach((comp, idx) => {
-              if (comp.types.length > 0) {
-                if (comp.types.includes('locality')) {
-                  townIndex = idx;
-                }
-                if (comp.types.includes('country')) {
-                  countryIndex = idx;
-                }
+              if (comp.types.includes('locality')) {
+                townIndex = idx;
+              }
+              if (comp.types.includes('country')) {
+                countryIndex = idx;
+              }
+              if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
+                // if location is outside a "town", set it to "county"
+                townIndex = idx;
               }
             });
             const marker = {
+              id: uuid.v4(),
               title: res.result.name,
               lat: res.result.geometry.location.lat,
               lng: res.result.geometry.location.lng,
@@ -387,8 +416,6 @@ export class LcuMapComponent implements OnInit {
       data: {
         map,
         locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
-        // for now, we include all displayed secondary map markers in a newly created map:
-        // secondaryMarkers: this.stripOutsideLocations(this.SecondaryLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet
       }
     });
@@ -396,10 +423,18 @@ export class LcuMapComponent implements OnInit {
       if (res) {
         if (res) {
           this.MapSaved.emit(res);
-          // console.log('saved map: ', res)
         }
       }
     });
+  }
+
+  /**
+   * Run when user clicks a custom location marker from custom location search
+   */
+  public DropdownItemChosen(loc): void {
+    this._currentMapModel.origin.lat = loc.lat;
+    this._currentMapModel.origin.lng = loc.lng;
+    this.DisplayMarkerInfo(loc);
   }
 
   /**
@@ -408,15 +443,39 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(layer?: IndividualMap): void {
+  public LayerClicked(event, layer?: IndividualMap): void {
+    if (layer) { // (if user clicked a secondary checkbox)
+      if (event.checked === true) { // (if user checked the box)
+        layer.locationList.forEach(loc => {
+          this.CurrentlyActiveLocations.push(loc);
+        });
+      } else { // (if user un-checked the box)
+        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+          return loc.map_id !== layer.id;
+        });
+      }
+    } else { // (if user clicked the primary checkbox)
+      if (event.checked === true) { // (if user checked the box)
+        this._currentMapModel.locationList.forEach(loc => {
+          this.CurrentlyActiveLocations.push(loc);
+        });
+      } else { // (if user un-checked the box)
+        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+          return loc.map_id !== this._currentMapModel.id;
+        });
+      }
+    }
 
-    this.toggleActiveMapLayer(layer);
+    this.CurrentlyActiveLocations.forEach(loc => {
+      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+    });
 
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
+    this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
 
   /**
@@ -433,10 +492,10 @@ export class LcuMapComponent implements OnInit {
   }
 
   /**
-   * When a location search is performed and a location is chosen, a marker will temporarily display over the chosen location
+   * Angular function for use in custom marker location search
    */
-  public TempSearchMarkerClicked() {
-    // delete later
+  public DisplayFn(marker?: MapMarker): string | undefined {
+    return marker ? marker.title : undefined;
   }
 
   public ShowFooter(val: boolean):void{
@@ -448,32 +507,44 @@ export class LcuMapComponent implements OnInit {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
-  public DisplayMarkerInfo(marker: MapMarker) {
-     //this.CurrentMapMarker = marker;
-    // this.CurrentMapMarker = this.infoDisplayService.CurrentMapMarker;
-    // this.infoDisplayService.ShowFooter = true;
-    //console.log("marker raw = ", marker);
-    this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id);
+  public DisplayMarkerInfo(marker: MapMarker): void {
+     this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id);
     console.log("Marker lcu-map = ", this.MarkerData.marker);
     if(this.IsMobile){
       this.ShowFooter(true);
     }
     if (this.IsMobile === false) {
-      if (marker) {
-        setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker: marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id } });
-          this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-            data => {
-              // console.log("Dialog output:", data)
-              // console.log(dialogRef);
-              if (data !== undefined && data !== null) {
+    if (marker) {
+      let isEdit: boolean = false;
+      if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
+        isEdit = true;
+      }
+      setTimeout(() => {
+        const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit } });
+        this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
+          data => {
+            // console.log("Dialog output:", data)
+            // console.log(dialogRef);
+            if (data !== undefined && data !== null) {
+              if (!isEdit) {
                 this._currentMapModel.locationList.push(data);
                 this.CurrentlyActiveLocations.push(data);
-                this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+              } else {
+                let idx = this._currentMapModel.locationList.findIndex(loc => {
+                  return loc.id === marker.id;
+                });
+                this._currentMapModel.locationList.splice(idx, 1, data);
+                idx = this.CurrentlyActiveLocations.findIndex(loc => {
+                  return loc.id === marker.id;
+                });
+                this.CurrentlyActiveLocations.splice(idx, 1, data);
               }
-            })
-        }, 50);
-      }
+              this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+              this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+            }
+          });
+      }, 50);
+    }
     }
   }
 
@@ -487,7 +558,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * This will be removed once AGM team releases code that passes back the place id on (mapClick) directly
    */
-  public OnMapReady(map) {
+  public OnMapReady(map): void {
     map.addListener('click', (loc) => {
       loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
@@ -495,6 +566,19 @@ export class LcuMapComponent implements OnInit {
   }
 
   // HELPERS
+
+  /**
+   * Sets up the search filtering for the custom marker search
+   */
+  protected setUpCustomMarkerSearch(): void {
+    this.options = this.CurrentlyActiveLocations;
+    this.FilteredLocations = this.CustomLocationControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.title),
+        map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
+      );
+  }
 
   /**
    * 
@@ -518,7 +602,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * Runs the boiler plate code that sets up location searching for AGM Google Maps
    */
-  protected runAutocompleteSearchPrep() {
+  protected runAutocompleteSearchPrep(): void {
     this.SearchControl = new FormControl();
     this.mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(this.SearchElementRef.nativeElement, {
@@ -544,10 +628,15 @@ export class LcuMapComponent implements OnInit {
               if (comp.types.includes('country')) {
                 countryIndex = idx;
               }
+              if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
+                // if location is outside a "town", set it to "county"
+                townIndex = idx;
+              }
             }
           });
 
           this.DisplayMarkerInfo(new MapMarker({
+            id: uuid.v4(),
             map_id: this._currentMapModel.id,
             title: place.name,
             iconName: place.icon,
@@ -564,49 +653,23 @@ export class LcuMapComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param locations An array of locations
-   * 
-   * Returns the first item of the array of locations that is of type "establishment"
+   * Filter for use in custom marker location search
    */
-  protected getClosestEstablishment(locations: Array<any>) {
-    let filteredLoc = locations.filter(loc => loc.types.includes('establishment'));
-    return filteredLoc[0];
-    // TODO: further refine this later to make sure the returned location is the closest to the clicked lat/lng
+  protected filterCustomLocations(title: string): Array<MapMarker> {
+    const filterValue = title.toLowerCase();
+    return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
   }
 
-  protected toggleActiveMapLayer(layer?: IndividualMap) {
-    if (layer) { // in other words, if the layer click was a secondary layer
-      if (this.CurrentlyActiveLayers.filter(map => map.id === layer.id).length === 0) {
-        this.CurrentlyActiveLayers.push(layer);
-        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, layer);
-      } else {
-        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== layer.id);
-        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, layer);
-      }
-    } else { // if the layer clicked was the primary layer
-      if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length === 0) {
-        this.CurrentlyActiveLayers.push(this._currentMapModel);
-        this.CurrentlyActiveLocations = this.addLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
-      } else {
-        this.CurrentlyActiveLayers = this.CurrentlyActiveLayers.filter(map => map.id !== this._currentMapModel.id);
-        this.CurrentlyActiveLocations = this.removeLayerLocations(this.CurrentlyActiveLocations, this._currentMapModel);
-      }
-    }
-    this.CurrentlyActiveLocations.forEach(loc => {
-      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+  /**
+   * Sets primary layer to checked and secondary layers to unchecked and resets active location
+   */
+  protected resetMapCheckedState(): void {
+    this.PrimaryChecked = true;
+    this.SecondaryChecked = false;
+    this.CurrentlyActiveLocations = [];
+    this._currentMapModel.locationList.forEach(loc => {
+      this.CurrentlyActiveLocations.push(loc);
     });
-  }
-
-  protected addLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
-    layer.locationList.forEach(loc => {
-      locList.push(loc)
-    });
-    return locList;
-  }
-
-  protected removeLayerLocations(locList: Array<MapMarker>, layer: IndividualMap) {
-    return locList.filter(loc => loc.map_id !== layer.id);
   }
 
 }

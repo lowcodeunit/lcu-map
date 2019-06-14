@@ -51,6 +51,7 @@
     </div>
 
     <!-- More Info expansion panel -->
+
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
       <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
@@ -72,17 +73,21 @@
         <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}" />
       </div>
       <p *ngIf="BasicInfoData?.generalInfo">General Info: {{BasicInfoData?.generalInfo}}</p>
+
     </div>
   </mat-dialog-content>
 
   <!-- Buttons -->
+
   <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
-    <button mat-button mat-raised-button [mat-dialog-close]="NewMarker" (click)="SetMarkerData()"
-      [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="ModalState != 'addToMap'" mat-button mat-raised-button
-      (click)="ModalState = 'addToMap'">Edit</button>
-    <button *ngIf="ModalState === 'moreInfo'" mat-button mat-raised-button (click)="ModalState = 'basic'">Basic
-      info</button>
+   
+    <button *ngIf="panelOpenState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
+      (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
+    <button *ngIf="panelOpenState !== 'addToMap' && !IsEdit" mat-button mat-raised-button (click)="panelOpenState = 'addToMap'">Add
+      Marker</button>
+    <button *ngIf="panelOpenState !== 'addToMap' && IsEdit" mat-button mat-raised-button
+      (click)="panelOpenState = 'addToMap'">Edit Marker</button>
+    <button *ngIf="panelOpenState === 'addToMap'" mat-button mat-raised-button (click)="panelOpenState = 'closed'">Basic info</button>
     <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'">More
       info</button>
   </mat-dialog-actions>

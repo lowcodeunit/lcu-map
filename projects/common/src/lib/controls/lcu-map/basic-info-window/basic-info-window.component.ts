@@ -7,6 +7,7 @@ import { MapConversions } from '../../../utils/conversions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'lcu-basic-info-window',
@@ -43,6 +44,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public MarkerSet: Array<MarkerInfo>;
 
+  /**
+   * Reflects whether the incoming location marker exists or not (if it exists, IsEdit is true)
+   */
+  public IsEdit: boolean = false;
 
   /**
    * The form used to get data from user and set the location's data to it
@@ -65,6 +70,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     protected dialogRef: MatDialogRef<BasicInfoWindowComponent>,
     protected mapConversions: MapConversions,
     protected breakpointObserver: BreakpointObserver) {
+    this.IsEdit = this.passedData.isEdit;
   }
 
   // LIFE CYCLE
@@ -72,14 +78,18 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.NewMarkerForm = new FormGroup({
       title: new FormControl('', { validators: [Validators.required] })
-      // icon: new FormControl('', { validators: [Validators.required] })
     });
-    this.NewMarker = {
-      map_id: '0',
-      title: '',
-      iconName: '',
-      lat: 0,
-      lng: 0
+    if (this.IsEdit) {
+      this.NewMarker = this.passedData.marker;
+    } else {
+      this.NewMarker = {
+        id: '',
+        map_id: '0',
+        title: '',
+        iconName: '',
+        lat: 0,
+        lng: 0
+      }
     }
   }
 
@@ -89,7 +99,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.BasicInfoData = this.passedData.marker;
       this.MarkerSet = this.passedData.markerSet;
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.title })
-      this.NewMarker = this.passedData.marker;
+      this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.iconName);
     }, 50);
   }
@@ -110,8 +120,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   /**
    * Sets the marker data to the user entered data
    */
-  public SetMarkerData() {
-    this.NewMarker = this.passedData.marker;
+  public SetMarkerData(): void {
+    if (!this.IsEdit) {
+      this.NewMarker.id = uuid.v4();
+    }
     this.NewMarker.map_id = this.passedData.primary_map_id;
     this.NewMarker.title = this.NewMarkerForm.value.title;
     this.NewMarker.iconName = this.ChosenIcon.iconLookup;
@@ -124,7 +136,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * 
    * Sets the current ChosenIcon to the icon the user selected
    */
-  public SetIcon(icon) {
+  public SetIcon(icon): void {
     if (this.ChosenIcon === icon) {
       this.ChosenIcon = null;
     } else {
@@ -140,7 +152,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * 
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
-  protected setChosenIconIfExists(iconName: string) {
+  protected setChosenIconIfExists(iconName: string): void {
     this.MarkerSet.forEach(marker => {
       if (marker.iconLookup === iconName) {
         this.ChosenIcon = marker;

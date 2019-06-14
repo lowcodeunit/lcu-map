@@ -12,19 +12,45 @@
   </div>
 </div>
 
+<!-- the search bar -->
 <div [hidden]="!ShowSearchBar" id="search-bar">
-  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search [formControl]="SearchControl">
-</div>
+  <!-- the native Google API for POI location search -->
+  <div [hidden]="SearchMethod !== 'Google Locations'">
+    <input placeholder="search for Google location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+      #search [formControl]="SearchControl">
+  </div>
+  <!-- the custom marker search bar -->
+  <form [hidden]="SearchMethod !== 'Custom Markers'">
+    <input type="text" placeholder="search for custom location" aria-label="Assignee"
+      [formControl]="CustomLocationControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn">
+      <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
+        [value]="location">
+        <span><img class="dropdown-marker-image" src="{{location.iconImageObject.url}}"></span>
+        <span class="dropdown-marker-title-text">{{ location.title }}</span>&nbsp;
+        <span class="dropdown-marker-location-text">{{ location.town }}, {{ location.country }}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </form>
+  <!-- the radio buttons for search type (custom markers vs Google POI locations) -->
+  <div class="search-method-radio-group">
+    <mat-radio-group [(ngModel)]="SearchMethod">
+      <mat-radio-button *ngFor="let method of SearchMethods" [value]="method">
+        {{method}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div> <!-- END search bar section -->
+
+<!-- the map -->
 <agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
   [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
   [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
   [usePanning]="true">
-  <div *ngFor="let marker of _currentMapModel.locationList">
-    <div *ngFor="let marker of CurrentlyActiveLocations">
-      <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-        [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-      </agm-marker>
-    </div>
+  <div *ngFor="let marker of CurrentlyActiveLocations">
+    <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+      [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
+    </agm-marker>
   </div>
   
 </agm-map>
@@ -48,11 +74,12 @@
       {{view.display}}</mat-radio-button>
   </mat-radio-group>
   <mat-divider></mat-divider>
-  <mat-checkbox (click)="$event.stopPropagation();LayerClicked()" [(ngModel)]="PrimaryMarkersSelected"
+  <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
     matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">
     {{_currentMapModel.title}} (Primary)</mat-checkbox>
   <mat-divider></mat-divider>
-  <mat-checkbox (click)="$event.stopPropagation();LayerClicked(map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
+  <mat-checkbox id="map_id_{{map.id}}" (click)="$event.stopPropagation()" [checked]="SecondaryChecked"
+    (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
   </mat-checkbox>
 </mat-menu>
 

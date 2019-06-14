@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FathymSharedModule } from '@lcu-ide/common';
 import { AgmCoreModule } from '@agm/core';
 import { LcuMapComponent } from './controls/lcu-map/lcu-map.component';
-import { MatIconModule, MatSelectModule, MatDialogModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatMenuModule, MatCheckboxModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatExpansionModule, MatCardModule } from '@angular/material';
+import { MatIconModule, MatSelectModule, MatDialogModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatMenuModule, MatCheckboxModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatExpansionModule, MatAutocompleteModule, MatCardModule } from '@angular/material';
 import { AddMapMarkerComponent } from './controls/lcu-map/add-map-marker/add-map-marker.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +37,7 @@ import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form
     MatExpansionModule,
     StarRatingModule.forRoot(),
     MatCardModule,    
+    MatAutocompleteModule
   ],
   providers: [GoogleMapsAPIWrapper],
   exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent],

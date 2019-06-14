@@ -52,7 +52,20 @@
       [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
     </agm-marker>
   </div>
+  
 </agm-map>
+
+<div class="footer"  *ngIf="DisplayFooter && IsMobile" >
+    <lcu-info-footer 
+    *ngIf="MarkerData" 
+    fxLayout="column" 
+    fxLayoutAlign="space-around stretch" 
+    [MarkerData]="MarkerData" 
+    (show-footer)=ShowFooter($event)>
+    </lcu-info-footer>
+</div>
+
+
 
 <!-- the menu for the map layers button -->
 <mat-menu #layerMenu="matMenu" id="layer-menu">
@@ -69,3 +82,4 @@
     (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
   </mat-checkbox>
 </mat-menu>
+

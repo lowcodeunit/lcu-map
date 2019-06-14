@@ -57,6 +57,14 @@ mat-checkbox, mat-radio-button {
     }
 }
 
+
+.footer{
+    position: fixed; 
+    bottom: 0px;  
+    z-index: 2 !important; 
+    background-color: white;
+    width:100%;
+}
 mat-option {
     height: 31px;
     border-top: lightgrey 1px solid;

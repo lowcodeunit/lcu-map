@@ -14,8 +14,12 @@ import { } from '@types/googlemaps';
 import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription, Observable } from 'rxjs';
 import { MapService } from '../../services/map.service';
+import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
+import { InfoDisplayService } from '../../services/info-display.service';
+import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
+
 
 
 @Component({
@@ -26,6 +30,8 @@ import { map, startWith } from 'rxjs/operators';
 export class LcuMapComponent implements OnInit {
 
   // FIELDS
+
+
 
   /**
    * The place id of the location the user clicked on
@@ -69,8 +75,29 @@ export class LcuMapComponent implements OnInit {
    */
   protected markerInfoSubscription: Subscription;
 
-  // PROPERTIES
 
+
+  protected observerSubscription: Subscription;
+
+
+
+
+  // PROPERTIES 
+
+  public MarkerData: MarkerData;
+  /**
+   * Is true when screen size is small or xs, false otherwise
+   */
+  public IsMobile: boolean;
+  /**
+   * The boolean that is passed to the footer to display or not display the footer
+   */
+   public DisplayFooter: boolean;
+
+  /**
+   * The current map marker that someone has selected to diplay info
+   */
+  public CurrentMapMarker: MapMarker;
   /**
    * Boolean that controls the checked/unchecked state of the primary checkbox (layer)
    */
@@ -150,6 +177,19 @@ export class LcuMapComponent implements OnInit {
    * The form control for the location search box
    */
   public SearchControl: FormControl;
+
+  /**
+    * Breakpoints for screen sizes
+    */
+  protected monitorBreakpoints(): void {
+    this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
+      .subscribe((result: BreakpointState) => {
+        console.log(result.matches);
+        console.log(result);
+        this.IsMobile = result.matches;
+        this.observerSubscription.unsubscribe();
+      });
+  }
 
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
@@ -243,15 +283,19 @@ export class LcuMapComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(protected dialog: MatDialog, protected mapConverions: MapConversions,
-    protected mapsAPILoader: MapsAPILoader,
-    protected ngZone: NgZone, protected wrapper: GoogleMapsAPIWrapper,
-    protected mapService: MapService) {
+
+  constructor(private dialog: MatDialog, private mapConverions: MapConversions,
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
+    private mapService: MapService,
+    private infoDisplayService: InfoDisplayService,
+    protected breakpointObserver: BreakpointObserver) {
     this.MapSaved = new EventEmitter,
       this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
+    this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
   }
 
@@ -454,6 +498,9 @@ export class LcuMapComponent implements OnInit {
     return marker ? marker.title : undefined;
   }
 
+  public ShowFooter(val: boolean):void{
+    this.DisplayFooter = val;
+  }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
@@ -461,6 +508,12 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
+     this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id);
+    console.log("Marker lcu-map = ", this.MarkerData.marker);
+    if(this.IsMobile){
+      this.ShowFooter(true);
+    }
+    if (this.IsMobile === false) {
     if (marker) {
       let isEdit: boolean = false;
       if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
@@ -491,6 +544,7 @@ export class LcuMapComponent implements OnInit {
             }
           });
       }, 50);
+    }
     }
   }
 

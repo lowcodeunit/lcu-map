@@ -87,7 +87,7 @@
       Marker</button>
     <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
       (click)="ModalState = 'addToMap'">Edit Marker</button>
-    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'closed'">Basic info</button>
+    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic'">Basic info</button>
     <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'">More
       info</button>
   </mat-dialog-actions>

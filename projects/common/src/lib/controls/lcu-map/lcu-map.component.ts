@@ -196,7 +196,10 @@ export class LcuMapComponent implements OnInit {
    */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker) {
+    //console.log("this is being called, val = ", val);
+    if(val){
     this.DisplayMarkerInfo(val);
+    }
   }
 
   /**

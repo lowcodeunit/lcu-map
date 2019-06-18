@@ -66,7 +66,6 @@ export class LocationInfoFormComponent implements OnInit {
       lat: 0,
       lng: 0
     }
-
   }
 
   ngAfterViewInit() {
@@ -77,6 +76,11 @@ export class LocationInfoFormComponent implements OnInit {
       this.NewMarker = this.MarkerData.marker;
       this.setChosenIconIfExists(this.NewMarker.iconName);
     
+  }
+
+  ngOnChanges() {
+    this.Marker = this.MarkerData.marker;
+    console.log("marker in form = ", this.MarkerData.marker);
   }
   //API METHODS
 

@@ -35,6 +35,7 @@ export class IndividualMap {
      * @param mapInfo The object containing the necessary data for displaying a map (<agm-map>)
      */
     constructor(mapInfo: IndividualMap) {
+        this.id = mapInfo.id;
         this.title = mapInfo.title;
         this.origin = mapInfo.origin;
         this.zoom = mapInfo.zoom;

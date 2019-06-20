@@ -36,5 +36,11 @@
       </mat-card-header>
     </mat-card>
 
-    <lcu-location-info-form [MarkerData]="MarkerData" [FormView]="FormView" (swipedown)="SwipedDown()"></lcu-location-info-form>
+    <lcu-location-info-form 
+    [MarkerData]="MarkerData" 
+    [FormView]="FormView" 
+    (swipedown)="SwipedDown()" 
+    (close-footer)=CloseFooter($event)
+    (new-MapMarker)=SaveNewMapMarker($event)>
+  </lcu-location-info-form>
   </div>

@@ -1,24 +1,28 @@
 <!-- Modal -->
-<!-- <div *ngIf="isHandset$ | async" [hidden]="Close()"></div> -->
 <div id="dialogRef" fxLayout="column" class="basic-info-window">
-
-  <!-- close button -->
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
-      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>
-    <mat-card-title *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</mat-card-title>
-      </a>
+    <!-- if both website and title exist then the title is the link to the website -->
+    <mat-card-title *ngIf="BasicInfoData?.title && BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">
+      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData.website}}>{{BasicInfoData.title}}</a>
+    </mat-card-title>
+    <!-- if the website does not exist then just display the title -->
+    <mat-card-title *ngIf="BasicInfoData?.title && !BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">
+      {{BasicInfoData.title}}
+    </mat-card-title>
+    <!-- close button -->
     <mat-icon fxFlex fxLayoutAlign="end" (click)="Close()" matTooltip="Close">close</mat-icon>
   </mat-card-header>
 
   <!-- content with scroll bar  -->
   <mat-dialog-content class="mat-dialog-content">
     <!-- display basic data -->
-    <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column"
-      fxLayoutAlign="start start" class="marker-info-container">
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
+    <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column" fxLayoutAlign="start start"
+      class="marker-info-container">
+      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">Location:
+        {{BasicInfoData?.town}} {{BasicInfoData?.state}}
         {{BasicInfoData?.country}}</div>
       <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
-      
+
       <!-- </div> -->
     </div>
 
@@ -56,10 +60,11 @@
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
       <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
+      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">Location:
+        {{BasicInfoData?.town}} {{BasicInfoData?.state}}
         {{BasicInfoData?.country}}</div>
       <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
-      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
+      <!-- <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a> -->
       <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
       <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}}>Reservations</a>
       <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}}>Menu</a>
@@ -81,14 +86,16 @@
   <!-- Buttons -->
 
   <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
-   
+
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button (click)="ModalState = 'addToMap'">Add
+    <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
+      (click)="ModalState = 'addToMap'">Add
       Marker</button>
     <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
       (click)="ModalState = 'addToMap'">Edit Marker</button>
-    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic'">Basic info</button>
+    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic'">
+      Basic info</button>
     <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'">More
       info</button>
   </mat-dialog-actions>

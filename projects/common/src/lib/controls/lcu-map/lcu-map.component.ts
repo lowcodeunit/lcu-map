@@ -15,7 +15,6 @@ import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.
 import { Subscription, Observable } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
-import { InfoDisplayService } from '../../services/info-display.service';
 import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
@@ -79,11 +78,20 @@ export class LcuMapComponent implements OnInit {
 
   protected observerSubscription: Subscription;
 
+  protected isEdit: boolean;
+
 
 
 
   // PROPERTIES 
+  /**
+   * The new map marker returned from the footer
+   */
+  public NewMapMarker: MapMarker;
 
+  /**
+   * Data that is being passed to the footer
+   */
   public MarkerData: MarkerData;
   /**
    * Is true when screen size is small or xs, false otherwise
@@ -291,7 +299,6 @@ export class LcuMapComponent implements OnInit {
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService,
-    private infoDisplayService: InfoDisplayService,
     protected breakpointObserver: BreakpointObserver) {
     this.MapSaved = new EventEmitter,
       this.PrimaryMapLocationListChanged = new EventEmitter;
@@ -504,6 +511,31 @@ export class LcuMapComponent implements OnInit {
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
   }
+
+  public SetNewMapMarker(event:MapMarker):void{
+    this.NewMapMarker = event;
+    this.SaveNewMarker(this.NewMapMarker);
+  }
+
+  public SaveNewMarker(marker: MapMarker):void{
+      //console.log("data being returned = ", marker);
+      if (!this.isEdit) {
+        this._currentMapModel.locationList.push(marker);
+        this.CurrentlyActiveLocations.push(marker);
+      } else {
+        let idx = this._currentMapModel.locationList.findIndex(loc => {
+          return loc.id === marker.id;
+        });
+        this._currentMapModel.locationList.splice(idx, 1, marker);
+        idx = this.CurrentlyActiveLocations.findIndex(loc => {
+          return loc.id === marker.id;
+        });
+        this.CurrentlyActiveLocations.splice(idx, 1, marker);
+      }
+      this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+      this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+    
+  }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
@@ -511,24 +543,23 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
-    
+    this.isEdit = false;
+    if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
+      this.isEdit = true;
+    }
     if (this.IsMobile) {
-      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id);
-     // console.log("Marker lcu-map = ", this.MarkerData.marker);
+      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id, this.isEdit);
       this.ShowFooter(true);
     }
     if (this.IsMobile === false) {
       if (marker) {
-        let isEdit: boolean = false;
-        if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
-          isEdit = true;
-        }
         setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit } });
+          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit: this.isEdit } });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
+              //console.log("data being returned = ", data);
               if (data !== undefined && data !== null) {
-                if (!isEdit) {
+                if (!this.isEdit) {
                   this._currentMapModel.locationList.push(data);
                   this.CurrentlyActiveLocations.push(data);
                 } else {

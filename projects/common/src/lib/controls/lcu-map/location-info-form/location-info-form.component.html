@@ -11,7 +11,7 @@
   </mat-card-title> <!-- </mat-card-header> -->
   <!-- <mat-card-content> -->
   <div *ngIf="Marker.address">Address: {{Marker.address}}</div>
-  <div *ngIf="Marker.town || Marker.country">Location: {{Marker.town}}
+  <div *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}}
     {{Marker.country}}</div>
   <div *ngIf="Marker.phoneNumber">Phone: {{Marker.phoneNumber}}</div>
   <!-- <a *ngIf="Marker.website" href={{Marker.website}}>Website</a> -->
@@ -35,8 +35,10 @@
 
   <!-- Buttons -->
   <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
-    <button *ngIf="FormView === 'moreInfo'" mat-button mat-raised-button (click)="FormView = 'addToMap'">Edit</button>
-  </mat-dialog-actions>
+      <button *ngIf="FormView === 'moreInfo' && !IsEdit" mat-button mat-raised-button
+      (click)="FormView = 'addToMap'">Add Marker</button>
+    <button *ngIf="FormView === 'moreInfo' && IsEdit" mat-button mat-raised-button
+      (click)="FormView = 'addToMap'">Edit Marker</button>  </mat-dialog-actions>
 </mat-card>
 
 <!-- form data add to map -->
@@ -68,7 +70,7 @@
           </mat-form-field> -->
     </form>
     <mat-dialog-actions>
-      <button *ngIf="FormView === 'addToMap'" mat-button mat-raised-button (click)="SetMarkerData()"
+      <button *ngIf="FormView === 'addToMap'" mat-button mat-raised-button (click)="SetMarkerData(); Close()"
         [disabled]="NewMarkerForm.invalid">Save</button>
     </mat-dialog-actions>
   </mat-card>

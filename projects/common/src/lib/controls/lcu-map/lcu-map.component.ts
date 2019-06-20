@@ -514,7 +514,7 @@ export class LcuMapComponent implements OnInit {
     
     if (this.IsMobile) {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id);
-      console.log("Marker lcu-map = ", this.MarkerData.marker);
+     // console.log("Marker lcu-map = ", this.MarkerData.marker);
       this.ShowFooter(true);
     }
     if (this.IsMobile === false) {

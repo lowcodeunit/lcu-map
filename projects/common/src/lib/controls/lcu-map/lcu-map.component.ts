@@ -486,6 +486,8 @@ export class LcuMapComponent implements OnInit {
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
     this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+    console.log("Currently Active locations: ",this.CurrentlyActiveLocations.length);
+
   }
 
   /**
@@ -534,7 +536,6 @@ export class LcuMapComponent implements OnInit {
       }
       this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
       this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
-    
   }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
@@ -559,21 +560,7 @@ export class LcuMapComponent implements OnInit {
             data => {
               //console.log("data being returned = ", data);
               if (data !== undefined && data !== null) {
-                if (!this.isEdit) {
-                  this._currentMapModel.locationList.push(data);
-                  this.CurrentlyActiveLocations.push(data);
-                } else {
-                  let idx = this._currentMapModel.locationList.findIndex(loc => {
-                    return loc.id === marker.id;
-                  });
-                  this._currentMapModel.locationList.splice(idx, 1, data);
-                  idx = this.CurrentlyActiveLocations.findIndex(loc => {
-                    return loc.id === marker.id;
-                  });
-                  this.CurrentlyActiveLocations.splice(idx, 1, data);
-                }
-                this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-                this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+                this.SaveNewMarker(data);
               }
             });
         }, 50);

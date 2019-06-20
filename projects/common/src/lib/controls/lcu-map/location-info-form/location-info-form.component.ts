@@ -80,7 +80,7 @@ export class LocationInfoFormComponent implements OnInit {
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
-    console.log("marker in form = ", this.MarkerData.marker);
+    //console.log("marker in form = ", this.MarkerData.marker);
   }
   //API METHODS
 

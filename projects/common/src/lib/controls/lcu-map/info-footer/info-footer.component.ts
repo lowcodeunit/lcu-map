@@ -48,19 +48,19 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
   //LIFE CYCLE
 
   ngOnInit() {
-    console.log("footer oninit = ", this.MarkerData.marker);
+    //console.log("footer oninit = ", this.MarkerData.marker);
     //this.Marker = this.MarkerData.marker;
     this.FormView = "basic";
   }
 
   ngOnChanges() {
-    console.log("The footer changed");
+    //console.log("The footer changed");
     this.Marker = this.MarkerData.marker;
-    console.log("marker in footer = ", this.MarkerData.marker);
-    console.log("marker ac = ", this.Marker);
+    //console.log("marker in footer = ", this.MarkerData.marker);
+    //console.log("marker ac = ", this.Marker);
   }
   ngOnDestroy() {
-    console.log("destroyed");
+    //console.log("destroyed");
   }
   //API METHODS
 

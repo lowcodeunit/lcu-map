@@ -4,7 +4,9 @@
 
   <!-- close button -->
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>
     <mat-card-title *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</mat-card-title>
+      </a>
     <mat-icon fxFlex fxLayoutAlign="end" (click)="Close()" matTooltip="Close">close</mat-icon>
   </mat-card-header>
 
@@ -13,11 +15,10 @@
     <!-- display basic data -->
     <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column"
       fxLayoutAlign="start start" class="marker-info-container">
-      <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
       <div *ngIf="BasicInfoData?.town || BasicInfoData?.country">Location: {{BasicInfoData?.town}}
         {{BasicInfoData?.country}}</div>
-        <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a>
-        <a *ngIf="BasicInfoData?.instagram" href={{BasicInfoData?.instagram}} class="fa fa-instagram"></a>
+      <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div>
+      
       <!-- </div> -->
     </div>
 

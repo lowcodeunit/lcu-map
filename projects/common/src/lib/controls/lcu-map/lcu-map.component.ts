@@ -454,28 +454,23 @@ export class LcuMapComponent implements OnInit {
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
   public LayerClicked(event, layer?: IndividualMap): void {
-    console.log('layer clicked')
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
         layer.locationList.forEach(loc => {
-          console.log('secondary box checked: pushing location to CAL: ', loc)
           this.CurrentlyActiveLocations.push(loc);
         });
       } else { // (if user un-checked the box)
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-          console.log('secondary box un-checked: filtering out locs for map: ', layer.id)
           return loc.map_id !== layer.id;
         });
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
         this._currentMapModel.locationList.forEach(loc => {
-          console.log('primary box checked: pushing location to CAL: ', loc)
           this.CurrentlyActiveLocations.push(loc);
         });
       } else { // (if user un-checked the box)
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-          console.log('primary box un-checked: filtering out locs for map: ', this._currentMapModel.id)
           return loc.map_id !== this._currentMapModel.id;
         });
       }
@@ -488,11 +483,9 @@ export class LcuMapComponent implements OnInit {
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend
-      console.log('emitting CAL: ', this.CurrentlyActiveLocations)
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
     this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
-    // console.log("Currently Active locations: ",this.CurrentlyActiveLocations.length);
 
   }
 

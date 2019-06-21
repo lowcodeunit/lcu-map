@@ -3,8 +3,8 @@
     <div>
       <div class="top-icon-set">
         <lcu-legend class="legend" [current-map-model]="_currentMapModel"
-          [currently-active-locations]="CurrentlyActiveLocations" (pan)="PanningTo($event)"
-          (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
+          [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations" (pan)="PanningTo($event)"
+          (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)" >
         </lcu-legend>
       </div>
       <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="space-around">

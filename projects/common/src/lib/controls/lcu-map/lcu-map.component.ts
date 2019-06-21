@@ -295,8 +295,8 @@ export class LcuMapComponent implements OnInit {
   @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
-  @Output('legend-saved')
-  public LegendLocations: EventEmitter<Array<MapMarker>>;
+  @Output('saved-legend-locations')
+  public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
 
   // CONSTRUCTORS
 
@@ -311,6 +311,7 @@ export class LcuMapComponent implements OnInit {
     this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
+    this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
   }
@@ -344,7 +345,7 @@ export class LcuMapComponent implements OnInit {
   }
 
   public SaveLegendLocations(val: Array<MapMarker>){
-    this.LegendLocations.emit(val);
+    this.SavedLegendLocations.emit(val);
   }
   /**
    * Toggles the location search bar hidden / shown

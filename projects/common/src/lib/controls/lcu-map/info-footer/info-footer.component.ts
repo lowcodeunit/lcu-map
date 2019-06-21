@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, OnChanges, DoCheck, AfterContentInit, Output, EventEmitter } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
-import { InfoDisplayService } from '../../../services/info-display.service';
 import { MarkerData } from '../../../models/marker-data.model';
 
 @Component({
@@ -11,7 +10,18 @@ import { MarkerData } from '../../../models/marker-data.model';
 export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
 
   //FIELDS
+/**
+   * Incomming MapMarker with location info
+   */
+  @Input() MarkerData: MarkerData;
+/**
+ * Outgoing boolean to diplay footer
+ */
+  @Output('show-footer')
+  ShowFooter: EventEmitter<boolean>;
 
+  @Output('new-map-marker')
+  NewMapMarker: EventEmitter<MapMarker>;
 
   //PROPERTIES
 
@@ -31,36 +41,29 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
   //CONSTRUCTORS
   constructor() {
     this.ShowFooter = new EventEmitter<boolean>();
+    this.NewMapMarker = new EventEmitter<MapMarker>();
     //this.Marker = this.MarkerData.marker;
 
   }
-  /**
-   * Incomming MapMarker with location info
-   */
-  @Input() MarkerData: MarkerData;
-/**
- * Outgoing boolean to diplay footer
- */
-  @Output('show-footer')
-  ShowFooter: EventEmitter<boolean>;
+  
 
 
   //LIFE CYCLE
 
   ngOnInit() {
-    console.log("footer oninit = ", this.MarkerData.marker);
+    //console.log("footer oninit = ", this.MarkerData.marker);
     //this.Marker = this.MarkerData.marker;
     this.FormView = "basic";
   }
 
   ngOnChanges() {
-    console.log("The footer changed");
+    //console.log("The footer changed");
     this.Marker = this.MarkerData.marker;
-    console.log("marker in footer = ", this.MarkerData.marker);
-    console.log("marker ac = ", this.Marker);
+    //console.log("marker in footer = ", this.MarkerData.marker);
+    //console.log("marker ac = ", this.Marker);
   }
   ngOnDestroy() {
-    console.log("destroyed");
+    //console.log("destroyed");
   }
   //API METHODS
 
@@ -86,6 +89,21 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
     this.ShowFooter.emit(false);
     this.FormView = 'basic';
     //this.ngOnDestroy();
+  }
+/**
+ * Gets called from the child component
+ * @param event 
+ */
+  public CloseFooter(event: boolean){
+    //console.log("Close footer");
+    if(event === false){
+      this.Close();
+    }
+  }
+
+  public SaveNewMapMarker(event: MapMarker){
+    //console.log("saving new marker: ", event);
+    this.NewMapMarker.emit(event);
   }
   /**
    * Called when the user swiped down to go back to basic info

@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
 import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerData } from '../../../models/marker-data.model';
+import * as uuid from 'uuid';
+
 
 @Component({
   selector: 'lcu-location-info-form',
@@ -12,6 +14,18 @@ import { MarkerData } from '../../../models/marker-data.model';
 })
 export class LocationInfoFormComponent implements OnInit {
   //FIELDS
+  @Input() MarkerData: MarkerData;
+  @Input() FormView: string;
+  /**
+   * Output to info-footer
+   */
+  @Output('close-footer') 
+  CloseFooter: EventEmitter<boolean>;
+
+  @Output('new-MapMarker') 
+  NewMapMarker: EventEmitter<MapMarker>;
+
+  
   //PROPERTIES
     /**
    * The set of available marker icons and paths to those icons
@@ -41,30 +55,38 @@ export class LocationInfoFormComponent implements OnInit {
   public ChosenIcon: MarkerInfo;
 
 
+  /**
+   * Reflects whether the incoming location marker exists or not (if it exists, IsEdit is true)
+   */
+  public IsEdit: boolean = false;
+
   //public FormView: string;
   //CONSTRUCTORS
 
   constructor(protected mapConversions: MapConversions) {
-    //this.FormView = "basic";
-    //console.log("form view constructor = ", this.FormView);
+    this.CloseFooter = new EventEmitter<boolean>();
+    this.NewMapMarker = new EventEmitter<MapMarker>();
+
   }
-  @Input() MarkerData: MarkerData;
-  @Input() FormView: string;
+  
 
   //LIFE CYCLE
 
   ngOnInit() {
     this.NewMarkerForm = new FormGroup({
       title: new FormControl('', { validators: [Validators.required] })
-      // icon: new FormControl('', { validators: [Validators.required] })
     });
-    this.NewMarker = {
-      id: '',
-      map_id: '0',
-      title: '',
-      iconName: '',
-      lat: 0,
-      lng: 0
+    if (this.IsEdit) {
+      this.NewMarker = this.MarkerData.marker;
+    } else {
+      this.NewMarker = {
+        id: '',
+        map_id: '0',
+        title: '',
+        iconName: '',
+        lat: 0,
+        lng: 0
+      }
     }
   }
 
@@ -80,7 +102,8 @@ export class LocationInfoFormComponent implements OnInit {
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
-    console.log("marker in form = ", this.MarkerData.marker);
+    this.IsEdit = this.MarkerData.isEdit;
+    //console.log("marker in form = ", this.MarkerData.marker);
   }
   //API METHODS
 
@@ -100,11 +123,21 @@ export class LocationInfoFormComponent implements OnInit {
     this.ShowBasicInfo();
   }
 
+  public Close(){
+    //console.log("New Map Marker: ", this.NewMarker)
+    this.CloseFooter.emit(false);
+    this.NewMapMarker.emit(this.NewMarker);
+  }
+
   /**
    * Sets the marker data to the user entered data
    */
-  public SetMarkerData() {
-    this.NewMarker = this.MarkerData.marker;
+  
+
+  public SetMarkerData(): void {
+    if (!this.IsEdit) {
+      this.NewMarker.id = uuid.v4();
+    }
     this.NewMarker.map_id = this.MarkerData.primaryMapId;
     this.NewMarker.title = this.NewMarkerForm.value.title;
     this.NewMarker.iconName = this.ChosenIcon.iconLookup;

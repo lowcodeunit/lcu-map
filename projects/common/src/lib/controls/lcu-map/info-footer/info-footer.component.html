@@ -8,11 +8,39 @@
     </div>
     <mat-card *ngIf="FormView === 'basic'" (swipeup)="SwipedUp()" (swipedown)="SwipeToClose()">
       <mat-card-header fxLayout="column" fxLayoutAlign="space-between start">
-        <mat-card-title *ngIf="Marker.title" fxLayout="row" fxLayoutAlign="start">{{Marker.title}}</mat-card-title>
-        <mat-card-subtitle *ngIf="Marker.town || Marker.country">Location: {{Marker.town}} {{Marker.country}}
+          
+        <mat-card-title *ngIf="Marker.title && Marker.website" fxLayout="row" fxLayoutAlign="start">
+          <a *ngIf="Marker.website" href={{Marker.website}}>{{Marker.title}}</a>
+        </mat-card-title>
+
+        <mat-card-title *ngIf="Marker.title && !Marker.website" fxLayout="row" fxLayoutAlign="start">
+            {{Marker.title}}
+          </mat-card-title>
+          
+        <mat-card-subtitle>
+        <!-- <a *ngIf="Marker.website" href={{Marker.website}}>Website</a> -->
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+
+        <div *ngIf="Marker.address">Address: {{Marker?.address}}</div>
+      </mat-card-subtitle>
+
+        <mat-card-subtitle *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}} {{Marker.country}}
         </mat-card-subtitle>
+        <mat-card-subtitle>
+
+        <div *ngIf="Marker.phoneNumber">Phone: {{Marker.phoneNumber}}</div>
+        </mat-card-subtitle>
+
+
       </mat-card-header>
     </mat-card>
 
-    <lcu-location-info-form [MarkerData]="MarkerData" [FormView]="FormView" (swipedown)="SwipedDown()"></lcu-location-info-form>
+    <lcu-location-info-form 
+    [MarkerData]="MarkerData" 
+    [FormView]="FormView" 
+    (swipedown)="SwipedDown()" 
+    (close-footer)=CloseFooter($event)
+    (new-MapMarker)=SaveNewMapMarker($event)>
+  </lcu-location-info-form>
   </div>

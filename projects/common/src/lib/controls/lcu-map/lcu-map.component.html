@@ -61,7 +61,8 @@
     fxLayout="column" 
     fxLayoutAlign="space-around stretch" 
     [MarkerData]="MarkerData" 
-    (show-footer)=ShowFooter($event)>
+    (show-footer)=ShowFooter($event)
+    (new-map-marker)=SetNewMapMarker($event)>
     </lcu-info-footer>
 </div>
 

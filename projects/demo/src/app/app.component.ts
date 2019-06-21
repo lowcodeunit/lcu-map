@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
       locationList: [
         { id: '40', title: 'Favorite UNESCO', lat: 40.011657, lng: -105.288199, iconName: 'UNESCO', map_id: '789',address: '1234 abc court', menu:'menu.com', reservations: 'reservations.com', starRating:3 },
         { id: '41', title: 'Nice museum', lat: 40.049757, lng: -105.298199, iconName: 'museum', map_id: '789' },
-        { id: '42', title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging', town: 'Boulder', country: 'USA', phoneNumber: '303-123-4567', instagram: 'www', website: 'www', map_id: '789',address: '1234 abc court', menu:'menu.com', reservations: 'reservations.com', starRating:3.5, awards:"Best place to sleep 2019", media:"media.com", generalInfo:"checkout is 11 am", notes: "Try to get a room that over looks the flat Irons.", photos:["link", "link"]  },
+        { id: '42', title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging', town: 'Boulder', country: 'USA', state:"CO", phoneNumber: '303-123-4567', instagram: 'www', website: 'www', map_id: '789',address: '1234 abc court', menu:'menu.com', reservations: 'reservations.com', starRating:3.5, awards:"Best place to sleep 2019", media:"media.com", generalInfo:"checkout is 11 am", notes: "Try to get a room that over looks the flat Irons.", photos:["link", "link"]  },
         { id: '43', title: 'Nice national park', lat: 40.051657, lng: -105.278199, iconName: 'national park', town: 'Boulder', country: 'USA', phoneNumber: '303-123-4567', instagram: 'www', map_id: '789',address: '1234 abc court', menu:'menu.com', reservations: 'reservations.com', starRating:3.25  }
       ]
     };

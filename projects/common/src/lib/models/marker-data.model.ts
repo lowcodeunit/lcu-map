@@ -8,9 +8,12 @@ export class MarkerData{
 
     primaryMapId: any;
 
-    constructor(marker: MapMarker, mapMarkerSet: MarkerInfo[], primaryMapId:any){
+    isEdit: boolean;
+
+    constructor(marker: MapMarker, mapMarkerSet: MarkerInfo[], primaryMapId:any, isEdit: boolean){
         this.marker = marker;
         this.mapMarkerSet = mapMarkerSet;
         this.primaryMapId = primaryMapId;
+        this.isEdit = isEdit;
     }
 }

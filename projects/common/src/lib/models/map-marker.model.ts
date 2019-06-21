@@ -46,6 +46,11 @@ export class MapMarker {
     town?: string;
 
     /**
+     * Optional state associated with location
+     */
+    state?: string;
+
+    /**
      * Optional country associated with location
      */
     country?: string;
@@ -128,6 +133,7 @@ export class MapMarker {
         this.phoneNumber = icon.phoneNumber;
         this.instagram = icon.instagram;
         this.town = icon.town;
+        this.state = icon.state;
         this.country = icon.country;
         this.website = icon.website;
         this.iconUrl = icon.iconUrl;

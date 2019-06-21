@@ -13,10 +13,14 @@ import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/b
 import { StarRatingModule } from 'angular-star-rating';
 import { InfoFooterComponent } from './controls/lcu-map/info-footer/info-footer.component';
 import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form/location-info-form.component';
+import { LcuHamburgerMenuModule } from '@lowcodeunit/lcu-hamburger-menu-common';
+import { LegendComponent } from './controls/legend/legend.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent],
+  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
@@ -37,10 +41,12 @@ import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form
     MatExpansionModule,
     StarRatingModule.forRoot(),
     MatCardModule,    
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    DragDropModule,
+    LcuHamburgerMenuModule
   ],
   providers: [GoogleMapsAPIWrapper],
-  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent],
-  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent]
+  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent],
+  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent]
 })
 export class LcuMapModule { }

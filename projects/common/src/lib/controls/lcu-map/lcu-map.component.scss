@@ -6,9 +6,23 @@ mat-icon {
     height: 100vh;
     position: relative;
 
+.lcu-hamburger-menu {
+    position: absolute;
+    left: 10px;
+    @media(max-width: 600px) {
+        position: relative;
+    }
+}
+
+.legend {
+    position: absolute;
+    right: 10px;
+}
+
     .icon-list {
         height: 3vh;
     }
+
 
     .hamburger-icon {
         position: absolute;

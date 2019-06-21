@@ -1,0 +1,17 @@
+<button class="chevron-legend" mat-icon-button [matMenuTriggerFor]="legend" (click)="SetLocationList()">
+    <mat-icon [inline]="true">chevron_left</mat-icon>
+  </button>
+  <mat-menu #legend="matMenu">
+    <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
+      <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column">
+          <div class="location-box"  
+          fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+          *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
+            <img class="icon-image" src={{item.iconUrl}} >
+              <div class="location-title">
+                {{ item.title }}
+              </div>
+          </div>
+      </div>
+  </mat-menu>
+  

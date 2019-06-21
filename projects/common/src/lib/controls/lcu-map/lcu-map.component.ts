@@ -18,6 +18,9 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
+import { HamburgerMenuModel } from '@lowcodeunit/lcu-hamburger-menu-common';
+
+
 
 
 
@@ -84,6 +87,9 @@ export class LcuMapComponent implements OnInit {
 
 
   // PROPERTIES 
+
+  public HamburgerMenuItems: Array<HamburgerMenuModel> = Constants.VAR_NAMES_MENU;
+
   /**
    * The new map marker returned from the footer
    */
@@ -292,6 +298,9 @@ export class LcuMapComponent implements OnInit {
   @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
+  @Output('legend-saved')
+  public LegendLocations: EventEmitter<Array<MapMarker>>;
+
   // CONSTRUCTORS
 
 
@@ -327,6 +336,19 @@ export class LcuMapComponent implements OnInit {
 
   // API METHODS
 
+
+  public PanningTo(value: { lat: number, lng: number, zoom: number }) {
+    this._panTo = value;
+    if (this._currentMapModel) {
+      this._currentMapModel.origin.lat = value.lat;
+      this._currentMapModel.origin.lng = value.lng;
+      this._currentMapModel.zoom = value.zoom;
+    }
+  }
+
+  public SaveLegendLocations(val: Array<MapMarker>){
+    this.LegendLocations.emit(val);
+  }
   /**
    * Toggles the location search bar hidden / shown
    */

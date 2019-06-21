@@ -475,7 +475,7 @@ export class LcuMapComponent implements OnInit {
         });
       } else { // (if user un-checked the box)
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-          console.log('primary box un-checked: filtering out locs for map: ', layer.id)
+          console.log('primary box un-checked: filtering out locs for map: ', this._currentMapModel.id)
           return loc.map_id !== this._currentMapModel.id;
         });
       }

@@ -447,6 +447,7 @@ export class LcuMapComponent implements OnInit {
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
   public LayerClicked(event, layer?: IndividualMap): void {
+    console.log('layer clicked')
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
         layer.locationList.forEach(loc => {

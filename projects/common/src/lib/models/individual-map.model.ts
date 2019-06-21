@@ -31,7 +31,7 @@ export class IndividualMap {
     locationList: MapMarker[];
 
     /**
-     * 
+     *
      * @param mapInfo The object containing the necessary data for displaying a map (<agm-map>)
      */
     constructor(mapInfo: IndividualMap) {

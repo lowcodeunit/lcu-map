@@ -2,33 +2,39 @@ mat-icon {
     font-size: 30px;
 }
 
-.icon-list {
-    padding: 5px;
-}
+#map-section {
+    height: 100vh;
+    position: relative;
 
-.hamburger-icon {
-    position: absolute;
-    left: 10px;
-    @media(max-width: 600px) {
-        position: relative;
+    .icon-list {
+        height: 3vh;
     }
-}
 
-.chevron-icon {
-    position: absolute;
-    right: 10px;
-}
-
-.bottom-icon-set {
-    width: 80%;
-    margin: auto;
-    @media(max-width: 600px) {
-        margin-left: 10px;
+    .hamburger-icon {
+        position: absolute;
+        left: 10px;
+        @media(max-width: 600px) {
+            position: relative;
+        }
     }
-}
-
-agm-map {
-    height: 500px;
+    
+    .chevron-icon {
+        position: absolute;
+        right: 10px;
+    }
+    
+    .bottom-icon-set {
+        width: 80%;
+        margin: auto;
+        @media(max-width: 600px) {
+            margin-left: 10px;
+        }
+    }
+    
+    agm-map {
+        height: 500px;
+        height: 97vh;
+    }
 }
 
 mat-icon {

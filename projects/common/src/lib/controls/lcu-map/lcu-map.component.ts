@@ -18,7 +18,6 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
-import { HamburgerMenuModel } from '@lowcodeunit/lcu-hamburger-menu-common';
 
 
 
@@ -87,8 +86,6 @@ export class LcuMapComponent implements OnInit {
 
 
   // PROPERTIES 
-
-  public HamburgerMenuItems: Array<HamburgerMenuModel> = Constants.VAR_NAMES_MENU;
 
   /**
    * The new map marker returned from the footer

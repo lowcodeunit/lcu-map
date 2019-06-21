@@ -13,7 +13,6 @@ import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/b
 import { StarRatingModule } from 'angular-star-rating';
 import { InfoFooterComponent } from './controls/lcu-map/info-footer/info-footer.component';
 import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form/location-info-form.component';
-import { LcuHamburgerMenuModule } from '@lowcodeunit/lcu-hamburger-menu-common';
 import { LegendComponent } from './controls/legend/legend.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -43,7 +42,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatCardModule,    
     MatAutocompleteModule,
     DragDropModule,
-    LcuHamburgerMenuModule
   ],
   providers: [GoogleMapsAPIWrapper],
   exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent],

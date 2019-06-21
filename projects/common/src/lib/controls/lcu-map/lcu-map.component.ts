@@ -270,6 +270,12 @@ export class LcuMapComponent implements OnInit {
     this.resetMapCheckedState();
   }
 
+  @Input('get-saved-legend-locations')
+  // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
+  public set GetSavedLegendLocations(value: Array<MapMarker>) {
+    this._savedLegendLocations = value;
+  }
+public _savedLegendLocations: Array<MapMarker>;
   /**
    * Getter for the input field '._secondaryMaps'
    */

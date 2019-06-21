@@ -19,28 +19,33 @@ export class LegendComponent implements OnInit {
   //PROPERTIES
   protected _currentlyActiveLocations: Array<MapMarker>;
   protected _currentMapModel: IndividualMap;
+  protected _legendLocations: Array<MapMarker>;
 
 
+  @Input('get-legend-locations')
+  public set GetLegendLocations(value: Array<MapMarker>) {
+    if (value !== undefined) {
+      this._legendLocations = value;
+    }
+  }
+  @Input('current-map-model')
+  public set CurrentMapModel(value: IndividualMap) {
+    this._currentMapModel = value;
+  }
 
-@Input('current-map-model')
-public set CurrentMapModel(value: IndividualMap){
-  console.log("value: ", value);
-  this._currentMapModel = value;
-}
+  @Input('currently-active-locations')
+  public set CurrentlyActiveLocations(value: Array<MapMarker>) {
+    this._currentlyActiveLocations = value;
+  }
 
-@Input('currently-active-locations')
-public set CurrentlyActiveLocations(value: Array<MapMarker>){
-  this._currentlyActiveLocations = value;
-}
+  @Output('pan')
+  Pan: EventEmitter<any>;
 
-@Output('pan')
-Pan: EventEmitter<any>;
+  @Output('display-basic-info')
+  DisplayBasicInfo: EventEmitter<MapMarker>;
 
-@Output('display-basic-info')
-DisplayBasicInfo: EventEmitter<MapMarker>;
-
-@Output('save-legend-locations')
-SaveLegendLocations: EventEmitter<Array<MapMarker>>;
+  @Output('save-legend-locations')
+  SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
   /**
    * The primary map locations
@@ -68,10 +73,11 @@ SaveLegendLocations: EventEmitter<Array<MapMarker>>;
   //CONSTRUCTOR
 
   constructor(protected mapService: MapService) {
-   this.Pan = new EventEmitter<any>();
-   this.DisplayBasicInfo = new EventEmitter<MapMarker>();
-   this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
-   this._currentlyActiveLocations = new Array<MapMarker>();
+    this.Pan = new EventEmitter<any>();
+    this.DisplayBasicInfo = new EventEmitter<MapMarker>();
+    this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this._currentlyActiveLocations = new Array<MapMarker>();
+    this._legendLocations = new Array<MapMarker>();
     this.SetLocationList();
   }
 
@@ -93,7 +99,7 @@ SaveLegendLocations: EventEmitter<Array<MapMarker>>;
   //API METHODS
 
   public PanTo(marker: MapMarker) {
-    this.Pan.emit({lat: marker.lat, lng: marker.lng, zoom: 15});
+    this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 });
     this.DisplayBasicInfo.emit(marker);
     //console.log("Marker in legend = " + marker.title);
   }
@@ -110,8 +116,13 @@ SaveLegendLocations: EventEmitter<Array<MapMarker>>;
     //set to new so no duplicates present themselves
     this.LocationsList = new Array<MapMarker>();
     this.MapTitle = this.primaryMap !== undefined ? this.primaryMap.title : '';
-    //let locList = new Array<MapMarker>();
-    let visLoc = this._currentlyActiveLocations;
+    let visLoc = new Array<MapMarker>();
+    if (this._legendLocations.length >0) {
+      visLoc = this._legendLocations;
+    }
+    else {
+      visLoc = this._currentlyActiveLocations;
+    }
     console.log("primary map after = ", this.primaryMap);
 
     //console.log("setting legend to = ", visLoc);

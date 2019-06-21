@@ -1,22 +1,9 @@
 import { MarkerInfo } from '../../models/marker-info.model';
 import { IndividualMap } from '../../models/individual-map.model';
-import { HamburgerMenuModel } from '@lowcodeunit/lcu-hamburger-menu-common';
-
 
 export class Constants {
 
     // DEFAULTS
-
-    public static readonly VAR_NAMES_MENU: Array<HamburgerMenuModel> = [
-        { Label: 'Home', Url: '/home', Disabled: 'false', Icon: 'home', Param: '' },
-        { Label: 'Map', Url: '/map', Disabled: 'false', Icon: 'map', Param: '' },
-        { Label: 'My Atlas', Url: '/map', Disabled: 'false', Icon: 'public', Param: 'my-atlas-modal' },
-        { Label: 'My Itineraries', Url: 'www', Disabled: 'true', Icon: 'access_time' },
-        { Label: 'My Top Lists', Url: 'www', Disabled: 'true', Icon: 'sort' },
-        { Label: 'My Albums', Url: 'www', Disabled: 'true', Icon: 'photo_library' },
-        { Label: 'My Friends', Url: 'www', Disabled: 'true', Icon: 'group' },
-        { Label: 'My Profile', Url: 'www', Disabled: 'true', Icon: 'person' }
-    ];
 
     public static readonly DEFAULT_PRIMARY_MAP_CONFIGURATION: IndividualMap = {
         id: '0',

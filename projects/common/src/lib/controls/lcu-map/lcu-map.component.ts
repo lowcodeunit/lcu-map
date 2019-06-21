@@ -508,7 +508,6 @@ export class LcuMapComponent implements OnInit {
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     }, 0)
     this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
-    console.log("Currently Active locations: ",this.CurrentlyActiveLocations.length);
 
   }
 

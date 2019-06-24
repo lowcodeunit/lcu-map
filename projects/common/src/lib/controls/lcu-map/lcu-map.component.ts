@@ -349,6 +349,8 @@ public _savedLegendLocations: Array<MapMarker>;
       this._currentMapModel.origin.lat = value.lat;
       this._currentMapModel.origin.lng = value.lng;
       this._currentMapModel.zoom = value.zoom;
+      console.log("PanningTo current map model: ", this._currentMapModel.origin.lat, ", ", this._currentMapModel.origin.lng);
+
     }
   }
 

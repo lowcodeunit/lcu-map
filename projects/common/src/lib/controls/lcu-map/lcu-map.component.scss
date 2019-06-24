@@ -9,14 +9,6 @@ mat-icon {
     .icon-list {
         height: 6vh;
     }
-
-    .hamburger-icon {
-        position: absolute;
-        left: 10px;
-        @media(max-width: 600px) {
-            position: relative;
-        }
-    }
     
     .legend {
         position: absolute;
@@ -28,8 +20,8 @@ mat-icon {
         width: 80%;
         margin: auto;
         @media(max-width: 600px) {
-            margin-left: 10px;
-            margin-right: 10px;
+            margin-left: 50px;
+            margin-right: 50px;
         }
     }
     
@@ -41,7 +33,8 @@ mat-icon {
 
 mat-icon {
     cursor: pointer;
-    padding-left: 100px;
+    padding-left: 75px;
+    padding-right: 75px;
     //padding-right: 20px;
 }
 

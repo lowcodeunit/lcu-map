@@ -7,7 +7,7 @@ mat-icon {
     position: relative;
 
     .icon-list {
-        height: 3vh;
+        height: 5vh;
     }
 
     .hamburger-icon {
@@ -21,6 +21,7 @@ mat-icon {
     .legend {
         position: absolute;
         right: 10px;
+        top:0px;
     }
     
     .bottom-icon-set {
@@ -28,17 +29,20 @@ mat-icon {
         margin: auto;
         @media(max-width: 600px) {
             margin-left: 10px;
+            margin-right: 10px;
         }
     }
     
     agm-map {
         height: 500px;
-        height: 97vh;
+        height: 95vh;
     }
 }
 
 mat-icon {
     cursor: pointer;
+    padding-left: 100px;
+    //padding-right: 20px;
 }
 
 mat-checkbox, mat-radio-button {

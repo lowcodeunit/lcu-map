@@ -1,8 +1,18 @@
-.chevron-legend {
+.legend-button {
     background-color: transparent;
     border-width:0;
     outline: none;
     font-size: 30px;
+    margin:0;
+    padding: 0;
+    
+    // .chevron-legend{
+    //   padding:0;
+    // }
+}
+
+.mat-icon-button{
+  height: 24px;
 }
 
 .icon-image{

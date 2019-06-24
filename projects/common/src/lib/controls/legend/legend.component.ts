@@ -99,20 +99,17 @@ export class LegendComponent implements OnInit {
   //API METHODS
 
   public PanTo(marker: MapMarker) {
-    tempLng: Number;
-    tempLat: Number;
     if(typeof(marker.lng) === 'string'){
-      console.log("lng is a string");
+      //console.log("lng is a string");
       marker.lng = parseFloat(marker.lng);
-      console.log("marker.lng = ",marker.lng);
-
+      //console.log("marker.lng = ",marker.lng);
     }
     if(typeof(marker.lat) === 'string'){
-      console.log("lat is a string");
+      //console.log("lat is a string");
       marker.lat = parseFloat(marker.lat);
-      console.log("marker.lat = ",marker.lat);
+      //console.log("marker.lat = ",marker.lat);
     }
-    console.log("PAnning to: ", marker);
+    //console.log("PAnning to: ", marker);
     this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 });
     this.DisplayBasicInfo.emit(marker);
     //console.log("Marker in legend = " + marker.title);

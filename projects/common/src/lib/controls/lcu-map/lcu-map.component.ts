@@ -219,7 +219,7 @@ export class LcuMapComponent implements OnInit {
   @Input('pan-to')
   public set PanTo(value: { lat: number, lng: number, zoom: number }) {
     this._panTo = value;
-    console.log("_panTo = ", this._panTo);
+    //console.log("_panTo = ", this._panTo);
     if (this._currentMapModel) {
       this._currentMapModel.origin.lat = value.lat;
       this._currentMapModel.origin.lng = value.lng;
@@ -344,13 +344,10 @@ public _savedLegendLocations: Array<MapMarker>;
 
   public PanningTo(value: { lat: number, lng: number, zoom: number }) {
     this._panTo = value;
-    console.log("PanningTo = ", this._panTo);
     if (this._currentMapModel) {
       this._currentMapModel.origin.lat = value.lat;
       this._currentMapModel.origin.lng = value.lng;
       this._currentMapModel.zoom = value.zoom;
-      console.log("PanningTo current map model: ", this._currentMapModel.origin.lat, ", ", this._currentMapModel.origin.lng);
-
     }
   }
 

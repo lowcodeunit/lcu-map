@@ -99,6 +99,7 @@ export class LegendComponent implements OnInit {
   //API METHODS
 
   public PanTo(marker: MapMarker) {
+    console.log("PAnning to: ", marker);
     this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 });
     this.DisplayBasicInfo.emit(marker);
     //console.log("Marker in legend = " + marker.title);

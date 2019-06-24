@@ -109,7 +109,7 @@ export class LegendComponent implements OnInit {
       marker.lat = parseFloat(marker.lat);
       //console.log("marker.lat = ",marker.lat);
     }
-    //console.log("PAnning to: ", marker);
+    console.log("Panning to: ", marker);
     this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 });
     this.DisplayBasicInfo.emit(marker);
     //console.log("Marker in legend = " + marker.title);

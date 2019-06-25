@@ -20,6 +20,7 @@ export class LegendComponent implements OnInit {
   protected _currentlyActiveLocations: Array<MapMarker>;
   protected _currentMapModel: IndividualMap;
   protected _legendLocations: Array<MapMarker>;
+  protected _currentlyActiveLayers: Array<IndividualMap>;
 
 
   @Input('get-legend-locations')
@@ -30,12 +31,19 @@ export class LegendComponent implements OnInit {
   }
   @Input('current-map-model')
   public set CurrentMapModel(value: IndividualMap) {
+    console.log("current map Model: ", value.title);
     this._currentMapModel = value;
   }
 
   @Input('currently-active-locations')
   public set CurrentlyActiveLocations(value: Array<MapMarker>) {
     this._currentlyActiveLocations = value;
+  }
+
+  @Input('currently-active-layers')
+  public set CurrentlyActiveLayers(value: Array<IndividualMap>){
+    this._currentlyActiveLayers = value;
+    console.log("layers coming in = ", value);
   }
 
   @Output('pan')
@@ -47,10 +55,6 @@ export class LegendComponent implements OnInit {
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
-  /**
-   * The primary map locations
-   */
-  protected primaryMap: IndividualMap = this._currentMapModel;
 
   /**
    * The MarkerInfo where the icon url can be refrenced
@@ -78,6 +82,9 @@ export class LegendComponent implements OnInit {
     this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
+    this._currentlyActiveLayers = new Array<IndividualMap>();
+    this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
+
     this.SetLocationList();
   }
 
@@ -125,32 +132,32 @@ export class LegendComponent implements OnInit {
    */
   public SetLocationList() {
     //set to new so no duplicates present themselves
+   // console.log("map title = ", this.primaryMap.title);
     this.LocationsList = new Array<MapMarker>();
-    this.MapTitle = this.primaryMap !== undefined ? this.primaryMap.title : '';
+    
     let visLoc = new Array<MapMarker>();
     if (this._legendLocations.length >0) {
       visLoc = this._legendLocations;
     }
     else {
       visLoc = this._currentlyActiveLocations;
+      console.log("currently active locs",this._currentlyActiveLocations);
     }
-    console.log("primary map after = ", this.primaryMap);
-
-    //console.log("setting legend to = ", visLoc);
+    console.log("currently active layers = ", this._currentlyActiveLayers);
+    if(this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1){
+      this.MapTitle = "Layers (" +this._currentlyActiveLayers.length + ")";
+    }
+    else if(this._currentlyActiveLayers && this._currentlyActiveLayers[0]){
+      this.MapTitle = this._currentlyActiveLayers[0].title;
+    }
+    else{
+      this.MapTitle = "No Layer Selected";
+    }
     if (visLoc.length > 0) {
       this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList.sort(this.compareObject);
-      //console.log("Locations List after sort: ", this.LocationsList);
-
       this.LocationsList = this.moveUndefinedToBottom(this.LocationsList);
-      //console.log("Locations List after move to bottom: ", this.LocationsList);
-
-
-
-      //console.log("locList = ", locList);
     }
-    //console.log("LocList: ", locList);
-    //console.log("visLoc: ", visLoc);
   }
 
 

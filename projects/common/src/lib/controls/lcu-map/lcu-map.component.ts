@@ -331,6 +331,7 @@ public _savedLegendLocations: Array<MapMarker>;
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    this.UpdateCurrentlyActiveLayer(this._currentMapModel);
     this.resetMapCheckedState();
     this.setUpCustomMarkerSearch();
   }
@@ -341,6 +342,10 @@ public _savedLegendLocations: Array<MapMarker>;
 
   // API METHODS
 
+  public UpdateCurrentlyActiveLayer(layer: IndividualMap):void{
+    this.CurrentlyActiveLayers.push(layer);
+    this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+  }
 
   public PanningTo(value: { lat: number, lng: number, zoom: number }) {
     this._panTo = value;
@@ -483,20 +488,24 @@ public _savedLegendLocations: Array<MapMarker>;
   public LayerClicked(event, layer?: IndividualMap): void {
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
+        this.CurrentlyActiveLayers.push(layer);
         layer.locationList.forEach(loc => {
           this.CurrentlyActiveLocations.push(loc);
         });
       } else { // (if user un-checked the box)
+        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer),1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== layer.id;
         });
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
+        this.CurrentlyActiveLayers.push(this._currentMapModel);
         this._currentMapModel.locationList.forEach(loc => {
           this.CurrentlyActiveLocations.push(loc);
         });
       } else { // (if user un-checked the box)
+        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel),1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== this._currentMapModel.id;
         });
@@ -506,7 +515,7 @@ public _savedLegendLocations: Array<MapMarker>;
     this.CurrentlyActiveLocations.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
     });
-
+    this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend

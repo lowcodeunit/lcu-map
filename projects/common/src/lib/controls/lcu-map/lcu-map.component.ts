@@ -195,8 +195,8 @@ export class LcuMapComponent implements OnInit {
   protected monitorBreakpoints(): void {
     this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
       .subscribe((result: BreakpointState) => {
-        console.log(result.matches);
-        console.log(result);
+        // console.log(result.matches);
+        // console.log(result);
         this.IsMobile = result.matches;
         this.observerSubscription.unsubscribe();
       });

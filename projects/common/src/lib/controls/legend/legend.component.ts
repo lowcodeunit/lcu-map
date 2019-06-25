@@ -31,7 +31,7 @@ export class LegendComponent implements OnInit {
   }
   @Input('current-map-model')
   public set CurrentMapModel(value: IndividualMap) {
-    console.log("current map Model: ", value.title);
+    // console.log("current map Model: ", value.title);
     this._currentMapModel = value;
   }
 
@@ -43,7 +43,7 @@ export class LegendComponent implements OnInit {
   @Input('currently-active-layers')
   public set CurrentlyActiveLayers(value: Array<IndividualMap>){
     this._currentlyActiveLayers = value;
-    console.log("layers coming in = ", value);
+    // console.log("layers coming in = ", value);
   }
 
   @Output('pan')
@@ -116,8 +116,8 @@ export class LegendComponent implements OnInit {
       marker.lat = parseFloat(marker.lat);
       //console.log("marker.lat = ",marker.lat);
     }
-    console.log("Panning to: ", marker);
-    this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 });
+    // console.log("Panning to: ", marker);
+    this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
     this.DisplayBasicInfo.emit(marker);
     //console.log("Marker in legend = " + marker.title);
   }
@@ -141,9 +141,9 @@ export class LegendComponent implements OnInit {
     }
     else {
       visLoc = this._currentlyActiveLocations;
-      console.log("currently active locs",this._currentlyActiveLocations);
+      // console.log("currently active locs",this._currentlyActiveLocations);
     }
-    console.log("currently active layers = ", this._currentlyActiveLayers);
+    // console.log("currently active layers = ", this._currentlyActiveLayers);
     if(this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1){
       this.MapTitle = "Layers (" +this._currentlyActiveLayers.length + ")";
     }

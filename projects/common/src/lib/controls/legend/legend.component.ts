@@ -31,7 +31,7 @@ export class LegendComponent implements OnInit {
   }
   @Input('current-map-model')
   public set CurrentMapModel(value: IndividualMap) {
-    console.log("current map Model: ", value.title);
+    //console.log("current map Model: ", value.title);
     this._currentMapModel = value;
   }
 
@@ -43,7 +43,7 @@ export class LegendComponent implements OnInit {
   @Input('currently-active-layers')
   public set CurrentlyActiveLayers(value: Array<IndividualMap>){
     this._currentlyActiveLayers = value;
-    console.log("layers coming in = ", value);
+    //console.log("layers coming in = ", value);
   }
 
   @Output('pan')
@@ -141,9 +141,9 @@ export class LegendComponent implements OnInit {
     }
     else {
       visLoc = this._currentlyActiveLocations;
-      console.log("currently active locs",this._currentlyActiveLocations);
+      //console.log("currently active locs",this._currentlyActiveLocations);
     }
-    console.log("currently active layers = ", this._currentlyActiveLayers);
+    //console.log("currently active layers = ", this._currentlyActiveLayers);
     if(this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1){
       this.MapTitle = "Layers (" +this._currentlyActiveLayers.length + ")";
     }
@@ -173,7 +173,7 @@ export class LegendComponent implements OnInit {
    * UpdateVisibleLocations assigns the newly ordered LocationsList to the VisibleLocations in mapService
    */
   drop(event: CdkDragDrop<string[]>) {
-    console.log("drop event called");
+    //console.log("drop event called");
     moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
     this.giveOrder();
     this.SaveLegendLocations.emit(this.LocationsList);

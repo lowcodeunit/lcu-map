@@ -251,6 +251,7 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
+    this.UpdateCurrentlyActiveLayer(value);
     this.resetMapCheckedState();
   }
 
@@ -331,7 +332,6 @@ public _savedLegendLocations: Array<MapMarker>;
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    this.UpdateCurrentlyActiveLayer(this._currentMapModel);
     this.resetMapCheckedState();
     this.setUpCustomMarkerSearch();
   }

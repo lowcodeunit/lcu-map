@@ -195,8 +195,8 @@ export class LcuMapComponent implements OnInit {
   protected monitorBreakpoints(): void {
     this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
       .subscribe((result: BreakpointState) => {
-        console.log(result.matches);
-        console.log(result);
+        // console.log(result.matches);
+        // console.log(result);
         this.IsMobile = result.matches;
         this.observerSubscription.unsubscribe();
       });
@@ -601,6 +601,8 @@ public _savedLegendLocations: Array<MapMarker>;
         }, 50);
       }
     }
+    // console.log(marker)
+    this.zoomInToPoint(marker);
   }
 
   /**
@@ -725,6 +727,12 @@ public _savedLegendLocations: Array<MapMarker>;
     this._currentMapModel.locationList.forEach(loc => {
       this.CurrentlyActiveLocations.push(loc);
     });
+  }
+
+  protected zoomInToPoint(value) {
+    this._currentMapModel.origin.lat = value.lat;
+    this._currentMapModel.origin.lng = value.lng;
+    this._currentMapModel.zoom = 15 + Math.random();
   }
 
 }

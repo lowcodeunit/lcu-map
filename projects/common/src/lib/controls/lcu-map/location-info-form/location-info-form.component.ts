@@ -73,12 +73,12 @@ export class LocationInfoFormComponent implements OnInit {
   //LIFE CYCLE
 
   ngOnInit() {
-    this.NewMarkerForm = new FormGroup({
-      title: new FormControl('', { validators: [Validators.required] })
-    });
+    this.createFormGroup();
     if (this.IsEdit) {
       this.NewMarker = this.MarkerData.marker;
+      //console.log("real marker ", this.NewMarker);
     } else {
+      //console.log("blank marker");
       this.NewMarker = {
         id: '',
         map_id: '0',
@@ -97,13 +97,15 @@ export class LocationInfoFormComponent implements OnInit {
       this.NewMarkerForm.patchValue({ title: this.Marker.title })
       this.NewMarker = this.MarkerData.marker;
       this.setChosenIconIfExists(this.NewMarker.iconName);
-    
+      //console.log("form group = ", this.NewMarkerForm);
   }
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
-    this.IsEdit = this.MarkerData.isEdit;
-    //console.log("marker in form = ", this.MarkerData.marker);
+    this.createFormGroup();
+    this.NewMarker = this.MarkerData.marker;
+    this.IsEdit = this.MarkerData.isEdit;    
+    this.NewMarkerForm.patchValue({ title: this.Marker.title })
   }
   //API METHODS
 
@@ -171,6 +173,12 @@ export class LocationInfoFormComponent implements OnInit {
       if (marker.iconLookup === iconName) {
         this.ChosenIcon = marker;
       }
+    });
+  }
+
+  protected createFormGroup():void{
+    this.NewMarkerForm = new FormGroup({
+      title: new FormControl('', { validators: [Validators.required] })
     });
   }
 }

@@ -208,8 +208,8 @@ export class LcuMapComponent implements OnInit {
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker) {
     //console.log("this is being called, val = ", val);
-    if(val){
-    this.DisplayMarkerInfo(val);
+    if (val) {
+      this.DisplayMarkerInfo(val);
     }
   }
 
@@ -251,7 +251,7 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.UpdateCurrentlyActiveLayer(value);
+    this.UpdateCurrentlyActiveLayers(value);
     this.resetMapCheckedState();
   }
 
@@ -277,7 +277,7 @@ export class LcuMapComponent implements OnInit {
   public set GetSavedLegendLocations(value: Array<MapMarker>) {
     this._savedLegendLocations = value;
   }
-public _savedLegendLocations: Array<MapMarker>;
+  public _savedLegendLocations: Array<MapMarker>;
   /**
    * Getter for the input field '._secondaryMaps'
    */
@@ -342,9 +342,11 @@ public _savedLegendLocations: Array<MapMarker>;
 
   // API METHODS
 
-  public UpdateCurrentlyActiveLayer(layer: IndividualMap):void{
-    this.CurrentlyActiveLayers.push(layer);
-    this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+  public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
+    if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
+      this.CurrentlyActiveLayers.push(layer);
+      this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+    }
   }
 
   public PanningTo(value: { lat: number, lng: number, zoom: number }) {
@@ -356,7 +358,7 @@ public _savedLegendLocations: Array<MapMarker>;
     }
   }
 
-  public SaveLegendLocations(val: Array<MapMarker>){
+  public SaveLegendLocations(val: Array<MapMarker>) {
     this.SavedLegendLocations.emit(val);
   }
   /**
@@ -493,7 +495,7 @@ public _savedLegendLocations: Array<MapMarker>;
           this.CurrentlyActiveLocations.push(loc);
         });
       } else { // (if user un-checked the box)
-        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer),1);
+        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== layer.id;
         });
@@ -505,7 +507,7 @@ public _savedLegendLocations: Array<MapMarker>;
           this.CurrentlyActiveLocations.push(loc);
         });
       } else { // (if user un-checked the box)
-        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel),1);
+        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== this._currentMapModel.id;
         });
@@ -549,28 +551,28 @@ public _savedLegendLocations: Array<MapMarker>;
     this.DisplayFooter = val;
   }
 
-  public SetNewMapMarker(event:MapMarker):void{
+  public SetNewMapMarker(event: MapMarker): void {
     this.NewMapMarker = event;
     this.SaveNewMarker(this.NewMapMarker);
   }
 
-  public SaveNewMarker(marker: MapMarker):void{
-      //console.log("data being returned = ", marker);
-      if (!this.isEdit) {
-        this._currentMapModel.locationList.push(marker);
-        this.CurrentlyActiveLocations.push(marker);
-      } else {
-        let idx = this._currentMapModel.locationList.findIndex(loc => {
-          return loc.id === marker.id;
-        });
-        this._currentMapModel.locationList.splice(idx, 1, marker);
-        idx = this.CurrentlyActiveLocations.findIndex(loc => {
-          return loc.id === marker.id;
-        });
-        this.CurrentlyActiveLocations.splice(idx, 1, marker);
-      }
-      this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-      this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+  public SaveNewMarker(marker: MapMarker): void {
+    //console.log("data being returned = ", marker);
+    if (!this.isEdit) {
+      this._currentMapModel.locationList.push(marker);
+      this.CurrentlyActiveLocations.push(marker);
+    } else {
+      let idx = this._currentMapModel.locationList.findIndex(loc => {
+        return loc.id === marker.id;
+      });
+      this._currentMapModel.locationList.splice(idx, 1, marker);
+      idx = this.CurrentlyActiveLocations.findIndex(loc => {
+        return loc.id === marker.id;
+      });
+      this.CurrentlyActiveLocations.splice(idx, 1, marker);
+    }
+    this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+    this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent

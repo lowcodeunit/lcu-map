@@ -603,7 +603,7 @@ export class LcuMapComponent implements OnInit {
         }, 50);
       }
     }
-    // console.log(marker)
+    console.log("zooming to: ", marker)
     this.zoomInToPoint(marker);
   }
 

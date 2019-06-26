@@ -3,7 +3,7 @@
   (swipedown)="SwipedDown()">
   <!-- <mat-card-header> -->
   <mat-card-title *ngIf="Marker.title && Marker.website" fxLayout="row" fxLayoutAlign="start">
-    <a *ngIf="Marker.website" href={{Marker.website}}>{{Marker.title}}</a>
+    <a *ngIf="Marker.website" href={{Marker.website}} target="_blank">{{Marker.title}}</a>
   </mat-card-title>
 
   <mat-card-title *ngIf="Marker.title && !Marker.website" fxLayout="row" fxLayoutAlign="start">

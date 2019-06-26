@@ -3,7 +3,7 @@
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
     <!-- if both website and title exist then the title is the link to the website -->
     <mat-card-title *ngIf="BasicInfoData?.title && BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">
-      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData.website}}>{{BasicInfoData.title}}</a>
+      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData.website}} target="_blank">{{BasicInfoData.title}}</a>
     </mat-card-title>
     <!-- if the website does not exist then just display the title -->
     <mat-card-title *ngIf="BasicInfoData?.title && !BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">

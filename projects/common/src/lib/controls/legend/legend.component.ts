@@ -218,13 +218,13 @@ export class LegendComponent implements OnInit {
     if (obj1.orderIndex < obj2.orderIndex)
       return -1;
 
-    // obj1.orderIndex == obj2.orderIndex
+    if(obj1.orderIndex === obj2.orderIndex){
 
-    if (obj1.title > obj2.title)
+    if (obj1.title.toUpperCase() > obj2.title.toUpperCase())
       return 1;
-    if (obj1.title < obj2.title)
+    if (obj1.title.toUpperCase() < obj2.title.toUpperCase())
       return -1;
-
+    }
     return 0;
   }
   /**

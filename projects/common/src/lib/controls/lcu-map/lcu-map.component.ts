@@ -338,6 +338,7 @@ export class LcuMapComponent implements OnInit {
 
   ngOnChanges(value) {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    console.log("ngOnChanges: ", this._currentMapModel);
   }
 
   // API METHODS
@@ -732,9 +733,12 @@ export class LcuMapComponent implements OnInit {
   }
 
   protected zoomInToPoint(value) {
-    this._currentMapModel.origin.lat = value.lat;
-    this._currentMapModel.origin.lng = value.lng;
+    this._currentMapModel.origin.lat = parseFloat(value.lat);
+    this._currentMapModel.origin.lng = parseFloat(value.lng);
     this._currentMapModel.zoom = 15 + Math.random();
+    console.log("zoom lat = ", this._currentMapModel.origin.lat);
+    console.log("zoom long = ", this._currentMapModel.origin.lng);
+
   }
 
 }

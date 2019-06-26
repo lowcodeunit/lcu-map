@@ -733,9 +733,9 @@ export class LcuMapComponent implements OnInit {
   }
 
   protected zoomInToPoint(value) {
-    this._currentMapModel.origin.lat = parseFloat(value.lat);
-    this._currentMapModel.origin.lng = parseFloat(value.lng);
-    this._currentMapModel.zoom = 15 + Math.random();
+    this._currentMapModel.origin.lat = parseFloat(value.lat)+ (Math.random()/100000);
+    this._currentMapModel.origin.lng = parseFloat(value.lng) + (Math.random()/100000);
+    this._currentMapModel.zoom = 15 +(Math.random()/100);
     console.log("zoom lat = ", this._currentMapModel.origin.lat);
     console.log("zoom long = ", this._currentMapModel.origin.lng);
 

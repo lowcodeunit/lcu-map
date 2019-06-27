@@ -16,8 +16,8 @@ export class IndividualMap {
      * The latitude / longitude that will be the starting point of the map
      */
     origin: {
-        lat: number,
-        lng: number
+        lat: number | string,
+        lng: number | string
     };
 
     /**

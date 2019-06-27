@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   /**
    * The icon set to pass in that will determine the available icons for the map
    */
-  public IconSet: MarkerInfo[];
+  public IconSet: MarkerInfo[]; 
 
   public SecMaps: Array<IndividualMap> = [
     {

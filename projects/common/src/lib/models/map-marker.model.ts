@@ -23,12 +23,12 @@ export class MapMarker {
     /**
      * The latitude of the map marker
      */
-    lat: number;
+    lat: number | string;
 
     /**
      * The longitude of the map marker
      */
-    lng: number;
+    lng: number | string;
 
     /**
      * Optional phone number for a place

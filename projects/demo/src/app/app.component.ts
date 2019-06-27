@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
    */
   public IconSet: MarkerInfo[]; 
 
-  public SecMaps: Array<IndividualMap> = [ 
+  public SecMaps: Array<IndividualMap> = [
     {
       id: '123',
       title: 'Boulder Bars and Breweries',

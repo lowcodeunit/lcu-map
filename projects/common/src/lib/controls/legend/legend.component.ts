@@ -40,7 +40,7 @@ export class LegendComponent implements OnInit {
   }
 
   @Input('currently-active-layers')
-  public set CurrentlyActiveLayers(value: Array<IndividualMap>){
+  public set CurrentlyActiveLayers(value: Array<IndividualMap>) {
     this._currentlyActiveLayers = value;
   }
 
@@ -104,12 +104,12 @@ export class LegendComponent implements OnInit {
   //API METHODS
 
   public PanTo(marker: MapMarker) {
-    if(typeof(marker.lng) === 'string'){
+    if (typeof (marker.lng) === 'string') {
       //console.log("lng is a string");
       marker.lng = parseFloat(marker.lng);
       //console.log("marker.lng = ",marker.lng);
     }
-    if(typeof(marker.lat) === 'string'){
+    if (typeof (marker.lat) === 'string') {
       //console.log("lat is a string");
       marker.lat = parseFloat(marker.lat);
       //console.log("marker.lat = ",marker.lat);
@@ -130,24 +130,24 @@ export class LegendComponent implements OnInit {
    */
   public SetLocationList() {
     //set to new so no duplicates present themselves
-   // console.log("map title = ", this.primaryMap.title);
+    // console.log("map title = ", this.primaryMap.title);
     this.LocationsList = new Array<MapMarker>();
-    
+
     let visLoc = new Array<MapMarker>();
-    if (this._legendLocations.length >0) {
+    if (this._legendLocations.length > 0) {
       visLoc = this._legendLocations;
     }
     else {
       visLoc = this._currentlyActiveLocations;
     }
- 
-    if(this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1){
-      this.MapTitle = "Layers (" +this._currentlyActiveLayers.length + ")";
+
+    if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
+      this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
     }
-    else if(this._currentlyActiveLayers && this._currentlyActiveLayers[0]){
+    else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
       this.MapTitle = this._currentlyActiveLayers[0].title;
     }
-    else{
+    else {
       this.MapTitle = "No Layer Selected";
     }
     if (visLoc.length > 0) {
@@ -181,22 +181,32 @@ export class LegendComponent implements OnInit {
   /**
    * @param locList an array of the mapMarkers
    * 
-   * loop i gets the mapMarker
-   * 
-   * loop j loops through the the icon list to match the iconName to the iconUrl
+   * assigns icon Url based on icon name vs the icon lookup
    */
   protected assignIconUrl(locList: Array<MapMarker>) {
     let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
-      for (let j = 0; j < this.iconList.length; j++) {
-        if (locList[i].iconName.match(this.iconList[j].iconLookup)) {
-          locList[i].iconUrl = this.iconList[j].iconUrl;
-        }
-      }
-      temp.push(locList[i]);
+      let iconTemp = this.iconList.filter(loc => {
+        return loc.iconLookup === locList[i].iconName;
+      });
+       locList[i].iconUrl = iconTemp[0].iconUrl;
+       temp.push(locList[i]);
     }
     return temp;
   }
+
+  // protected assignIconUrl(locList: Array<MapMarker>) {
+  //   let temp: Array<MapMarker> = new Array<MapMarker>();
+  //   for (let i = 0; i < locList.length; i++) {
+  //     for (let j = 0; j < this.iconList.length; j++) {
+  //      if (locList[i].iconName.match(this.iconList[j].iconLookup)) {
+  //         locList[i].iconUrl = this.iconList[j].iconUrl;
+  //       }
+  //     }
+  //     temp.push(locList[i]);
+  //   }
+  //   return temp;
+  // }
 
   /**
    * Gives order to the MapMarkers based on how the user orders the legend
@@ -218,12 +228,12 @@ export class LegendComponent implements OnInit {
     if (obj1.orderIndex < obj2.orderIndex)
       return -1;
 
-    if(obj1.orderIndex === obj2.orderIndex){
+    if (obj1.orderIndex === obj2.orderIndex) {
 
-    if (obj1.title.toUpperCase() > obj2.title.toUpperCase())
-      return 1;
-    if (obj1.title.toUpperCase() < obj2.title.toUpperCase())
-      return -1;
+      if (obj1.title.toUpperCase() > obj2.title.toUpperCase())
+        return 1;
+      if (obj1.title.toUpperCase() < obj2.title.toUpperCase())
+        return -1;
     }
     return 0;
   }

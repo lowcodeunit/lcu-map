@@ -77,9 +77,14 @@ export class LcuMapComponent implements OnInit {
   protected markerInfoSubscription: Subscription;
 
 
-
+/**
+ * Subscription for the break point observer(determines the screen size the app is running on)
+ */
   protected observerSubscription: Subscription;
 
+/**
+ * boolean value that determines if the MapMarker already exists and is being edited
+ */
   protected isEdit: boolean;
 
 
@@ -303,6 +308,9 @@ export class LcuMapComponent implements OnInit {
   @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
+/**
+ * The event emitted when the legend is closed and the order/locations are saved to local storage
+ */
   @Output('saved-legend-locations')
   public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
 
@@ -341,15 +349,21 @@ export class LcuMapComponent implements OnInit {
   }
 
   // API METHODS
-
+/**
+ * 
+ * @param layer will be added to an array of active layers if it doesnt already exist in the array
+ */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
     if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
       this.CurrentlyActiveLayers.push(layer);
       this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
   }
-
-  public PanningTo(value: { lat: number, lng: number, zoom: number }) {
+/**
+ * legend uses this function to take incoming data from child class and sets the according values to allow panning
+ * @param value 
+ */
+  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
     this._panTo = value;
     if (this._currentMapModel) {
       this._currentMapModel.origin.lat = value.lat;
@@ -357,8 +371,11 @@ export class LcuMapComponent implements OnInit {
       this._currentMapModel.zoom = value.zoom;
     }
   }
-
-  public SaveLegendLocations(val: Array<MapMarker>) {
+/**
+ * Saves the legend order/loactions via event emmiter
+ * @param val 
+ */
+  public SaveLegendLocations(val: Array<MapMarker>): void {
     this.SavedLegendLocations.emit(val);
   }
   /**
@@ -546,16 +563,28 @@ export class LcuMapComponent implements OnInit {
   public DisplayFn(marker?: MapMarker): string | undefined {
     return marker ? marker.title : undefined;
   }
-
+/**
+ * 
+ * @param val Toggles the displayFooter property to true or false
+ */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
   }
-
+/**
+ * @param event 
+ * 
+ * sets the NewMapMarker value to the event and passes the value to SaveNewMarker
+ */
   public SetNewMapMarker(event: MapMarker): void {
     this.NewMapMarker = event;
     this.SaveNewMarker(this.NewMapMarker);
   }
-
+/**
+ * 
+ * @param marker 
+ * 
+ * Saves the new MapMarker
+ */
   public SaveNewMarker(marker: MapMarker): void {
     //console.log("data being returned = ", marker);
     if (!this.isEdit) {
@@ -730,8 +759,21 @@ export class LcuMapComponent implements OnInit {
       this.CurrentlyActiveLocations.push(loc);
     });
   }
-
-  protected zoomInToPoint(value) {
+/**
+ * 
+ * @param value 
+ * 
+ * Sets _currentMapModel.orgin to the values of the incoming lat and long
+ * 
+ * ParseFloat is added to the incoming value in the instance that it is saved as a string
+ * 
+ * AGM can only take Numbers as the lat and long values, strings will not process correctly
+ * 
+ * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom
+ * 
+ * if random decimals are not added then the map will not zoom/pan once user moves the map
+ */
+  protected zoomInToPoint(value): void {
     this._currentMapModel.origin.lat = parseFloat(value.lat)+ (Math.random()/100000);
     this._currentMapModel.origin.lng = parseFloat(value.lng) + (Math.random()/100000);
     this._currentMapModel.zoom = 16 + (Math.random()/100);

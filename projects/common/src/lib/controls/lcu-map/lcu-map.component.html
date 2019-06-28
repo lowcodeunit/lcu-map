@@ -1,17 +1,16 @@
 <div id="map-section">
-  <div class="icon-list">
-    <div>
-      <div class="top-icon-set">
-            <lcu-legend  class="legend" [current-map-model]="_currentMapModel"
-            [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations" [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
-            (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)" >
-            </lcu-legend>
-      </div>
-      <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="center center">
-        <mat-icon (click)="ShowLocationSearchBarClicked()">search</mat-icon>
-        <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
-        <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>
-      </div>
+  <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column">
+    <div class="top-icon-set" fxLayoutAlign="end center" >
+      <lcu-legend class="legend" [current-map-model]="_currentMapModel"
+        [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
+        [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
+        (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
+      </lcu-legend>
+    </div>
+    <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="center center">
+      <mat-icon (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+      <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
+      <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>
     </div>
   </div>
 
@@ -56,7 +55,7 @@
       </agm-marker>
     </div>
   </agm-map>
-
+  <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">
     <lcu-info-footer *ngIf="MarkerData" fxLayout="column" fxLayoutAlign="space-around stretch" [MarkerData]="MarkerData"
       (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>

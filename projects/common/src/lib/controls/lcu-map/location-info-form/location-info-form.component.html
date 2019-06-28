@@ -33,7 +33,7 @@
   <!-- </div> -->
 
 
-  <!-- Buttons -->
+  <!-- Buttons that only display in more info-->
   <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
       <button *ngIf="FormView === 'moreInfo' && !IsEdit" mat-button mat-raised-button
       (click)="FormView = 'addToMap'">Add Marker</button>
@@ -41,7 +41,7 @@
       (click)="FormView = 'addToMap'">Edit Marker</button>  </mat-dialog-actions>
 </mat-card>
 
-<!-- form data add to map -->
+<!-- Add/edit marker form -->
 <div *ngIf="FormView === 'addToMap'">
   <mat-card>
     <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">

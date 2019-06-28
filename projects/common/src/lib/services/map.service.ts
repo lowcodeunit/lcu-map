@@ -20,7 +20,9 @@ export class MapService {
   protected apiKey: string = 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU';
 
   // PROPERTIES
-
+/**
+ * The current Layers that are selected to display
+ */
   protected CurrentlyActiveLayers: Array<IndividualMap>;
 
   // CONSTRUCTORS
@@ -68,11 +70,16 @@ export class MapService {
   }
 
 
-
+/**
+ * 
+ * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
+ */
   public SetCurrentlyActiveLayers(layers: Array<IndividualMap>): void{
     this.CurrentlyActiveLayers = layers;
   }
-
+/**
+ * Allows access to the CurrentlyActiveLayers form outside of the service
+ */
   public GetCurrentlyActiveLayers(): Array<IndividualMap>{
     return this.CurrentlyActiveLayers;
   }

@@ -8,34 +8,41 @@ mat-icon {
 
     .icon-list {
         height: 6vh;
+        @media (max-width:600px){
+            height:12vh;
+        }
     }
     
     .legend {
-        position: absolute;
-        right: 10px;
-        // top:0px;
+        
+        @media(min-width:600px){
+            position: absolute;
+            right: 10px;
+        }
     }
     
     .bottom-icon-set {
         width: 80%;
         margin: auto;
         @media(max-width: 600px) {
-            margin-left: 50px;
-            margin-right: 50px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
     }
     
     agm-map {
-        height: 500px;
         height: 94vh;
+        @media(max-width:600px){
+            height: 88vh;
+        }
+
     }
 }
 
 mat-icon {
     cursor: pointer;
-    padding-left: 75px;
-    padding-right: 75px;
-    //padding-right: 20px;
+    padding-left: 10%; //75px
+    padding-right: 10%;//75px
 }
 
 mat-checkbox, mat-radio-button {

@@ -14,14 +14,25 @@ import * as uuid from 'uuid';
 })
 export class LocationInfoFormComponent implements OnInit {
   //FIELDS
+  /**
+   * Incomming MarkerData to display
+   */
   @Input() MarkerData: MarkerData;
+
+  /**
+   * Incomming form view
+   */
   @Input() FormView: string;
+
   /**
    * Output to info-footer
    */
   @Output('close-footer') 
   CloseFooter: EventEmitter<boolean>;
 
+/**
+ * Outgoing MapMarker
+ */
   @Output('new-MapMarker') 
   NewMapMarker: EventEmitter<MapMarker>;
 
@@ -112,21 +123,18 @@ export class LocationInfoFormComponent implements OnInit {
   /**
    * Change FormView so basic info is diplayed
    */
-  public ShowBasicInfo() {
+  public ShowBasicInfo():void {
     this.FormView = "basic";
-    //console.log("FormView =", this.FormView);
   }
 
   /**
    * Called when the user swiped down to go back to basic info
    */
-  public SwipedDown() {
-    //console.log("swipped down in form");
+  public SwipedDown():void {
     this.ShowBasicInfo();
   }
 
-  public Close(){
-    //console.log("New Map Marker: ", this.NewMarker)
+  public Close():void{
     this.CloseFooter.emit(false);
     this.NewMapMarker.emit(this.NewMarker);
   }
@@ -152,7 +160,7 @@ export class LocationInfoFormComponent implements OnInit {
    * 
    * Sets the current ChosenIcon to the icon the user selected
    */
-  public SetIcon(icon) {
+  public SetIcon(icon):void {
     if (this.ChosenIcon === icon) {
       this.ChosenIcon = null;
     } else {
@@ -168,7 +176,7 @@ export class LocationInfoFormComponent implements OnInit {
    * 
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
-  protected setChosenIconIfExists(iconName: string) {
+  protected setChosenIconIfExists(iconName: string):void {
     this.MarkerSet.forEach(marker => {
       if (marker.iconLookup === iconName) {
         this.ChosenIcon = marker;

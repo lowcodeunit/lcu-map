@@ -14,36 +14,35 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
    * Incomming MapMarker with location info
    */
   @Input() MarkerData: MarkerData;
+  
 /**
  * Outgoing boolean to diplay footer
  */
   @Output('show-footer')
   ShowFooter: EventEmitter<boolean>;
 
+/**
+ * Outgoing map marker 
+ */
   @Output('new-map-marker')
   NewMapMarker: EventEmitter<MapMarker>;
 
   //PROPERTIES
-
 
   /**
    * The view of the footer either basic or moreInfo
    */
   public FormView: string;
 
-
+/**
+ * MapMarker to use in component
+ */
   public Marker: MapMarker;
-  /**
-   * boolean whether or not to display the footer
-   */
-  //public DisplayFooter: boolean;
 
   //CONSTRUCTORS
   constructor() {
     this.ShowFooter = new EventEmitter<boolean>();
     this.NewMapMarker = new EventEmitter<MapMarker>();
-    //this.Marker = this.MarkerData.marker;
-
   }
   
 
@@ -51,79 +50,71 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
   //LIFE CYCLE
 
   ngOnInit() {
-    //console.log("footer oninit = ", this.MarkerData.marker);
-    //this.Marker = this.MarkerData.marker;
     this.FormView = "basic";
   }
 
   ngOnChanges() {
-    //console.log("The footer changed");
     this.Marker = this.MarkerData.marker;
-    //console.log("marker in footer = ", this.MarkerData.marker);
-    //console.log("marker ac = ", this.Marker);
   }
   ngOnDestroy() {
-    //console.log("destroyed");
   }
   //API METHODS
 
   /**
    * change FormView so more info is diplayed
    */
-  public ShowMoreInfo() {
+  public ShowMoreInfo():void {
     this.FormView = "moreInfo";
-    //console.log("FormView =", this.FormView); 
   }
   /**
    * Change FormView so basic info is diplayed
    */
-  public ShowBasicInfo() {
+  public ShowBasicInfo():void {
     this.FormView = "basic";
-    //console.log("FormView =", this.FormView); 
   }
   /**
    * Close the footer
    */
-  public Close() {
-    //this.infoDisplayService.ShowFooter = false;
+  public Close():void {
     this.ShowFooter.emit(false);
     this.FormView = 'basic';
-    //this.ngOnDestroy();
   }
 /**
  * Gets called from the child component
  * @param event 
  */
-  public CloseFooter(event: boolean){
-    //console.log("Close footer");
+  public CloseFooter(event: boolean):void{
     if(event === false){
       this.Close();
     }
   }
-
-  public SaveNewMapMarker(event: MapMarker){
-    //console.log("saving new marker: ", event);
+/**
+ * 
+ * @param event Saves the new mapMarker by passing it to arent class where it is then passed to save
+ */
+  public SaveNewMapMarker(event: MapMarker):void{
     this.NewMapMarker.emit(event);
   }
   /**
    * Called when the user swiped down to go back to basic info
    */
-  public SwipedDown() {
-    console.log("swipped down footer");
+  public SwipedDown():void {
+    console.log("swipped down footer");    //console.log for confirmation of action
     this.ShowBasicInfo();
   }
 
   /**
    * Called when user swiped up to display more info
    */
-  public SwipedUp() {
-    console.log("swipped up footer");
+  public SwipedUp():void {
+    console.log("swipped up footer");  //console.log for confirmation of action
     this.ShowMoreInfo();
   }
   /**
    * Called when user swiped to the close the footer
    */
-  public SwipeToClose() {
+  public SwipeToClose():void {
+    //console.log for confirmation of action
     console.log("swiped to close footer");
     this.Close();
   }

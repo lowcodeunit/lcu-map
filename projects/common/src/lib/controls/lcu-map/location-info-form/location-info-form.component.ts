@@ -71,6 +71,11 @@ export class LocationInfoFormComponent implements OnInit {
    */
   public IsEdit: boolean = false;
 
+  /**
+   * The url to the locations instagram page
+   */
+  public InstagramUrl: string;
+
   //public FormView: string;
   //CONSTRUCTORS
 
@@ -108,6 +113,7 @@ export class LocationInfoFormComponent implements OnInit {
       this.NewMarkerForm.patchValue({ title: this.Marker.title })
       this.NewMarker = this.MarkerData.marker;
       this.setChosenIconIfExists(this.NewMarker.iconName);
+      this.BuildInstagramUrl(this.NewMarker);
       //console.log("form group = ", this.NewMarkerForm);
   }
 
@@ -169,6 +175,13 @@ export class LocationInfoFormComponent implements OnInit {
   }
 
   // HELPERS
+
+  public BuildInstagramUrl(marker: MapMarker): void{
+    if(marker.instagram){
+      let tempInsta = marker.instagram.slice(1);
+      this.InstagramUrl = "https://www.instagram.com/"+tempInsta+"/";
+    }
+  }
 
   /**
    * 

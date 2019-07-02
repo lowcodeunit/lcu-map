@@ -610,6 +610,7 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
+    console.log("displaying: ", marker)
     this.isEdit = false;
     if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
       this.isEdit = true;

@@ -64,6 +64,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public ChosenIcon: MarkerInfo;
 
+  public InstagramUrl: string;
+
+  public LinkedPhoneNumber: string; 
+
   // CONSTRUCTORS
 
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
@@ -101,6 +105,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.title })
       this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.iconName);
+      this.BuildInstagramUrl(this.NewMarker);
+      this.LinkPhoneNumber(this.NewMarker);
     }, 50);
   }
 
@@ -144,7 +150,21 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     }
   }
 
+
+  public BuildInstagramUrl(marker: MapMarker): void{
+    if(marker.instagram){
+      let tempInsta = marker.instagram.slice(1);
+      this.InstagramUrl = "https://www.instagram.com/"+tempInsta+"/";
+    }
+  }
+
   // HELPERS
+
+  public LinkPhoneNumber(marker: MapMarker){
+    if(marker.phoneNumber){
+      this.LinkedPhoneNumber = 'tel:'+ marker.phoneNumber;
+    }
+  }
 
   /**
    * 

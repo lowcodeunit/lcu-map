@@ -1,0 +1,110 @@
+mat-icon {
+    font-size: 30px;
+}
+
+#map-section {
+    height: 100vh;
+    position: relative;
+
+    .icon-list {
+        height: 6vh;
+        @media (max-width:600px){
+            height:12vh;
+        }
+    }
+    
+    .legend {
+        
+        @media(min-width:600px){
+            position: absolute;
+            right: 10px;
+        }
+    }
+    
+    .bottom-icon-set {
+        width: 80%;
+        margin: auto;
+        @media(max-width: 600px) {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    }
+    
+    agm-map {
+        height: 94vh;
+        @media(max-width:600px){
+            height: 88vh;
+        }
+
+    }
+}
+
+mat-icon {
+    cursor: pointer;
+    padding-left: 10%; //75px
+    padding-right: 10%;//75px
+}
+
+mat-checkbox, mat-radio-button {
+    display: block;
+    margin: 6px;
+}
+
+#search-bar {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    input {    
+        width: 80%;
+        margin: auto;
+        display: block;
+        margin-top: 10px;
+        border-color: #673ab7;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+    }
+}
+
+
+.footer{
+    position: fixed; 
+    bottom: 0px;  
+    z-index: 2 !important; 
+    background-color: white;
+    width:100%;
+}
+mat-option {
+    height: 31px;
+    border-top: lightgrey 1px solid;
+    padding: 6px;
+}
+
+.dropdown-marker-image {
+    height: 15px;
+}
+
+.dropdown-marker-title-text {
+    color: black;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    margin-left: 3px;
+}
+
+.dropdown-marker-location-text {
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    line-height: 30px;
+    color: #999;
+}
+
+.search-method-radio-group {
+    position: relative;
+    left: 10%;
+    background: rgba(255,255,255,.5);
+    max-width: 9%;
+    padding: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

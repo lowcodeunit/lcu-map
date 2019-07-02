@@ -1,0 +1,77 @@
+<!-- More Info content -->
+<mat-card class="more-info-container" fxLayout="column" fxLayoutAlign="start start" *ngIf="FormView === 'moreInfo'"
+  (swipedown)="SwipedDown()">
+  <!-- <mat-card-header> -->
+  <mat-card-title *ngIf="Marker.title && Marker.website" fxLayout="row" fxLayoutAlign="start">
+    <a *ngIf="Marker.website" href={{Marker.website}} target="_blank">{{Marker.title}}</a>
+  </mat-card-title>
+
+  <mat-card-title *ngIf="Marker.title && !Marker.website" fxLayout="row" fxLayoutAlign="start">
+    {{Marker.title}}
+  </mat-card-title> <!-- </mat-card-header> -->
+  <!-- <mat-card-content> -->
+  <div *ngIf="Marker.address">Address: {{Marker.address}}</div>
+  <div *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}}
+    {{Marker.country}}</div>
+  <div *ngIf="Marker.phoneNumber">Phone: {{Marker.phoneNumber}}</div>
+  <!-- <a *ngIf="Marker.website" href={{Marker.website}}>Website</a> -->
+  <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" class="fa fa-instagram"></a>
+  <a *ngIf="Marker.reservations" href={{Marker.reservations}}>Reservations</a>
+  <a *ngIf="Marker.menu" href={{Marker.menu}}>Menu</a>
+  <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
+  <star-rating *ngIf="Marker.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true" speed="slow"
+    [readOnly]="true" labelText={{Marker.starRating}} [rating]=Marker.starRating>
+  </star-rating>
+  <div *ngIf="Marker.awards">Awards: {{Marker.awards}}</div>
+  <a *ngIf="Marker.media" href={{Marker.media}}>Media</a>
+  <p *ngIf="Marker.notes">Notes: {{Marker.notes}}</p>
+  <div *ngIf="Marker.photos" class="info-photo-container">Photos:
+    <img *ngFor="let photo of Marker.photos" src="{{photo}}" />
+  </div>
+  <p *ngIf="Marker.generalInfo">General Info: {{Marker.generalInfo}}</p>
+  <!-- </mat-card-content> -->
+  <!-- </div> -->
+
+
+  <!-- Buttons that only display in more info-->
+  <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
+      <button *ngIf="FormView === 'moreInfo' && !IsEdit" mat-button mat-raised-button
+      (click)="FormView = 'addToMap'">Add Marker</button>
+    <button *ngIf="FormView === 'moreInfo' && IsEdit" mat-button mat-raised-button
+      (click)="FormView = 'addToMap'">Edit Marker</button>  </mat-dialog-actions>
+</mat-card>
+
+<!-- Add/edit marker form -->
+<div *ngIf="FormView === 'addToMap'">
+  <mat-card>
+    <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMarkerForm" fxLayoutGap="30px">
+      <mat-form-field>
+        <mat-label>Marker Title</mat-label>
+        <input type="text" matInput formControlName="title">
+        <mat-hint>The title for the map marker</mat-hint>
+        <mat-error>Invalid or missing title</mat-error>
+      </mat-form-field>
+      <!-- <mat-form-field>
+          <mat-label>Icon</mat-label>
+          <mat-select formControlName="icon">
+            <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+      <div style="width: 100%">
+        <div fxLayout="row wrap" fxLayoutGap="10px">
+          <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
+            src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
+        </div>
+      </div>
+      <!-- <mat-form-field>
+            <mat-label>Notes</mat-label>
+            <input type="text" matInput formControlName="notes">
+            <mat-hint>Add Notes for this location</mat-hint>
+          </mat-form-field> -->
+    </form>
+    <mat-dialog-actions>
+      <button *ngIf="FormView === 'addToMap'" mat-button mat-raised-button (click)="SetMarkerData(); Close()"
+        [disabled]="NewMarkerForm.invalid">Save</button>
+    </mat-dialog-actions>
+  </mat-card>
+</div>

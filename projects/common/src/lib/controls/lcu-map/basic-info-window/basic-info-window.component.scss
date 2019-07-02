@@ -1,0 +1,40 @@
+.basic-info-window {
+    height: 150%;
+    width: 100%;
+  }
+
+  .mat-dialog-content{
+    height:100%;
+  }
+  a {
+    text-decoration: none !important;
+}
+.fa {
+    padding: 5px;
+    font-size: 15px;
+    width: 15px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 5px;
+  }
+.fa:hover {
+    opacity: 0.7;
+}
+.fa-instagram {
+    background: #125688;
+    color: white;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .available-images {
+    width: 30px;
+    height: 30px;
+    border: solid transparent 2px;
+  }
+  
+  .chosen-icon {
+    border: solid black 2px;
+  }

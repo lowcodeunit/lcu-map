@@ -7,7 +7,7 @@
         (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
       </lcu-legend>
     </div>
-    <div class="bottom-icon-set" fxLayoutAlign.lt-sm="flex-start" fxLayoutAlign="center center">
+    <div class="bottom-icon-set" fxLayoutAlign.lt-sm="start center" fxLayoutAlign.lg="center center">
       <mat-icon (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>

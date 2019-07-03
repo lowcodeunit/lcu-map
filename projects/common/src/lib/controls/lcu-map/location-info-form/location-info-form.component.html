@@ -15,7 +15,7 @@
     {{Marker.country}}</div>
   <div *ngIf="Marker.phoneNumber">Phone: {{Marker.phoneNumber}}</div>
   <!-- <a *ngIf="Marker.website" href={{Marker.website}}>Website</a> -->
-  <a *ngIf="Marker.instagram" href={{Marker.instagram}} class="fa fa-instagram"></a>
+  <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" class="fa fa-instagram"></a>
   <a *ngIf="Marker.reservations" href={{Marker.reservations}}>Reservations</a>
   <a *ngIf="Marker.menu" href={{Marker.menu}}>Menu</a>
   <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->

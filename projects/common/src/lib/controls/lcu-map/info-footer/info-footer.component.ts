@@ -38,6 +38,10 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
  * MapMarker to use in component
  */
   public Marker: MapMarker;
+/**
+ * The phone number with link
+ */
+  public LinkedPhoneNumber: string;
 
   //CONSTRUCTORS
   constructor() {
@@ -55,6 +59,7 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
+    this.LinkPhoneNumber(this.Marker);
   }
   ngOnDestroy() {
   }
@@ -115,9 +120,13 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
    */
   public SwipeToClose():void {
     //console.log for confirmation of action
-    console.log("swiped to close footer");
+    console.log("swipped to close footer");
     this.Close();
   }
   //HELPERS
-
+  public LinkPhoneNumber(marker: MapMarker){
+    if(marker.phoneNumber){
+      this.LinkedPhoneNumber = 'tel:'+ marker.phoneNumber;
+    }
+  }
 }

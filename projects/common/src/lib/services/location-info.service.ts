@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MapMarker } from '@lcu-ide/dynamic-map-common/lcu.api';
+import { MapMarker } from '../models/map-marker.model';
 
 @Injectable({
   providedIn: 'root'

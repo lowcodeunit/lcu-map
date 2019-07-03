@@ -13,8 +13,7 @@
   <div *ngIf="Marker.address">Address: {{Marker.address}}</div>
   <div *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}}
     {{Marker.country}}</div>
-  <div *ngIf="Marker.phoneNumber">Phone: {{Marker.phoneNumber}}</div>
-  <!-- <a *ngIf="Marker.website" href={{Marker.website}}>Website</a> -->
+  <a *ngIf="PhoneNumberUrl" href={{PhoneNumberUrl}}>{{Marker.phoneNumber}}</a>
   <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" class="fa fa-instagram"></a>
   <a *ngIf="Marker.reservations" href={{Marker.reservations}}>Reservations</a>
   <a *ngIf="Marker.menu" href={{Marker.menu}}>Menu</a>
@@ -35,10 +34,10 @@
 
   <!-- Buttons that only display in more info-->
   <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
-      <button *ngIf="FormView === 'moreInfo' && !IsEdit" mat-button mat-raised-button
-      (click)="FormView = 'addToMap'">Add Marker</button>
-    <button *ngIf="FormView === 'moreInfo' && IsEdit" mat-button mat-raised-button
-      (click)="FormView = 'addToMap'">Edit Marker</button>  </mat-dialog-actions>
+    <button *ngIf="FormView === 'moreInfo' && !IsEdit" mat-button mat-raised-button (click)="FormView = 'addToMap'">Add
+      Marker</button>
+    <button *ngIf="FormView === 'moreInfo' && IsEdit" mat-button mat-raised-button (click)="FormView = 'addToMap'">Edit
+      Marker</button> </mat-dialog-actions>
 </mat-card>
 
 <!-- Add/edit marker form -->

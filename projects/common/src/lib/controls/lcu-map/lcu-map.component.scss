@@ -10,22 +10,26 @@ mat-icon {
         height: 6vh;
         @media (max-width:600px){
             height:12vh;
+            left: 0px;
+        }
+
+        .legend {
+            @media(min-width:600px){
+                position: absolute;
+                right: 10px;
+                margin: auto;
+            }
         }
     }
     
-    .legend {
-        
-        @media(min-width:600px){
-            position: absolute;
-            right: 10px;
-        }
-    }
+    
     
     .bottom-icon-set {
         width: 80%;
         margin: auto;
         @media(max-width: 600px) {
-            margin-right: 20px;
+            margin-left:0px;
+            margin-right:0px;
         }
     }
     
@@ -42,6 +46,9 @@ mat-icon {
     cursor: pointer;
     padding-left: 10%; //75px
     padding-right: 10%;//75px
+    @media(max-width:600px){
+        float: left;
+    }
 }
 
 mat-checkbox, mat-radio-button {

@@ -5,6 +5,7 @@ import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerData } from '../../../models/marker-data.model';
 import * as uuid from 'uuid';
+import { LocationInfoService } from '../../../services/location-info.service';
 
 
 @Component({
@@ -76,10 +77,16 @@ export class LocationInfoFormComponent implements OnInit {
    */
   public InstagramUrl: string;
 
+
+  /**
+   * The url for the phone number
+   */
+  public PhoneNumberUrl: string;
+
   //public FormView: string;
   //CONSTRUCTORS
 
-  constructor(protected mapConversions: MapConversions) {
+  constructor(protected mapConversions: MapConversions, private locationInfoService: LocationInfoService) {
     this.CloseFooter = new EventEmitter<boolean>();
     this.NewMapMarker = new EventEmitter<MapMarker>();
 
@@ -119,6 +126,8 @@ export class LocationInfoFormComponent implements OnInit {
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
+    this.locationInfoService.SetPhoneNumberUrl(this.Marker);
+    this.PhoneNumberUrl= this.locationInfoService.GetPhoneNumberUrl();
     this.createFormGroup();
     this.NewMarker = this.MarkerData.marker;
     this.IsEdit = this.MarkerData.isEdit;    

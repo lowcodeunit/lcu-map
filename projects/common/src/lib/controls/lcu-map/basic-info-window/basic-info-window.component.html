@@ -13,15 +13,17 @@
     <mat-icon fxFlex fxLayoutAlign="end" (click)="Close()" matTooltip="Close">close</mat-icon>
   </mat-card-header>
 
+
   <!-- content with scroll bar  -->
   <mat-dialog-content class="mat-dialog-content">
     <!-- display basic data -->
     <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column" fxLayoutAlign="start start"
       class="marker-info-container">
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">Location:
+      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">
         {{BasicInfoData?.town}} {{BasicInfoData?.state}}
         {{BasicInfoData?.country}}</div>
-      <!-- <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData?.phoneNumber}}</div> -->
+
+      <!-- <div *ngIf="BasicInfoData?.phoneNumber">{{BasicInfoData?.phoneNumber}}</div> -->
       <a *ngIf="LinkedPhoneNumber" href={{LinkedPhoneNumber}}>{{BasicInfoData.phoneNumber}}</a>
 
 

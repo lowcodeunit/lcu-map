@@ -8,6 +8,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as uuid from 'uuid';
+import { LocationInfoService } from '../../../services/location-info.service';
 
 @Component({
   selector: 'lcu-basic-info-window',
@@ -73,7 +74,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
     protected dialogRef: MatDialogRef<BasicInfoWindowComponent>,
     protected mapConversions: MapConversions,
-    protected breakpointObserver: BreakpointObserver) {
+    protected breakpointObserver: BreakpointObserver,
+    private locationInfoService: LocationInfoService) {
     this.IsEdit = this.passedData.isEdit;
   }
 
@@ -106,7 +108,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.iconName);
       this.BuildInstagramUrl(this.NewMarker);
-      this.LinkPhoneNumber(this.NewMarker);
+      this.locationInfoService.SetPhoneNumberUrl(this.NewMarker);
+      this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
     }, 50);
   }
 
@@ -160,11 +163,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // HELPERS
 
-  public LinkPhoneNumber(marker: MapMarker){
-    if(marker.phoneNumber){
-      this.LinkedPhoneNumber = 'tel:'+ marker.phoneNumber;
-    }
-  }
 
   /**
    * 

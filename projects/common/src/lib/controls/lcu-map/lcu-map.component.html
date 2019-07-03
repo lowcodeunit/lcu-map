@@ -1,13 +1,13 @@
 <div id="map-section">
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column">
-    <div class="top-icon-set" fxLayoutAlign="end center" >
+    <div class="top-icon-set" fxLayoutAlign="end center" fxLayoutAlign.lt-sm="end start">
       <lcu-legend class="legend" [current-map-model]="_currentMapModel"
         [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
         [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
         (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
       </lcu-legend>
     </div>
-    <div class="bottom-icon-set" fxLayoutAlign.lt-sm="start center" fxLayoutAlign.lg="center center">
+    <div class="bottom-icon-set" fxLayoutAlign.lt-sm="start end" fxLayoutAlign="center">
       <mat-icon (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       <mat-icon (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       <mat-icon mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>

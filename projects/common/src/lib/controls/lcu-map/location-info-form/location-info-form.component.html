@@ -24,7 +24,7 @@
   <div *ngIf="Marker.awards">Awards: {{Marker.awards}}</div>
   <a *ngIf="Marker.media" href={{Marker.media}}>Media</a>
   <p *ngIf="Marker.notes">Notes: {{Marker.notes}}</p>
-  <div *ngIf="Marker.photos" class="info-photo-container">Photos:
+  <div *ngIf="Marker.photos" class="info-photo-container">
     <img *ngFor="let photo of Marker.photos" src="{{photo}}" />
   </div>
   <p *ngIf="Marker.generalInfo">General Info: {{Marker.generalInfo}}</p>

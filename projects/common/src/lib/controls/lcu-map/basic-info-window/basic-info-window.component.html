@@ -81,7 +81,7 @@
       <div *ngIf="BasicInfoData?.awards">Awards: {{BasicInfoData?.awards}}</div>
       <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a>
       <p *ngIf="BasicInfoData?.notes">Notes: {{BasicInfoData?.notes}}</p>
-      <div *ngIf="BasicInfoData?.photos" class="info-photo-container">Photos:
+      <div *ngIf="BasicInfoData?.photos" class="info-photo-container">
         <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}" />
       </div>
       <p *ngIf="BasicInfoData?.generalInfo">General Info: {{BasicInfoData?.generalInfo}}</p>

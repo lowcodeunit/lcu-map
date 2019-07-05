@@ -18,6 +18,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
+import { PhotoInfo } from '../../models/photo-info.model';
 
 
 
@@ -77,14 +78,14 @@ export class LcuMapComponent implements OnInit {
   protected markerInfoSubscription: Subscription;
 
 
-/**
- * Subscription for the break point observer(determines the screen size the app is running on)
- */
+  /**
+   * Subscription for the break point observer(determines the screen size the app is running on)
+   */
   protected observerSubscription: Subscription;
 
-/**
- * boolean value that determines if the MapMarker already exists and is being edited
- */
+  /**
+   * boolean value that determines if the MapMarker already exists and is being edited
+   */
   protected isEdit: boolean;
 
 
@@ -308,9 +309,9 @@ export class LcuMapComponent implements OnInit {
   @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
-/**
- * The event emitted when the legend is closed and the order/locations are saved to local storage
- */
+  /**
+   * The event emitted when the legend is closed and the order/locations are saved to local storage
+   */
   @Output('saved-legend-locations')
   public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
 
@@ -349,20 +350,20 @@ export class LcuMapComponent implements OnInit {
   }
 
   // API METHODS
-/**
- * 
- * @param layer will be added to an array of active layers if it doesnt already exist in the array
- */
+  /**
+   * 
+   * @param layer will be added to an array of active layers if it doesnt already exist in the array
+   */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
     if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
       this.CurrentlyActiveLayers.push(layer);
       this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
   }
-/**
- * legend uses this function to take incoming data from child class and sets the according values to allow panning
- * @param value 
- */
+  /**
+   * legend uses this function to take incoming data from child class and sets the according values to allow panning
+   * @param value 
+   */
   public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
     this._panTo = value;
     if (this._currentMapModel) {
@@ -371,10 +372,10 @@ export class LcuMapComponent implements OnInit {
       this._currentMapModel.zoom = value.zoom;
     }
   }
-/**
- * Saves the legend order/loactions via event emmiter
- * @param val 
- */
+  /**
+   * Saves the legend order/loactions via event emmiter
+   * @param val 
+   */
   public SaveLegendLocations(val: Array<MapMarker>): void {
     this.SavedLegendLocations.emit(val);
   }
@@ -411,6 +412,7 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
+            //console.log("return ", res.result);
             const marker = {
               id: uuid.v4(),
               title: res.result.name,
@@ -420,7 +422,9 @@ export class LcuMapComponent implements OnInit {
               iconName: '',
               phoneNumber: res.result.formatted_phone_number,
               town: res.result.address_components[townIndex].long_name,
-              country: res.result.address_components[countryIndex].long_name
+              country: res.result.address_components[countryIndex].long_name,
+              photos: this.buildPhotoArray(res.result.photos)
+
             };
             this.DisplayMarkerInfo(marker);
           }
@@ -563,28 +567,28 @@ export class LcuMapComponent implements OnInit {
   public DisplayFn(marker?: MapMarker): string | undefined {
     return marker ? marker.title : undefined;
   }
-/**
- * 
- * @param val Toggles the displayFooter property to true or false
- */
+  /**
+   * 
+   * @param val Toggles the displayFooter property to true or false
+   */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
   }
-/**
- * @param event 
- * 
- * sets the NewMapMarker value to the event and passes the value to SaveNewMarker
- */
+  /**
+   * @param event 
+   * 
+   * sets the NewMapMarker value to the event and passes the value to SaveNewMarker
+   */
   public SetNewMapMarker(event: MapMarker): void {
     this.NewMapMarker = event;
     this.SaveNewMarker(this.NewMapMarker);
   }
-/**
- * 
- * @param marker 
- * 
- * Saves the new MapMarker
- */
+  /**
+   * 
+   * @param marker 
+   * 
+   * Saves the new MapMarker
+   */
   public SaveNewMarker(marker: MapMarker): void {
     //console.log("data being returned = ", marker);
     if (!this.isEdit) {
@@ -610,7 +614,7 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
-    console.log("displaying: ", marker)
+    //console.log("displaying: ", marker)
     this.isEdit = false;
     if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
       this.isEdit = true;
@@ -703,6 +707,7 @@ export class LcuMapComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
+          //console.log("place: ", place);
           this._currentMapModel.origin.lat = place.geometry.location.lat();
           this._currentMapModel.origin.lng = place.geometry.location.lng();
           this._currentMapModel.zoom = 16;
@@ -723,19 +728,29 @@ export class LcuMapComponent implements OnInit {
               }
             }
           });
+          //let placePhotos: Array<string> = new Array<string>();
+          this.mapService.GetPlaceDetails(place.place_id).subscribe((res: any) => {
+           // console.log("result = ", res.result);
+            // let photoArray: Array<string>;
+            // if(res.result.pho)
 
-          this.DisplayMarkerInfo(new MapMarker({
-            id: uuid.v4(),
-            map_id: this._currentMapModel.id,
-            title: place.name,
-            iconName: place.icon,
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-            phoneNumber: place.formatted_phone_number,
-            website: place.website,
-            town: place.address_components[townIndex].long_name,
-            country: place.address_components[countryIndex].long_name
-          }));
+            //console.log("placePhotos: ", placePhotos);
+
+            this.DisplayMarkerInfo(new MapMarker({
+              id: uuid.v4(),
+              map_id: this._currentMapModel.id,
+              title: place.name,
+              iconName: place.icon,
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+              phoneNumber: place.formatted_phone_number,
+              website: place.website,
+              town: place.address_components[townIndex].long_name,
+              country: place.address_components[countryIndex].long_name,
+              photos: this.buildPhotoArray(res.result.photos)
+            })
+            );
+          });
         });
       });
     });
@@ -760,24 +775,46 @@ export class LcuMapComponent implements OnInit {
       this.CurrentlyActiveLocations.push(loc);
     });
   }
-/**
- * 
- * @param value 
- * 
- * Sets _currentMapModel.orgin to the values of the incoming lat and long
- * 
- * ParseFloat is added to the incoming value in the instance that it is saved as a string
- * 
- * AGM can only take Numbers as the lat and long values, strings will not process correctly
- * 
- * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom
- * 
- * if random decimals are not added then the map will not zoom/pan once user moves the map
- */
+  /**
+   * 
+   * @param value 
+   * 
+   * Sets _currentMapModel.orgin to the values of the incoming lat and long
+   * 
+   * ParseFloat is added to the incoming value in the instance that it is saved as a string
+   * 
+   * AGM can only take Numbers as the lat and long values, strings will not process correctly
+   * 
+   * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom
+   * 
+   * if random decimals are not added then the map will not zoom/pan once user moves the map
+   */
   protected zoomInToPoint(value): void {
-    this._currentMapModel.origin.lat = parseFloat(value.lat)+ (Math.random()/100000);
-    this._currentMapModel.origin.lng = parseFloat(value.lng) + (Math.random()/100000);
-    this._currentMapModel.zoom = 16 + (Math.random()/100);
+    this._currentMapModel.origin.lat = parseFloat(value.lat) + (Math.random() / 100000);
+    this._currentMapModel.origin.lng = parseFloat(value.lng) + (Math.random() / 100000);
+    this._currentMapModel.zoom = 16 + (Math.random() / 100);
+  }
+  /** 
+   * @param photos
+   * 
+   * Takes and array of photos returned from the google api and pulls the photo reference out 
+   * 
+   * and builds the url to call so image displays. (currently only pulling one image from loop)
+   */
+  protected buildPhotoArray(photos: Array<any>): Array<string> {
+    //console.log("photos = ", photos);
+    let width = 100; //the max width of the image to display
+    let photoUrls: Array<string>;
+    let apiKey: string = this.mapService.GetMapApiKey();
+    if (photos) {
+      photoUrls = new Array<string>();
+      for (let i = 0; i < 1; i++) {
+        let photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&photoreference=" + photos[i].photo_reference + "&key=" + apiKey;
+        photoUrls.push(photoUrl);
+      }
+    }
+    //console.log("returning: ", photoUrls);
+    return photoUrls;
   }
 
 }

@@ -1,3 +1,5 @@
+import { PhotoInfo } from './photo-info.model';
+
 export class MapMarker {
 
     /**

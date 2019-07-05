@@ -62,7 +62,7 @@ export class MapService {
     const baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json?';
     const placeId = `placeid=${pID}`;
     const apiKey = `&key=${this.apiKey}`;
-    const fields = '&fields=name,formatted_phone_number,adr_address,url,website,address_component,formatted_address,geometry';
+    const fields = '&fields=name,formatted_phone_number,adr_address,url,website,address_component,formatted_address,geometry,photo';
 
     const fullUrl = `${this.corsProxy}${baseUrl}${placeId}${apiKey}${fields}`;
 
@@ -82,6 +82,10 @@ export class MapService {
  */
   public GetCurrentlyActiveLayers(): Array<IndividualMap>{
     return this.CurrentlyActiveLayers;
+  }
+
+  public GetMapApiKey(): string{
+    return this.apiKey;
   }
   // HELPERS
 

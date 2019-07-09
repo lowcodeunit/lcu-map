@@ -3,10 +3,10 @@
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
     <!-- if both website and title exist then the title is the link to the website -->
     <mat-card-title *ngIf="BasicInfoData?.title && BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">
-      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData.website}} target="_blank">{{BasicInfoData.title}}</a>
+      <a *ngIf="BasicInfoData?.website" href={{BasicInfoData.website}} target="_blank" style="margin-right: 2em">{{BasicInfoData.title}}</a>
     </mat-card-title>
     <!-- if the website does not exist then just display the title -->
-    <mat-card-title *ngIf="BasicInfoData?.title && !BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">
+    <mat-card-title *ngIf="BasicInfoData?.title && !BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start" style="margin-right: 2em">
       {{BasicInfoData.title}}
     </mat-card-title>
     <!-- close button -->
@@ -19,12 +19,19 @@
     <!-- display basic data -->
     <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column" fxLayoutAlign="start start"
       class="marker-info-container">
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">
-        {{BasicInfoData?.town}} {{BasicInfoData?.state}}
-        {{BasicInfoData?.country}}</div>
+      <p style="margin:0; color:grey">American Restaurant</p>
+      
+      <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
+        speed="slow" [readOnly]="true" [rating]=BasicInfoData?.starRating>
+      </star-rating>
+
+      <div *ngIf="BasicInfoData?.address">{{BasicInfoData?.address}}</div>
+      <!-- <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">
+        {{BasicInfoData?.town}}, {{BasicInfoData?.state}}
+        {{BasicInfoData?.country}}</div> -->
 
       <!-- <div *ngIf="BasicInfoData?.phoneNumber">{{BasicInfoData?.phoneNumber}}</div> -->
-      <a *ngIf="LinkedPhoneNumber" href={{LinkedPhoneNumber}}>{{BasicInfoData.phoneNumber}}</a>
+      <a *ngIf="LinkedPhoneNumber" href={{LinkedPhoneNumber}} style="margin-bottom: 1em">{{BasicInfoData.phoneNumber}}</a>
 
 
       <!-- </div> -->
@@ -63,46 +70,60 @@
 
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
-      <div *ngIf="BasicInfoData?.address">Address: {{BasicInfoData?.address}}</div>
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">Location:
-        {{BasicInfoData?.town}} {{BasicInfoData?.state}}
-        {{BasicInfoData?.country}}</div>
-      <!-- <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div> -->
-      <a *ngIf="LinkedPhoneNumber" href={{LinkedPhoneNumber}}>{{BasicInfoData.phoneNumber}}</a>
-
-      <!-- <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a> -->
-      <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" class="fa fa-instagram"></a>
-      <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}}>Reservations</a>
-      <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}}>Menu</a>
-      <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
+      <p style="margin:0; color:grey">American Restaurant</p>
       <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
         speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
       </star-rating>
-      <div *ngIf="BasicInfoData?.awards">Awards: {{BasicInfoData?.awards}}</div>
-      <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a>
-      <p *ngIf="BasicInfoData?.notes">Notes: {{BasicInfoData?.notes}}</p>
-      <div *ngIf="BasicInfoData?.photos" class="info-photo-container">Photos:
+
+      <!-- <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div> -->
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <a *ngIf="LinkedPhoneNumber" href={{LinkedPhoneNumber}} class="button">Call</a>
+        <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}} class="button">Reservations</a>
+        <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}} class="button" >Menu</a>
+      </div>
+      <div class="customHr">.</div>
+
+      <div *ngIf="BasicInfoData?.address" style="margin-top: 0.5em;" >{{BasicInfoData?.address}}</div>
+      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state" style="margin-bottom: 0.5em;" >
+        {{BasicInfoData?.town}}, {{BasicInfoData?.state}}
+        {{BasicInfoData?.country}}</div>
+      
+      <div class="customHr">.</div>
+      
+      <!-- <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a> -->
+      <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" style="margin-top: 0.5em;">@{{BasicInfoData.instagram}}</a>
+      <div *ngIf="BasicInfoData?.photos" class="info-photo-container" style="margin-bottom: 0.5em;">
         <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}" />
       </div>
-      <p *ngIf="BasicInfoData?.generalInfo">General Info: {{BasicInfoData?.generalInfo}}</p>
+
+      <div class="customHr">.</div>
+
+      <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
+      <p style="margin-top: 0.5em; margin-bottom: 0em; color:grey">Awards</p>
+      <div *ngIf="BasicInfoData?.awards" >{{BasicInfoData?.awards}}</div>
+      <!-- <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a> -->
+      <p style="margin-top: 0.75em; margin-bottom:0em; color:grey">Notes</p>
+      <p *ngIf="BasicInfoData?.notes" style="margin-top: 0em; margin-bottom: 0em">{{BasicInfoData?.notes}}</p>
+      <p style="margin-top: 0.75em; margin-bottom:0em; color:grey">General Info</p>
+      <p *ngIf="BasicInfoData?.generalInfo" style="margin-top: 0em">{{BasicInfoData?.generalInfo}}</p>
 
     </div>
   </mat-dialog-content>
 
   <!-- Buttons -->
 
-  <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="center end">
+  <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="space-between end">
 
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
-      (click)="ModalState = 'addToMap'">Add
-      Marker</button>
-    <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
-      (click)="ModalState = 'addToMap'">Edit Marker</button>
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic'">
-      Basic info</button>
+      Less info</button>
     <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'">More
       info</button>
+    <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
+      (click)="ModalState = 'addToMap'">+</button>
+    <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
+      (click)="ModalState = 'addToMap'">Edit</button>
+    
   </mat-dialog-actions>
 </div>

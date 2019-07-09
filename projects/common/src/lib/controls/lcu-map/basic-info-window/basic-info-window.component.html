@@ -92,7 +92,7 @@
       <div class="customHr">.</div>
       
       <!-- <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a> -->
-      <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" style="margin-top: 0.5em;">@{{BasicInfoData.instagram}}</a>
+      <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" style="margin-top: 0.5em;">{{BasicInfoData.instagram}}</a>
       <div *ngIf="BasicInfoData?.photos" class="info-photo-container" style="margin-bottom: 0.5em;">
 
         <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}" />
@@ -101,12 +101,12 @@
       <div class="customHr">.</div>
 
       <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
-      <p style="margin-top: 0.5em; margin-bottom: 0em; color:grey">Awards</p>
+      <p *ngIf="BasicInfoData?.awards" style="margin-top: 0.5em; margin-bottom: 0em; color:grey">Awards</p>
       <div *ngIf="BasicInfoData?.awards" >{{BasicInfoData?.awards}}</div>
       <!-- <a *ngIf="BasicInfoData?.media" href={{BasicInfoData?.Media}}>Media</a> -->
-      <p style="margin-top: 0.75em; margin-bottom:0em; color:grey">Notes</p>
+      <p *ngIf="BasicInfoData?.notes" style="margin-top: 0.75em; margin-bottom:0em; color:grey">Notes</p>
       <p *ngIf="BasicInfoData?.notes" style="margin-top: 0em; margin-bottom: 0em">{{BasicInfoData?.notes}}</p>
-      <p style="margin-top: 0.75em; margin-bottom:0em; color:grey">General Info</p>
+      <p *ngIf="BasicInfoData?.generalInfo" style="margin-top: 0.75em; margin-bottom:0em; color:grey">General Info</p>
       <p *ngIf="BasicInfoData?.generalInfo" style="margin-top: 0em">{{BasicInfoData?.generalInfo}}</p>
 
     </div>

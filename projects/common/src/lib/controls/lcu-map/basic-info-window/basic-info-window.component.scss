@@ -38,3 +38,27 @@
   .chosen-icon {
     border: solid black 2px;
   }
+
+  .customHr {
+    width: 100%;
+    font-size: 1px;
+    line-height: 1.5px;
+
+    background-color: rgb(180, 180, 180);
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .button {
+    display: inline;
+    width: 100%;
+    margin-right: 2em;
+    margin-bottom: 0.5em;
+    font-size: 12px;
+    // height: 25px;
+    background: rgba(180, 180, 180,0.5);
+    padding: 1.25em;
+    text-align: center;
+    border-radius: 5px;
+    color: black;
+}

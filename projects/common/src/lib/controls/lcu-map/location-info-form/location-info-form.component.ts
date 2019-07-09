@@ -82,6 +82,10 @@ export class LocationInfoFormComponent implements OnInit {
    * The url for the phone number
    */
   public PhoneNumberUrl: string;
+/**
+ * The type of location
+ */
+  public Type: string;
 
   //public FormView: string;
   //CONSTRUCTORS
@@ -130,6 +134,7 @@ export class LocationInfoFormComponent implements OnInit {
     this.createFormGroup();
     this.NewMarker = this.MarkerData.marker;
     this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
+    this.Type = this.locationInfoService.GetType(this.NewMarker);
     this.IsEdit = this.MarkerData.isEdit;    
     this.NewMarkerForm.patchValue({ title: this.Marker.title })
   }

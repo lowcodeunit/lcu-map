@@ -30,6 +30,20 @@ export class LocationInfoService {
     }
   }
 
+  public GetType(marker: MapMarker): string{
+    let type: string;
+    if(marker.type){
+      let tempType = marker.type[0];
+      if(tempType.includes("_")){
+        tempType = tempType.replace("_"," ");
+      }
+      tempType = tempType.charAt(0).toUpperCase() + tempType.substr(1,tempType.length);
+      type = tempType;
+      //console.log("type =", type);
+    }
+    return type;
+  } 
+
   
 
   //HELPERS

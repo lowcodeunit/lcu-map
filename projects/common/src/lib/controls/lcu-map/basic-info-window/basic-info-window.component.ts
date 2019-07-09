@@ -69,6 +69,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public LinkedPhoneNumber: string; 
 
+  public Type: string;
+
   // CONSTRUCTORS
 
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
@@ -110,6 +112,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
       this.locationInfoService.SetPhoneNumberUrl(this.NewMarker);
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
+      this.Type = this.locationInfoService.GetType(this.NewMarker);
     }, 50);
   }
 

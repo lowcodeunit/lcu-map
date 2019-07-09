@@ -195,19 +195,6 @@ export class LegendComponent implements OnInit {
     return temp;
   }
 
-  // protected assignIconUrl(locList: Array<MapMarker>) {
-  //   let temp: Array<MapMarker> = new Array<MapMarker>();
-  //   for (let i = 0; i < locList.length; i++) {
-  //     for (let j = 0; j < this.iconList.length; j++) {
-  //      if (locList[i].iconName.match(this.iconList[j].iconLookup)) {
-  //         locList[i].iconUrl = this.iconList[j].iconUrl;
-  //       }
-  //     }
-  //     temp.push(locList[i]);
-  //   }
-  //   return temp;
-  // }
-
   /**
    * Gives order to the MapMarkers based on how the user orders the legend
    */

@@ -43,6 +43,10 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
  * The phone number with link
  */
   public LinkedPhoneNumber: string;
+/**
+ * The type of the location
+ */
+  public Type: string;
 
   //CONSTRUCTORS
   constructor(private locationInfoService: LocationInfoService) {
@@ -60,8 +64,11 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
+    //console.log("marker = ", this.Marker);
     this.locationInfoService.SetPhoneNumberUrl(this.Marker);
     this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
+    this.Type = this.locationInfoService.GetType(this.Marker);
+    //console.log("Type = ", this.Type);
   }
   ngOnDestroy() {
   }

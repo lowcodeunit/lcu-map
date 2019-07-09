@@ -45,7 +45,7 @@
   </div> <!-- END search bar section -->
 
   <!-- the map -->
-  <agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
+  <agm-map [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
     [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
     [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
     [usePanning]="true">

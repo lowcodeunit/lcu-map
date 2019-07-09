@@ -5,6 +5,7 @@ import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerData } from '../../../models/marker-data.model';
 import * as uuid from 'uuid';
+import { LocationInfoService } from '../../../services/location-info.service';
 
 
 @Component({
@@ -76,10 +77,16 @@ export class LocationInfoFormComponent implements OnInit {
    */
   public InstagramUrl: string;
 
+
+  /**
+   * The url for the phone number
+   */
+  public PhoneNumberUrl: string;
+
   //public FormView: string;
   //CONSTRUCTORS
 
-  constructor(protected mapConversions: MapConversions) {
+  constructor(protected mapConversions: MapConversions, private locationInfoService: LocationInfoService) {
     this.CloseFooter = new EventEmitter<boolean>();
     this.NewMapMarker = new EventEmitter<MapMarker>();
 
@@ -113,14 +120,16 @@ export class LocationInfoFormComponent implements OnInit {
       this.NewMarkerForm.patchValue({ title: this.Marker.title })
       this.NewMarker = this.MarkerData.marker;
       this.setChosenIconIfExists(this.NewMarker.iconName);
-      this.BuildInstagramUrl(this.NewMarker);
       //console.log("form group = ", this.NewMarkerForm);
   }
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
+    this.locationInfoService.SetPhoneNumberUrl(this.Marker);
+    this.PhoneNumberUrl= this.locationInfoService.GetPhoneNumberUrl();
     this.createFormGroup();
     this.NewMarker = this.MarkerData.marker;
+    this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
     this.IsEdit = this.MarkerData.isEdit;    
     this.NewMarkerForm.patchValue({ title: this.Marker.title })
   }
@@ -176,12 +185,12 @@ export class LocationInfoFormComponent implements OnInit {
 
   // HELPERS
 
-  public BuildInstagramUrl(marker: MapMarker): void{
-    if(marker.instagram){
-      let tempInsta = marker.instagram.slice(1);
-      this.InstagramUrl = "https://www.instagram.com/"+tempInsta+"/";
-    }
-  }
+  // public BuildInstagramUrl(marker: MapMarker): void{
+  //   if(marker.instagram){
+  //     let tempInsta = marker.instagram.slice(1);
+  //     this.InstagramUrl = "https://www.instagram.com/"+tempInsta+"/";
+  //   }
+  // }
 
   /**
    * 

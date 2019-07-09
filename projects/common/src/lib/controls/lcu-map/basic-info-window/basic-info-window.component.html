@@ -75,6 +75,7 @@
         speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
       </star-rating>
 
+
       <!-- <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div> -->
       <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <a *ngIf="LinkedPhoneNumber" href={{LinkedPhoneNumber}} class="button">Call</a>
@@ -93,6 +94,7 @@
       <!-- <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a> -->
       <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" style="margin-top: 0.5em;">@{{BasicInfoData.instagram}}</a>
       <div *ngIf="BasicInfoData?.photos" class="info-photo-container" style="margin-bottom: 0.5em;">
+
         <img *ngFor="let photo of BasicInfoData?.photos" src="{{photo}}" />
       </div>
 

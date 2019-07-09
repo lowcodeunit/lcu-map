@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy, OnChanges, DoCheck, AfterContentInit, Output, EventEmitter } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MarkerData } from '../../../models/marker-data.model';
+import { LocationInfoService } from '../../../services/location-info.service';
 
 @Component({
   selector: 'lcu-info-footer',
@@ -44,7 +45,7 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
   public LinkedPhoneNumber: string;
 
   //CONSTRUCTORS
-  constructor() {
+  constructor(private locationInfoService: LocationInfoService) {
     this.ShowFooter = new EventEmitter<boolean>();
     this.NewMapMarker = new EventEmitter<MapMarker>();
   }
@@ -59,7 +60,8 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
-    this.LinkPhoneNumber(this.Marker);
+    this.locationInfoService.SetPhoneNumberUrl(this.Marker);
+    this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
   }
   ngOnDestroy() {
   }
@@ -124,9 +126,4 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
     this.Close();
   }
   //HELPERS
-  public LinkPhoneNumber(marker: MapMarker){
-    if(marker.phoneNumber){
-      this.LinkedPhoneNumber = 'tel:'+ marker.phoneNumber;
-    }
-  }
 }

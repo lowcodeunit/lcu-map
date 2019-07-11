@@ -1,11 +1,30 @@
+.example-container {
+  background-color: orangered;
+}
+.legend-drawer{
+  overflow: visible;
+  width: 170px;
+}
+.mat-drawer-inner-container{ 
+  overflow: unset !important; 
+}
+
+.drawer-content{
+  background: white;
+}
+.scrollable-content{
+  height: 100vh;
+}
+
 .legend-button {
     background-color: transparent;
     border-width:0;
     outline: none;
     font-size: 30px;
     margin:0;
-    padding: 0;
+    padding: 0;  
 }
+
 
 .mat-icon-button{
   height: 24px;
@@ -14,6 +33,10 @@
 .icon-image{
   width: 20px;
   height: 20px;
+}
+
+.location-list{
+  height: 100vh;
 }
   
   .location-box {

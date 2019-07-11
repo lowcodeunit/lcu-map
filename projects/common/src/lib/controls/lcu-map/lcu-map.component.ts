@@ -409,7 +409,7 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
-            //console.log("return ", res.result);
+            console.log("return ", res.result);
             const marker = {
               id: uuid.v4(),
               title: res.result.name,
@@ -807,6 +807,7 @@ export class LcuMapComponent implements OnInit {
     let apiKey: string = this.mapService.GetMapApiKey();
     if (photos) {
       photoUrls = new Array<string>();
+      //Just getting the first photo for now but set up to be full loop for future
       for (let i = 0; i < 1; i++) {
         let photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&photoreference=" + photos[i].photo_reference + "&key=" + apiKey;
         photoUrls.push(photoUrl);

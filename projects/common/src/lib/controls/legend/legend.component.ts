@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
 import { IndividualMap } from '../../models/individual-map.model';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
+import { MatSidenav } from '@angular/material';
 
 
 
@@ -15,6 +16,8 @@ import { Constants } from '../../utils/constants/constants';
 })
 
 export class LegendComponent implements OnInit {
+
+
 
   //PROPERTIES
   protected _currentlyActiveLocations: Array<MapMarker>;
@@ -52,6 +55,9 @@ export class LegendComponent implements OnInit {
 
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
+  @ViewChild('sidenav') public drawer: MatSidenav;
+
+ 
 
 
   /**
@@ -71,6 +77,8 @@ export class LegendComponent implements OnInit {
 
   public LocationsList: Array<MapMarker> = new Array<MapMarker>();
 
+  public LegendOpen: boolean;
+
 
   //CONSTRUCTOR
 
@@ -82,7 +90,7 @@ export class LegendComponent implements OnInit {
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<IndividualMap>();
     this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
-
+    this.LegendOpen = false; 
     this.SetLocationList();
   }
 
@@ -174,6 +182,25 @@ export class LegendComponent implements OnInit {
     moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
     this.giveOrder();
     this.SaveLegendLocations.emit(this.LocationsList);
+  }
+
+  public CloseLegend():void{
+    this.LegendOpen = false;
+  }
+
+  public OpenLegend():void{
+    this.LegendOpen = true;
+  }
+
+  public toggleDrawer() {
+    if (this.drawer.opened) {
+      this.drawer.close();
+      this.LegendOpen = false;
+    } else {
+      this.drawer.open();
+      this.LegendOpen = true;
+
+    }
   }
 
 

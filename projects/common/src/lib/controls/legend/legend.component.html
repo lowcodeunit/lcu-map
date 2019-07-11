@@ -1,10 +1,33 @@
 <!-- The legend button that is diplayed at the top right of the app -->
-<button class="legend-button" fxLayoutAlign="start" mat-icon-button [matMenuTriggerFor]="legend" (click)="SetLocationList()">
-  <mat-icon class="chevron-legend"  fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
+<!-- <mat-sidenav-container>
+  <mat-sidenav-content>
+<button  class="legend-button" fxLayoutAlign="start" mat-icon-button [matMenuTriggerFor]="legend" (click)="SetLocationList()">
+  <mat-icon *ngIf="LegendOpen === false" class="chevron-legend"  fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
 </button>
 
+<button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button [matMenuTriggerFor]="legend" (click)="CloseLegend()">
+  <mat-icon class="chevron-legend"  fxLayoutAlign="start" [inline]="true">chevron_right</mat-icon>
+</button>
+</mat-sidenav-content> -->
+
 <!-- The Menu that is displayed once the button is selected -->
-<mat-menu #legend="matMenu">
+<!-- <mat-sidenav (align)="end" #legend mode="side" (opened)="OpenLegend()" (closed)="CloseLegend()">
+    <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
+    <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column">
+      <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+        *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
+        <img class="icon-image" src={{item.iconUrl}}>
+        <div class="location-title">
+          {{ item.title }}
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container> -->
+
+
+
+<!-- <mat-menu #legend="matMenu">
   <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
   <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column">
     <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
@@ -15,4 +38,42 @@
       </div>
     </div>
   </div>
-</mat-menu>
+</mat-menu> -->
+
+
+<!-- New side nav -->
+<!--(opened)="OpenLegend()" (closed)="CloseLegend()"  -->
+<mat-drawer-container class="example-container">
+  <!-- <mat-drawer-content > -->
+  <div class="drawer-content">
+    <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
+      (click)="toggleDrawer();SetLocationList();">
+      <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
+    </button>
+
+    <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
+      (click)="toggleDrawer()">
+      <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_right</mat-icon>
+    </button>
+  </div>
+  <!-- </mat-drawer-content> -->
+  <mat-drawer class="legend-drawer" #sidenav mode="side" [(opened)]="opened">
+    <div class="drawer-content">
+      <div class="scrollable-content">
+        <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
+        <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column">
+          <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+            *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
+            <img class="icon-image" src={{item.iconUrl}}>
+            <div class="location-title">
+              {{ item.title }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </mat-drawer>
+
+
+</mat-drawer-container>

@@ -1,6 +1,6 @@
 <div id="map-section">
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column">
-    <div class="top-icon-set" fxLayoutAlign="end center" fxLayoutAlign.lt-sm="end start">
+    <div class="top-icon-set" fxLayoutAlign="end start" fxLayoutAlign.lt-sm="end start">
       <lcu-legend class="legend" [current-map-model]="_currentMapModel"
         [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
         [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"

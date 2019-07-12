@@ -42,38 +42,36 @@
 
 
 <!-- New side nav -->
-<!--(opened)="OpenLegend()" (closed)="CloseLegend()"  -->
-<mat-drawer-container class="example-container">
-  <!-- <mat-drawer-content > -->
-  <div class="drawer-content">
-    <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
-      (click)="toggleDrawer();SetLocationList();">
-      <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
-    </button>
+<mat-sidenav-container class="example-container">
 
-    <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
-      (click)="toggleDrawer()">
-      <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_right</mat-icon>
-    </button>
-  </div>
-  <!-- </mat-drawer-content> -->
-  <mat-drawer class="legend-drawer" #sidenav mode="side" >
-    <div class="drawer-content">
-      <div class="scrollable-content">
-        <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
-        <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column">
-          <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
-            *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
-            <img class="icon-image" src={{item.iconUrl}}>
-            <div class="location-title">
-              {{ item.title }}
-            </div>
+  <mat-sidenav-content class="mat-sidenav-content">
+    <div class="button-container" fxLayoutAlign="end start">
+
+      <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
+        (click)="toggleDrawer();SetLocationList();">
+        <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
+      </button>
+
+      <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
+        (click)="toggleDrawer()">
+        <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_right</mat-icon>
+      </button>
+
+    </div>
+  </mat-sidenav-content>
+
+  <mat-sidenav class="legend-sidenav"  #sidenav mode="side">
+    <div class="legend-content">
+      <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
+      <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column" fxLayoutAlign="start">
+        <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+          *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
+          <img class="icon-image" src={{item.iconUrl}}>
+          <div class="location-title">
+            {{ item.title }}
           </div>
         </div>
       </div>
     </div>
-
-  </mat-drawer>
-
-
-</mat-drawer-container>
+  </mat-sidenav>
+</mat-sidenav-container>

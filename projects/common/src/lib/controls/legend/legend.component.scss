@@ -1,20 +1,26 @@
 .example-container {
-  background-color: orangered;
-}
-.legend-drawer{
-  overflow: visible;
-  width: 170px;
-}
-.mat-drawer-inner-container{ 
-  overflow: unset !important; 
+  background-color: transparent;
 }
 
-.drawer-content{
-  background: white;
+//has scroll bar
+.mat-sidenav-content{
+  // height: 100vh;
+  z-index: 10;
+  background-color:transparent;
 }
-.scrollable-content{
+.button-container{
+  background-color:transparent;
   height: 100vh;
 }
+.legend-sidenav{
+  // overflow: visible;
+  border-right: transparent;
+  width: 170px;
+}
+
+
+
+
 
 .legend-button {
     background-color: transparent;
@@ -34,10 +40,12 @@
   width: 20px;
   height: 20px;
 }
-
-.location-list{
-  height: 100vh;
-}
+// .legend-content{
+//   height: 100%;
+// }
+// .location-list{
+//   height: 100%;
+// }
   
   .location-box {
     padding: 5px 5px;

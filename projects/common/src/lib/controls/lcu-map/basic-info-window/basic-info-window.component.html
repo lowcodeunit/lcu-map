@@ -19,7 +19,7 @@
     <!-- display basic data -->
     <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column" fxLayoutAlign="start start"
       class="marker-info-container">
-      <p style="margin:0; color:grey">American Restaurant</p>
+      <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
       
       <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
         speed="slow" [readOnly]="true" [rating]=BasicInfoData?.starRating>
@@ -70,7 +70,7 @@
 
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
-      <p style="margin:0; color:grey">American Restaurant</p>
+      <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
       <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
         speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
       </star-rating>

@@ -18,9 +18,6 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
-import { PhotoInfo } from '../../models/photo-info.model';
-
-
 
 
 
@@ -412,7 +409,7 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
-            //console.log("return ", res.result);
+            console.log("return ", res.result);
             const marker = {
               id: uuid.v4(),
               title: res.result.name,
@@ -423,7 +420,8 @@ export class LcuMapComponent implements OnInit {
               phoneNumber: res.result.formatted_phone_number,
               town: res.result.address_components[townIndex].long_name,
               country: res.result.address_components[countryIndex].long_name,
-              photos: this.buildPhotoArray(res.result.photos)
+              photos: this.buildPhotoArray(res.result.photos),
+              type: res.result.types
 
             };
             this.DisplayMarkerInfo(marker);
@@ -747,7 +745,8 @@ export class LcuMapComponent implements OnInit {
               website: place.website,
               town: place.address_components[townIndex].long_name,
               country: place.address_components[countryIndex].long_name,
-              photos: this.buildPhotoArray(res.result.photos)
+              photos: this.buildPhotoArray(res.result.photos),
+              type: res.result.types
             })
             );
           });
@@ -808,6 +807,7 @@ export class LcuMapComponent implements OnInit {
     let apiKey: string = this.mapService.GetMapApiKey();
     if (photos) {
       photoUrls = new Array<string>();
+      //Just getting the first photo for now but set up to be full loop for future
       for (let i = 0; i < 1; i++) {
         let photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&photoreference=" + photos[i].photo_reference + "&key=" + apiKey;
         photoUrls.push(photoUrl);

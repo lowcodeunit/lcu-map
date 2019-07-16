@@ -114,6 +114,10 @@ export class MapMarker {
      * notes on the location
      */
     notes?: string;
+/**
+ * the type of the location 
+ */
+    type?: Array<string>; 
 
 
     /**
@@ -149,6 +153,7 @@ export class MapMarker {
         this.generalInfo = icon.generalInfo;
         this.photos = icon.photos;
         this.notes = icon.notes;
+        this.type = icon.type;
     }
 
     

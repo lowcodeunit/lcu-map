@@ -1,6 +1,6 @@
 <div id="map-section">
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column">
-    <div class="top-icon-set" fxLayoutAlign="end center" fxLayoutAlign.lt-sm="end start">
+    <div class="top-icon-set" fxLayoutAlign="end start" fxLayoutAlign.lt-sm="end start">
       <lcu-legend class="legend" [current-map-model]="_currentMapModel"
         [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
         [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
@@ -45,7 +45,7 @@
   </div> <!-- END search bar section -->
 
   <!-- the map -->
-  <agm-map (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
+  <agm-map [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
     [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
     [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
     [usePanning]="true">

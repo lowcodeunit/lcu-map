@@ -1,11 +1,36 @@
+.example-container {
+  background-color: transparent;
+}
+
+//has scroll bar
+.mat-sidenav-content{
+  // height: 100vh;
+  z-index: 10;
+  background-color:transparent;
+}
+.button-container{
+  background-color:transparent;
+  height: 100vh;
+}
+.legend-sidenav{
+  // overflow: visible;
+  border-right: transparent;
+  width: 170px;
+}
+
+
+
+
+
 .legend-button {
     background-color: transparent;
     border-width:0;
     outline: none;
     font-size: 30px;
     margin:0;
-    padding: 0;
+    padding: 0;  
 }
+
 
 .mat-icon-button{
   height: 24px;
@@ -15,6 +40,12 @@
   width: 20px;
   height: 20px;
 }
+// .legend-content{
+//   height: 100%;
+// }
+// .location-list{
+//   height: 100%;
+// }
   
   .location-box {
     padding: 5px 5px;

@@ -138,6 +138,12 @@ export class LcuMapComponent implements OnInit {
   public _currentMapModel: any;
 
   /**
+   * Input property that represents the locations and their order saved in memory
+   */
+  public _savedLegendLocations: Array<MapMarker>;
+
+
+  /**
    * The maps (in layer form) that are currently being displayed
    */
   public CurrentlyActiveLayers: Array<IndividualMap>;
@@ -280,7 +286,6 @@ export class LcuMapComponent implements OnInit {
   public set GetSavedLegendLocations(value: Array<MapMarker>) {
     this._savedLegendLocations = value;
   }
-  public _savedLegendLocations: Array<MapMarker>;
   /**
    * Getter for the input field '._secondaryMaps'
    */

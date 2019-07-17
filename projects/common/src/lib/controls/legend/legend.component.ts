@@ -152,8 +152,11 @@ export class LegendComponent implements OnInit, OnChanges {
     this.LocationsList = new Array<MapMarker>();
 
     let visLoc = new Array<MapMarker>();
+    console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
+
     if (this._legendLocations.length > 0) {
       visLoc = this._legendLocations;
+      console.log("length = ", this._legendLocations.length);
     }
     else {
       visLoc = this._currentlyActiveLocations;

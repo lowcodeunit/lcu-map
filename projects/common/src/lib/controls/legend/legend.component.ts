@@ -148,15 +148,18 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public SetLocationList() {
     //set to new so no duplicates present themselves
-    // console.log("map title = ", this.primaryMap.title);
     this.LocationsList = new Array<MapMarker>();
 
     let visLoc = new Array<MapMarker>();
-    console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
 
-    if (this._legendLocations.length > 0) {
+    if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length === 0) {
       visLoc = this._legendLocations;
-      console.log("length = ", this._legendLocations.length);
+    }
+    else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
+      visLoc = this._currentlyActiveLocations;
+      this._legendLocations.forEach(loc => {
+        visLoc.push(loc);
+      });
     }
     else {
       visLoc = this._currentlyActiveLocations;

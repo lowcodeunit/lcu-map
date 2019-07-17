@@ -4,22 +4,19 @@
 
 //has scroll bar
 .mat-sidenav-content{
-  // height: 100vh;
   z-index: 10;
-  background-color:transparent;
+  // background-color:red;
+  height: 100vh;
 }
 .button-container{
   background-color:transparent;
-  height: 100vh;
+  // height: 100vh;
 }
 .legend-sidenav{
-  // overflow: visible;
   border-right: transparent;
   width: 170px;
+  // height: 100vh;
 }
-
-
-
 
 
 .legend-button {

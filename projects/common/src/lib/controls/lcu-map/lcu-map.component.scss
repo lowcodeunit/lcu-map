@@ -23,11 +23,11 @@ mat-icon {
     }
     
     
-    
     .bottom-icon-set {
         width: 80%;
         margin: auto;
         @media(max-width: 600px) {
+            // position: absolute;
             margin-left:0px;
             margin-right:0px;
         }

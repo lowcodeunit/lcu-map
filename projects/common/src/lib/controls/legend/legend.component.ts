@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
 import { IndividualMap } from '../../models/individual-map.model';
@@ -15,7 +15,7 @@ import { MatSidenav } from '@angular/material';
   styleUrls: ['./legend.component.scss']
 })
 
-export class LegendComponent implements OnInit {
+export class LegendComponent implements OnInit, OnChanges {
 
 
 
@@ -32,14 +32,17 @@ export class LegendComponent implements OnInit {
       this._legendLocations = value;
     }
   }
+
   @Input('current-map-model')
   public set CurrentMapModel(value: IndividualMap) {
     this._currentMapModel = value;
   }
 
+
   @Input('currently-active-locations')
   public set CurrentlyActiveLocations(value: Array<MapMarker>) {
     this._currentlyActiveLocations = value;
+    // console.log("Active Locations Changed");
   }
 
   @Input('currently-active-layers')
@@ -89,14 +92,21 @@ export class LegendComponent implements OnInit {
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<IndividualMap>();
-    this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
+    //this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
     this.LegendOpen = false; 
-    this.SetLocationList();
+    //this.SetLocationList();
   }
 
   //LIFE CYCLE
 
   ngOnInit() {
+    //this.SetLocationList();
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    //  console.log("Changes detected");
+    //  console.log(changes);
+    this.SetLocationList();
   }
 
 

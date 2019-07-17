@@ -354,7 +354,7 @@ export class LcuMapComponent implements OnInit {
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
     if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
       this.CurrentlyActiveLayers.push(layer);
-      this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+      //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
   }
   /**
@@ -507,12 +507,19 @@ export class LcuMapComponent implements OnInit {
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
   public LayerClicked(event, layer?: IndividualMap): void {
+    //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
+    //reset and thus those changes are being passed as input to the legend so OnChanges gets called
+    let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
+    this.CurrentlyActiveLocations.forEach(loc=> {
+      tempActiveLocations.push(loc);
+    });
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
         this.CurrentlyActiveLayers.push(layer);
         layer.locationList.forEach(loc => {
-          this.CurrentlyActiveLocations.push(loc);
+          tempActiveLocations.push(loc);
         });
+        this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
         this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
@@ -523,8 +530,9 @@ export class LcuMapComponent implements OnInit {
       if (event.checked === true) { // (if user checked the box)
         this.CurrentlyActiveLayers.push(this._currentMapModel);
         this._currentMapModel.locationList.forEach(loc => {
-          this.CurrentlyActiveLocations.push(loc);
+          tempActiveLocations.push(loc);
         });
+        this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
         this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
@@ -536,7 +544,7 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLocations.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
     });
-    this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+    //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend

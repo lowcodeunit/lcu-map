@@ -25,12 +25,13 @@ mat-icon {
     
     .bottom-icon-set {
         width: 80%;
+        position: absolute;
         margin: auto;
-        @media(max-width: 600px) {
-            // position: absolute;
-            margin-left:0px;
-            margin-right:0px;
-        }
+        // @media(max-width: 600px) {
+        //     // position: absolute;
+        //     margin-left:0px;
+        //     margin-right:0px;
+        // }
     }
     
     agm-map {

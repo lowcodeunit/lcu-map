@@ -151,12 +151,16 @@ export class LegendComponent implements OnInit, OnChanges {
     this.LocationsList = new Array<MapMarker>();
 
     let visLoc = new Array<MapMarker>();
+    console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
+    console.log("legend locations = ", this._legendLocations);
 
-    if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length === 0) {
+    if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
       visLoc = this._legendLocations;
     }
     else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
-      visLoc = this._currentlyActiveLocations;
+      this._currentlyActiveLocations.forEach(loc => {
+        visLoc.push(loc);
+      });
       this._legendLocations.forEach(loc => {
         visLoc.push(loc);
       });
@@ -232,8 +236,13 @@ export class LegendComponent implements OnInit, OnChanges {
       let iconTemp = this.iconList.filter(loc => {
         return loc.iconLookup === locList[i].iconName;
       });
+      if(locList[i].iconUrl){
        locList[i].iconUrl = iconTemp[0].iconUrl;
        temp.push(locList[i]);
+      }
+      else{
+        console.log("Icon url doesn't exist for ", locList[i].iconUrl )
+      }
     }
     return temp;
   }

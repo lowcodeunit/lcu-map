@@ -191,10 +191,6 @@ export class LegendComponent implements OnInit, OnChanges {
    * 
    * This is needed for the drag and drop to reflect the changes
    * 
-   * TODO: This does not actually save the new array to memory, so upon refresh
-   * 
-   * it will go back to the original order.
-   * 
    * UpdateVisibleLocations assigns the newly ordered LocationsList to the VisibleLocations in mapService
    */
   drop(event: CdkDragDrop<string[]>) {
@@ -236,12 +232,12 @@ export class LegendComponent implements OnInit, OnChanges {
       let iconTemp = this.iconList.filter(loc => {
         return loc.iconLookup === locList[i].iconName;
       });
-      if(locList[i].iconUrl){
+      if(iconTemp){
        locList[i].iconUrl = iconTemp[0].iconUrl;
        temp.push(locList[i]);
       }
       else{
-        console.log("Icon url doesn't exist for ", locList[i].iconUrl )
+        console.log("Icon url doesn't exist for ", locList[i] )
       }
     }
     return temp;

@@ -153,7 +153,7 @@ export class LegendComponent implements OnInit, OnChanges {
     let visLoc = new Array<MapMarker>();
     console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
     console.log("legend locations = ", this._legendLocations);
-
+    //locations logic
     if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
       visLoc = this._legendLocations;
     }
@@ -168,9 +168,10 @@ export class LegendComponent implements OnInit, OnChanges {
     else {
       visLoc = this._currentlyActiveLocations;
     }
-
+    //layers logic
     if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
+      console.log("Layers = ", this._currentlyActiveLayers);
     }
     else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
       this.MapTitle = this._currentlyActiveLayers[0].title;

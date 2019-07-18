@@ -180,7 +180,9 @@ export class LegendComponent implements OnInit, OnChanges {
       this.MapTitle = "No Layer Selected";
     }
     if (visLoc.length > 0) {
-      this.LocationsList = this.assignIconUrl(visLoc);
+      //this.LocationsList = this.assignIconUrl(visLoc);
+      this.LocationsList = visLoc;
+      //console.log("List",this.LocationsList);
       this.LocationsList.sort(this.compareObject);
       this.LocationsList = this.moveUndefinedToBottom(this.LocationsList);
     }
@@ -228,20 +230,22 @@ export class LegendComponent implements OnInit, OnChanges {
    * assigns icon Url based on icon name vs the icon lookup
    */
   protected assignIconUrl(locList: Array<MapMarker>) {
-    let temp: Array<MapMarker> = new Array<MapMarker>();
+    //let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
+      if(!locList[i].iconUrl || locList[i].iconUrl===null || locList[i].iconUrl ===""){
       let iconTemp = this.iconList.filter(loc => {
         return loc.iconLookup === locList[i].iconName;
       });
       if(iconTemp){
        locList[i].iconUrl = iconTemp[0].iconUrl;
-       temp.push(locList[i]);
+      // temp.push(locList[i]);
       }
       else{
-        console.log("Icon url doesn't exist for ", locList[i] )
+        console.log("Icon url doesn't exist for ", locList[i].iconName )
       }
     }
-    return temp;
+    }
+    return locList;
   }
 
   /**

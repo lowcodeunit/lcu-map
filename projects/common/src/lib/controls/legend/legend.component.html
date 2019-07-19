@@ -1,6 +1,6 @@
 <!-- New side nav -->
-<mat-sidenav-container class="example-container">
-  <mat-sidenav class="legend-sidenav"  position="end" #sidenav mode="side">
+<mat-sidenav-container class="example-container" (swiperight)=toggleDrawer()>
+  <mat-sidenav class="legend-sidenav"  position="end" #sidenav mode="side" >
     <div class="legend-content">
         <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
         (click)="toggleDrawer()">
@@ -25,8 +25,6 @@
         (click)="toggleDrawer();SetLocationList();">
         <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
       </button>
-
-      
 
     </div>
   </mat-sidenav-content>

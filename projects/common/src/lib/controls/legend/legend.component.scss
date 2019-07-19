@@ -5,7 +5,12 @@
 //has scroll bar
 .mat-sidenav-content{
   z-index: 10;
-  // background-color:red;
+  //  background-color:red;
+  height: 100vh;
+}
+.mat-sidenav-content:open{
+  z-index: 10;
+   background-color:red;
   height: 100vh;
 }
 .button-container{

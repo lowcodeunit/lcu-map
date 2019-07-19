@@ -1,24 +1,11 @@
 <!-- New side nav -->
 <mat-sidenav-container class="example-container">
-
-  <mat-sidenav-content class="mat-sidenav-content">
-    <div class="button-container" fxLayoutAlign="end start">
-
-      <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
-        (click)="toggleDrawer();SetLocationList();">
-        <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
-      </button>
-
-      <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
+  <mat-sidenav class="legend-sidenav"  position="end" #sidenav mode="side">
+    <div class="legend-content">
+        <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
         (click)="toggleDrawer()">
         <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_right</mat-icon>
       </button>
-
-    </div>
-  </mat-sidenav-content>
-
-  <mat-sidenav class="legend-sidenav"  #sidenav mode="side">
-    <div class="legend-content">
       <h3 class="map-title" fxLayoutAlign="center">{{MapTitle}}</h3>
       <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column" fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
@@ -31,4 +18,18 @@
       </div>
     </div>
   </mat-sidenav>
+  <mat-sidenav-content class="mat-sidenav-content">
+    <div class="button-container" fxLayoutAlign="end start">
+
+      <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
+        (click)="toggleDrawer();SetLocationList();">
+        <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
+      </button>
+
+      
+
+    </div>
+  </mat-sidenav-content>
+
+  
 </mat-sidenav-container>

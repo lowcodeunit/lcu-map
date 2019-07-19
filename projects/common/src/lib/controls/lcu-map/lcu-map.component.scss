@@ -9,36 +9,49 @@ mat-icon {
     .icon-list {
         height: 6vh;
         @media (max-width:600px){
-            height:12vh;
+            height:9vh;
             left: 0px;
         }
 
         .legend {
-            @media(min-width:600px){
+            // @media(min-width:600px){
                 position: absolute;
-                right: 10px;
+                // right: 10px;
                 margin: auto;
-            }
+            // }
         }
     }
     
-    
-    .bottom-icon-set {
-        width: 80%;
+    .top-icon-set{
+        width: 10%;
         position: absolute;
-        margin: auto;
-        z-index: 2;
-        // @media(max-width: 600px) {
-        //     // position: absolute;
-        //     margin-left:0px;
-        //     margin-right:0px;
-        // }
+        right:0px;
+        top:5px;
+        z-index: 4;
+         @media(min-width:600px){
+            position: absolute;
+            margin: auto;
+        }
+    }
+    .bottom-icon-set {
+        width: 50%;
+        position: absolute;
+        // margin: auto;
+        @media(max-width: 600px) {
+            position: relative;
+            margin-left:0px;
+            margin-right:0px;
+            bottom: 5px;
+        }
+        .center-buttons{
+            z-index: 2;
+        }
     }
     
     agm-map {
         height: 94vh;
         @media(max-width:600px){
-            height: 88vh;
+            height: 91vh;
         }
 
     }
@@ -79,7 +92,7 @@ mat-checkbox, mat-radio-button {
 .footer{
     position: fixed; 
     bottom: 0px;  
-    z-index: 2 !important; 
+    z-index: 5 !important; 
     background-color: white;
     width:100%;
 }

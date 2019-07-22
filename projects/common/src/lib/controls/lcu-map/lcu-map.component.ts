@@ -91,6 +91,11 @@ export class LcuMapComponent implements OnInit {
   // PROPERTIES 
 
   /**
+   * Indicates whether or not the layers dropdown will be displayed
+   */
+  public ShowLayersDropdown: boolean = false;
+
+  /**
    * The new map marker returned from the footer
    */
   public NewMapMarker: MapMarker;

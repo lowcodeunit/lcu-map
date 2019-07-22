@@ -1,5 +1,6 @@
 <div id="map-section">
-  <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
+  <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center"
+    fxLayoutAlign.lt-sm="end center">
     <!-- <div class="top-icon-set" fxLayoutAlign="end start">
       <lcu-legend class="legend" [current-map-model]="_currentMapModel"
         [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
@@ -8,19 +9,41 @@
       </lcu-legend>
     </div> -->
     <!-- fxLayoutAlign.lt-sm="start center" -->
-    <div class="bottom-icon-set"  fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
+    <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
+
       <mat-icon class="center-buttons" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+
       <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
-      <mat-icon class="center-buttons" mat-button [matMenuTriggerFor]="layerMenu">layers</mat-icon>
+
+      <div class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
+        </mat-icon>
+        <!-- the menu for the map layers button -->
+        <div id="layer-menu" *ngIf="ShowLayersDropdown">
+          <mat-radio-group [(ngModel)]="CurrentMapViewType">
+            <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
+              {{view.display}}</mat-radio-button>
+          </mat-radio-group>
+          <mat-divider></mat-divider>
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
+            matTooltip="The markers on your main map... Add markers to this map to be saved."
+            matTooltipPosition="before">
+            {{_currentMapModel.title}} (Primary)</mat-checkbox>
+          <mat-divider></mat-divider>
+          <mat-checkbox id="map_id_{{map.id}}" (click)="$event.stopPropagation()" [checked]="SecondaryChecked"
+            (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
+          </mat-checkbox>
+        </div>
+      </div>
     </div>
 
-    <div class="top-icon-set" fxLayoutAlign="end start"  >
-        <lcu-legend class="legend" [current-map-model]="_currentMapModel"
-          [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
-          [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
-          (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
-        </lcu-legend>
-      </div>
+    <div class="top-icon-set" fxLayoutAlign="end start">
+      <lcu-legend class="legend" [current-map-model]="_currentMapModel"
+        [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
+        [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
+        (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
+      </lcu-legend>
+    </div>
   </div>
 
   <!-- the search bar -->
@@ -54,10 +77,10 @@
   </div> <!-- END search bar section -->
 
   <!-- the map -->
-  <agm-map [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map
-    [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
-    [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
-    [usePanning]="true">
+  <agm-map [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
+    (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.origin.lat"
+    [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title" [zoom]="_currentMapModel.zoom"
+    (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
     <div *ngFor="let marker of CurrentlyActiveLocations">
       <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
         [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
@@ -70,22 +93,4 @@
       (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
     </lcu-info-footer>
   </div>
-
-
-
-  <!-- the menu for the map layers button -->
-  <mat-menu #layerMenu="matMenu" id="layer-menu">
-    <mat-radio-group [(ngModel)]="CurrentMapViewType">
-      <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
-        {{view.display}}</mat-radio-button>
-    </mat-radio-group>
-    <mat-divider></mat-divider>
-    <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
-      matTooltip="The markers on your main map... Add markers to this map to be saved." matTooltipPosition="before">
-      {{_currentMapModel.title}} (Primary)</mat-checkbox>
-    <mat-divider></mat-divider>
-    <mat-checkbox id="map_id_{{map.id}}" (click)="$event.stopPropagation()" [checked]="SecondaryChecked"
-      (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
-    </mat-checkbox>
-  </mat-menu>
 </div>

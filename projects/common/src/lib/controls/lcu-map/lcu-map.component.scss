@@ -27,7 +27,7 @@ mat-icon {
         position: absolute;
         right:0px;
         top:5px;
-        z-index: 4;
+        z-index: 2;
          @media(min-width:600px){
             position: absolute;
             margin: auto;
@@ -37,7 +37,7 @@ mat-icon {
         width: 50%;
         position: absolute;
         // margin: auto;
-        z-index: 2;
+        z-index: 1;
         @media(max-width: 600px) {
             position: relative;
             margin-left:0px;
@@ -45,13 +45,12 @@ mat-icon {
             bottom: 5px;
         }
         .center-buttons{
-            z-index: 2;
+            z-index: 1;
         }
     }
     
     agm-map {
         height: 94vh;
-        z-index: 15;
         @media(max-width:600px){
             height: 91vh;
         }

@@ -77,16 +77,18 @@
   </div> <!-- END search bar section -->
 
   <!-- the map -->
-  <agm-map [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
+  <div class="agm-map-container">
+  <agm-map class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
     (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.origin.lat"
     [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title" [zoom]="_currentMapModel.zoom"
     (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
-    <div *ngFor="let marker of CurrentlyActiveLocations">
+    <div id="markers" *ngFor="let marker of CurrentlyActiveLocations">
       <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
         [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
       </agm-marker>
     </div>
   </agm-map>
+</div>
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">
     <lcu-info-footer *ngIf="MarkerData" fxLayout="column" fxLayoutAlign="space-around stretch" [MarkerData]="MarkerData"

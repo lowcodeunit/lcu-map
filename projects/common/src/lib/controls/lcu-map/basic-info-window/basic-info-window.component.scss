@@ -1,6 +1,7 @@
 .basic-info-window {
     height: 150%;
     width: 100%;
+    bottom: 40px;
   }
 
   .mat-dialog-content{
@@ -62,3 +63,20 @@
     border-radius: 5px;
     color: black;
 }
+  ::ng-deep .cdk-overlay-pane {
+    position: absolute !important;
+    bottom: 53% !important;
+  }
+
+  .down-arrow-to-location {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    opacity: .75;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }

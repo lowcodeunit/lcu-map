@@ -5,6 +5,7 @@ mat-icon {
 #map-section {
     height: 100vh;
     position: relative;
+    z-index: 21;
 
     .icon-list {
         height: 6vh;
@@ -37,6 +38,7 @@ mat-icon {
         width: 50%;
         position: absolute;
         // margin: auto;
+        z-index: 2;
         @media(max-width: 600px) {
             position: relative;
             margin-left:0px;
@@ -57,7 +59,7 @@ mat-icon {
     }
 }
 
-mat-icon {
+mat-icon, .mat-icon-divs {
     cursor: pointer;
     padding-left: 10%; //75px
     padding-right: 10%;//75px
@@ -128,4 +130,13 @@ mat-option {
     padding: 5px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+#layer-menu {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: grey 3px 3px 7px;
+    top: 25px;
 }

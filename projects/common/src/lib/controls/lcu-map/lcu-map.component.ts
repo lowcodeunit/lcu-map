@@ -89,6 +89,8 @@ export class LcuMapComponent implements OnInit {
 
 
   // PROPERTIES 
+  //12 for bottom right & 9 for right bottom
+  public ZoomOptions: Object = { position: 9};
 
   /**
    * Indicates whether or not the layers dropdown will be displayed

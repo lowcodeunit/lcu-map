@@ -205,18 +205,7 @@ export class LcuMapComponent implements OnInit {
    */
   public SearchControl: FormControl;
 
-  /**
-    * Breakpoints for screen sizes
-    */
-  protected monitorBreakpoints(): void {
-    this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
-      .subscribe((result: BreakpointState) => {
-        // console.log(result.matches);
-        // console.log(result);
-        this.IsMobile = result.matches;
-        this.observerSubscription.unsubscribe();
-      });
-  }
+  
 
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
@@ -338,6 +327,7 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
   }
@@ -359,6 +349,20 @@ export class LcuMapComponent implements OnInit {
   }
 
   // API METHODS
+
+
+  /**
+    * Breakpoints for screen sizes
+    */
+   protected monitorBreakpoints(): void {
+    this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
+      .subscribe((result: BreakpointState) => {
+        // console.log(result.matches);
+        // console.log(result);
+        this.IsMobile = result.matches;
+        this.observerSubscription.unsubscribe();
+      });
+  }
   /**
    * 
    * @param layer will be added to an array of active layers if it doesnt already exist in the array

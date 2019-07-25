@@ -195,7 +195,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The search input box
    */
-  @ViewChild('search')
+  @ViewChild('search', {static: false})
   public SearchElementRef: ElementRef;
 
   /**

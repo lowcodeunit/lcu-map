@@ -58,7 +58,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
-  @ViewChild('sidenav') public drawer: MatSidenav;
+  @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
  
 

@@ -25,6 +25,8 @@ export class LegendComponent implements OnInit, OnChanges {
   protected _legendLocations: Array<MapMarker>;
   protected _currentlyActiveLayers: Array<IndividualMap>;
 
+  public matContentWidth: string;
+
 
   @Input('get-legend-locations')
   public set GetLegendLocations(value: Array<MapMarker>) {
@@ -94,7 +96,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this._currentlyActiveLayers = new Array<IndividualMap>();
     //this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
     this.LegendOpen = false; 
-    //this.SetLocationList();
+    this.matContentWidth = "30px";
   }
 
   //LIFE CYCLE
@@ -120,6 +122,9 @@ export class LegendComponent implements OnInit, OnChanges {
    */
 
   //API METHODS
+  public CahngeContentWidth(){
+    this.matContentWidth = "0px";
+  }
 
   public PanTo(marker: MapMarker) {
     if (typeof (marker.lng) === 'string') {
@@ -215,10 +220,12 @@ export class LegendComponent implements OnInit, OnChanges {
     if (this.drawer.opened) {
       this.drawer.close();
       this.LegendOpen = false;
+      this.matContentWidth = "20px";
+
     } else {
       this.drawer.open();
       this.LegendOpen = true;
-
+      this.matContentWidth = "0px";
     }
   }
 

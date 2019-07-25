@@ -127,7 +127,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
  */
   public changePositionToRHS() {
     this.dialogRef.updatePosition({ right: '10px' });
-    console.log(this.ModalState);
+    // console.log(this.ModalState);
 }
 
 /**
@@ -135,7 +135,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
  */
 public changePositionToCenter() {
   this.dialogRef.updatePosition({ top:'100px' });
-  console.log("move to center",this.ModalState);
+  // console.log("move to center",this.ModalState);
 }
 
   /**

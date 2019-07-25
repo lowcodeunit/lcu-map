@@ -21,9 +21,9 @@
       class="marker-info-container">
       <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
       
-      <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
+      <!-- <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
         speed="slow" [readOnly]="true" [rating]=BasicInfoData?.starRating>
-      </star-rating>
+      </star-rating> -->
 
       <div *ngIf="BasicInfoData?.address">{{BasicInfoData?.address}}</div>
       <!-- <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">
@@ -118,9 +118,9 @@
 
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic'">
+    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic';changePositionToCenter()">
       Less info</button>
-    <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'">More
+    <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'; changePositionToRHS()">More
       info</button>
     <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
       (click)="ModalState = 'addToMap'">+</button>
@@ -129,4 +129,4 @@
     
   </mat-dialog-actions>
 </div>
-<mat-icon class="down-arrow-to-location">arrow_downward</mat-icon>
+<mat-icon *ngIf="ModalState === 'basic'" class="down-arrow-to-location">arrow_downward</mat-icon>

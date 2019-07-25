@@ -114,6 +114,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
       this.Type = this.locationInfoService.GetType(this.NewMarker);
     }, 50);
+    this.changePositionToCenter();
   }
 
   ngOnDestroy() {
@@ -121,6 +122,21 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   // API METHODS
+/**
+ * Changes the position of the modal to the right hand side of the screen
+ */
+  public changePositionToRHS() {
+    this.dialogRef.updatePosition({ right: '10px' });
+    console.log(this.ModalState);
+}
+
+/**
+ * Change position of the dialog box to the center 
+ */
+public changePositionToCenter() {
+  this.dialogRef.updatePosition({ top:'100px' });
+  console.log("move to center",this.ModalState);
+}
 
   /**
    * Closes the modal

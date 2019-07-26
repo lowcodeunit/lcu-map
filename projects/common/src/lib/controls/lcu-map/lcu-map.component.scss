@@ -1,15 +1,19 @@
+$base-toolbar-height: 35px;
+
 mat-icon {
     font-size: 30px;
 }
 
 #map-section {
-    height: 100vh;
+    // height: 100vh;
     position: relative;
 
     .icon-list {
-        height: 6vh;
+        // height: 6vh;
+        height: $base-toolbar-height;
         @media (max-width:600px){
-            height:9vh;
+            // height:9vh;
+            height: $base-toolbar-height * 2;
             left: 0px;
         }
 
@@ -25,8 +29,8 @@ mat-icon {
     .top-icon-set{
         width: 10%;
         position: absolute;
-        right:0px;
-        top:5px;
+        right: 0;
+        top: 0;
         z-index: 2;
          @media(min-width:600px){
             position: absolute;
@@ -39,10 +43,9 @@ mat-icon {
         // margin: auto;
         z-index: 1;
         @media(max-width: 600px) {
-            position: relative;
-            margin-left:0px;
-            margin-right:0px;
-            bottom: 5px;
+            position: absolute;
+            top: $base-toolbar-height;
+            left: 0;
         }
         .center-buttons{
             z-index: 1;
@@ -50,9 +53,9 @@ mat-icon {
     }
     
     agm-map {
-        height: 94vh;
+        height: calc(100vh - #{$base-toolbar-height});
         @media(max-width:600px){
-            height: 91vh;
+            height: calc(100vh - (#{$base-toolbar-height} * 2))
         }
 
     }

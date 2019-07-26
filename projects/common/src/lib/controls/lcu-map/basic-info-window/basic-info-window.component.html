@@ -71,9 +71,9 @@
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
       <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
-      <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
+      <!-- <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
         speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
-      </star-rating>
+      </star-rating> -->
 
 
       <!-- <div *ngIf="BasicInfoData?.phoneNumber">Phone: {{BasicInfoData.phoneNumber}}</div> -->
@@ -118,15 +118,15 @@
 
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic';changePositionToCenter()">
+    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button (click)="ModalState = 'basic';changePositionToCenter(false)">
       Less info</button>
     <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button (click)=" ModalState = 'moreInfo'; changePositionToRHS()">More
       info</button>
     <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
       (click)="ModalState = 'addToMap'">+</button>
     <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
-      (click)="ModalState = 'addToMap'">Edit</button>
+      (click)="ModalState = 'addToMap'; changePositionTopOfCenter()">Edit</button>
     
   </mat-dialog-actions>
 </div>
-<mat-icon *ngIf="ModalState === 'basic'" class="down-arrow-to-location">arrow_downward</mat-icon>
+<mat-icon *ngIf="ModalState !== 'moreInfo'" class="down-arrow-to-location">arrow_downward</mat-icon>

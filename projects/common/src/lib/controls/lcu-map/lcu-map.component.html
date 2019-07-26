@@ -11,9 +11,13 @@
     <!-- fxLayoutAlign.lt-sm="start center" -->
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
 
-      <mat-icon class="center-buttons" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+      <div class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+      </div>
 
-      <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
+      <div class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
+      </div>
 
       <div class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers

@@ -114,11 +114,11 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
       this.Type = this.locationInfoService.GetType(this.NewMarker);
     }, 50);
-    this.changePositionToCenter();
+    this.changePositionToCenter(false);
   }
 
   ngOnDestroy() {
-
+    this.locationInfoService.SetHighlightIcon(false);
   }
 
   // API METHODS
@@ -127,14 +127,23 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
  */
   public changePositionToRHS() {
     this.dialogRef.updatePosition({ right: '10px' });
-    // console.log(this.ModalState);
+    //console.log("component instance",this.dialogRef.componentInstance);
+        this.locationInfoService.SetHighlightIcon(true);
+    //console.log(this.ModalState);
 }
 
 /**
  * Change position of the dialog box to the center 
  */
-public changePositionToCenter() {
+public changePositionToCenter(highlight: boolean) {
   this.dialogRef.updatePosition({ top:'100px' });
+  this.locationInfoService.SetHighlightIcon(highlight);
+  // console.log("move to center",this.ModalState);
+}
+
+public changePositionTopOfCenter() {
+  this.dialogRef.updatePosition({ top:'25px' });
+  this.locationInfoService.SetHighlightIcon(false);
   // console.log("move to center",this.ModalState);
 }
 
@@ -142,6 +151,7 @@ public changePositionToCenter() {
    * Closes the modal
    */
   public Close(): void {
+    this.locationInfoService.SetHighlightIcon(false);
     this.dialogRef.close();
   }
 

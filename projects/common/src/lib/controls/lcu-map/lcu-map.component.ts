@@ -18,6 +18,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
+import { LocationInfoService } from '../../services/location-info.service';
 
 
 
@@ -194,10 +195,13 @@ export class LcuMapComponent implements OnInit {
    */
   public FilteredLocations: Observable<MapMarker[]>;
 
+
+  public IconIsHighlighted: boolean;
+
   /**
    * The search input box
    */
-  @ViewChild('search', {static: false})
+  @ViewChild('search', {static: false}) 
   public SearchElementRef: ElementRef;
 
   /**
@@ -320,7 +324,8 @@ export class LcuMapComponent implements OnInit {
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService,
-    protected breakpointObserver: BreakpointObserver) {
+    protected breakpointObserver: BreakpointObserver,
+    private locationInfoService: LocationInfoService) {
     this.MapSaved = new EventEmitter,
       this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
@@ -330,6 +335,7 @@ export class LcuMapComponent implements OnInit {
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
+    this.IconIsHighlighted = false;
   }
 
   // LIFE CYCLE
@@ -344,8 +350,15 @@ export class LcuMapComponent implements OnInit {
     this.setUpCustomMarkerSearch();
   }
 
-  ngOnChanges(value) {
+  ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+    // console.log("is Highlighted = ", this.IconIsHighlighted);
+  }
+  ngDoCheck(){
+    this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+
+    //console.log("doCheck")
   }
 
   // API METHODS
@@ -652,7 +665,10 @@ export class LcuMapComponent implements OnInit {
     if (this.IsMobile === false) {
       if (marker) {
         setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit: this.isEdit } });
+          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { 
+            backdropClass: 'dialogRefBackdrop',
+            hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
+            data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit: this.isEdit } });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);

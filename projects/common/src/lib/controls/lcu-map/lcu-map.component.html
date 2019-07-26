@@ -87,6 +87,9 @@
         [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
       </agm-marker>
     </div>
+    <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5" [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" >
+
+    </agm-marker>
   </agm-map>
 </div>
   <!-- Footer Menu to display Marker Info -->

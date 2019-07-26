@@ -57,6 +57,13 @@ mat-icon {
 
     }
 }
+#highlighted-marker{
+    opacity: 50%;
+}
+
+.dialogRefBackdrop{
+    background-color: transparent;
+}
 
 mat-icon, .mat-icon-divs {
     cursor: pointer;

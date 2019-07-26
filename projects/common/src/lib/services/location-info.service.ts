@@ -9,8 +9,12 @@ export class LocationInfoService {
 //FIELDS
   //PROPERTIES
   protected phoneNumberUrl: string;
+
+  protected isHighlighted: boolean;
   //CONSTRUCTORS
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService) {
+    this.isHighlighted = false;
+   }
   //LIFE CYCLE
   //API METHODS
   public SetPhoneNumberUrl(marker: MapMarker): void{
@@ -28,6 +32,15 @@ export class LocationInfoService {
       let tempInsta = marker.instagram.slice(1);
       return "https://www.instagram.com/"+tempInsta+"/";
     }
+  }
+
+  public SetHighlightIcon(highlight: boolean): void{
+    this.isHighlighted = highlight;
+    // console.log("setting = ", this.isHighlighted);
+  }
+
+  public GetHighlightedIcon(): boolean{
+    return this.isHighlighted;
   }
 
   public GetType(marker: MapMarker): string{

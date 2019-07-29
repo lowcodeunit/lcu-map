@@ -355,11 +355,14 @@ export class LcuMapComponent implements OnInit {
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
     // console.log("is Highlighted = ", this.IconIsHighlighted);
   }
-  ngDoCheck(){
-    this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
-
-    //console.log("doCheck")
-  }
+  /**
+   * In the do check, this.IconIsHighlighted is checked to see if it has changed to true
+   * 
+   * if true the icon will be highlighted when more info is being displayed.
+   */
+  // ngDoCheck(){
+    //this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // }
 
   // API METHODS
 

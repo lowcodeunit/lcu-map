@@ -123,28 +123,30 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // API METHODS
 /**
- * Changes the position of the modal to the right hand side of the screen
+ * Changes the position of the modal to the right hand side of the screen for more info state
  */
   public changePositionToRHS() {
     this.dialogRef.updatePosition({ right: '10px' });
-    //console.log("component instance",this.dialogRef.componentInstance);
-        this.locationInfoService.SetHighlightIcon(true);
-    //console.log(this.ModalState);
+    //width x height
+    this.dialogRef.updateSize("200px", "100vh");
+    this.locationInfoService.SetHighlightIcon(true);
 }
 
 /**
- * Change position of the dialog box to the center 
+ * Change position of the dialog box to the center when modal is in basic state
  */
 public changePositionToCenter(highlight: boolean) {
   this.dialogRef.updatePosition({ top:'100px' });
+  this.dialogRef.updateSize("300px", "155px");
   this.locationInfoService.SetHighlightIcon(highlight);
-  // console.log("move to center",this.ModalState);
 }
-
+/**
+ * Called when the modal is displaying editable content
+ */
 public changePositionTopOfCenter() {
   this.dialogRef.updatePosition({ top:'25px' });
   this.locationInfoService.SetHighlightIcon(false);
-  // console.log("move to center",this.ModalState);
+  this.dialogRef.updateSize("50vw", "40vh");
 }
 
   /**

@@ -6,7 +6,8 @@
 .mat-sidenav-content{
   z-index: -1;
   //  background-color:red;
-  height: 100vh;
+  height: calc(100vh - 35px);
+  // top:35px;
   // width: 30px;
 }
 .button-container{
@@ -14,11 +15,17 @@
   // height: 100vh;
 }
 .legend-sidenav{
+  background-color: transparent;
   border-right: transparent;
-  width: 200px;
-  // height: 100vh;
-}
+  border-left: transparent;
+  width: 300px;
+  margin-top:35px;
 
+}
+::ng-deep .mat-drawer-inner-container{
+  // margin-top:35px;
+  background-color: white;
+}
 
 .legend-button {
     background-color: transparent;

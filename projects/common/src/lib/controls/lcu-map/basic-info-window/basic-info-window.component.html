@@ -74,52 +74,18 @@
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
       <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
-      <!-- <star-rating *ngIf="BasicInfoData?.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true"
-        speed="slow" [readOnly]="true" labelText={{BasicInfoData?.starRating}} [rating]=BasicInfoData?.starRating>
-      </star-rating> -->
 
-
-      <div class="links" fxLayout="row" fxLayoutAlign="space-around center">
-        <a *ngIf="LinkedPhoneNumber" class="link" href={{LinkedPhoneNumber}} mat-icon-button>
-          <mat-icon title="Call">call</mat-icon>
-        </a>
-
-        <a *ngIf="BasicInfoData?.website" class="link" href={{BasicInfoData?.website}} target="_blank" mat-icon-button>
-          <mat-icon title="Website">public</mat-icon>
-        </a>
-
-        <a class="link" *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" mat-icon-button>
-          <mat-icon title="Instagram">photo_camera</mat-icon>
-        </a>
-
-
-      </div>
-      <div *ngIf="BasicInfoData?.menu || BasicInfoData?.reservations"class="links" fxLayout="row" fxLayoutAlign="space-around center">
-
-        <a *ngIf="BasicInfoData?.menu" class="link" href={{BasicInfoData?.menu}} target="_blank" mat-icon-button>
-          <mat-icon title="Menu">restaurant_menu</mat-icon>
-        </a>
-
-        <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}} target="_blank" mat-icon-button>
-          <mat-icon title="Reservations">adjust</mat-icon>
-        </a>
-
-
-        <a class="link" target="_blank" mat-icon-button>
-          <mat-icon title="Directions">near_me</mat-icon>
-        </a>
-
-      </div>
+      
       <!-- <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}} class="button">Reservations</a>
       <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}} class="button">Menu</a> -->
       <!-- </div> -->
       <div class="customHr">.</div>
 
       <div *ngIf="BasicInfoData?.address" style="margin-top: 0.5em;">{{BasicInfoData?.address}}</div>
-      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state" style="margin-bottom: 0.5em;">
+      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state" >
         {{BasicInfoData?.town}}, {{BasicInfoData?.state}}
         {{BasicInfoData?.country}}</div>
-
+        <div *ngIf="LinkedPhoneNumber" class="link" style="margin-bottom: 0.5em;">{{BasicInfoData?.phoneNumber}}</div>
       <div class="customHr">.</div>
 
       <!-- <a *ngIf="BasicInfoData?.website" href={{BasicInfoData?.website}}>Website</a> -->
@@ -139,7 +105,40 @@
       <p *ngIf="BasicInfoData?.notes" style="margin-top: 0em; margin-bottom: 0em">{{BasicInfoData?.notes}}</p>
       <p *ngIf="BasicInfoData?.generalInfo" style="margin-top: 0.75em; margin-bottom:0em; color:grey">General Info</p>
       <p *ngIf="BasicInfoData?.generalInfo" style="margin-top: 0em">{{BasicInfoData?.generalInfo}}</p>
+      <div class="customHr">.</div>
+      <div class="links" fxLayout="row" fxLayoutAlign="space-between center">
+          <!-- <a *ngIf="LinkedPhoneNumber" class="link" href={{LinkedPhoneNumber}} mat-icon-button>
+            <mat-icon title="Call {{LinkedPhoneNumber}}">call</mat-icon>
+          </a> -->
+  
+          <a *ngIf="BasicInfoData?.website" class="link" href={{BasicInfoData?.website}} target="_blank" mat-icon-button>
+            <mat-icon title="Website">public</mat-icon>
+          </a>
+  
+          <a class="link" *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" mat-icon-button>
+            <img src="./assets/instagram_glyph.png" alt="" height="20px" width="20px" title="Instagram">
+          </a>
+  
+          <!-- <a *ngIf="BasicInfoData?.menu" class="link" href={{BasicInfoData?.menu}} target="_blank" mat-icon-button>
+            <mat-icon title="Menu">restaurant_menu</mat-icon>
+          </a> -->
+          
+          <!-- NO FUNCTIONALITY -->
+          <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}} target="_blank" mat-icon-button>
+            <mat-icon title="Reservations">adjust</mat-icon>
+          </a>
+  
+          <!-- NO FUNCTIONALITY -->
+          <a class="link" target="_blank" mat-icon-button>
+            <mat-icon title="Directions">directions</mat-icon>
+          </a>
 
+          <!-- NO FUNCTIONALITY -->
+          <a class="link" target="_blank" mat-icon-button>
+              <mat-icon title="Bookmark">book_mark</mat-icon>
+            </a>
+  
+        </div>
     </div>
   </mat-dialog-content>
 

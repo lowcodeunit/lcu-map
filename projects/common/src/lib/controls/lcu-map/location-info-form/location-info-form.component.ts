@@ -81,7 +81,7 @@ export class LocationInfoFormComponent implements OnInit {
   /**
    * The url for the phone number
    */
-  public PhoneNumberUrl: string;
+  public LinkedPhoneNumber: string;
 /**
  * The type of location
  */
@@ -130,7 +130,7 @@ export class LocationInfoFormComponent implements OnInit {
   ngOnChanges() {
     this.Marker = this.MarkerData.marker;
     this.locationInfoService.SetPhoneNumberUrl(this.Marker);
-    this.PhoneNumberUrl= this.locationInfoService.GetPhoneNumberUrl();
+    this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
     this.createFormGroup();
     this.NewMarker = this.MarkerData.marker;
     this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);

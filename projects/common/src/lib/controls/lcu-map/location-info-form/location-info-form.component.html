@@ -18,9 +18,9 @@
   <a *ngIf="Marker.reservations" href={{Marker.reservations}}>Reservations</a>
   <a *ngIf="Marker.menu" href={{Marker.menu}}>Menu</a>
   <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
-  <star-rating *ngIf="Marker.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true" speed="slow"
+  <!-- <star-rating *ngIf="Marker.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true" speed="slow"
     [readOnly]="true" labelText={{Marker.starRating}} [rating]=Marker.starRating>
-  </star-rating>
+  </star-rating> -->
   <div *ngIf="Marker.awards">Awards: {{Marker.awards}}</div>
   <a *ngIf="Marker.media" href={{Marker.media}}>Media</a>
   <p *ngIf="Marker.notes">Notes: {{Marker.notes}}</p>

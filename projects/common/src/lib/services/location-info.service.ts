@@ -21,6 +21,9 @@ export class LocationInfoService {
     if(marker.phoneNumber){
       this.phoneNumberUrl = 'tel:'+ marker.phoneNumber;
     }
+    else{
+      this.phoneNumberUrl = undefined;
+    }
   }
 
   public GetPhoneNumberUrl(): string{

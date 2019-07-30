@@ -13,10 +13,38 @@
   <div *ngIf="Marker.address">Address: {{Marker.address}}</div>
   <div *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}}
     {{Marker.country}}</div>
-  <a *ngIf="PhoneNumberUrl" href={{PhoneNumberUrl}}>{{Marker.phoneNumber}}</a>
-  <a *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" class="fa fa-instagram"></a>
-  <a *ngIf="Marker.reservations" href={{Marker.reservations}}>Reservations</a>
-  <a *ngIf="Marker.menu" href={{Marker.menu}}>Menu</a>
+    <div class="links" fxLayout="row" fxLayoutAlign="space-around center">
+        <a *ngIf="LinkedPhoneNumber" class="link" href={{LinkedPhoneNumber}} mat-icon-button>
+          <mat-icon title="Call {{LinkedPhoneNumber}}" >call</mat-icon>
+        </a>
+
+        <a *ngIf="Marker.website" class="link" href={{Marker.website}} target="_blank" mat-icon-button>
+          <mat-icon title="Website">public</mat-icon>
+        </a>
+
+        <a class="link" *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" mat-icon-button>
+          <mat-icon title="Instagram">photo_camera</mat-icon>
+        </a>
+
+        <!-- <a *ngIf="Marker.menu" class="link" href={{Marker.menu}} target="_blank" mat-icon-button>
+          <mat-icon title="Menu">restaurant_menu</mat-icon>
+        </a> -->
+        
+        <!-- NO FUNCTIONALITY -->
+        <a *ngIf="Marker.reservations" href={{Marker.reservations}} target="_blank" mat-icon-button>
+          <mat-icon title="Reservations">adjust</mat-icon>
+        </a>
+          <!-- NO FUNCTIONALITY -->
+        <a class="link" target="_blank" mat-icon-button>
+            <mat-icon title="Bookmark">book_mark</mat-icon>
+          </a>
+
+          <!-- NO FUNCTIONALITY -->
+        <a class="link" target="_blank" mat-icon-button>
+          <mat-icon title="Directions">near_me</mat-icon>
+        </a>
+
+      </div>
   <!-- refrence to angular star rating repo https://github.com/BioPhoton/angular-star-rating/wiki/Property-bindings -->
   <!-- <star-rating *ngIf="Marker.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true" speed="slow"
     [readOnly]="true" labelText={{Marker.starRating}} [rating]=Marker.starRating>

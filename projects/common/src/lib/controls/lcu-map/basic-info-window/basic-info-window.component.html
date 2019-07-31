@@ -1,16 +1,18 @@
 <!-- Modal -->
 <div id="dialogRef" fxLayout="column" class="basic-info-window">
-  <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
     <!-- if both website and title exist then the title is the link to the website -->
     <!-- <mat-card-title *ngIf="BasicInfoData?.title && BasicInfoData?.website" fxLayout="row" fxLayoutAlign="start">
       <a *ngIf="BasicInfoData?.website" class="link" href={{BasicInfoData.website}} target="_blank" style="margin-right: 2em">{{BasicInfoData.title}}</a>
     </mat-card-title> -->
-    <!-- if the website does not exist then just display the title -->
-    <mat-card-title *ngIf="BasicInfoData?.title" fxLayout="row" fxLayoutAlign="start" style="margin-right: 2em; font-size: 24px">
+
+    <!-- The title -->
+    <mat-card-title *ngIf="BasicInfoData?.title" fxLayout="row" fxLayoutAlign="space-between start"
+      style="margin-right: 2em; margin-bottom: 1em; font-size: 24px">
       {{BasicInfoData.title}}
     </mat-card-title>
     <!-- close button -->
-    <mat-icon fxFlex fxLayoutAlign="end" (click)="Close()" matTooltip="Close">close</mat-icon>
+    <mat-icon fxFlex fxLayoutAlign="end start" (click)="Close()" matTooltip="Close">close</mat-icon>
   </mat-card-header>
 
 
@@ -22,20 +24,10 @@
       <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
 
       <div *ngIf="BasicInfoData?.address">{{BasicInfoData?.address}}</div>
-      <!-- <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">
+      <div *ngIf="BasicInfoData?.town || BasicInfoData?.country || BasicInfoData?.state">
         {{BasicInfoData?.town}}, {{BasicInfoData?.state}}
-        {{BasicInfoData?.country}}</div> -->
-
-      <div class="links" fxLayout="row">
-        <a *ngIf="LinkedPhoneNumber" class="link" href={{LinkedPhoneNumber}} mat-icon-button>
-          <mat-icon title="Call">call</mat-icon>
-        </a>
-
-        <a *ngIf="BasicInfoData?.website" class="link" href={{BasicInfoData?.website}} mat-icon-button>
-          <mat-icon title="Website">public</mat-icon>
-        </a>
-
-      </div>
+        {{BasicInfoData?.country}}</div>
+      <div *ngIf="BasicInfoData?.phoneNumber">{{BasicInfoData?.phoneNumber}}</div>
 
       <!-- </div> -->
     </div>
@@ -74,7 +66,7 @@
     <div class="more-info-container" *ngIf="ModalState === 'moreInfo'" fxLayout="column" fxLayoutAlign="start start">
       <!-- <h2 *ngIf="BasicInfoData?.title">{{BasicInfoData.title}}</h2> -->
 
-      
+
       <!-- <a *ngIf="BasicInfoData?.reservations" href={{BasicInfoData?.reservations}} class="button">Reservations</a>
       <a *ngIf="BasicInfoData?.menu" href={{BasicInfoData?.menu}} class="button">Menu</a> -->
       <!-- </div> -->
@@ -158,12 +150,13 @@
       <p *ngIf="BasicInfoData?.generalInfo" style="margin-top: 0em">{{BasicInfoData?.generalInfo}}</p>
       <div class="customHr">.</div> -->
       
+
     </div>
   </mat-dialog-content>
 
   <!-- Buttons -->
 
-  <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="space-between end">
+  <mat-dialog-actions class="button-container" fxLayout="row" fxLayoutAlign="space-between end" style="float:bottom">
 
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>

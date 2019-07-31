@@ -13,6 +13,7 @@ import { LocationInfoService } from '../../../services/location-info.service';
   templateUrl: './location-info-form.component.html',
   styleUrls: ['./location-info-form.component.scss']
 })
+
 export class LocationInfoFormComponent implements OnInit {
   //FIELDS
   /**

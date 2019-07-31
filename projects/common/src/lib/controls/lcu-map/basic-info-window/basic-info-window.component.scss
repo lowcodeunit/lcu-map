@@ -11,6 +11,11 @@
 
 ::ng-deep .mat-tab-label{
   min-width: 33%!important;
+  padding: 0;
+}
+
+::ng-deep .mat-tab-body-content{
+ overflow: hidden !important;
 }
 
 

@@ -13,6 +13,11 @@
   min-width: 33%!important;
   background-color: #827382;
   color: white;
+  padding: 0;
+}
+
+::ng-deep .mat-tab-body-content{
+ overflow: hidden !important;
 }
 
 

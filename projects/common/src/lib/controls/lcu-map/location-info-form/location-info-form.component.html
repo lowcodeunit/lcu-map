@@ -10,7 +10,15 @@
     {{Marker.title}}
   </mat-card-title> <!-- </mat-card-header> -->
   <!-- <mat-card-content> -->
-  <div *ngIf="Marker.address">Address: {{Marker.address}}</div>
+
+      <!-- <mat-tab-group >
+          <mat-tab label="General"> Content 1 </mat-tab>
+          <mat-tab label="Content"> Content 2 </mat-tab>
+          <mat-tab label="Travel"> Content 3 </mat-tab>
+        </mat-tab-group> -->
+
+
+  <div *ngIf="Marker.address">{{Marker.address}}</div>
   <div *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}}
     {{Marker.country}}</div>
     <div class="links" fxLayout="row" fxLayoutAlign="space-around center">

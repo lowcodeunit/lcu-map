@@ -6,6 +6,12 @@
     overflow: visible;
   }
 
+::ng-deep .mat-tab-label{
+  min-width: 33%!important;
+}
+
+
+
 .link {
   text-decoration: none !important;
 }

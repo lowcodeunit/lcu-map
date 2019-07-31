@@ -1,6 +1,9 @@
 ::ng-deep .mat-dialog-container{
   overflow: visible;
   border-radius: 0px;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-evenly;
 }
 ::ng-deep .mat-dialog-content{
     overflow: visible;

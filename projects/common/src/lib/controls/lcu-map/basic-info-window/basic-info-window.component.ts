@@ -136,17 +136,19 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
  * Change position of the dialog box to the center when modal is in basic state
  */
 public changePositionToCenter(highlight: boolean) {
-  this.dialogRef.updatePosition({ top:'100px' });
-  this.dialogRef.updateSize("300px", "155px");
+  this.dialogRef.updatePosition({ top:'40px' });
+  //width x height
+  this.dialogRef.updateSize("300px", "200px");
   this.locationInfoService.SetHighlightIcon(highlight);
 }
 /**
  * Called when the modal is displaying editable content
  */
 public changePositionTopOfCenter() {
-  this.dialogRef.updatePosition({ top:'25px' });
+  this.dialogRef.updatePosition({ top:'0px' });
   this.locationInfoService.SetHighlightIcon(false);
-  this.dialogRef.updateSize("50vw", "40vh");
+  //width x height
+  this.dialogRef.updateSize("500px", "250px");
 }
 
   /**

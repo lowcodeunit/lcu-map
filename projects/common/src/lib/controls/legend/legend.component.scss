@@ -54,11 +54,11 @@
 // }
   
   .location-box {
-    padding: 5px 5px;
+    padding: 0.75em 1em;
     border-top: solid 1px #ccc;
     display: flex; //TODO: if this is not included, after dragging to a location the previous format is lost
     cursor: move;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   

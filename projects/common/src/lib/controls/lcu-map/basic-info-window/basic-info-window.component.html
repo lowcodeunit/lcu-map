@@ -167,7 +167,7 @@
       (click)=" ModalState = 'moreInfo'; changePositionToRHS()">More
       info</button>
     <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
-      (click)="ModalState = 'addToMap'">+</button>
+      (click)="ModalState = 'addToMap';changePositionTopOfCenter()">+</button>
     <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
       (click)="ModalState = 'addToMap'; changePositionTopOfCenter()">Edit</button>
 

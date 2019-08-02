@@ -555,8 +555,8 @@ export class LcuMapComponent implements OnInit {
     });
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
-        // this.UpdateCurrentlyActiveLayers(layer);
-        this.CurrentlyActiveLayers.push(layer);
+        this.UpdateCurrentlyActiveLayers(layer);
+        // this.CurrentlyActiveLayers.push(layer);
         layer.locationList.forEach(loc => {
           tempActiveLocations.push(loc);
         });
@@ -569,8 +569,8 @@ export class LcuMapComponent implements OnInit {
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
-        this.CurrentlyActiveLayers.push(this._currentMapModel);
-        //this.UpdateCurrentlyActiveLayers(layer);
+        //this.CurrentlyActiveLayers.push(this._currentMapModel);
+        this.UpdateCurrentlyActiveLayers(layer);
 
         this._currentMapModel.locationList.forEach(loc => {
           tempActiveLocations.push(loc);

@@ -122,7 +122,7 @@ export class LegendComponent implements OnInit, OnChanges {
    */
 
   //API METHODS
-  public CahngeContentWidth(){
+  public ChangeContentWidth(){
     this.matContentWidth = "0px";
   }
 
@@ -156,8 +156,8 @@ export class LegendComponent implements OnInit, OnChanges {
     this.LocationsList = new Array<MapMarker>();
 
     let visLoc = new Array<MapMarker>();
-    //console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
-    //console.log("legend locations = ", this._legendLocations);
+    console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
+    console.log("legend locations = ", this._legendLocations);
     //locations logic
     if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
       visLoc = this._legendLocations;

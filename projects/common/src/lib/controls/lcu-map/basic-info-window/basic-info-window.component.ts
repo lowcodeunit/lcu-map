@@ -129,7 +129,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   public changePositionToRHS() {
     this.dialogRef.updatePosition({ right: '10px', top:'35px', bottom: '35px' });
     //width x height
-    this.dialogRef.updateSize("300px", "500px");
+    this.dialogRef.updateSize("30vw", "500px");
     this.locationInfoService.SetHighlightIcon(true);
 }
 
@@ -139,7 +139,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 public changePositionToCenter(highlight: boolean) {
   this.dialogRef.updatePosition({ top:'40px' });
   //width x height
-  this.dialogRef.updateSize("300px", "200px");
+  this.dialogRef.updateSize("300px", "210px");
   this.locationInfoService.SetHighlightIcon(highlight);
 }
 /**

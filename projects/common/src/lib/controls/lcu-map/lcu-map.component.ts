@@ -384,11 +384,18 @@ export class LcuMapComponent implements OnInit {
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
-    if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
+    let LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+      return layers.id === layer.id;
+    });
+    if(LayerId.length === 0){
       this.CurrentlyActiveLayers.push(layer);
       console.log("adding layer: ", layer);
       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
+
+    // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
+     
+    // }
   }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning

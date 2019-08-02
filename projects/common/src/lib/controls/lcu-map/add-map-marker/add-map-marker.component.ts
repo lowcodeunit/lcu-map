@@ -61,7 +61,7 @@ export class AddMapMarkerComponent implements OnInit {
    * Converts data from the form to an icon to be placed on the map
    */
   public SetMarkerData(): void {
-    this.NewMarker.id = uuid.v4();
+    this.NewMarker.id = '';
     this.NewMarker.title = this.NewMarkerForm.value.title;
     this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
     this.NewMarker.lat = this.passedData.lat;

@@ -399,11 +399,18 @@ export class LcuMapComponent implements OnInit {
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
-    if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
+    let LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+      return layers.id === layer.id;
+    });
+    if(LayerId.length === 0){
       this.CurrentlyActiveLayers.push(layer);
       console.log("adding layer: ", layer);
       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
+
+    // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
+     
+    // }
   }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
@@ -563,9 +570,9 @@ export class LcuMapComponent implements OnInit {
     });
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
-        // this.UpdateCurrentlyActiveLayers(layer);
+        this.UpdateCurrentlyActiveLayers(layer);
         this.LayerChecked.emit(layer);
-        this.CurrentlyActiveLayers.push(layer);
+        // this.CurrentlyActiveLayers.push(layer);
         layer.locationList.forEach(loc => {
           tempActiveLocations.push(loc);
         });
@@ -579,9 +586,9 @@ export class LcuMapComponent implements OnInit {
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
+        //this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
-        this.CurrentlyActiveLayers.push(this._currentMapModel);
-        //this.UpdateCurrentlyActiveLayers(layer);
+        this.UpdateCurrentlyActiveLayers(layer);
 
         this._currentMapModel.locationList.forEach(loc => {
           tempActiveLocations.push(loc);

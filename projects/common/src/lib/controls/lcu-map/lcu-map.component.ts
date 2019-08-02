@@ -281,6 +281,13 @@ export class LcuMapComponent implements OnInit {
     this.resetMapCheckedState();
   }
 
+  protected _visibleLocations;
+  @Input('show-visible-locations')
+  public set VisibleLocations(value: Array<any>) {
+    this._visibleLocations = value;
+    this.CurrentlyActiveLocations = this._visibleLocations;
+  }
+
   @Input('get-saved-legend-locations')
   // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
   public set GetSavedLegendLocations(value: Array<MapMarker>) {
@@ -317,6 +324,12 @@ export class LcuMapComponent implements OnInit {
   @Output('saved-legend-locations')
   public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
 
+  @Output('layer-checked')
+  public LayerChecked: EventEmitter<IndividualMap>;
+
+  @Output('layer-unchecked')
+  public LayerUnchecked: EventEmitter<IndividualMap>;
+
   // CONSTRUCTORS
 
 
@@ -332,6 +345,8 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.LayerChecked = new EventEmitter<IndividualMap>();
+    this.LayerUnchecked = new EventEmitter<IndividualMap>();
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
@@ -451,7 +466,7 @@ export class LcuMapComponent implements OnInit {
             });
             console.log("return ", res.result);
             const marker = {
-              id: uuid.v4(),
+              id: '',
               title: res.result.name,
               lat: res.result.geometry.location.lat,
               lng: res.result.geometry.location.lng,
@@ -556,12 +571,14 @@ export class LcuMapComponent implements OnInit {
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
         this.UpdateCurrentlyActiveLayers(layer);
+        this.LayerChecked.emit(layer);
         // this.CurrentlyActiveLayers.push(layer);
         layer.locationList.forEach(loc => {
           tempActiveLocations.push(loc);
         });
         this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
+        this.LayerUnchecked.emit(layer);
         this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== layer.id;
@@ -570,6 +587,7 @@ export class LcuMapComponent implements OnInit {
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
         //this.CurrentlyActiveLayers.push(this._currentMapModel);
+        this.LayerChecked.emit(this._currentMapModel);
         this.UpdateCurrentlyActiveLayers(layer);
 
         this._currentMapModel.locationList.forEach(loc => {
@@ -577,6 +595,7 @@ export class LcuMapComponent implements OnInit {
         });
         this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
+        this.LayerUnchecked.emit(this._currentMapModel);
         this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== this._currentMapModel.id;
@@ -789,7 +808,7 @@ export class LcuMapComponent implements OnInit {
             //console.log("placePhotos: ", placePhotos);
 
             this.DisplayMarkerInfo(new MapMarker({
-              id: uuid.v4(),
+              id: '',
               map_id: this._currentMapModel.id,
               title: place.name,
               iconName: place.icon,

@@ -165,7 +165,7 @@ public changePositionTopOfCenter() {
    */
   public SetMarkerData(): void {
     if (!this.IsEdit) {
-      this.NewMarker.id = uuid.v4();
+      this.NewMarker.id = '';
     }
     this.NewMarker.map_id = this.passedData.primary_map_id;
     this.NewMarker.title = this.NewMarkerForm.value.title;

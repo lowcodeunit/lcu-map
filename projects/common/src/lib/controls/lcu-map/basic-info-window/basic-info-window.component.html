@@ -160,17 +160,21 @@
 
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
-    <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button
+
+    <!-- <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button
       (click)="ModalState = 'basic';changePositionToCenter(false)">
-      Less info</button>
+      Less info</button> -->
+
     <button *ngIf="ModalState != 'moreInfo'" mat-button mat-raised-button
       (click)=" ModalState = 'moreInfo'; changePositionToRHS()">More
       info</button>
-    <button *ngIf="ModalState !== 'addToMap' && !IsEdit" mat-button mat-raised-button
+
+    <button *ngIf="ModalState !== 'addToMap' && !IsEdit && ModalState === 'basic'" mat-button mat-raised-button
       (click)="ModalState = 'addToMap';changePositionTopOfCenter()">+</button>
-    <button *ngIf="ModalState !== 'addToMap' && IsEdit" mat-button mat-raised-button
+
+    <button *ngIf="ModalState !== 'addToMap' && IsEdit && ModalState === 'basic'" mat-button mat-raised-button
       (click)="ModalState = 'addToMap'; changePositionTopOfCenter()">Edit</button>
 
   </mat-dialog-actions>
 </div>
-<mat-icon *ngIf="ModalState !== 'moreInfo'" class="down-arrow-to-location">arrow_downward</mat-icon>
+<mat-icon *ngIf="ModalState !== 'moreInfo'" class="down-arrow-to-location">arrow_downward</mat-icon> 

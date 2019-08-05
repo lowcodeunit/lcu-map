@@ -161,6 +161,14 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public LayerChecked(layer) {
+      console.log('layer checked: ', layer)
+  }
+
+  public LayerUnchecked(layer) {
+      console.log('layer UNchecked: ', layer)
+  }
+
   // HELPERS
 
   protected getRealRepresentationOfMapList() {

@@ -399,14 +399,24 @@ export class LcuMapComponent implements OnInit {
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
-    let LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+    let LayerId = Array<IndividualMap>();
+    if(layer){
+     LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
       return layers.id === layer.id;
     });
+  
     if(LayerId.length === 0){
       this.CurrentlyActiveLayers.push(layer);
       console.log("adding layer: ", layer);
       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
+    else{
+      console.log(LayerId[0], " Already exists");
+    }
+  }
+  else{
+    console.log("Layer =", layer);
+  }
 
     // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
      

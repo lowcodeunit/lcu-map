@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.model';
 import { IndividualMap } from 'projects/common/src/lcu.api';
+import { MapMarker } from 'projects/common/src/lcu.api';
 
 @Component({
   selector: 'lcu-root',
@@ -14,6 +15,8 @@ export class AppComponent implements OnInit {
   protected maps = this.getRealRepresentationOfMapList();
 
   // PROPERTIES
+
+  public VisibleLocations: Array<MapMarker>;
 
   /**
    * The map configuration to pass in to the map instance
@@ -168,6 +171,8 @@ export class AppComponent implements OnInit {
   public LayerUnchecked(layer) {
       console.log('layer UNchecked: ', layer)
   }
+
+
 
   // HELPERS
 

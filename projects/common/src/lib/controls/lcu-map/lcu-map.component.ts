@@ -330,6 +330,11 @@ export class LcuMapComponent implements OnInit {
   @Output('layer-unchecked')
   public LayerUnchecked: EventEmitter<IndividualMap>;
 
+  @Input('update-visible-locations-manually')
+  public UpdateVisibleLocationsManually: Array<MapMarker>;
+
+
+
   // CONSTRUCTORS
 
 
@@ -407,7 +412,7 @@ export class LcuMapComponent implements OnInit {
   
     if(LayerId.length === 0){
       this.CurrentlyActiveLayers.push(layer);
-      console.log("adding layer: ", layer);
+      // console.log("adding layer: ", layer);
       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
     else{
@@ -415,7 +420,7 @@ export class LcuMapComponent implements OnInit {
     }
   }
   else{
-    console.log("Layer =", layer);
+    // console.log("Layer =", layer);
   }
 
     // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {

@@ -854,12 +854,14 @@ export class LcuMapComponent implements OnInit {
    * Sets primary layer to checked and secondary layers to unchecked and resets active location
    */
   protected resetMapCheckedState(): void {
-    this.PrimaryChecked = true;
-    this.SecondaryChecked = false;
-    this.CurrentlyActiveLocations = [];
-    this._currentMapModel.locationList.forEach(loc => {
-      this.CurrentlyActiveLocations.push(loc);
-    });
+    console.log('reset map state')
+    console.log('later have to dynamically set these checkboxes based on the locations coming back from the state api')
+    // this.PrimaryChecked = true;
+    // this.SecondaryChecked = false;
+    // this.CurrentlyActiveLocations = [];
+    // this._currentMapModel.locationList.forEach(loc => {
+    //   this.CurrentlyActiveLocations.push(loc);
+    // });
   }
   /**
    * 

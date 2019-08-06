@@ -13,16 +13,16 @@
       </mat-sidenav-content>
   <mat-sidenav class="legend-sidenav"  position="end" #sidenav mode="side" >
     <div class="legend-content">
-
-        <button *ngIf="LegendOpen === true" class="legend-button" fxLayoutAlign="start" mat-icon-button
+      <div class="legend-buttons" fxLayout="row" fxLayoutAlign="space-between center">
+        <button *ngIf="LegendOpen === true" class="legend-button"  mat-icon-button
         (click)="toggleDrawer()">
-        <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_right</mat-icon>
+        <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
       </button>
 
-      <button class="legend-button" fxLayoutAlign="end">
-        <mat-icon class="chevron-legend" fxLayoutAlign="end" [inline]="true">more_vert</mat-icon>
+      <button class="legend-button">
+        <mat-icon class="chevron-legend"  [inline]="true">more_vert</mat-icon>
       </button>
-
+      </div>
 
       <h2 class="map-title" fxLayoutAlign="right" style="margin-left: 0.75em">{{MapTitle}}</h2>
       <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column" fxLayoutAlign="start">

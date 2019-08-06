@@ -260,7 +260,7 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.UpdateCurrentlyActiveLayers(value);
+    // this.UpdateCurrentlyActiveLayers(value);
     this.resetMapCheckedState();
   }
 
@@ -403,29 +403,29 @@ export class LcuMapComponent implements OnInit {
    * 
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
-  public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
-    if(layer){
-     let LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
-      return layers.id === layer.id;
-    });
+  // public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
+  //   if(layer){
+  //    let LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+  //     return layers.id === layer.id;
+  //   });
   
-    if(LayerId.length === 0){
-      this.CurrentlyActiveLayers.push(layer);
-      // console.log("adding layer: ", layer);
-      //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
-    }
-    else{
-      console.log(LayerId[0], " Already exists");
-    }
-  }
-  else{
-    // console.log("Layer =", layer);
-  }
+  //   if(LayerId.length === 0){
+  //     this.CurrentlyActiveLayers.push(layer);
+  //     // console.log("adding layer: ", layer);
+  //     //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+  //   }
+  //   else{
+  //     console.log(LayerId[0], " Already exists");
+  //   }
+  // }
+  // else{
+  //   // console.log("Layer =", layer);
+  // }
 
-    // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
+  //   // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
      
-    // }
-  }
+  //   // }
+  // }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
    * @param value 

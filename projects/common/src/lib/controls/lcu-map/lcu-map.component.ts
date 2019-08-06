@@ -404,9 +404,8 @@ export class LcuMapComponent implements OnInit {
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
-    let LayerId = Array<IndividualMap>();
     if(layer){
-     LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+     let LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
       return layers.id === layer.id;
     });
   
@@ -595,7 +594,7 @@ export class LcuMapComponent implements OnInit {
       } else { // (if user un-checked the box)
         this.LayerUnchecked.emit(layer);
         this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
-        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+        this.CurrentlyActiveLocations = tempActiveLocations.filter(loc => {
           return loc.map_id !== layer.id;
         });
       }
@@ -612,7 +611,7 @@ export class LcuMapComponent implements OnInit {
       } else { // (if user un-checked the box)
         this.LayerUnchecked.emit(this._currentMapModel);
         this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
-        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+        this.CurrentlyActiveLocations = tempActiveLocations.filter(loc => {
           return loc.map_id !== this._currentMapModel.id;
         });
       }

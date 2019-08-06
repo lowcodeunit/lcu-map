@@ -578,42 +578,42 @@ export class LcuMapComponent implements OnInit {
   public LayerClicked(event, layer?: IndividualMap): void {
     //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
     //reset and thus those changes are being passed as input to the legend so OnChanges gets called
-    let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
-    this.CurrentlyActiveLocations.forEach(loc=> {
-      tempActiveLocations.push(loc);
-    });
+    // let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
+    // this.CurrentlyActiveLocations.forEach(loc=> {
+    //   tempActiveLocations.push(loc);
+    // });
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
-        this.UpdateCurrentlyActiveLayers(layer);
+        // this.UpdateCurrentlyActiveLayers(layer);
         this.LayerChecked.emit(layer);
         // this.CurrentlyActiveLayers.push(layer);
-        layer.locationList.forEach(loc => {
-          tempActiveLocations.push(loc);
-        });
-        this.CurrentlyActiveLocations = tempActiveLocations;
+        // layer.locationList.forEach(loc => {
+        //   tempActiveLocations.push(loc);
+        // });
+        // this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
         this.LayerUnchecked.emit(layer);
-        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
-        this.CurrentlyActiveLocations = tempActiveLocations.filter(loc => {
-          return loc.map_id !== layer.id;
-        });
+        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
+        // this.CurrentlyActiveLocations = tempActiveLocations.filter(loc => {
+        //   return loc.map_id !== layer.id;
+        // });
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
         //this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
-        this.UpdateCurrentlyActiveLayers(layer);
+        // this.UpdateCurrentlyActiveLayers(layer);
 
-        this._currentMapModel.locationList.forEach(loc => {
-          tempActiveLocations.push(loc);
-        });
-        this.CurrentlyActiveLocations = tempActiveLocations;
+        // this._currentMapModel.locationList.forEach(loc => {
+        //   tempActiveLocations.push(loc);
+        // });
+        // this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
         this.LayerUnchecked.emit(this._currentMapModel);
-        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
-        this.CurrentlyActiveLocations = tempActiveLocations.filter(loc => {
-          return loc.map_id !== this._currentMapModel.id;
-        });
+        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
+        // this.CurrentlyActiveLocations = tempActiveLocations.filter(loc => {
+        //   return loc.map_id !== this._currentMapModel.id;
+        // });
       }
     }
 

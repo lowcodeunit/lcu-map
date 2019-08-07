@@ -261,7 +261,15 @@ export class LcuMapComponent implements OnInit {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.UpdateCurrentlyActiveLayers(value);
+    
     this.resetMapCheckedState();
+  }
+
+  @Input('active-layers')
+  public set ActiveLayers(value: Array<IndividualMap>){
+    if(value){
+      this.CurrentlyActiveLayers = value;
+    }
   }
 
   /**

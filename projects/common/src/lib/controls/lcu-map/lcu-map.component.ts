@@ -268,6 +268,7 @@ export class LcuMapComponent implements OnInit {
   @Input('active-layers')
   public set ActiveLayers(value: Array<IndividualMap>){
     if(value){
+      console.log("setting CAL to: ", value);
       this.CurrentlyActiveLayers = value;
     }
   }
@@ -629,6 +630,7 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLocations.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
     });
+    console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
     //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {

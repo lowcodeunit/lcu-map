@@ -176,7 +176,7 @@ export class LegendComponent implements OnInit, OnChanges {
     //layers logic
     if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
-      console.log("Layers = ", this._currentlyActiveLayers);
+      // console.log("Layers = ", this._currentlyActiveLayers);
     }
     else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
       this.MapTitle = this._currentlyActiveLayers[0].title;

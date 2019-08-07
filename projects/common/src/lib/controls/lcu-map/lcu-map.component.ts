@@ -412,15 +412,15 @@ export class LcuMapComponent implements OnInit {
   
     if(LayerId.length === 0){
       this.CurrentlyActiveLayers.push(layer);
-      console.log("adding layer: ", layer);
+      // console.log("adding layer: ", layer);
       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     }
     else{
-      console.log(LayerId[0], " Already exists");
+      // console.log(LayerId[0], " Already exists");
     }
   }
   else{
-    console.log("Layer =", layer);
+    // console.log("Layer =", layer);
   }
 
     // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
@@ -479,7 +479,7 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
-            console.log("return ", res.result);
+            // console.log("return ", res.result);
             const marker = {
               id: '',
               title: res.result.name,

@@ -588,6 +588,7 @@ export class LcuMapComponent implements OnInit {
   public LayerClicked(event, layer?: IndividualMap): void {
     //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
     //reset and thus those changes are being passed as input to the legend so OnChanges gets called
+    console.log("layer to toggle: ", layer);
     let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
     this.CurrentlyActiveLocations.forEach(loc=> {
       tempActiveLocations.push(loc);
@@ -612,7 +613,7 @@ export class LcuMapComponent implements OnInit {
       if (event.checked === true) { // (if user checked the box)
         //this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
-        this.UpdateCurrentlyActiveLayers(layer);
+        this.UpdateCurrentlyActiveLayers(this._currentMapModel);
 
         this._currentMapModel.locationList.forEach(loc => {
           tempActiveLocations.push(loc);

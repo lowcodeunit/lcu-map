@@ -271,9 +271,6 @@ export class LcuMapComponent implements OnInit {
       console.log("setting CAL to: ", value);
       this.CurrentlyActiveLayers = value;
     }
-    else{
-      this.CurrentlyActiveLayers = this._currentMapModel;
-    }
   }
 
   /**

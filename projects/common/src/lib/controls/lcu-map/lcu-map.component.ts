@@ -267,9 +267,12 @@ export class LcuMapComponent implements OnInit {
 
   @Input('active-layers')
   public set ActiveLayers(value: Array<IndividualMap>){
-    if(value){
+    if(value[0]){
       console.log("setting CAL to: ", value);
       this.CurrentlyActiveLayers = value;
+    }
+    else{
+      this.CurrentlyActiveLayers = this._currentMapModel;
     }
   }
 
@@ -625,15 +628,15 @@ export class LcuMapComponent implements OnInit {
         this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
           return loc.map_id !== this._currentMapModel.id;
         });
-        console.log("User unchecked the primary map");
+        //console.log("User unchecked the primary map");
       }
     }
 
     this.CurrentlyActiveLocations.forEach(loc => {
       loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
     });
-    console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
-    console.log("Current Map Model: ", this._currentMapModel);
+    //console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
+    //console.log("Current Map Model: ", this._currentMapModel);
     //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {

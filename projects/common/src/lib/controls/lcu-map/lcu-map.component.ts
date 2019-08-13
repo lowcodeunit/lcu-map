@@ -185,6 +185,8 @@ export class LcuMapComponent implements OnInit {
    */
   public CurrentMapModel: IndividualMap;
 
+  public _visibleLocationsMasterList: Array<MapMarker>;
+
   /**
    * The form control for searching custom marker locations
    */
@@ -243,6 +245,19 @@ export class LcuMapComponent implements OnInit {
     return this._panTo;
   }
 
+  @Input('visible-locations-master-list')
+  public set VisibleLocationsMasterList(value: Array<MapMarker>) {
+    console.log(value)
+    this._visibleLocationsMasterList = value;
+    this._visibleLocationsMasterList.forEach(loc => {
+      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+    });
+  }
+
+  public get VisibleLocationsMasterList() {
+    return this._visibleLocationsMasterList;
+  }
+
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
@@ -258,7 +273,7 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel = value;
     this.CurrentlyActiveLocations = [];
     this._currentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.UpdateCurrentlyActiveLayers(value);
     
@@ -347,7 +362,7 @@ export class LcuMapComponent implements OnInit {
   // CONSTRUCTORS
 
 
-  constructor(private dialog: MatDialog, private mapConverions: MapConversions,
+  constructor(private dialog: MatDialog, private mapConversions: MapConversions,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService,
@@ -370,7 +385,7 @@ export class LcuMapComponent implements OnInit {
   // LIFE CYCLE
   ngOnInit() {
     this._currentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
@@ -630,7 +645,7 @@ export class LcuMapComponent implements OnInit {
     }
 
     this.CurrentlyActiveLocations.forEach(loc => {
-      loc.iconImageObject = this.mapConverions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
     });
     //console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
     //console.log("Current Map Model: ", this._currentMapModel);

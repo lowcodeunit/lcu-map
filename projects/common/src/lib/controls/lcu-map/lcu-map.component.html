@@ -78,7 +78,8 @@
   (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.origin.lat" [zoomControl]="true" [zoomControlOptions]="ZoomOptions"
     [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title" [zoom]="_currentMapModel.zoom"
     (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
-    <div id="markers" *ngFor="let marker of CurrentlyActiveLocations">
+    <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
+      <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
       <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
         [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
       </agm-marker>

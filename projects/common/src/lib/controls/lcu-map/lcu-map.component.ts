@@ -410,6 +410,8 @@ export class LcuMapComponent implements OnInit {
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
     this.IconIsHighlighted = false;
+    this.AddLocation = new EventEmitter();
+    this.EditLocation = new EventEmitter();
   }
 
   // LIFE CYCLE

@@ -35,7 +35,7 @@
 
     <div class="top-icon-set" fxLayoutAlign="end start">
       <lcu-legend class="legend" [current-map-model]="_currentMapModel"
-        [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
+        [currently-active-locations]="_visibleLocationsMasterList" [get-legend-locations]="_savedLegendLocations"
         [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
         (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
       </lcu-legend>

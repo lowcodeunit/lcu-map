@@ -5,9 +5,11 @@
 [map-marker-set]="IconSet" 
 (visible-location-list-changed)="ListChanged($event)" 
 [pan-to]="RandomPan" 
+[visible-locations-master-list]="MasterVisLocs"
+[user-layers]="UserLayers"
+[selected-user-layers]="SelectedUserLayers"
 (layer-checked)="LayerChecked($event)"
 (layer-unchecked)="LayerUnchecked($event)"
-[update-visible-locations-manually]="VisibleLocations"
 (map-saved)="MapSaved($event)"></lcu-map>
 
 <button (click)="GoToRandomLoc()">0 / 0</button>

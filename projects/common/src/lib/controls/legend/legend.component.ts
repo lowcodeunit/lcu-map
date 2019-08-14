@@ -191,6 +191,9 @@ export class LegendComponent implements OnInit, OnChanges {
       this.LocationsList.sort(this.compareObject);
       this.LocationsList = this.moveUndefinedToBottom(this.LocationsList);
     }
+    else{
+      this.LocationsList = new Array<MapMarker>();
+    }
   }
 
 

@@ -336,6 +336,17 @@ export class LcuMapComponent implements OnInit {
   @Output('primary-map-location-list-changed')
   public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
 
+    /**
+   * The Event that is emitted when a user creates a new location
+   */
+  @Output('add-location')
+  public AddLocation: EventEmitter<MapMarker>;
+
+
+  @Output('edit-location')
+  public EditLocation: EventEmitter<MapMarker>;
+
+
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
    */
@@ -603,7 +614,7 @@ export class LcuMapComponent implements OnInit {
   public LayerClicked(event, layer?: IndividualMap): void {
     //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
     //reset and thus those changes are being passed as input to the legend so OnChanges gets called
-    console.log("layer to toggle: ", layer);
+    //console.log("layer to toggle: ", layer);
     let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
     this.CurrentlyActiveLocations.forEach(loc=> {
       tempActiveLocations.push(loc);
@@ -705,6 +716,7 @@ export class LcuMapComponent implements OnInit {
     if (!this.isEdit) {
       this._currentMapModel.locationList.push(marker);
       this.CurrentlyActiveLocations.push(marker);
+      //this.AddLocation.emit(marker);
     } else {
       let idx = this._currentMapModel.locationList.findIndex(loc => {
         return loc.id === marker.id;
@@ -714,6 +726,8 @@ export class LcuMapComponent implements OnInit {
         return loc.id === marker.id;
       });
       this.CurrentlyActiveLocations.splice(idx, 1, marker);
+      
+     this.EditLocation.emit(marker)
     }
     this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
     this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time

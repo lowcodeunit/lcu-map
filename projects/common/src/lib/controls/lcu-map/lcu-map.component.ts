@@ -658,6 +658,7 @@ export class LcuMapComponent implements OnInit {
       if (event.checked === true) { // (if user checked the box)
         //this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
+        
         // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
 
         // this._currentMapModel.locationList.forEach(loc => {

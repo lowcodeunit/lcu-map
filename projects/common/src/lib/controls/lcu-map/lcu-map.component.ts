@@ -19,6 +19,7 @@ import { MarkerData } from '../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
 import { LocationInfoService } from '../../services/location-info.service';
+import { UserLayer } from '../../models/user-layer.model';
 
 
 
@@ -256,6 +257,24 @@ export class LcuMapComponent implements OnInit {
 
   public get VisibleLocationsMasterList() {
     return this._visibleLocationsMasterList;
+  }
+
+  public _userLayers;
+  @Input('user-layers')
+  public set UserLayers(value: Array<UserLayer>) {
+    this._userLayers = value;
+  }
+  public get UserLayers() {
+    return this._userLayers;
+  }
+
+  public _selectedUserLayers;
+  @Input('selected-user-layers')
+  public set SelectedUserLayers(value: Array<any>) {
+    this._selectedUserLayers = value;
+  }
+  public get SelectedUserLayers() {
+    return this._selectedUserLayers;
   }
 
   /**
@@ -621,36 +640,36 @@ export class LcuMapComponent implements OnInit {
     });
     if (layer) { // (if user clicked a secondary checkbox)
       if (event.checked === true) { // (if user checked the box)
-        this.UpdateCurrentlyActiveLayers(layer);
+        // this.UpdateCurrentlyActiveLayers(layer);
         this.LayerChecked.emit(layer);
         // this.CurrentlyActiveLayers.push(layer);
-        layer.locationList.forEach(loc => {
-          tempActiveLocations.push(loc);
-        });
+        // layer.locationList.forEach(loc => {
+        //   tempActiveLocations.push(loc);
+        // });
         this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
         this.LayerUnchecked.emit(layer);
-        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
-        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-          return loc.map_id !== layer.id;
-        });
+        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
+        // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+        //   return loc.map_id !== layer.id;
+        // });
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
         //this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
-        this.UpdateCurrentlyActiveLayers(this._currentMapModel);
+        // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
 
-        this._currentMapModel.locationList.forEach(loc => {
-          tempActiveLocations.push(loc);
-        });
-        this.CurrentlyActiveLocations = tempActiveLocations;
+        // this._currentMapModel.locationList.forEach(loc => {
+        //   tempActiveLocations.push(loc);
+        // });
+        // this.CurrentlyActiveLocations = tempActiveLocations;
       } else { // (if user un-checked the box)
         this.LayerUnchecked.emit(this._currentMapModel);
-        this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
-        this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-          return loc.map_id !== this._currentMapModel.id;
-        });
+        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
+        // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+        //   return loc.map_id !== this._currentMapModel.id;
+        // });
         //console.log("User unchecked the primary map");
       }
     }

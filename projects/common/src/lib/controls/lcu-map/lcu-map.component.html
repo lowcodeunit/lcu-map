@@ -29,6 +29,8 @@
           <mat-checkbox id="map_id_{{map.id}}" (click)="$event.stopPropagation()" [checked]="SecondaryChecked"
             (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
           </mat-checkbox>
+          <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
+            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox>
         </div>
       </div>
     </div>
@@ -74,22 +76,24 @@
 
   <!-- the map -->
   <div class="agm-map-container">
-  <agm-map class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
-  (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.origin.lat" [zoomControl]="true" [zoomControlOptions]="ZoomOptions"
-    [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title" [zoom]="_currentMapModel.zoom"
-    (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
-    <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
+    <agm-map class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
+      (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.origin.lat" [zoomControl]="true"
+      [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title"
+      [zoom]="_currentMapModel.zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
+      [usePanning]="true">
+      <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
-      <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-        [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-      </agm-marker>
+        <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
+          [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
+        </agm-marker>
       </div>
-         
-    <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5" [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" >
 
-    </agm-marker>
-  </agm-map>
-</div>
+      <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
+        [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng">
+
+      </agm-marker>
+    </agm-map>
+  </div>
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">
     <lcu-info-footer *ngIf="MarkerData" fxLayout="column" fxLayoutAlign="space-around stretch" [MarkerData]="MarkerData"

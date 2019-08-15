@@ -23,7 +23,7 @@ export class LegendComponent implements OnInit, OnChanges {
   protected _currentlyActiveLocations: Array<MapMarker>;
   protected _currentMapModel: IndividualMap;
   protected _legendLocations: Array<MapMarker>;
-  protected _currentlyActiveLayers: Array<IndividualMap>;
+  protected _currentlyActiveLayers: Array<string>;
 
   public matContentWidth: string;
 
@@ -48,7 +48,7 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   @Input('currently-active-layers')
-  public set CurrentlyActiveLayers(value: Array<IndividualMap>) {
+  public set CurrentlyActiveLayers(value: Array<string>) {
     this._currentlyActiveLayers = value;
   }
 
@@ -93,7 +93,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
-    this._currentlyActiveLayers = new Array<IndividualMap>();
+    this._currentlyActiveLayers = new Array<string>();
     //this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
     this.LegendOpen = false; 
     this.matContentWidth = "30px";
@@ -179,7 +179,7 @@ export class LegendComponent implements OnInit, OnChanges {
       // console.log("Layers = ", this._currentlyActiveLayers);
     }
     else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
-      this.MapTitle = this._currentlyActiveLayers[0].title;
+      this.MapTitle = this._currentlyActiveLayers[0];
     }
     else {
       this.MapTitle = "No Layer Selected";

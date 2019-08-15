@@ -92,7 +92,7 @@ export class LcuMapComponent implements OnInit {
 
   // PROPERTIES 
   //12 for bottom right & 9 for right bottom
-  public ZoomOptions: Object = { position: 9};
+  public ZoomOptions: Object = { position: 9 };
 
   /**
    * Indicates whether or not the layers dropdown will be displayed
@@ -204,7 +204,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The search input box
    */
-  @ViewChild('search', {static: false}) 
+  @ViewChild('search', { static: false })
   public SearchElementRef: ElementRef;
 
   /**
@@ -212,7 +212,7 @@ export class LcuMapComponent implements OnInit {
    */
   public SearchControl: FormControl;
 
-  
+
 
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
@@ -295,13 +295,13 @@ export class LcuMapComponent implements OnInit {
       loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
     this.UpdateCurrentlyActiveLayers(value);
-    
+
     this.resetMapCheckedState();
   }
 
   @Input('active-layers')
-  public set ActiveLayers(value: Array<IndividualMap>){
-    if(value[0]){
+  public set ActiveLayers(value: Array<IndividualMap>) {
+    if (value[0]) {
       console.log("setting CAL to: ", value);
       this.CurrentlyActiveLayers = value;
     }
@@ -355,9 +355,9 @@ export class LcuMapComponent implements OnInit {
   @Output('primary-map-location-list-changed')
   public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
 
-    /**
-   * The Event that is emitted when a user creates a new location
-   */
+  /**
+ * The Event that is emitted when a user creates a new location
+ */
   @Output('add-location')
   public AddLocation: EventEmitter<MapMarker>;
 
@@ -437,7 +437,7 @@ export class LcuMapComponent implements OnInit {
    * if true the icon will be highlighted when more info is being displayed.
    */
   // ngDoCheck(){
-    //this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  //this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
   // }
 
   // API METHODS
@@ -446,7 +446,7 @@ export class LcuMapComponent implements OnInit {
   /**
     * Breakpoints for screen sizes
     */
-   protected monitorBreakpoints(): void {
+  protected monitorBreakpoints(): void {
     this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
       .subscribe((result: BreakpointState) => {
         // console.log(result.matches);
@@ -456,31 +456,45 @@ export class LcuMapComponent implements OnInit {
       });
   }
   /**
+   * Called by the legend to get the layer titles to be displayed in the legend
+   */
+  public GetSelectedUserLayers(): Array<string> {
+    console.log("_selectedUserLayers = ", this._selectedUserLayers);
+    let LayerTitles = Array<string>();
+    this._userLayers.forEach(function (layer) {
+      if (this._selectedUserLayers.includes(layer.ID)) {
+        LayerTitles.push(layer.Title);
+      }
+    }, this)
+
+    return LayerTitles;
+  }
+  /**
    * 
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
   public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
     let LayerId = Array<IndividualMap>();
-    if(layer){
-     LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
-      return layers.id === layer.id;
-    });
-  
-    if(LayerId.length === 0){
-      this.CurrentlyActiveLayers.push(layer);
-      // console.log("adding layer: ", layer);
-      //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+    if (layer) {
+      LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+        return layers.id === layer.id;
+      });
+
+      if (LayerId.length === 0) {
+        this.CurrentlyActiveLayers.push(layer);
+        // console.log("adding layer: ", layer);
+        //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+      }
+      else {
+        // console.log(LayerId[0], " Already exists");
+      }
     }
-    else{
-      // console.log(LayerId[0], " Already exists");
+    else {
+      // console.log("Layer =", layer);
     }
-  }
-  else{
-    // console.log("Layer =", layer);
-  }
 
     // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
-     
+
     // }
   }
   /**
@@ -637,7 +651,7 @@ export class LcuMapComponent implements OnInit {
     //reset and thus those changes are being passed as input to the legend so OnChanges gets called
     //console.log("layer to toggle: ", layer);
     let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
-    this.CurrentlyActiveLocations.forEach(loc=> {
+    this.CurrentlyActiveLocations.forEach(loc => {
       tempActiveLocations.push(loc);
     });
     if (layer) { // (if user clicked a secondary checkbox)
@@ -660,7 +674,7 @@ export class LcuMapComponent implements OnInit {
       if (event.checked === true) { // (if user checked the box)
         //this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
-        
+
         // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
 
         // this._currentMapModel.locationList.forEach(loc => {
@@ -748,8 +762,8 @@ export class LcuMapComponent implements OnInit {
         return loc.id === marker.id;
       });
       this.CurrentlyActiveLocations.splice(idx, 1, marker);
-      
-     this.EditLocation.emit(marker)
+
+      this.EditLocation.emit(marker)
     }
     this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
     this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
@@ -773,10 +787,11 @@ export class LcuMapComponent implements OnInit {
     if (this.IsMobile === false) {
       if (marker) {
         setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, { 
+          const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
-            data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit: this.isEdit } });
+            data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit: this.isEdit }
+          });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);
@@ -880,7 +895,7 @@ export class LcuMapComponent implements OnInit {
           });
           //let placePhotos: Array<string> = new Array<string>();
           this.mapService.GetPlaceDetails(place.place_id).subscribe((res: any) => {
-           // console.log("result = ", res.result);
+            // console.log("result = ", res.result);
             // let photoArray: Array<string>;
             // if(res.result.pho)
 

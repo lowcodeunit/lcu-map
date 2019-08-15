@@ -290,19 +290,11 @@ export class LcuMapComponent implements OnInit {
   // MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
   public set MapModel(value: IndividualMap) {
     this._currentMapModel = value;
-<<<<<<< HEAD
     // this.CurrentlyActiveLocations = [];
     // this._currentMapModel.locationList.forEach(loc => {
     //   loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     // });
     // this.UpdateCurrentlyActiveLayers(value);
-=======
-    this.CurrentlyActiveLocations = [];
-    this._currentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
-    });
-    //this.UpdateCurrentlyActiveLayers(value);
->>>>>>> integration
 
     this.resetMapCheckedState();
   }

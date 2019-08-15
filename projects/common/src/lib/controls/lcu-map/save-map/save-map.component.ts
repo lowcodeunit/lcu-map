@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IndividualMap } from '../../../models/individual-map.model';
 import * as uuid from 'uuid';
+import { UserMap } from '../../../models/user-map.model';
 
 @Component({
   selector: 'lcu-save-map',
@@ -23,7 +24,8 @@ export class SaveMapComponent implements OnInit {
   /**
    * The new map that will be constructed and passed back to be saved
    */
-  public NewMap: IndividualMap;
+  // public NewMap: IndividualMap;
+  public NewMap: UserMap;
 
   // CONSTRUCTORS
 
@@ -36,11 +38,19 @@ export class SaveMapComponent implements OnInit {
       title: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMap = {
-      id: '0',
-      title: '',
-      origin: { lat: 0, lng: 0 },
-      zoom: 0,
-      locationList: []
+      ID: '',
+      Title: '',
+      Zoom: 0,
+      Coordinates: [1,2,3,4],
+      Primary: true,
+      Shared: true,
+      Deletable: true,
+      DefaultLayerID: ''
+      // id: '0',
+      // title: '',
+      // origin: { lat: 0, lng: 0 },
+      // zoom: 0,
+      // locationList: []
     };
   }
 
@@ -50,14 +60,24 @@ export class SaveMapComponent implements OnInit {
    * Sets entered map data to this.NewMap, which is then returned upon closing modal with affirmative button
    */
   public SetMapData(): void {
-    this.NewMap.id = uuid.v4();
-    this.NewMap.title = this.NewMapForm.value.title;
-    this.NewMap.zoom = this.passedData.map.zoom;
-    this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
-    this.NewMap.locationList = this.passedData.locationMarkers;
-    this.NewMap.locationList.forEach(loc => {
-      loc.map_id = this.NewMap.id;
-    });
+    // this.NewMap.id = uuid.v4();
+    // this.NewMap.title = this.NewMapForm.value.title;
+    // this.NewMap.zoom = this.passedData.map.zoom;
+    // this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
+    // this.NewMap.locationList = this.passedData.locationMarkers;
+    // this.NewMap.locationList.forEach(loc => {
+    //   loc.map_id = this.NewMap.id;
+    // });
+    // New data to send to back end for state API:
+    const coords = this.passedData.coordinates;
+    this.NewMap.ID = '';
+    this.NewMap.Title = this.NewMapForm.value.title;
+    this.NewMap.Zoom = this.passedData.map.zoom;
+    this.NewMap.Coordinates = [coords.neLat, coords.neLng, coords.swLat, coords.swLng];
+    this.NewMap.Primary = true;
+    this.NewMap.Shared = true;
+    this.NewMap.Deletable = true;
+    this.NewMap.DefaultLayerID = this.passedData.userLayer.ID;
     // the below adds visible secondary location markers as well as primary
     // this.passedData.secondaryMarkers.forEach(loc => {
     //   if (loc.showMarker === true) {

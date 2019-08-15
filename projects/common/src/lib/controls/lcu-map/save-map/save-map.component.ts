@@ -45,7 +45,9 @@ export class SaveMapComponent implements OnInit {
       Primary: true,
       Shared: true,
       Deletable: true,
-      DefaultLayerID: ''
+      DefaultLayerID: '',
+      Latitude: 0,
+      Longitude: 0
       // id: '0',
       // title: '',
       // origin: { lat: 0, lng: 0 },

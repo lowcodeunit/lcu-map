@@ -20,6 +20,7 @@ import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
 import { LocationInfoService } from '../../services/location-info.service';
 import { UserLayer } from '../../models/user-layer.model';
+import { UserMap } from '../../models/user-map.model';
 
 
 
@@ -293,7 +294,7 @@ export class LcuMapComponent implements OnInit {
    */
   @Input('map-model')
   // MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
-  public set MapModel(value: IndividualMap) {
+  public set MapModel(value: UserMap) {
     this._currentMapModel = value;
     // this.CurrentlyActiveLocations = [];
     // this._currentMapModel.locationList.forEach(loc => {
@@ -315,7 +316,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The getter for the current map model
    */
-  public get MapModel(): IndividualMap {
+  public get MapModel(): UserMap {
     return this._currentMapModel;
   }
 
@@ -628,7 +629,7 @@ export class LcuMapComponent implements OnInit {
     const dialogRef = this.dialog.open(SaveMapComponent, {
       data: {
         map,
-        locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
+       // locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet,
         coordinates: this.currentBounds,
         userLayer: this.UserLayers.find(layer => layer.Shared === false)
@@ -725,6 +726,9 @@ export class LcuMapComponent implements OnInit {
    * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes
    */
   public BoundsChange(event): void {
+    if(!event){
+      return;
+    }
     this.currentBounds.neLat = event.getNorthEast().lat();
     this.currentBounds.neLng = event.getNorthEast().lng();
     this.currentBounds.swLat = event.getSouthWest().lat();
@@ -733,6 +737,7 @@ export class LcuMapComponent implements OnInit {
     let Bounds: Array<number> = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
     //console.log("bounds change = ", Bounds);
     this.MapBoundsChange.emit(Bounds);
+
   }
 
   /**
@@ -864,14 +869,14 @@ export class LcuMapComponent implements OnInit {
    * 
    * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
-  protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
-    return locationList.filter((loc: MapMarker) =>
-      loc.lat <= bounds.neLat &&
-      loc.lat >= bounds.swLat &&
-      loc.lng <= bounds.neLng &&
-      loc.lng >= bounds.swLng
-    )
-  }
+  // protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
+  //   return locationList.filter((loc: MapMarker) =>
+  //     loc.lat <= bounds.neLat &&
+  //     loc.lat >= bounds.swLat &&
+  //     loc.lng <= bounds.neLng &&
+  //     loc.lng >= bounds.swLng
+  //   )
+  // }
 
   /**
    * Runs the boiler plate code that sets up location searching for AGM Google Maps

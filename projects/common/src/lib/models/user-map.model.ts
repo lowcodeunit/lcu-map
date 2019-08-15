@@ -7,4 +7,6 @@ export class UserMap {
     Shared: boolean;
     Deletable: boolean;
     DefaultLayerID: any;
+    Latitude: number;
+    Longitude: number;
 }

@@ -248,11 +248,16 @@ export class LcuMapComponent implements OnInit {
 
   @Input('visible-locations-master-list')
   public set VisibleLocationsMasterList(value: Array<MapMarker>) {
-    console.log(value)
+    console.log("VisibleLocationsMasterList = ", value)
     this._visibleLocationsMasterList = value;
-    this._visibleLocationsMasterList.forEach(loc => {
-      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
-    });
+    if (this._visibleLocationsMasterList) {
+      this._visibleLocationsMasterList.forEach(loc => {
+        loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+      });
+    }
+    else {
+      this._visibleLocationsMasterList = new Array<MapMarker>();
+    }
   }
 
   public get VisibleLocationsMasterList() {
@@ -465,12 +470,14 @@ export class LcuMapComponent implements OnInit {
    *  Called by the legend to get the layer titles to be displayed in the legend
    */
   public GetSelectedUserLayers(): Array<string> {
-    let LayerTitles = Array<string>();
-    this._userLayers.forEach(function (layer) {
-      if (this._selectedUserLayers.includes(layer.ID)) {
-        LayerTitles.push(layer.Title);
-      }
-    }, this)
+    let LayerTitles = new Array<string>();
+    if (this._userLayers) {
+      this._userLayers.forEach(function (layer) {
+        if (this._selectedUserLayers.includes(layer.ID)) {
+          LayerTitles.push(layer.Title);
+        }
+      }, this);
+    }
 
     return LayerTitles;
   }
@@ -498,7 +505,7 @@ export class LcuMapComponent implements OnInit {
   //     // console.log("Layer =", layer);
   //   }
 
-    
+
   // }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
@@ -723,7 +730,7 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
 
-    let Bounds:Array<number>  = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
+    let Bounds: Array<number> = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
     //console.log("bounds change = ", Bounds);
     this.MapBoundsChange.emit(Bounds);
   }

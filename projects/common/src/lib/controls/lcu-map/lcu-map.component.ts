@@ -294,7 +294,7 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel.locationList.forEach(loc => {
       loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
     });
-    this.UpdateCurrentlyActiveLayers(value);
+    //this.UpdateCurrentlyActiveLayers(value);
 
     this.resetMapCheckedState();
   }
@@ -387,6 +387,9 @@ export class LcuMapComponent implements OnInit {
   @Input('update-visible-locations-manually')
   public UpdateVisibleLocationsManually: Array<MapMarker>;
 
+  @Output('map-bounds-change')
+  public MapBoundsChange: EventEmitter<Array<number>>;
+
 
 
   // CONSTRUCTORS
@@ -410,8 +413,9 @@ export class LcuMapComponent implements OnInit {
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
     this.IconIsHighlighted = false;
-    this.AddLocation = new EventEmitter();
-    this.EditLocation = new EventEmitter();
+    this.AddLocation = new EventEmitter<MapMarker>();
+    this.EditLocation = new EventEmitter<MapMarker>();
+    this.MapBoundsChange = new EventEmitter<Array<number>>();
   }
 
   // LIFE CYCLE
@@ -456,10 +460,11 @@ export class LcuMapComponent implements OnInit {
       });
   }
   /**
-   * Called by the legend to get the layer titles to be displayed in the legend
+   *  Returns an array of strings that represent the titles of layers selected
+   * 
+   *  Called by the legend to get the layer titles to be displayed in the legend
    */
   public GetSelectedUserLayers(): Array<string> {
-    // console.log("_selectedUserLayers = ", this._selectedUserLayers);
     let LayerTitles = Array<string>();
     this._userLayers.forEach(function (layer) {
       if (this._selectedUserLayers.includes(layer.ID)) {
@@ -473,30 +478,28 @@ export class LcuMapComponent implements OnInit {
    * 
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
-  public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
-    let LayerId = Array<IndividualMap>();
-    if (layer) {
-      LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
-        return layers.id === layer.id;
-      });
+  // public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
+  //   let LayerId = Array<IndividualMap>();
+  //   if (layer) {
+  //     LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
+  //       return layers.id === layer.id;
+  //     });
 
-      if (LayerId.length === 0) {
-        this.CurrentlyActiveLayers.push(layer);
-        // console.log("adding layer: ", layer);
-        //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
-      }
-      else {
-        // console.log(LayerId[0], " Already exists");
-      }
-    }
-    else {
-      // console.log("Layer =", layer);
-    }
+  //     if (LayerId.length === 0) {
+  //       this.CurrentlyActiveLayers.push(layer);
+  //       // console.log("adding layer: ", layer);
+  //       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+  //     }
+  //     else {
+  //       // console.log(LayerId[0], " Already exists");
+  //     }
+  //   }
+  //   else {
+  //     // console.log("Layer =", layer);
+  //   }
 
-    // if (this.CurrentlyActiveLayers.indexOf(layer) === -1) {
-
-    // }
-  }
+    
+  // }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
    * @param value 
@@ -719,6 +722,10 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds.neLng = event.getNorthEast().lng();
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
+
+    let Bounds:Array<number>  = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
+    //console.log("bounds change = ", Bounds);
+    this.MapBoundsChange.emit(Bounds);
   }
 
   /**

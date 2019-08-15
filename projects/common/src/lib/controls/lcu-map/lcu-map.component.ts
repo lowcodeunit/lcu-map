@@ -459,7 +459,7 @@ export class LcuMapComponent implements OnInit {
    * Called by the legend to get the layer titles to be displayed in the legend
    */
   public GetSelectedUserLayers(): Array<string> {
-    console.log("_selectedUserLayers = ", this._selectedUserLayers);
+    // console.log("_selectedUserLayers = ", this._selectedUserLayers);
     let LayerTitles = Array<string>();
     this._userLayers.forEach(function (layer) {
       if (this._selectedUserLayers.includes(layer.ID)) {
@@ -619,7 +619,9 @@ export class LcuMapComponent implements OnInit {
       data: {
         map,
         locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
-        mapMarkerSet: this.MapMarkerSet
+        mapMarkerSet: this.MapMarkerSet,
+        coordinates: this.currentBounds,
+        userLayer: this.UserLayers.find(layer => layer.Shared === false)
       }
     });
     dialogRef.afterClosed().subscribe((res: any) => {

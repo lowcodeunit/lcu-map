@@ -251,7 +251,7 @@ export class LcuMapComponent implements OnInit {
   public set VisibleLocationsMasterList(value: Array<MapMarker>) {
     console.log("VisibleLocationsMasterList = ", value)
     this._visibleLocationsMasterList = value;
-    if (this._visibleLocationsMasterList) {
+    if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length >0) {
       this._visibleLocationsMasterList.forEach(loc => {
         loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
       });

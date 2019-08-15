@@ -420,9 +420,9 @@ export class LcuMapComponent implements OnInit {
 
   // LIFE CYCLE
   ngOnInit() {
-    this._currentMapModel.locationList.forEach(loc => {
-      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
-    });
+    // this._currentMapModel.locationList.forEach(loc => {
+    //   loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+    // });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
@@ -759,23 +759,23 @@ export class LcuMapComponent implements OnInit {
   public SaveNewMarker(marker: MapMarker): void {
     //console.log("data being returned = ", marker);
     if (!this.isEdit) {
-      this._currentMapModel.locationList.push(marker);
-      this.CurrentlyActiveLocations.push(marker);
-      //this.AddLocation.emit(marker);
+      //this._currentMapModel.locationList.push(marker);
+      //this.CurrentlyActiveLocations.push(marker);
+      this.AddLocation.emit(marker);
     } else {
-      let idx = this._currentMapModel.locationList.findIndex(loc => {
-        return loc.id === marker.id;
-      });
-      this._currentMapModel.locationList.splice(idx, 1, marker);
-      idx = this.CurrentlyActiveLocations.findIndex(loc => {
-        return loc.id === marker.id;
-      });
-      this.CurrentlyActiveLocations.splice(idx, 1, marker);
+      // let idx = this._currentMapModel.locationList.findIndex(loc => {
+      //   return loc.id === marker.id;
+      // });
+      // this._currentMapModel.locationList.splice(idx, 1, marker);
+      // idx = this.CurrentlyActiveLocations.findIndex(loc => {
+      //   return loc.id === marker.id;
+      // });
+      // this.CurrentlyActiveLocations.splice(idx, 1, marker);
 
       this.EditLocation.emit(marker)
     }
-    this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-    this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+    //this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
+    //this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent

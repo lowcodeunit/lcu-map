@@ -296,7 +296,7 @@ export class LcuMapComponent implements OnInit {
     // });
     // this.UpdateCurrentlyActiveLayers(value);
 
-    this.resetMapCheckedState();
+    //this.resetMapCheckedState();
   }
 
   @Input('active-layers')
@@ -321,7 +321,7 @@ export class LcuMapComponent implements OnInit {
   // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
   public set SecondaryMaps(value: Array<IndividualMap>) {
     this._secondaryMaps = value;
-    this.resetMapCheckedState();
+    //this.resetMapCheckedState();
   }
 
   protected _visibleLocations;
@@ -426,7 +426,7 @@ export class LcuMapComponent implements OnInit {
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    this.resetMapCheckedState();
+    //this.resetMapCheckedState();
     this.setUpCustomMarkerSearch();
   }
 
@@ -942,14 +942,14 @@ export class LcuMapComponent implements OnInit {
   /**
    * Sets primary layer to checked and secondary layers to unchecked and resets active location
    */
-  protected resetMapCheckedState(): void {
-    this.PrimaryChecked = true;
-    this.SecondaryChecked = false;
-    this.CurrentlyActiveLocations = [];
-    this._currentMapModel.locationList.forEach(loc => {
-      this.CurrentlyActiveLocations.push(loc);
-    });
-  }
+  // protected resetMapCheckedState(): void {
+  //   this.PrimaryChecked = true;
+  //   this.SecondaryChecked = false;
+  //   this.CurrentlyActiveLocations = [];
+  //   this._currentMapModel.locationList.forEach(loc => {
+  //     this.CurrentlyActiveLocations.push(loc);
+  //   });
+  // }
   /**
    * 
    * @param value 

@@ -605,7 +605,9 @@ export class LcuMapComponent implements OnInit {
       data: {
         map,
         locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
-        mapMarkerSet: this.MapMarkerSet
+        mapMarkerSet: this.MapMarkerSet,
+        coordinates: this.currentBounds,
+        userLayer: this.UserLayers.find(layer => layer.Shared === false)
       }
     });
     dialogRef.afterClosed().subscribe((res: any) => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IndividualMap } from '../models/individual-map.model';
+// import { IndividualMap } from '../models/individual-map.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class MapService {
 /**
  * The current Layers that are selected to display
  */
-  protected CurrentlyActiveLayers: Array<IndividualMap>;
+  // protected CurrentlyActiveLayers: Array<IndividualMap>;
 
   // CONSTRUCTORS
 
@@ -74,15 +74,15 @@ export class MapService {
  * 
  * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
  */
-  public SetCurrentlyActiveLayers(layers: Array<IndividualMap>): void{
-    this.CurrentlyActiveLayers = layers;
-  }
+  // public SetCurrentlyActiveLayers(layers: Array<IndividualMap>): void{
+  //   this.CurrentlyActiveLayers = layers;
+  // }
 /**
  * Allows access to the CurrentlyActiveLayers form outside of the service
  */
-  public GetCurrentlyActiveLayers(): Array<IndividualMap>{
-    return this.CurrentlyActiveLayers;
-  }
+  // public GetCurrentlyActiveLayers(): Array<IndividualMap>{
+  //   return this.CurrentlyActiveLayers;
+  // }
 
   public GetMapApiKey(): string{
     return this.apiKey;

@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { IndividualMap } from '../../../models/individual-map.model';
-import * as uuid from 'uuid';
 import { UserMap } from '../../../models/user-map.model';
 
 @Component({
@@ -24,7 +22,7 @@ export class SaveMapComponent implements OnInit {
   /**
    * The new map that will be constructed and passed back to be saved
    */
-  // public NewMap: IndividualMap;
+  // public NewMap: UserMap;
   public NewMap: UserMap;
 
   // CONSTRUCTORS
@@ -62,18 +60,18 @@ export class SaveMapComponent implements OnInit {
    * Sets entered map data to this.NewMap, which is then returned upon closing modal with affirmative button
    */
   public SetMapData(): void {
-    // this.NewMap.id = uuid.v4();
-    // this.NewMap.title = this.NewMapForm.value.title;
+    // this.NewMap.ID = uuid.v4();
+    // this.NewMap.Title = this.NewMapForm.value.Title;
     // this.NewMap.zoom = this.passedData.map.zoom;
     // this.NewMap.origin = { lat: this.passedData.map.latitude, lng: this.passedData.map.longitude };
     // this.NewMap.locationList = this.passedData.locationMarkers;
     // this.NewMap.locationList.forEach(loc => {
-    //   loc.map_id = this.NewMap.id;
+    //   loc.LayerID = this.NewMap.ID;
     // });
     // New data to send to back end for state API:
     const coords = this.passedData.coordinates;
     this.NewMap.ID = '';
-    this.NewMap.Title = this.NewMapForm.value.title;
+    this.NewMap.Title = this.NewMapForm.value.Title;
     this.NewMap.Zoom = this.passedData.map.zoom;
     this.NewMap.Coordinates = [coords.neLat, coords.neLng, coords.swLat, coords.swLng];
     this.NewMap.Primary = true;

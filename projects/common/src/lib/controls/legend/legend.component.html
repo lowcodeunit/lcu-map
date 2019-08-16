@@ -28,9 +28,9 @@
       <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column" fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
-          <img class="icon-image" src={{item.iconImageObject.url}}>
+          <img class="icon-image" src={{item.IconImageObject.Url}}>
           <div class="location-title">
-            {{ item.title }}
+            {{ item.Title }}
           </div>
         </div>
       </div>

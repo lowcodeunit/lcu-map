@@ -91,14 +91,12 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     if (this.IsEdit) {
       this.NewMarker = this.passedData.marker;
     } else {
-      this.NewMarker = {
-        id: '',
-        map_id: '0',
-        title: '',
-        iconName: '',
-        lat: 0,
-        lng: 0
-      }
+      this.NewMarker.ID = '';
+      this.NewMarker.LayerID = '0';
+      this.NewMarker.Title = '';
+      this.NewMarker.IconName = '';
+      this.NewMarker.Latitude = 0;
+      this.NewMarker.Longitude = 0;
     }
   }
 
@@ -107,9 +105,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     setTimeout(() => {
       this.BasicInfoData = this.passedData.marker;
       this.MarkerSet = this.passedData.markerSet;
-      this.NewMarkerForm.patchValue({ title: this.BasicInfoData.title })
+      this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title })
       this.NewMarker = { ...this.passedData.marker };
-      this.setChosenIconIfExists(this.NewMarker.iconName);
+      this.setChosenIconIfExists(this.NewMarker.IconName);
       this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
       this.locationInfoService.SetPhoneNumberUrl(this.NewMarker);
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
@@ -165,12 +163,12 @@ public changePositionTopOfCenter() {
    */
   public SetMarkerData(): void {
     if (!this.IsEdit) {
-      this.NewMarker.id = '';
+      this.NewMarker.ID = '';
     }
-    this.NewMarker.map_id = this.passedData.primary_map_id;
-    this.NewMarker.title = this.NewMarkerForm.value.title;
-    this.NewMarker.iconName = this.ChosenIcon.iconLookup;
-    this.NewMarker.iconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.iconLookup, this.passedData.markerSet);
+    this.NewMarker.LayerID = this.passedData.primary_map_id;
+    this.NewMarker.Title = this.NewMarkerForm.value.Title;
+    this.NewMarker.IconName = this.ChosenIcon.IconLookup;
+    this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
   }
 
   /**
@@ -198,7 +196,7 @@ public changePositionTopOfCenter() {
    */
   protected setChosenIconIfExists(iconName: string): void {
     this.MarkerSet.forEach(marker => {
-      if (marker.iconLookup === iconName) {
+      if (marker.IconLookup === iconName) {
         this.ChosenIcon = marker;
       }
     });

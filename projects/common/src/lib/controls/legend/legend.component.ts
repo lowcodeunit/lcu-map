@@ -185,7 +185,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.MapTitle = "No Layer Selected";
     }
     if (visLoc.length > 0) {
-      this.LocationsList = this.assignIconUrl(visLoc);
+     // this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList = visLoc;
       //console.log("List",this.LocationsList);
       this.LocationsList.sort(this.compareObject);

@@ -108,7 +108,7 @@ export class LegendComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges){
     //  console.log("Changes detected");
     //  console.log(changes);
-    this.SetLocationList();
+    // this.SetLocationList();
   }
 
 
@@ -152,49 +152,49 @@ export class LegendComponent implements OnInit, OnChanges {
    * (this is what is displayed on the drop down)
    */
   public SetLocationList() {
-    //set to new so no duplicates present themselves
-    this.LocationsList = new Array<MapMarker>();
+    // //set to new so no duplicates present themselves
+    // this.LocationsList = new Array<MapMarker>();
 
-    let visLoc = new Array<MapMarker>();
-    // console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
-    // console.log("legend locations = ", this._legendLocations);
-    //locations logic
+    // let visLoc = new Array<MapMarker>();
+    // // console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
+    // // console.log("legend locations = ", this._legendLocations);
+    // //locations logic
     
-    // if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
-    //   visLoc = this._legendLocations;
+    // // if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
+    // //   visLoc = this._legendLocations;
+    // // }
+    // // else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
+    // //   this._currentlyActiveLocations.forEach(loc => {
+    // //     visLoc.push(loc);
+    // //   });
+    // //   this._legendLocations.forEach(loc => {
+    // //     visLoc.push(loc);
+    // //   });
+    // // }
+    // // else {
+    //   visLoc = this._currentlyActiveLocations;
+    // // }
+    // //layers logic
+    // if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
+    //   this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
+    //   // console.log("Layers = ", this._currentlyActiveLayers);
     // }
-    // else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
-    //   this._currentlyActiveLocations.forEach(loc => {
-    //     visLoc.push(loc);
-    //   });
-    //   this._legendLocations.forEach(loc => {
-    //     visLoc.push(loc);
-    //   });
+    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
+    //   this.MapTitle = this._currentlyActiveLayers[0];
     // }
     // else {
-      visLoc = this._currentlyActiveLocations;
+    //   this.MapTitle = "No Layer Selected";
     // }
-    //layers logic
-    if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
-      this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
-      // console.log("Layers = ", this._currentlyActiveLayers);
-    }
-    else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
-      this.MapTitle = this._currentlyActiveLayers[0];
-    }
-    else {
-      this.MapTitle = "No Layer Selected";
-    }
-    if (visLoc.length > 0) {
-      //this.LocationsList = this.assignIconUrl(visLoc);
-      this.LocationsList = visLoc;
-      //console.log("List",this.LocationsList);
-      this.LocationsList.sort(this.compareObject);
-      this.LocationsList = this.moveUndefinedToBottom(this.LocationsList);
-    }
-    else{
-      this.LocationsList = new Array<MapMarker>();
-    }
+    // if (visLoc.length > 0) {
+    //   //this.LocationsList = this.assignIconUrl(visLoc);
+    //   this.LocationsList = visLoc;
+    //   //console.log("List",this.LocationsList);
+    //   this.LocationsList.sort(this.compareObject);
+    //   this.LocationsList = this.moveUndefinedToBottom(this.LocationsList);
+    // }
+    // else{
+    //   this.LocationsList = new Array<MapMarker>();
+    // }
   }
 
 

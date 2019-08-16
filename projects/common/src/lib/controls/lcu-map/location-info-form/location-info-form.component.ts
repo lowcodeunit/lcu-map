@@ -111,7 +111,7 @@ export class LocationInfoFormComponent implements OnInit {
       this.NewMarker.ID = '';
       this.NewMarker.LayerID = '0';
       this.NewMarker.Title = '';
-      this.NewMarker.IconName = '';
+      this.NewMarker.Icon = '';
       this.NewMarker.Latitude = 0;
       this.NewMarker.Longitude = 0;
     }
@@ -123,7 +123,7 @@ export class LocationInfoFormComponent implements OnInit {
     this.MarkerSet = this.MarkerData.mapMarkerSet;
     this.NewMarkerForm.patchValue({ title: this.Marker.Title })
     this.NewMarker = this.MarkerData.marker;
-    this.setChosenIconIfExists(this.NewMarker.IconName);
+    this.setChosenIconIfExists(this.NewMarker.Icon);
     //console.log("form group = ", this.NewMarkerForm);
   }
 
@@ -170,7 +170,7 @@ export class LocationInfoFormComponent implements OnInit {
     }
     this.NewMarker.LayerID = this.MarkerData.primaryMapId;
     this.NewMarker.Title = this.NewMarkerForm.value.Title;
-    this.NewMarker.IconName = this.ChosenIcon.IconLookup;
+    this.NewMarker.Icon = this.ChosenIcon.IconLookup;
     this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
   }
 

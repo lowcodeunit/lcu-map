@@ -18,7 +18,7 @@ export class Constants {
     //         { id: '5', title: 'Favorite ski area', lat: 40.057557, lng: -105.288199, iconName: 'ski area', LayerID: '0' },
     //         { id: '6', title: 'Favorite vineyard', lat: 40.060657, lng: -105.298199, iconName: 'vineyard', LayerID: '0' },
     //         { id: '7', title: 'Nice golf course', lat: 40.037757, lng: -105.258199, iconName: 'golf course', LayerID: '0' },
-    //         { id: '8', title: 'Good lodging', lat: 40.037757, lng: -105.278199, iconName: 'lodging', town:'Boulder', country:'USA', LayerID: '0' },
+    //         { id: '8', title: 'Good hotel', lat: 40.037757, lng: -105.278199, iconName: 'hotel', town:'Boulder', country:'USA', LayerID: '0' },
     //         { id: '9', title: 'Nice national park', lat: 40.060657, lng: -105.278199, iconName: 'national park', LayerID: '0' },
     //         { id: '10', title: 'Good bar', lat: 40.017557, lng: -105.288199, iconName: 'bar', LayerID: '0' }
     //     ]
@@ -60,21 +60,21 @@ export class Constants {
     //             { id: '21', title: 'Favorite hiking trail', lat: 40.027657, lng: -105.288199, iconName: 'national park', LayerID: '3' },
     //             { id: '22', title: 'Nice museum', lat: 40.037757, lng: -105.244199, iconName: 'museum', LayerID: '3' },
     //             { id: '23', title: 'Good park', lat: 40.047857, lng: -105.268199, iconName: 'national park', LayerID: '3' },
-    //             { id: '24', title: 'Cheap Hotel', lat: 40.041857, lng: -105.268199, iconName: 'lodging', LayerID: '3' }
+    //             { id: '24', title: 'Cheap Hotel', lat: 40.041857, lng: -105.268199, iconName: 'hotel', LayerID: '3' }
     //         ]
     //     }
     // ];
 
     public static readonly DEFAULT_MAP_MARKER_SET: Array<MarkerInfo> = [
-        { IconLookup: 'restaurant', IconName: 'Restaurant', IconUrl: './assets/restaurant.png' },
-        { IconLookup: 'UNESCO', IconName: 'UNESCO', IconUrl: './assets/UNESCO.png' },
-        { IconLookup: 'museum', IconName: 'Museum', IconUrl: './assets/museum.png' },
-        { IconLookup: 'brewery', IconName: 'Brewery', IconUrl: './assets/brewery.png' },
-        { IconLookup: 'ski area', IconName: 'Ski Area', IconUrl: './assets/ski area.png' },
-        { IconLookup: 'vineyard', IconName: 'Vineyard', IconUrl: './assets/vineyard.png' },
-        { IconLookup: 'golf course', IconName: 'Golf Course', IconUrl: './assets/golf course.png' },
-        { IconLookup: 'lodging', IconName: 'Lodging', IconUrl: './assets/lodging.png' },
-        { IconLookup: 'national park', IconName: 'National Park', IconUrl: './assets/national park.png' },
-        { IconLookup: 'bar', IconName: 'Bar', IconUrl: './assets/bar.png' }
+        { IconLookup: 'restaurant', Icon: 'Restaurant', IconUrl: './assets/restaurant.png' },
+        { IconLookup: 'UNESCO', Icon: 'UNESCO', IconUrl: './assets/UNESCO.png' },
+        { IconLookup: 'museum', Icon: 'Museum', IconUrl: './assets/museum.png' },
+        { IconLookup: 'brewery', Icon: 'Brewery', IconUrl: './assets/brewery.png' },
+        { IconLookup: 'ski area', Icon: 'Ski Area', IconUrl: './assets/ski area.png' },
+        { IconLookup: 'vineyard', Icon: 'Vineyard', IconUrl: './assets/vineyard.png' },
+        { IconLookup: 'golf course', Icon: 'Golf Course', IconUrl: './assets/golf course.png' },
+        { IconLookup: 'hotel', Icon: 'Hotel', IconUrl: './assets/hotel.png' },
+        { IconLookup: 'national park', Icon: 'National Park', IconUrl: './assets/national park.png' },
+        { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' }
     ];
 }

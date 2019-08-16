@@ -246,14 +246,14 @@ export class LegendComponent implements OnInit, OnChanges {
     for (let i = 0; i < locList.length; i++) {
       if(!locList[i].IconUrl || locList[i].IconUrl===null || locList[i].IconUrl ===""){
       let iconTemp = this.iconList.filter(loc => {
-        return loc.IconLookup === locList[i].IconName;
+        return loc.IconLookup === locList[i].Icon;
       });
       if(iconTemp){
        locList[i].IconUrl = iconTemp[0].IconUrl;
       // temp.push(locList[i]);
       }
       else{
-        console.log("Icon url doesn't exist for ", locList[i].IconName )
+        console.log("Icon url doesn't exist for ", locList[i].Icon )
       }
     }
     }

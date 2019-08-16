@@ -46,7 +46,7 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.ID = '';
     this.NewMarker.LayerID = '0';
     this.NewMarker.Title = '';
-    this.NewMarker.IconName = '';
+    this.NewMarker.Icon = '';
     this.NewMarker.Latitude = 0;
     this.NewMarker.Longitude = 0;
 
@@ -61,7 +61,7 @@ export class AddMapMarkerComponent implements OnInit {
   public SetMarkerData(): void {
     this.NewMarker.ID = '';
     this.NewMarker.Title = this.NewMarkerForm.value.Title;
-    this.NewMarker.IconName = this.NewMarkerForm.value.icon.IconName;
+    this.NewMarker.Icon = this.NewMarkerForm.value.icon.Icon;
     this.NewMarker.Latitude = this.passedData.Latitude;
     this.NewMarker.Longitude = this.passedData.Longitude;
     this.NewMarker.LayerID = this.passedData.primary_map_id,

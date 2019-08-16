@@ -16,11 +16,11 @@ export class MapConversions {
    */
   public ConvertIconObject(iconUrl: string, markerSet: MarkerInfo[]): IconImageObject {
     const markerObject: IconImageObject = new IconImageObject();
-    markerObject.Url = '';
-    markerObject.ScaledSize = { Width: 40, Height: 60 };
+    markerObject.url = '';
+    markerObject.scaledSize = { width: 40, height: 60 };
     markerSet.forEach(marker => {
       if (marker.IconLookup.toLowerCase() === iconUrl.toLowerCase()) {
-        markerObject.Url = marker.IconUrl;
+        markerObject.url = marker.IconUrl;
       }
     });
     return markerObject;

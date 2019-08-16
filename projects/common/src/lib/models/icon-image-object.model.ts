@@ -1,7 +1,7 @@
 export class IconImageObject {
-    public Url: string;
-    public ScaledSize: {
-        Width: number,
-        Height: number
+    public url: string;
+    public scaledSize: {
+        width: number,
+        height: number
     };
 }

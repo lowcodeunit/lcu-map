@@ -242,6 +242,7 @@ export class LcuMapComponent implements OnInit {
     if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length > 0) {
       this._visibleLocationsMasterList.forEach(loc => {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
+        console.log('after IconImageObject assigned');
       });
     } else {
       this._visibleLocationsMasterList = new Array<MapMarker>();
@@ -274,7 +275,7 @@ export class LcuMapComponent implements OnInit {
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
   @Input('map-marker-set')
-  MapMarkerSet: MarkerInfo[] = Constants.DEFAULT_MAP_MARKER_SET;
+  MapMarkerSet: MarkerInfo[];
 
   /**
    * The setter for the current map model

@@ -938,9 +938,9 @@ export class LcuMapComponent implements OnInit {
    * if random decimals are not added then the map will not zoom/pan once user moves the map
    */
   protected zoomInToPoint(value): void {
-    this._currentMapModel.origin.lat = parseFloat(value.Latitude) + (Math.random() / 100000);
-    this._currentMapModel.origin.lng = parseFloat(value.Longitude) + (Math.random() / 100000);
-    this._currentMapModel.zoom = 16 + (Math.random() / 100);
+    this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
   /** 
    * @param photos

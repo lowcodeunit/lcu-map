@@ -242,12 +242,12 @@ export class LegendComponent implements OnInit, OnChanges {
   protected assignIconUrl(locList: Array<MapMarker>) {
     //let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
-      if(!locList[i].IconUrl || locList[i].IconUrl===null || locList[i].IconUrl ===""){
+      if(!locList[i].IconImageObject.url || locList[i].IconImageObject.url===null || locList[i].IconImageObject.url ===""){
       let iconTemp = this.iconList.filter(loc => {
         return loc.IconLookup === locList[i].Icon;
       });
       if(iconTemp){
-       locList[i].IconUrl = iconTemp[0].IconUrl;
+       locList[i].IconImageObject.url = iconTemp[0].IconUrl;
       // temp.push(locList[i]);
       }
       else{

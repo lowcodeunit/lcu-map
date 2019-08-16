@@ -159,20 +159,21 @@ export class LegendComponent implements OnInit, OnChanges {
     // console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
     // console.log("legend locations = ", this._legendLocations);
     //locations logic
-    if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
-      visLoc = this._legendLocations;
-    }
-    else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
-      this._currentlyActiveLocations.forEach(loc => {
-        visLoc.push(loc);
-      });
-      this._legendLocations.forEach(loc => {
-        visLoc.push(loc);
-      });
-    }
-    else {
+    
+    // if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
+    //   visLoc = this._legendLocations;
+    // }
+    // else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
+    //   this._currentlyActiveLocations.forEach(loc => {
+    //     visLoc.push(loc);
+    //   });
+    //   this._legendLocations.forEach(loc => {
+    //     visLoc.push(loc);
+    //   });
+    // }
+    // else {
       visLoc = this._currentlyActiveLocations;
-    }
+    // }
     //layers logic
     if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
@@ -272,7 +273,7 @@ export class LegendComponent implements OnInit, OnChanges {
    * 
    * if the indexes are the same then it compares based on title so it is alphabetical 
    */
-  protected compareObject(obj1, obj2) {
+  protected compareObject(obj1: MapMarker, obj2: MapMarker) {
     if (obj1.orderIndex > obj2.orderIndex)
       return 1;
     if (obj1.orderIndex < obj2.orderIndex)

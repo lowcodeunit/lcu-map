@@ -90,20 +90,20 @@ export class AppComponent implements OnInit {
             DefaultLayerID: 123
         };
         this.IconSet = [ // this should be calling a service here
-            { IconLookup: 'restaurant', IconName: 'Restaurant', IconUrl: './assets/restaurant.png' },
-            { IconLookup: 'UNESCO', IconName: 'UNESCO', IconUrl: './assets/UNESCO.png' },
-            { IconLookup: 'museum', IconName: 'Museum', IconUrl: './assets/museum.png' },
-            { IconLookup: 'brewery', IconName: 'Brewery', IconUrl: './assets/brewery.png' },
-            { IconLookup: 'ski area', IconName: 'Ski Area', IconUrl: './assets/ski area.png' },
-            { IconLookup: 'vineyard', IconName: 'Vineyard', IconUrl: './assets/vineyard.png' },
-            { IconLookup: 'golf course', IconName: 'Golf Course', IconUrl: './assets/golf course.png' },
-            { IconLookup: 'lodging', IconName: 'Lodging', IconUrl: './assets/lodging.png' },
-            { IconLookup: 'national park', IconName: 'National Park', IconUrl: './assets/national park.png' },
-            { IconLookup: 'bar', IconName: 'Bar', IconUrl: './assets/bar.png' }
+            { IconLookup: 'restaurant', Icon: 'Restaurant', IconUrl: './assets/restaurant.png' },
+            { IconLookup: 'UNESCO', Icon: 'UNESCO', IconUrl: './assets/UNESCO.png' },
+            { IconLookup: 'museum', Icon: 'Museum', IconUrl: './assets/museum.png' },
+            { IconLookup: 'brewery', Icon: 'Brewery', IconUrl: './assets/brewery.png' },
+            { IconLookup: 'ski area', Icon: 'Ski Area', IconUrl: './assets/ski area.png' },
+            { IconLookup: 'vineyard', Icon: 'Vineyard', IconUrl: './assets/vineyard.png' },
+            { IconLookup: 'golf course', Icon: 'Golf Course', IconUrl: './assets/golf course.png' },
+            { IconLookup: 'hotel', Icon: 'Hotel', IconUrl: './assets/hotel.png' },
+            { IconLookup: 'national park', Icon: 'National Park', IconUrl: './assets/national park.png' },
+            { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' }
         ]
         this.MasterVisLocs = [
             // { id: '41', title: 'Nice museum', lat: 40.049757, lng: -105.298199, iconName: 'museum', LayerID: '789' },
-            // { id: '42', title: 'Good lodging', lat: 40.028757, lng: -105.278199, iconName: 'lodging', town: 'Boulder', country: 'USA', state: "CO", phoneNumber: '303-123-4567', instagram: '@www', website: 'www', LayerID: '789', address: '1234 abc court', menu: 'menu.com', reservations: 'reservations.com', starRating: 3.5, awards: "Best place to sleep 2019", media: "media.com", generalInfo: "checkout is 11 am", notes: "Try to get a room that over looks the flat Irons.", photos: ["link", "link"] }
+            // { id: '42', title: 'Good hotel', lat: 40.028757, lng: -105.278199, iconName: 'hotel', town: 'Boulder', country: 'USA', state: "CO", phoneNumber: '303-123-4567', instagram: '@www', website: 'www', LayerID: '789', address: '1234 abc court', menu: 'menu.com', reservations: 'reservations.com', starRating: 3.5, awards: "Best place to sleep 2019", media: "media.com", generalInfo: "checkout is 11 am", notes: "Try to get a room that over looks the flat Irons.", photos: ["link", "link"] }
         ]
         this.UserLayers = [{ID: 123, Title: 'My Layer', Shared: false, Deletable: false},
         {ID: 456, Title: 'The Curated List Layer', Shared: true, Deletable: false},

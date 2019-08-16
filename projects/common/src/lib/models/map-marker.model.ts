@@ -17,7 +17,7 @@ export class MapMarker {
     /**
      * The icon name that should match the IconLookup in the MarkerInfo model
      */
-    public IconName: string;
+    public Icon: string;
 
     /**
      * The latitude of the map marker
@@ -127,7 +127,7 @@ export class MapMarker {
      */
     constructor(icon: MapMarker) {
         this.Title = icon.Title;
-        this.IconName = icon.IconName;
+        this.Icon = icon.Icon;
         this.Latitude = icon.Latitude;
         this.Longitude = icon.Longitude;
         this.Telephone = icon.Telephone;

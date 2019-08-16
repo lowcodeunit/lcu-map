@@ -239,12 +239,11 @@ export class LcuMapComponent implements OnInit {
   public set VisibleLocationsMasterList(value: Array<MapMarker>) {
     console.log("VisibleLocationsMasterList = ", value)
     this._visibleLocationsMasterList = value;
-    if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length >0) {
+    if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length > 0) {
       this._visibleLocationsMasterList.forEach(loc => {
-        loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet);
+        loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
       });
-    }
-    else {
+    } else {
       this._visibleLocationsMasterList = new Array<MapMarker>();
     }
   }
@@ -286,7 +285,7 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel = value;
     // this.CurrentlyActiveLocations = [];
     // this._currentMapModel.locationList.forEach(loc => {
-    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet);
+    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     // });
     // this.UpdateCurrentlyActiveLayers(value);
 
@@ -385,8 +384,11 @@ export class LcuMapComponent implements OnInit {
   // LIFE CYCLE
   ngOnInit() {
     // this._currentMapModel.locationList.forEach(loc => {
-    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet);
+    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     // });
+    this._visibleLocationsMasterList.forEach(loc => {
+      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
+    });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
@@ -523,7 +525,7 @@ export class LcuMapComponent implements OnInit {
               ID: '',
               LayerID: this._currentMapModel.ID,
               Title: res.result.name,
-              IconName: res.result.icon,
+              Icon: res.result.icon,
               Latitude: res.result.geometry.location.lat(),
               Longitude: res.result.geometry.location.lng(),
               Telephone: res.result.formatted_phone_number,
@@ -664,7 +666,7 @@ export class LcuMapComponent implements OnInit {
     }
 
     this.CurrentlyActiveLocations.forEach(loc => {
-      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet)
+      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet)
     });
     //console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
     //console.log("Current Map Model: ", this._currentMapModel);
@@ -885,7 +887,7 @@ export class LcuMapComponent implements OnInit {
               ID: '',
               LayerID: this._currentMapModel.ID,
               Title: place.name,
-              IconName: place.icon,
+              Icon: place.icon,
               Latitude: place.geometry.location.lat(),
               Longitude: place.geometry.location.lng(),
               Telephone: place.formatted_phone_number,

@@ -8,7 +8,7 @@ export class MarkerInfo {
     /**
      * The official name to display in any list of names
      */
-    public IconName: string;
+    public Icon: string;
 
     /**
      * The path that points to the image to be displayed
@@ -17,11 +17,11 @@ export class MarkerInfo {
 
     /**
      * 
-     * @param Icon The object containing lookup (IconLookup), display (IconName), and path (IconUrl) data for an icon
+     * @param Icon The object containing lookup (IconLookup), display (Icon), and path (IconUrl) data for an icon
      */
     constructor(icon) {
         this.IconLookup = icon.IconLookup;
-        this.IconName = icon.IconName;
+        this.Icon = icon.Icon;
         this.IconUrl = icon.IconUrl;
     }
 }

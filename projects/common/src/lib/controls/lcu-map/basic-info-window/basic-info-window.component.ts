@@ -94,7 +94,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.NewMarker.ID = '';
       this.NewMarker.LayerID = '0';
       this.NewMarker.Title = '';
-      this.NewMarker.IconName = '';
+      this.NewMarker.Icon = '';
       this.NewMarker.Latitude = 0;
       this.NewMarker.Longitude = 0;
     }
@@ -107,7 +107,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.MarkerSet = this.passedData.markerSet;
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title })
       this.NewMarker = { ...this.passedData.marker };
-      this.setChosenIconIfExists(this.NewMarker.IconName);
+      this.setChosenIconIfExists(this.NewMarker.Icon);
       this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
       this.locationInfoService.SetPhoneNumberUrl(this.NewMarker);
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
@@ -167,7 +167,7 @@ public changePositionTopOfCenter() {
     }
     this.NewMarker.LayerID = this.passedData.primary_map_id;
     this.NewMarker.Title = this.NewMarkerForm.value.Title;
-    this.NewMarker.IconName = this.ChosenIcon.IconLookup;
+    this.NewMarker.Icon = this.ChosenIcon.IconLookup;
     this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
   }
 

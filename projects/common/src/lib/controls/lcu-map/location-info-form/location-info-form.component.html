@@ -2,12 +2,12 @@
 <mat-card class="more-info-container" fxLayout="column" fxLayoutAlign="start start" *ngIf="FormView === 'moreInfo'"
   (swipedown)="SwipedDown()">
   <!-- <mat-card-header> -->
-  <mat-card-title *ngIf="Marker.title && Marker.website" fxLayout="row" fxLayoutAlign="start">
-    <a *ngIf="Marker.website" href={{Marker.website}} target="_blank">{{Marker.title}}</a>
+  <mat-card-title *ngIf="Marker.Title && Marker.Website" fxLayout="row" fxLayoutAlign="start">
+    <a *ngIf="Marker.Website" href={{Marker.Website}} target="_blank">{{Marker.Title}}</a>
   </mat-card-title>
 
-  <mat-card-title *ngIf="Marker.title && !Marker.website" fxLayout="row" fxLayoutAlign="start">
-    {{Marker.title}}
+  <mat-card-title *ngIf="Marker.Title && !Marker.Website" fxLayout="row" fxLayoutAlign="start">
+    {{Marker.Title}}
   </mat-card-title> <!-- </mat-card-header> -->
   <!-- <mat-card-content> -->
 
@@ -18,15 +18,15 @@
         </mat-tab-group> -->
 
 
-  <div *ngIf="Marker.address">{{Marker.address}}</div>
-  <div *ngIf="Marker.town || Marker.country || Marker.state">Location: {{Marker.town}} {{Marker.state}}
-    {{Marker.country}}</div>
+  <div *ngIf="Marker.Address">{{Marker.Address}}</div>
+  <div *ngIf="Marker.Town || Marker.Country || Marker.State">Location: {{Marker.Town}} {{Marker.State}}
+    {{Marker.Country}}</div>
     <div class="links" fxLayout="row" fxLayoutAlign="space-around center">
         <a *ngIf="LinkedPhoneNumber" class="link" href={{LinkedPhoneNumber}} mat-icon-button>
           <mat-icon title="Call {{LinkedPhoneNumber}}" >call</mat-icon>
         </a>
 
-        <a *ngIf="Marker.website" class="link" href={{Marker.website}} target="_blank" mat-icon-button>
+        <a *ngIf="Marker.Website" class="link" href={{Marker.Website}} target="_blank" mat-icon-button>
           <mat-icon title="Website">public</mat-icon>
         </a>
 
@@ -50,7 +50,7 @@
         </a>
 
         <!-- NO FUNCTIONALITY -->
-        <a *ngIf="Marker.reservations" href={{Marker.reservations}} target="_blank" mat-icon-button>
+        <a *ngIf="Marker.Reservations" href={{Marker.Reservations}} target="_blank" mat-icon-button>
             <mat-icon title="Reservations">adjust</mat-icon>
           </a>
 
@@ -59,13 +59,13 @@
   <!-- <star-rating *ngIf="Marker.starRating" [starType]="'svg'" staticColor="ok" [showHalfStars]="true" speed="slow"
     [readOnly]="true" labelText={{Marker.starRating}} [rating]=Marker.starRating>
   </star-rating> -->
-  <div *ngIf="Marker.awards">Awards: {{Marker.awards}}</div>
-  <a *ngIf="Marker.media" href={{Marker.media}}>Media</a>
-  <p *ngIf="Marker.notes">Notes: {{Marker.notes}}</p>
-  <div *ngIf="Marker.photos" class="info-photo-container">
-    <img *ngFor="let photo of Marker.photos" src="{{photo}}" />
+  <div *ngIf="Marker.Awards">Awards: {{Marker.Awards}}</div>
+  <a *ngIf="Marker.Media" href={{Marker.Media}}>Media</a>
+  <p *ngIf="Marker.Notes">Notes: {{Marker.Notes}}</p>
+  <div *ngIf="Marker.Photos" class="info-photo-container">
+    <img *ngFor="let photo of Marker.Photos" src="{{photo}}" />
   </div>
-  <p *ngIf="Marker.generalInfo">General Info: {{Marker.generalInfo}}</p>
+  <p *ngIf="Marker.GeneralInfo">General Info: {{Marker.GeneralInfo}}</p>
   <!-- </mat-card-content> -->
   <!-- </div> -->
 
@@ -91,13 +91,13 @@
       <!-- <mat-form-field>
           <mat-label>Icon</mat-label>
           <mat-select formControlName="icon">
-            <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.iconName}}</mat-option>
+            <mat-option *ngFor="let icon of MarkerSet" [value]="icon">{{icon.IconName}}</mat-option>
           </mat-select>
         </mat-form-field> -->
       <div style="width: 100%">
         <div fxLayout="row wrap" fxLayoutGap="10px">
           <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" *ngFor="let icon of MarkerSet"
-            src="{{icon.iconUrl}}" (click)="SetIcon(icon)" />
+            src="{{icon.IconUrl}}" (click)="SetIcon(icon)" />
         </div>
       </div>
       <!-- <mat-form-field>

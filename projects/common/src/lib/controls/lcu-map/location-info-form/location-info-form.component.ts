@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerData } from '../../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { LocationInfoService } from '../../../services/location-info.service';
+import { IconImageObject } from '../../../models/icon-image-object.model';
 
 
 @Component({
@@ -29,20 +30,20 @@ export class LocationInfoFormComponent implements OnInit {
   /**
    * Output to info-footer
    */
-  @Output('close-footer') 
+  @Output('close-footer')
   CloseFooter: EventEmitter<boolean>;
 
-/**
- * Outgoing MapMarker
- */
-  @Output('new-MapMarker') 
+  /**
+   * Outgoing MapMarker
+   */
+  @Output('new-MapMarker')
   NewMapMarker: EventEmitter<MapMarker>;
 
-  
+
   //PROPERTIES
-    /**
-   * The set of available marker icons and paths to those icons
-   */
+  /**
+ * The set of available marker icons and paths to those icons
+ */
   public MarkerSet: Array<MarkerInfo>;
 
 
@@ -83,9 +84,9 @@ export class LocationInfoFormComponent implements OnInit {
    * The url for the phone number
    */
   public LinkedPhoneNumber: string;
-/**
- * The type of location
- */
+  /**
+   * The type of location
+   */
   public Type: string;
 
   //public FormView: string;
@@ -96,7 +97,7 @@ export class LocationInfoFormComponent implements OnInit {
     this.NewMapMarker = new EventEmitter<MapMarker>();
 
   }
-  
+
 
   //LIFE CYCLE
 
@@ -104,28 +105,26 @@ export class LocationInfoFormComponent implements OnInit {
     this.createFormGroup();
     if (this.IsEdit) {
       this.NewMarker = this.MarkerData.marker;
-      //console.log("real marker ", this.NewMarker);
+      // console.log("real marker ", this.NewMarker);
     } else {
-      //console.log("blank marker");
-      this.NewMarker = {
-        id: '',
-        map_id: '0',
-        title: '',
-        iconName: '',
-        lat: 0,
-        lng: 0
-      }
+      // console.log("blank marker");
+      this.NewMarker.ID = '';
+      this.NewMarker.LayerID = '0';
+      this.NewMarker.Title = '';
+      this.NewMarker.IconName = '';
+      this.NewMarker.Latitude = 0;
+      this.NewMarker.Longitude = 0;
     }
   }
 
   ngAfterViewInit() {
-    
-      this.Marker = this.MarkerData.marker;
-      this.MarkerSet = this.MarkerData.mapMarkerSet;
-      this.NewMarkerForm.patchValue({ title: this.Marker.title })
-      this.NewMarker = this.MarkerData.marker;
-      this.setChosenIconIfExists(this.NewMarker.iconName);
-      //console.log("form group = ", this.NewMarkerForm);
+
+    this.Marker = this.MarkerData.marker;
+    this.MarkerSet = this.MarkerData.mapMarkerSet;
+    this.NewMarkerForm.patchValue({ title: this.Marker.Title })
+    this.NewMarker = this.MarkerData.marker;
+    this.setChosenIconIfExists(this.NewMarker.IconName);
+    //console.log("form group = ", this.NewMarkerForm);
   }
 
   ngOnChanges() {
@@ -136,26 +135,26 @@ export class LocationInfoFormComponent implements OnInit {
     this.NewMarker = this.MarkerData.marker;
     this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
     this.Type = this.locationInfoService.GetType(this.NewMarker);
-    this.IsEdit = this.MarkerData.isEdit;    
-    this.NewMarkerForm.patchValue({ title: this.Marker.title })
+    this.IsEdit = this.MarkerData.isEdit;
+    this.NewMarkerForm.patchValue({ title: this.Marker.Title })
   }
   //API METHODS
 
   /**
    * Change FormView so basic info is diplayed
    */
-  public ShowBasicInfo():void {
+  public ShowBasicInfo(): void {
     this.FormView = "basic";
   }
 
   /**
    * Called when the user swiped down to go back to basic info
    */
-  public SwipedDown():void {
+  public SwipedDown(): void {
     this.ShowBasicInfo();
   }
 
-  public Close():void{
+  public Close(): void {
     this.CloseFooter.emit(false);
     this.NewMapMarker.emit(this.NewMarker);
   }
@@ -163,16 +162,16 @@ export class LocationInfoFormComponent implements OnInit {
   /**
    * Sets the marker data to the user entered data
    */
-  
+
 
   public SetMarkerData(): void {
     if (!this.IsEdit) {
-      this.NewMarker.id = '';
+      this.NewMarker.ID = '';
     }
-    this.NewMarker.map_id = this.MarkerData.primaryMapId;
-    this.NewMarker.title = this.NewMarkerForm.value.title;
-    this.NewMarker.iconName = this.ChosenIcon.iconLookup;
-    this.NewMarker.iconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.iconLookup, this.MarkerData.mapMarkerSet);
+    this.NewMarker.LayerID = this.MarkerData.primaryMapId;
+    this.NewMarker.Title = this.NewMarkerForm.value.Title;
+    this.NewMarker.IconName = this.ChosenIcon.IconLookup;
+    this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
   }
 
   /**
@@ -181,7 +180,7 @@ export class LocationInfoFormComponent implements OnInit {
    * 
    * Sets the current ChosenIcon to the icon the user selected
    */
-  public SetIcon(icon):void {
+  public SetIcon(icon): void {
     if (this.ChosenIcon === icon) {
       this.ChosenIcon = null;
     } else {
@@ -192,8 +191,8 @@ export class LocationInfoFormComponent implements OnInit {
   // HELPERS
 
   // public BuildInstagramUrl(marker: MapMarker): void{
-  //   if(marker.instagram){
-  //     let tempInsta = marker.instagram.slice(1);
+  //   if(marker.Instagram){
+  //     let tempInsta = marker.Instagram.slice(1);
   //     this.InstagramUrl = "https://www.instagram.com/"+tempInsta+"/";
   //   }
   // }
@@ -204,15 +203,15 @@ export class LocationInfoFormComponent implements OnInit {
    * 
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
-  protected setChosenIconIfExists(iconName: string):void {
+  protected setChosenIconIfExists(iconName: string): void {
     this.MarkerSet.forEach(marker => {
-      if (marker.iconLookup === iconName) {
+      if (marker.IconLookup === iconName) {
         this.ChosenIcon = marker;
       }
     });
   }
 
-  protected createFormGroup():void{
+  protected createFormGroup(): void {
     this.NewMarkerForm = new FormGroup({
       title: new FormControl('', { validators: [Validators.required] })
     });

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { IndividualMap } from '../../models/individual-map.model';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
@@ -66,11 +65,6 @@ export class LcuMapComponent implements OnInit {
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
   protected _panTo: { lat: number, lng: number, zoom: number };
-
-  /**
-   * Input property that represents the current secondary maps (layers)
-   */
-  protected _secondaryMaps: Array<IndividualMap>;
 
   /**
    * The subscription for the basic-info-window modal
@@ -152,12 +146,6 @@ export class LcuMapComponent implements OnInit {
    */
   public _savedLegendLocations: Array<MapMarker>;
 
-
-  /**
-   * The maps (in layer form) that are currently being displayed
-   */
-  public CurrentlyActiveLayers: Array<IndividualMap>;
-
   /**
    * The location markers that are currently being displayed
    */
@@ -185,7 +173,7 @@ export class LcuMapComponent implements OnInit {
   /**
    * The public map model converted from the passed IndividualMap input
    */
-  public CurrentMapModel: IndividualMap;
+  public CurrentMapModel: UserMap;
 
   public _visibleLocationsMasterList: Array<MapMarker>;
 
@@ -253,7 +241,7 @@ export class LcuMapComponent implements OnInit {
     this._visibleLocationsMasterList = value;
     if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length >0) {
       this._visibleLocationsMasterList.forEach(loc => {
-        loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+        loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet);
       });
     }
     else {
@@ -298,19 +286,11 @@ export class LcuMapComponent implements OnInit {
     this._currentMapModel = value;
     // this.CurrentlyActiveLocations = [];
     // this._currentMapModel.locationList.forEach(loc => {
-    //   loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet);
     // });
     // this.UpdateCurrentlyActiveLayers(value);
 
     //this.resetMapCheckedState();
-  }
-
-  @Input('active-layers')
-  public set ActiveLayers(value: Array<IndividualMap>) {
-    if (value[0]) {
-      console.log("setting CAL to: ", value);
-      this.CurrentlyActiveLayers = value;
-    }
   }
 
   /**
@@ -320,16 +300,6 @@ export class LcuMapComponent implements OnInit {
     return this._currentMapModel;
   }
 
-  /**
-   * Setter for the input field '_secondaryMaps'
-   */
-  @Input('secondary-maps')
-  // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
-  public set SecondaryMaps(value: Array<IndividualMap>) {
-    this._secondaryMaps = value;
-    //this.resetMapCheckedState();
-  }
-
   protected _visibleLocations;
   @Input('show-visible-locations')
   public set VisibleLocations(value: Array<any>) {
@@ -337,29 +307,17 @@ export class LcuMapComponent implements OnInit {
     this.CurrentlyActiveLocations = this._visibleLocations;
   }
 
-  @Input('get-saved-legend-locations')
-  // SecondaryMaps: IndividualMap[] = Constants.DEFAULT_SECONDARY_MAP_ARRAY;
-  public set GetSavedLegendLocations(value: Array<MapMarker>) {
-    this._savedLegendLocations = value;
-  }
-  /**
-   * Getter for the input field '._secondaryMaps'
-   */
-  public get SecondaryMaps(): Array<IndividualMap> {
-    return this._secondaryMaps;
-  }
-
   /**
    * The event emitted when a map is saved (the saved map is emitted)
    */
   @Output('map-saved')
-  public MapSaved: EventEmitter<IndividualMap>;
+  public MapSaved: EventEmitter<UserMap>;
 
   /**
  * The event emitted when the primary map's location list is altered (the new map is emitted)
  */
-  @Output('primary-map-location-list-changed')
-  public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
+  // @Output('primary-map-location-list-changed')
+  // public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
 
   /**
  * The Event that is emitted when a user creates a new location
@@ -385,10 +343,10 @@ export class LcuMapComponent implements OnInit {
   public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('layer-checked')
-  public LayerChecked: EventEmitter<IndividualMap>;
+  public LayerChecked: EventEmitter<UserLayer>;
 
   @Output('layer-unchecked')
-  public LayerUnchecked: EventEmitter<IndividualMap>;
+  public LayerUnchecked: EventEmitter<UserLayer>;
 
   @Input('update-visible-locations-manually')
   public UpdateVisibleLocationsManually: Array<MapMarker>;
@@ -408,13 +366,13 @@ export class LcuMapComponent implements OnInit {
     protected breakpointObserver: BreakpointObserver,
     private locationInfoService: LocationInfoService) {
     this.MapSaved = new EventEmitter,
-      this.PrimaryMapLocationListChanged = new EventEmitter;
+      // this.PrimaryMapLocationListChanged = new EventEmitter;
     this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
-    this.CurrentlyActiveLayers = new Array<IndividualMap>();
+    // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
-    this.LayerChecked = new EventEmitter<IndividualMap>();
-    this.LayerUnchecked = new EventEmitter<IndividualMap>();
+    this.LayerChecked = new EventEmitter<UserLayer>();
+    this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'Google Locations';
@@ -427,7 +385,7 @@ export class LcuMapComponent implements OnInit {
   // LIFE CYCLE
   ngOnInit() {
     // this._currentMapModel.locationList.forEach(loc => {
-    //   loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet);
+    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet);
     // });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
@@ -490,7 +448,7 @@ export class LcuMapComponent implements OnInit {
   //   let LayerId = Array<IndividualMap>();
   //   if (layer) {
   //     LayerId = this.CurrentlyActiveLayers.filter(function (layers) {
-  //       return layers.id === layer.id;
+  //       return layers.ID === layer.ID;
   //     });
 
   //     if (LayerId.length === 0) {
@@ -562,17 +520,18 @@ export class LcuMapComponent implements OnInit {
             });
             // console.log("return ", res.result);
             const marker = {
-              id: '',
-              title: res.result.name,
-              lat: res.result.geometry.location.lat,
-              lng: res.result.geometry.location.lng,
-              map_id: this._currentMapModel,
-              iconName: '',
-              phoneNumber: res.result.formatted_phone_number,
-              town: res.result.address_components[townIndex].long_name,
-              country: res.result.address_components[countryIndex].long_name,
-              photos: this.buildPhotoArray(res.result.photos),
-              type: res.result.types
+              ID: '',
+              LayerID: this._currentMapModel.ID,
+              Title: res.result.name,
+              IconName: res.result.icon,
+              Latitude: res.result.geometry.location.lat(),
+              Longitude: res.result.geometry.location.lng(),
+              Telephone: res.result.formatted_phone_number,
+              Website: res.result.website,
+              Town: res.result.address_components[townIndex].long_name,
+              Country: res.result.address_components[countryIndex].long_name,
+              Photos: this.buildPhotoArray(res.result.Photos),
+              Type: res.result.types
 
             };
             this.DisplayMarkerInfo(marker);
@@ -587,14 +546,14 @@ export class LcuMapComponent implements OnInit {
         //     lat: event.coords.lat,
         //     lng: event.coords.lng,
         //     iconList: this.MapMarkerSet,
-        //     primary_map_id: this._currentMapModel.id
+        //     primary_map_id: this._currentMapModel.ID
         //   }
         // });
 
         // dialogRef.afterClosed().subscribe(res => {
         //   if (res) {
         //     this._currentMapModel.locationList.push(res);
-        //     if (this.CurrentlyActiveLayers.filter(map => map.id === this._currentMapModel.id).length > 0) {
+        //     if (this.CurrentlyActiveLayers.filter(map => map.ID === this._currentMapModel.ID).length > 0) {
         //       this.CurrentlyActiveLocations.push(res); // if primary map is being shown, show new icon as well
         //     }
         //     this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
@@ -648,8 +607,8 @@ export class LcuMapComponent implements OnInit {
    * Run when user clicks a custom location marker from custom location search
    */
   public DropdownItemChosen(loc): void {
-    this._currentMapModel.origin.lat = loc.lat;
-    this._currentMapModel.origin.lng = loc.lng;
+    this._currentMapModel.origin.lat = loc.Latitude;
+    this._currentMapModel.origin.lng = loc.Longitude;
     this.DisplayMarkerInfo(loc);
   }
 
@@ -659,7 +618,7 @@ export class LcuMapComponent implements OnInit {
    * 
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
-  public LayerClicked(event, layer?: IndividualMap): void {
+  public LayerClicked(event, layer?: UserLayer): void {
     //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
     //reset and thus those changes are being passed as input to the legend so OnChanges gets called
     //console.log("layer to toggle: ", layer);
@@ -680,7 +639,7 @@ export class LcuMapComponent implements OnInit {
         this.LayerUnchecked.emit(layer);
         // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
         // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-        //   return loc.map_id !== layer.id;
+        //   return loc.LayerID !== layer.ID;
         // });
       }
     } else { // (if user clicked the primary checkbox)
@@ -698,14 +657,14 @@ export class LcuMapComponent implements OnInit {
         this.LayerUnchecked.emit(this._currentMapModel);
         // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
         // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-        //   return loc.map_id !== this._currentMapModel.id;
+        //   return loc.LayerID !== this._currentMapModel.ID;
         // });
         //console.log("User unchecked the primary map");
       }
     }
 
     this.CurrentlyActiveLocations.forEach(loc => {
-      loc.iconImageObject = this.mapConversions.ConvertIconObject(loc.iconName, this.MapMarkerSet)
+      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.IconName, this.MapMarkerSet)
     });
     //console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
     //console.log("Current Map Model: ", this._currentMapModel);
@@ -744,7 +703,7 @@ export class LcuMapComponent implements OnInit {
    * Angular function for use in custom marker location search
    */
   public DisplayFn(marker?: MapMarker): string | undefined {
-    return marker ? marker.title : undefined;
+    return marker ? marker.Title : undefined;
   }
   /**
    * 
@@ -776,11 +735,11 @@ export class LcuMapComponent implements OnInit {
       this.AddLocation.emit(marker);
     } else {
       // let idx = this._currentMapModel.locationList.findIndex(loc => {
-      //   return loc.id === marker.id;
+      //   return loc.ID === marker.ID;
       // });
       // this._currentMapModel.locationList.splice(idx, 1, marker);
       // idx = this.CurrentlyActiveLocations.findIndex(loc => {
-      //   return loc.id === marker.id;
+      //   return loc.ID === marker.ID;
       // });
       // this.CurrentlyActiveLocations.splice(idx, 1, marker);
 
@@ -798,11 +757,11 @@ export class LcuMapComponent implements OnInit {
   public DisplayMarkerInfo(marker: MapMarker): void {
     //console.log("displaying: ", marker)
     this.isEdit = false;
-    if (marker.iconImageObject !== undefined && marker.map_id === this._currentMapModel.id) {
+    if (marker.IconImageObject !== undefined && marker.LayerID === this._currentMapModel.ID) {
       this.isEdit = true;
     }
     if (this.IsMobile) {
-      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.id, this.isEdit);
+      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
     if (this.IsMobile === false) {
@@ -811,7 +770,7 @@ export class LcuMapComponent implements OnInit {
           const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
-            data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.id, isEdit: this.isEdit }
+            data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.ID, isEdit: this.isEdit }
           });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
@@ -854,7 +813,7 @@ export class LcuMapComponent implements OnInit {
     this.FilteredLocations = this.CustomLocationControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => typeof value === 'string' ? value : value.title),
+        map(value => typeof value === 'string' ? value : value.Title),
         map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
       );
   }
@@ -923,18 +882,18 @@ export class LcuMapComponent implements OnInit {
             //console.log("placePhotos: ", placePhotos);
 
             this.DisplayMarkerInfo(new MapMarker({
-              id: '',
-              map_id: this._currentMapModel.id,
-              title: place.name,
-              iconName: place.icon,
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
-              phoneNumber: place.formatted_phone_number,
-              website: place.website,
-              town: place.address_components[townIndex].long_name,
-              country: place.address_components[countryIndex].long_name,
-              photos: this.buildPhotoArray(res.result.photos),
-              type: res.result.types
+              ID: '',
+              LayerID: this._currentMapModel.ID,
+              Title: place.name,
+              IconName: place.icon,
+              Latitude: place.geometry.location.lat(),
+              Longitude: place.geometry.location.lng(),
+              Telephone: place.formatted_phone_number,
+              Website: place.website,
+              Town: place.address_components[townIndex].long_name,
+              Country: place.address_components[countryIndex].long_name,
+              Photos: this.buildPhotoArray(res.result.Photos),
+              Type: res.result.types
             })
             );
           });
@@ -948,7 +907,7 @@ export class LcuMapComponent implements OnInit {
    */
   protected filterCustomLocations(title: string): Array<MapMarker> {
     const filterValue = title.toLowerCase();
-    return this.options.filter(option => option.title.toLowerCase().indexOf(filterValue) === 0);
+    return this.options.filter(option => option.Title.toLowerCase().indexOf(filterValue) === 0);
   }
 
   /**
@@ -977,8 +936,8 @@ export class LcuMapComponent implements OnInit {
    * if random decimals are not added then the map will not zoom/pan once user moves the map
    */
   protected zoomInToPoint(value): void {
-    this._currentMapModel.origin.lat = parseFloat(value.lat) + (Math.random() / 100000);
-    this._currentMapModel.origin.lng = parseFloat(value.lng) + (Math.random() / 100000);
+    this._currentMapModel.origin.lat = parseFloat(value.Latitude) + (Math.random() / 100000);
+    this._currentMapModel.origin.lng = parseFloat(value.Longitude) + (Math.random() / 100000);
     this._currentMapModel.zoom = 16 + (Math.random() / 100);
   }
   /** 

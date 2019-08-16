@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MarkerInfo } from '../models/marker-info.model';
+import { IconImageObject } from '../models/icon-image-object.model';
 
 @Injectable({
     providedIn: 'root'
@@ -13,11 +14,13 @@ export class MapConversions {
    * 
    * Converts an icon lookup to the object necessary to display custom icons as map location markers
    */
-  public ConvertIconObject(iconUrl: string, markerSet: MarkerInfo[]): {} {
-    const markerObject = { url: '', scaledSize: { width: 40, height: 60 } };
+  public ConvertIconObject(iconUrl: string, markerSet: MarkerInfo[]): IconImageObject {
+    const markerObject: IconImageObject = new IconImageObject();
+    markerObject.Url = '';
+    markerObject.ScaledSize = { Width: 40, Height: 60 };
     markerSet.forEach(marker => {
-      if (marker.iconLookup === iconUrl) {
-        markerObject.url = marker.iconUrl;
+      if (marker.IconLookup === iconUrl) {
+        markerObject.Url = marker.IconUrl;
       }
     });
     return markerObject;

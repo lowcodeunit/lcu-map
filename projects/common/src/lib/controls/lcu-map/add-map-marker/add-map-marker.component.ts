@@ -43,14 +43,12 @@ export class AddMapMarkerComponent implements OnInit {
       icon: new FormControl('', { validators: [Validators.required] })
     });
 
-    this.NewMarker = {
-      id: '',
-      map_id: '0',
-      title: '',
-      iconName: null,
-      lat: 0,
-      lng: 0
-    }
+    this.NewMarker.ID = '';
+    this.NewMarker.LayerID = '0';
+    this.NewMarker.Title = '';
+    this.NewMarker.IconName = '';
+    this.NewMarker.Latitude = 0;
+    this.NewMarker.Longitude = 0;
 
     this.IconList = this.passedData.iconList;
   }
@@ -61,13 +59,13 @@ export class AddMapMarkerComponent implements OnInit {
    * Converts data from the form to an icon to be placed on the map
    */
   public SetMarkerData(): void {
-    this.NewMarker.id = '';
-    this.NewMarker.title = this.NewMarkerForm.value.title;
-    this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
-    this.NewMarker.lat = this.passedData.lat;
-    this.NewMarker.lng = this.passedData.lng;
-    this.NewMarker.map_id = this.passedData.primary_map_id,
-    this.NewMarker.iconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
+    this.NewMarker.ID = '';
+    this.NewMarker.Title = this.NewMarkerForm.value.Title;
+    this.NewMarker.IconName = this.NewMarkerForm.value.icon.IconName;
+    this.NewMarker.Latitude = this.passedData.Latitude;
+    this.NewMarker.Longitude = this.passedData.Longitude;
+    this.NewMarker.LayerID = this.passedData.primary_map_id,
+    this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList);
   }
   
   /**

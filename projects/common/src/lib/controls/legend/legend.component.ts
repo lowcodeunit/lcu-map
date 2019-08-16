@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
-import { IndividualMap } from '../../models/individual-map.model';
+// import { IndividualMap } from '../../models/individual-map.model';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
 import { MatSidenav } from '@angular/material';
+import { UserMap } from '../../models/user-map.model';
 
 
 
@@ -21,7 +22,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   //PROPERTIES
   protected _currentlyActiveLocations: Array<MapMarker>;
-  protected _currentMapModel: IndividualMap;
+  protected _currentMapModel: UserMap;
   protected _legendLocations: Array<MapMarker>;
   protected _currentlyActiveLayers: Array<string>;
 
@@ -36,7 +37,7 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   @Input('current-map-model')
-  public set CurrentMapModel(value: IndividualMap) {
+  public set CurrentMapModel(value: UserMap) {
     this._currentMapModel = value;
   }
 
@@ -127,20 +128,20 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   public PanTo(marker: MapMarker) {
-    if (typeof (marker.lng) === 'string') {
+    if (typeof (marker.Longitude) === 'string') {
       //console.log("lng is a string");
-      marker.lng = parseFloat(marker.lng);
-      //console.log("marker.lng = ",marker.lng);
+      marker.Longitude = parseFloat(marker.Longitude);
+      //console.log("marker.Longitude = ",marker.Longitude);
     }
-    if (typeof (marker.lat) === 'string') {
+    if (typeof (marker.Latitude) === 'string') {
       //console.log("lat is a string");
-      marker.lat = parseFloat(marker.lat);
-      //console.log("marker.lat = ",marker.lat);
+      marker.Latitude = parseFloat(marker.Latitude);
+      //console.log("marker.Latitude = ",marker.Latitude);
     }
     // console.log("Panning to: ", marker);
-    this.Pan.emit({ lat: marker.lat, lng: marker.lng, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
+    this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
     this.DisplayBasicInfo.emit(marker);
-    //console.log("Marker in legend = " + marker.title);
+    //console.log("Marker in legend = " + marker.Title);
   }
 
 
@@ -243,16 +244,16 @@ export class LegendComponent implements OnInit, OnChanges {
   protected assignIconUrl(locList: Array<MapMarker>) {
     //let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
-      if(!locList[i].iconUrl || locList[i].iconUrl===null || locList[i].iconUrl ===""){
+      if(!locList[i].IconUrl || locList[i].IconUrl===null || locList[i].IconUrl ===""){
       let iconTemp = this.iconList.filter(loc => {
-        return loc.iconLookup === locList[i].iconName;
+        return loc.IconLookup === locList[i].IconName;
       });
       if(iconTemp){
-       locList[i].iconUrl = iconTemp[0].iconUrl;
+       locList[i].IconUrl = iconTemp[0].IconUrl;
       // temp.push(locList[i]);
       }
       else{
-        console.log("Icon url doesn't exist for ", locList[i].iconName )
+        console.log("Icon url doesn't exist for ", locList[i].IconName )
       }
     }
     }
@@ -264,7 +265,7 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   protected giveOrder(): void {
     for (let i = 0; i < this.LocationsList.length; i++) {
-      this.LocationsList[i].orderIndex = i;
+      this.LocationsList[i].OrderIndex = i;
     }
   }
 
@@ -274,16 +275,16 @@ export class LegendComponent implements OnInit, OnChanges {
    * if the indexes are the same then it compares based on title so it is alphabetical 
    */
   protected compareObject(obj1: MapMarker, obj2: MapMarker) {
-    if (obj1.orderIndex > obj2.orderIndex)
+    if (obj1.OrderIndex > obj2.OrderIndex)
       return 1;
-    if (obj1.orderIndex < obj2.orderIndex)
+    if (obj1.OrderIndex < obj2.OrderIndex)
       return -1;
 
-    if (obj1.orderIndex === obj2.orderIndex) {
+    if (obj1.OrderIndex === obj2.OrderIndex) {
 
-      if (obj1.title.toUpperCase() > obj2.title.toUpperCase())
+      if (obj1.Title.toUpperCase() > obj2.Title.toUpperCase())
         return 1;
-      if (obj1.title.toUpperCase() < obj2.title.toUpperCase())
+      if (obj1.Title.toUpperCase() < obj2.Title.toUpperCase())
         return -1;
     }
     return 0;
@@ -298,14 +299,14 @@ export class LegendComponent implements OnInit, OnChanges {
     let locList = new Array<MapMarker>();
 
     list.forEach(function (value) {
-      if (value.orderIndex >= 0) {
+      if (value.OrderIndex >= 0) {
         locList.push(value);
         //console.log("pushing ", value, " to ", locList);
       }
       else {
         undefinedList.push(value);
       }
-      //console.log("Order = ", value.orderIndex, "Title = ", value.title);
+      //console.log("Order = ", value.OrderIndex, "Title = ", value.Title);
     });
     if (undefinedList) {
       undefinedList.forEach(function (value) {

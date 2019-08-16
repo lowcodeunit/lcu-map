@@ -19,7 +19,7 @@ export class MapConversions {
     markerObject.Url = '';
     markerObject.ScaledSize = { Width: 40, Height: 60 };
     markerSet.forEach(marker => {
-      if (marker.IconLookup === iconUrl) {
+      if (marker.IconLookup.toLowerCase() === iconUrl.toLowerCase()) {
         markerObject.Url = marker.IconUrl;
       }
     });

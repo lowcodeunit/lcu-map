@@ -15,6 +15,9 @@ export class MapConversions {
    * Converts an icon lookup to the object necessary to display custom icons as map location markers
    */
   public ConvertIconObject(iconUrl: string, markerSet: MarkerInfo[]): IconImageObject {
+    if (!markerSet || markerSet.length === 0) {
+      return;
+    }
     const markerObject: IconImageObject = new IconImageObject();
     markerObject.url = '';
     markerObject.scaledSize = { width: 40, height: 60 };

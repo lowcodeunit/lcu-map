@@ -239,6 +239,7 @@ export class LcuMapComponent implements OnInit {
   public set VisibleLocationsMasterList(value: Array<MapMarker>) {
     console.log("VisibleLocationsMasterList = ", value)
     this._visibleLocationsMasterList = value;
+    this.setUpCustomMarkerSearch();
     if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length > 0) {
       this._visibleLocationsMasterList.forEach(loc => {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
@@ -812,7 +813,7 @@ export class LcuMapComponent implements OnInit {
    * Sets up the search filtering for the custom marker search
    */
   protected setUpCustomMarkerSearch(): void {
-    this.options = this.CurrentlyActiveLocations;
+    this.options = this._visibleLocationsMasterList;
     this.FilteredLocations = this.CustomLocationControl.valueChanges
       .pipe(
         startWith(''),

@@ -812,7 +812,7 @@ export class LcuMapComponent implements OnInit {
    * Sets up the search filtering for the custom marker search
    */
   protected setUpCustomMarkerSearch(): void {
-    this.options = this.CurrentlyActiveLocations;
+    this.options = this._visibleLocationsMasterList;
     this.FilteredLocations = this.CustomLocationControl.valueChanges
       .pipe(
         startWith(''),

@@ -169,7 +169,7 @@ export class LocationInfoFormComponent implements OnInit {
       this.NewMarker.ID = '';
     }
     this.NewMarker.LayerID = this.MarkerData.primaryMapId;
-    this.NewMarker.Title = this.NewMarkerForm.value.Title;
+    this.NewMarker.Title = this.NewMarkerForm.value.title;
     this.NewMarker.Icon = this.ChosenIcon.IconLookup;
     this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
   }

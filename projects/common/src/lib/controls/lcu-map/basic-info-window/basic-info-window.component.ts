@@ -168,7 +168,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.NewMarker.ID = '';
     }
     this.NewMarker.LayerID = this.passedData.primary_map_id;
-    this.NewMarker.Title = this.NewMarkerForm.value.Title;
+    this.NewMarker.Title = this.NewMarkerForm.value.title;
     this.NewMarker.Icon = this.ChosenIcon.IconLookup;
     this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
   }

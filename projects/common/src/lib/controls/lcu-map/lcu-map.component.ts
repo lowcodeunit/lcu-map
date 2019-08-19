@@ -46,6 +46,8 @@ export class LcuMapComponent implements OnInit {
    */
   protected options: MapMarker[];
 
+  protected lastBoundsChangeMillisecond: number;
+
   /**
    * Boolean that determines whether or not the user is in the middle of a double-click
    */
@@ -700,8 +702,13 @@ export class LcuMapComponent implements OnInit {
     let Bounds: Array<number> = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
     //console.log("bounds change = ", Bounds);
 
-    this.MapBoundsChange.emit(Bounds);
-
+    this.lastBoundsChangeMillisecond = new Date().getTime();
+    setTimeout(() => {
+      let currentTimeInMillis = new Date().getTime();
+      if (currentTimeInMillis - this.lastBoundsChangeMillisecond > 999) {
+        this.MapBoundsChange.emit(Bounds);
+      }
+    }, 1000);
   }
 
   /**

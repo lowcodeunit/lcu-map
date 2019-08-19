@@ -7,7 +7,6 @@ import { MapConversions } from '../../../utils/conversions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as uuid from 'uuid';
 import { LocationInfoService } from '../../../services/location-info.service';
 
 
@@ -80,6 +79,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     protected breakpointObserver: BreakpointObserver,
     private locationInfoService: LocationInfoService) {
     this.IsEdit = this.passedData.isEdit;
+    this.NewMarker = new MapMarker(null);
   }
 
   // LIFE CYCLE

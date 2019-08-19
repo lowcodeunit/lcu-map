@@ -476,9 +476,9 @@ export class LcuMapComponent implements OnInit {
   public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
     this._panTo = value;
     if (this._currentMapModel) {
-      this._currentMapModel.origin.lat = value.lat;
-      this._currentMapModel.origin.lng = value.lng;
-      this._currentMapModel.zoom = value.zoom;
+      this._currentMapModel.Latitude = value.lat;
+      this._currentMapModel.Longitude = value.lng;
+      this._currentMapModel.Zoom = value.zoom;
     }
   }
   /**

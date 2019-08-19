@@ -185,7 +185,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.MapTitle = "No Layer Selected";
     }
     if (visLoc.length > 0) {
-     // this.LocationsList = this.assignIconUrl(visLoc);
+      this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList = visLoc;
       //console.log("List",this.LocationsList);
       this.LocationsList.sort(this.compareObject);
@@ -244,7 +244,7 @@ export class LegendComponent implements OnInit, OnChanges {
     for (let i = 0; i < locList.length; i++) {
       if(!locList[i].IconImageObject.url || locList[i].IconImageObject.url===null || locList[i].IconImageObject.url ===""){
       let iconTemp = this.iconList.filter(loc => {
-        return loc.IconLookup === locList[i].Icon;
+        return loc.IconLookup.toLocaleLowerCase() === locList[i].Icon.toLocaleLowerCase();
       });
       if(iconTemp){
        locList[i].IconImageObject.url = iconTemp[0].IconUrl;

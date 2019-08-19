@@ -7,7 +7,6 @@ import { MapConversions } from '../../../utils/conversions';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as uuid from 'uuid';
 import { LocationInfoService } from '../../../services/location-info.service';
 
 
@@ -20,7 +19,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // FIELDS
 
-  
+
 
   // PROPERTIES
 
@@ -68,7 +67,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public InstagramUrl: string;
 
-  public LinkedPhoneNumber: string; 
+  public LinkedPhoneNumber: string;
 
   public Type: string;
 
@@ -80,6 +79,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     protected breakpointObserver: BreakpointObserver,
     private locationInfoService: LocationInfoService) {
     this.IsEdit = this.passedData.isEdit;
+
   }
 
   // LIFE CYCLE
@@ -91,12 +91,14 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     if (this.IsEdit) {
       this.NewMarker = this.passedData.marker;
     } else {
-      this.NewMarker.ID = '';
-      this.NewMarker.LayerID = '0';
-      this.NewMarker.Title = '';
-      this.NewMarker.Icon = '';
-      this.NewMarker.Latitude = 0;
-      this.NewMarker.Longitude = 0;
+      this.NewMarker = {
+        ID: '',
+        LayerID: '0',
+        Title: '',
+        Icon: '',
+        Latitude: 0,
+        Longitude: 0
+      }
     }
   }
 
@@ -121,34 +123,34 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   // API METHODS
-/**
- * Changes the position of the modal to the right hand side of the screen for more info state
- */
+  /**
+   * Changes the position of the modal to the right hand side of the screen for more info state
+   */
   public changePositionToRHS() {
-    this.dialogRef.updatePosition({ right: '10px', top:'35px', bottom: '35px' });
+    this.dialogRef.updatePosition({ right: '10px', top: '35px', bottom: '35px' });
     //width x height
     this.dialogRef.updateSize("30vw", "500px");
     this.locationInfoService.SetHighlightIcon(true);
-}
+  }
 
-/**
- * Change position of the dialog box to the center when modal is in basic state
- */
-public changePositionToCenter(highlight: boolean) {
-  this.dialogRef.updatePosition({ top:'40px' });
-  //width x height
-  this.dialogRef.updateSize("300px", "210px");
-  this.locationInfoService.SetHighlightIcon(highlight);
-}
-/**
- * Called when the modal is displaying editable content
- */
-public changePositionTopOfCenter() {
-  this.dialogRef.updatePosition({ top:'0px' });
-  this.locationInfoService.SetHighlightIcon(false);
-  //width x height
-  this.dialogRef.updateSize("500px", "250px");
-}
+  /**
+   * Change position of the dialog box to the center when modal is in basic state
+   */
+  public changePositionToCenter(highlight: boolean) {
+    this.dialogRef.updatePosition({ top: '40px' });
+    //width x height
+    this.dialogRef.updateSize("300px", "210px");
+    this.locationInfoService.SetHighlightIcon(highlight);
+  }
+  /**
+   * Called when the modal is displaying editable content
+   */
+  public changePositionTopOfCenter() {
+    this.dialogRef.updatePosition({ top: '0px' });
+    this.locationInfoService.SetHighlightIcon(false);
+    //width x height
+    this.dialogRef.updateSize("500px", "250px");
+  }
 
   /**
    * Closes the modal

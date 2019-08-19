@@ -222,8 +222,8 @@ export class LcuMapComponent implements OnInit {
     this._panTo = value;
     //console.log("_panTo = ", this._panTo);
     if (this._currentMapModel) {
-      this._currentMapModel.origin.lat = value.lat;
-      this._currentMapModel.origin.lng = value.lng;
+      this._currentMapModel.Latitude = value.lat;
+      this._currentMapModel.Longitude = value.lng;
       this._currentMapModel.zoom = value.zoom;
     }
   }
@@ -611,8 +611,8 @@ export class LcuMapComponent implements OnInit {
    * Run when user clicks a custom location marker from custom location search
    */
   public DropdownItemChosen(loc): void {
-    this._currentMapModel.origin.lat = loc.Latitude;
-    this._currentMapModel.origin.lng = loc.Longitude;
+    this._currentMapModel.Latitude = loc.Latitude;
+    this._currentMapModel.Longitude = loc.Longitude;
     this.DisplayMarkerInfo(loc);
   }
 
@@ -857,8 +857,8 @@ export class LcuMapComponent implements OnInit {
             return;
           }
           //console.log("place: ", place);
-          this._currentMapModel.origin.lat = place.geometry.location.lat();
-          this._currentMapModel.origin.lng = place.geometry.location.lng();
+          this._currentMapModel.Latitude = place.geometry.location.lat();
+          this._currentMapModel.Longitude = place.geometry.location.lng();
           this._currentMapModel.zoom = 16;
 
           let townIndex = -1;

@@ -700,7 +700,7 @@ export class LcuMapComponent implements OnInit {
     let Bounds: Array<number> = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
     //console.log("bounds change = ", Bounds);
 
-    setTimeout(()=> {this.MapBoundsChange.emit(Bounds)}, 1000);
+    this.MapBoundsChange.emit(Bounds);
 
   }
 

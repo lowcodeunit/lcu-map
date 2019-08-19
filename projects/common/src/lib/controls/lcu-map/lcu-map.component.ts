@@ -761,7 +761,7 @@ export class LcuMapComponent implements OnInit {
   public DisplayMarkerInfo(marker: MapMarker): void {
     //console.log("displaying: ", marker)
     this.isEdit = false;
-    if (marker.IconImageObject !== undefined && marker.LayerID === this._currentMapModel.ID) {
+    if (marker.IconImageObject !== undefined && this.SelectedUserLayers.includes(marker.LayerID)) {
       this.isEdit = true;
     }
     if (this.IsMobile) {

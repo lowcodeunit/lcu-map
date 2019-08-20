@@ -33,7 +33,7 @@ export class SaveMapComponent implements OnInit {
 
   ngOnInit() {
     this.NewMapForm = new FormGroup({
-      title: new FormControl('', { validators: [Validators.required] })
+      Title: new FormControl('', { validators: [Validators.required] })
     });
     this.NewMap = {
       ID: '',
@@ -46,11 +46,6 @@ export class SaveMapComponent implements OnInit {
       DefaultLayerID: '',
       Latitude: 0,
       Longitude: 0
-      // id: '0',
-      // title: '',
-      // origin: { lat: 0, lng: 0 },
-      // zoom: 0,
-      // locationList: []
     };
   }
 

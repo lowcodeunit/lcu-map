@@ -528,7 +528,7 @@ export class LcuMapComponent implements OnInit {
             console.log(res.result)
             const marker = {
               ID: '',
-              LayerID: this._currentMapModel.ID,
+              LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: res.result.name,
               Icon: res.result.icon,
               Latitude: res.result.geometry.location.lat,
@@ -783,12 +783,13 @@ export class LcuMapComponent implements OnInit {
           const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
-            data: { marker, markerSet: this.MapMarkerSet, primary_map_id: this._currentMapModel.ID, isEdit: this.isEdit }
+            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false), isEdit: this.isEdit }
           });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);
               if (data !== undefined && data !== null) {
+                console.log(data)
                 this.SaveNewMarker(data);
               }
             });
@@ -896,7 +897,7 @@ export class LcuMapComponent implements OnInit {
 
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
-              LayerID: this._currentMapModel.ID,
+              LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: place.name,
               Icon: place.icon,
               Latitude: place.geometry.location.lat(),

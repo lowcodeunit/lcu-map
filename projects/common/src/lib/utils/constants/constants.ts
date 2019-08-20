@@ -73,7 +73,7 @@ export class Constants {
         { IconLookup: 'ski area', Icon: 'Ski Area', IconUrl: './assets/ski area.png' },
         { IconLookup: 'vineyard', Icon: 'Vineyard', IconUrl: './assets/vineyard.png' },
         { IconLookup: 'golf course', Icon: 'Golf Course', IconUrl: './assets/golf course.png' },
-        { IconLookup: 'hotel', Icon: 'Hotel', IconUrl: './assets/hotel.png' },
+        { IconLookup: 'hotel', Icon: 'Hotel', IconUrl: './assets/lodging.png' },
         { IconLookup: 'national park', Icon: 'National Park', IconUrl: './assets/national park.png' },
         { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' }
     ];

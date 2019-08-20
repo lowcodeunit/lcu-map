@@ -525,13 +525,14 @@ export class LcuMapComponent implements OnInit {
               }
             });
             // console.log("return ", res.result);
+            console.log(res.result)
             const marker = {
               ID: '',
               LayerID: this._currentMapModel.ID,
               Title: res.result.name,
               Icon: res.result.icon,
-              Latitude: res.result.geometry.location.lat(),
-              Longitude: res.result.geometry.location.lng(),
+              Latitude: res.result.geometry.location.lat,
+              Longitude: res.result.geometry.location.lng,
               Telephone: res.result.formatted_phone_number,
               Website: res.result.website,
               Town: res.result.address_components[townIndex].long_name,

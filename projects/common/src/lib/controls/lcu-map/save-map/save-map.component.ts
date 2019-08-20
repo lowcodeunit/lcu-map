@@ -73,6 +73,8 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.Shared = true;
     this.NewMap.Deletable = true;
     this.NewMap.DefaultLayerID = this.passedData.userLayer.ID;
+    this.NewMap.Latitude = this.passedData.map.latitude;
+    this.NewMap.Longitude = this.passedData.map.longitude;
     // the below adds visible secondary location markers as well as primary
     // this.passedData.secondaryMarkers.forEach(loc => {
     //   if (loc.showMarker === true) {

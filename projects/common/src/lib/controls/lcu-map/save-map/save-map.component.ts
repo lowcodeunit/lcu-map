@@ -70,7 +70,7 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.Zoom = this.passedData.map.zoom;
     this.NewMap.Coordinates = [coords.neLat, coords.neLng, coords.swLat, coords.swLng];
     this.NewMap.Primary = true;
-    this.NewMap.Shared = true;
+    this.NewMap.Shared = false;
     this.NewMap.Deletable = true;
     this.NewMap.DefaultLayerID = this.passedData.userLayer.ID;
     this.NewMap.Latitude = this.passedData.map.latitude;

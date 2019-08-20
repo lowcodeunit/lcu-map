@@ -286,7 +286,8 @@ export class LcuMapComponent implements OnInit {
   @Input('map-model')
   // MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
   public set MapModel(value: UserMap) {
-    this._currentMapModel = value;
+    console.log('setting new map to: ', value)
+    // this._currentMapModel = value;
     // this.CurrentlyActiveLocations = [];
     // this._currentMapModel.locationList.forEach(loc => {
     //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);

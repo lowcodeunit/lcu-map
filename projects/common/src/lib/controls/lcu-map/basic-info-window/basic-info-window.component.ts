@@ -129,7 +129,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   public changePositionToRHS() {
     this.dialogRef.updatePosition({ right: '10px', top: '35px', bottom: '35px' });
     //width x height
-    this.dialogRef.updateSize("30vw", "500px");
+    this.dialogRef.updateSize("30vw", "470px");
     this.locationInfoService.SetHighlightIcon(true);
   }
 

@@ -287,7 +287,6 @@ export class LcuMapComponent implements OnInit {
   // MapModel?: IndividualMap = Constants.DEFAULT_PRIMARY_MAP_CONFIGURATION;
   public set MapModel(value: UserMap) {
     this._currentMapModel = value;
-    console.log('setting new map to: ', this._currentMapModel);
     // this.CurrentlyActiveLocations = [];
     // this._currentMapModel.locationList.forEach(loc => {
     //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
@@ -950,9 +949,9 @@ export class LcuMapComponent implements OnInit {
    * if random decimals are not added then the map will not zoom/pan once user moves the map
    */
   protected zoomInToPoint(value): void {
-    // this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
-    // this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
+    this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
   /** 
    * @param photos

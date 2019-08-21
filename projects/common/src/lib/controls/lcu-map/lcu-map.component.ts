@@ -783,7 +783,7 @@ export class LcuMapComponent implements OnInit {
           const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
-            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false), isEdit: this.isEdit }
+            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
           });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {

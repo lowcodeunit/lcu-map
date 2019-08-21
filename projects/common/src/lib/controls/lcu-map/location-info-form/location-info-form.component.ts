@@ -104,10 +104,10 @@ export class LocationInfoFormComponent implements OnInit {
   ngOnInit() {
     this.createFormGroup();
     if (this.IsEdit) {
-      this.NewMarker = this.MarkerData.marker;
+      this.NewMarker = new MapMarker(this.MarkerData.marker);
       // console.log("real marker ", this.NewMarker);
     } else {
-      // console.log("blank marker");
+      //  console.log("blank marker");
       this.NewMarker.ID = '';
       this.NewMarker.LayerID = '0';
       this.NewMarker.Title = '';
@@ -119,20 +119,21 @@ export class LocationInfoFormComponent implements OnInit {
 
   ngAfterViewInit() {
 
-    this.Marker = this.MarkerData.marker;
+    //this.Marker = this.MarkerData.marker;
     this.MarkerSet = this.MarkerData.mapMarkerSet;
     this.NewMarkerForm.patchValue({ title: this.Marker.Title })
-    this.NewMarker = this.MarkerData.marker;
+    this.NewMarker = new MapMarker(this.MarkerData.marker);
     this.setChosenIconIfExists(this.NewMarker.Icon);
     //console.log("form group = ", this.NewMarkerForm);
   }
 
   ngOnChanges() {
-    this.Marker = this.MarkerData.marker;
+    this.Marker = new MapMarker(this.MarkerData.marker);
+    // console.log("location info: ", this.Marker);
     this.locationInfoService.SetPhoneNumberUrl(this.Marker);
     this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
     this.createFormGroup();
-    this.NewMarker = this.MarkerData.marker;
+    this.NewMarker = new MapMarker(this.MarkerData.marker);
     this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
     this.Type = this.locationInfoService.GetType(this.NewMarker);
     this.IsEdit = this.MarkerData.isEdit;

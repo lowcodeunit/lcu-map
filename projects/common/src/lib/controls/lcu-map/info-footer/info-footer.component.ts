@@ -60,15 +60,18 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.FormView = "basic";
+    // this.Marker = this.MarkerData.marker;
+    // console.log("marker Title oninit= ", this.Marker.Title);
+
   }
 
   ngOnChanges() {
-    this.Marker = this.MarkerData.marker;
-    console.log("marker = ", this.Marker);
+    this.Marker = new MapMarker(this.MarkerData.marker);
+    //console.log("markerData = ", this.MarkerData.marker);
+    //console.log("marker Title= ", this.Marker.Title);
     this.locationInfoService.SetPhoneNumberUrl(this.Marker);
     this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
     this.Type = this.locationInfoService.GetType(this.Marker);
-    //console.log("Type = ", this.Type);
   }
   ngOnDestroy() {
   }

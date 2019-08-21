@@ -6,10 +6,14 @@
       <a *ngIf="BasicInfoData?.Website" class="link" href={{BasicInfoData.Website}} target="_blank" style="margin-right: 2em">{{BasicInfoData.Title}}</a>
     </mat-card-title> -->
 
-    <!-- The title -->
-    <mat-card-title *ngIf="BasicInfoData?.Title" fxLayout="row" fxLayoutAlign="space-between start"
-      style="margin-right: 2em; margin-bottom: 1em; font-size: 24px">
-      {{BasicInfoData.Title}}
+    <!-- The title fxLayoutAlign="space-between start"-->
+    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true" fxLayout="row" fxLayoutAlign="start center" 
+      style="margin-right: 2em; margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
+      {{Title}}  
+    </mat-card-title>
+    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false" fxLayout="row" fxLayoutAlign="start center" 
+      style="margin-right: 2em; margin-bottom: 1em; font-size: 20px">
+      {{Title}}  
     </mat-card-title>
     <!-- close button -->
     <mat-icon fxFlex fxLayoutAlign="end start" (click)="Close()" matTooltip="Close">close</mat-icon>

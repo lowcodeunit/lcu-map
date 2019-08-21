@@ -71,6 +71,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public Type: string;
 
+  public Title: string;
+
+  public TitleEllipsis: boolean;
+
   // CONSTRUCTORS
 
   constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
@@ -106,6 +110,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
       this.BasicInfoData = this.passedData.marker;
+      this.CheckTitleLength(this.passedData.marker.Title)
       this.MarkerSet = this.passedData.markerSet;
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title })
       this.NewMarker = { ...this.passedData.marker };
@@ -123,6 +128,19 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   // API METHODS
+  public CheckTitleLength(title: string):void{
+    if(title.length > 25){
+      this.Title = title.substr(0,20) + '...';
+      this.TitleEllipsis = true;
+    }
+    else{
+      this.Title = title;
+      this.TitleEllipsis = false;
+    }
+    console.log("Title = ", this.Title);
+  }
+
+
   /**
    * Changes the position of the modal to the right hand side of the screen for more info state
    */

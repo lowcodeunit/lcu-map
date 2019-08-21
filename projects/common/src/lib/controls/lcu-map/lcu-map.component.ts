@@ -239,13 +239,13 @@ export class LcuMapComponent implements OnInit {
 
   @Input('visible-locations-master-list')
   public set VisibleLocationsMasterList(value: Array<MapMarker>) {
-    console.log("VisibleLocationsMasterList = ", value)
+    // console.log("VisibleLocationsMasterList = ", value)
     this._visibleLocationsMasterList = value;
     this.setUpCustomMarkerSearch();
     if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length > 0) {
       this._visibleLocationsMasterList.forEach(loc => {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
-        console.log('after IconImageObject assigned');
+        // console.log('after IconImageObject assigned');
       });
     } else {
       this._visibleLocationsMasterList = new Array<MapMarker>();
@@ -755,15 +755,11 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
-    //console.log("displaying: ", marker.Title);
-    //this.isEdit = false;
+    this.isEdit = false;
     let userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
-    if (marker.ID === userLayerID) {
+    if (marker.LayerID === userLayerID) {
       this.isEdit = true;
     }
-    console.log('userLayerID: ', userLayerID);
-    console.log('marker.ID: ', marker.ID);
-    console.log('isEdit: ', this.isEdit);
     if (this.IsMobile) {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);

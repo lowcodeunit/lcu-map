@@ -137,7 +137,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.Title = title;
       this.TitleEllipsis = false;
     }
-    console.log("Title = ", this.Title);
+    //console.log("Title = ", this.Title);
   }
 
 

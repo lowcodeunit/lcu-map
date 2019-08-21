@@ -2,11 +2,9 @@
 <mat-card class="more-info-container" fxLayout="column" fxLayoutAlign="start start" *ngIf="FormView === 'moreInfo'"
   (swipedown)="SwipedDown()">
   <!-- <mat-card-header> -->
-  <mat-card-title *ngIf="Marker.Title && Marker.Website" fxLayout="row" fxLayoutAlign="start">
-    <a *ngIf="Marker.Website" href={{Marker.Website}} target="_blank">{{Marker.Title}}</a>
-  </mat-card-title>
+  
 
-  <mat-card-title *ngIf="Marker.Title && !Marker.Website" fxLayout="row" fxLayoutAlign="start">
+  <mat-card-title *ngIf="Marker.Title" fxLayout="row" fxLayoutAlign="start">
     {{Marker.Title}}
   </mat-card-title> <!-- </mat-card-header> -->
   <!-- <mat-card-content> -->

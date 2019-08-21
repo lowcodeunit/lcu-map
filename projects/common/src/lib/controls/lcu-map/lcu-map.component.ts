@@ -524,9 +524,8 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
-            // console.log("return ", res.result);
-            console.log(res.result)
-            const marker = {
+            //console.log("Google Returned: ",res.result)
+            this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: res.result.name,
@@ -537,11 +536,10 @@ export class LcuMapComponent implements OnInit {
               Website: res.result.website,
               Town: res.result.address_components[townIndex].long_name,
               Country: res.result.address_components[countryIndex].long_name,
-              Photos: this.buildPhotoArray(res.result.Photos),
+              Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
-
-            };
-            this.DisplayMarkerInfo(marker);
+            })
+            );
           }
         });
 
@@ -743,19 +741,8 @@ export class LcuMapComponent implements OnInit {
   public SaveNewMarker(marker: MapMarker): void {
     //console.log("data being returned = ", marker);
     if (!this.isEdit) {
-      //this._currentMapModel.locationList.push(marker);
-      //this.CurrentlyActiveLocations.push(marker);
       this.AddLocation.emit(marker);
     } else {
-      // let idx = this._currentMapModel.locationList.findIndex(loc => {
-      //   return loc.ID === marker.ID;
-      // });
-      // this._currentMapModel.locationList.splice(idx, 1, marker);
-      // idx = this.CurrentlyActiveLocations.findIndex(loc => {
-      //   return loc.ID === marker.ID;
-      // });
-      // this.CurrentlyActiveLocations.splice(idx, 1, marker);
-
       this.EditLocation.emit(marker)
     }
     //this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
@@ -768,11 +755,8 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
-    //console.log("displaying: ", marker)
-    // this.isEdit = false;
-    // if (marker.IconImageObject !== undefined && this.SelectedUserLayers.includes(marker.LayerID)) {
-    //   this.isEdit = true;
-    // }
+    //console.log("displaying: ", marker.Title);
+    //this.isEdit = false;
     let userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
     if (marker.ID === userLayerID) {
       this.isEdit = true;
@@ -803,7 +787,7 @@ export class LcuMapComponent implements OnInit {
         }, 50);
       }
     }
-    //console.log("zooming to: ", marker)
+    // console.log("zooming to: ", marker)
     this.zoomInToPoint(marker);
   }
 
@@ -913,7 +897,7 @@ export class LcuMapComponent implements OnInit {
               Website: place.website,
               Town: place.address_components[townIndex].long_name,
               Country: place.address_components[countryIndex].long_name,
-              Photos: this.buildPhotoArray(res.result.Photos),
+              Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
             })
             );

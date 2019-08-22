@@ -1,12 +1,13 @@
-.example-container {
+.sidenav-container {
   background-color: transparent;
 }
 
 //has scroll bar
 .mat-sidenav-content{
   z-index: -1;
-  //  background-color:red;
-  height: 470px; //calc(100vh -35px)
+  // background-color:red;
+   height: calc(100vh -35px);
+   overflow: hidden;
   // top:35px;
   // width: 30px;
 }

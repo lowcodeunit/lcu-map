@@ -1,5 +1,5 @@
 <!-- New side nav -->
-<mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer()>
+<mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer() [ngStyle]="{height: matContentHeight}">
 
     <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
         <div class="button-container" fxLayoutAlign="end start">

@@ -135,8 +135,11 @@ export class LcuMapComponent implements OnInit {
 
   /**
    * The list of choices of location search methods for user to choose
+   * 
+   * Right now - we leave this as 'ambl_on' because specs changed at last minute
+   * Later, we'll add an input to take a custom value
    */
-  public SearchMethods: Array<string> = ['Custom Markers', 'Google Locations'];
+  public SearchMethods: Array<string> = ['ambl_on', 'Google'];
 
   /**
    * Input property that represents the current primary map
@@ -378,7 +381,7 @@ export class LcuMapComponent implements OnInit {
     this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
-    this.SearchMethod = 'Google Locations';
+    this.SearchMethod = 'ambl_on';
     this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();

@@ -44,13 +44,13 @@
   <!-- the search bar -->
   <div [hidden]="!ShowSearchBar" id="search-bar">
     <!-- the native Google API for POI location search -->
-    <div [hidden]="SearchMethod !== 'Google Locations'">
-      <input placeholder="search for Google location" autocorrect="off" autocapitalize="off" spellcheck="off"
+    <div [hidden]="SearchMethod !== 'Google'">
+      <input placeholder="search for Google locations" autocorrect="off" autocapitalize="off" spellcheck="off"
         type="text" #search [formControl]="SearchControl">
     </div>
     <!-- the custom marker search bar -->
-    <form [hidden]="SearchMethod !== 'Custom Markers'">
-      <input type="text" placeholder="search for custom location" aria-label="Assignee"
+    <form [hidden]="SearchMethod !== 'ambl_on'">
+      <input type="text" placeholder="search for ambl_on locations" aria-label="Assignee"
         [formControl]="CustomLocationControl" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"

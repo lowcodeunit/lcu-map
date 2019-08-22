@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
 // import { IndividualMap } from '../../models/individual-map.model';
@@ -27,6 +27,7 @@ export class LegendComponent implements OnInit, OnChanges {
   protected _currentlyActiveLayers: Array<string>;
 
   public matContentWidth: string;
+  public matContentHeight: string;
 
 
   // @Input('get-legend-locations')
@@ -98,6 +99,7 @@ export class LegendComponent implements OnInit, OnChanges {
     //this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
     this.LegendOpen = false; 
     this.matContentWidth = "30px";
+    this.matContentHeight = "30px";
   }
 
   //LIFE CYCLE
@@ -121,9 +123,6 @@ export class LegendComponent implements OnInit, OnChanges {
    */
 
   //API METHODS
-  public ChangeContentWidth(){
-    this.matContentWidth = "0px";
-  }
 
   public PanTo(marker: MapMarker) {
     if (typeof (marker.Longitude) === 'string') {
@@ -223,12 +222,14 @@ export class LegendComponent implements OnInit, OnChanges {
     if (this.drawer.opened) {
       this.drawer.close();
       this.LegendOpen = false;
-      this.matContentWidth = "20px";
+      this.matContentWidth = "30px";
+      this.matContentHeight = "30px";
 
     } else {
       this.drawer.open();
       this.LegendOpen = true;
       this.matContentWidth = "0px";
+      this.matContentHeight = "80vh";
     }
   }
 

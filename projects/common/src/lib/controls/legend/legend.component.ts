@@ -229,7 +229,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.drawer.open();
       this.LegendOpen = true;
       this.matContentWidth = "0px";
-      this.matContentHeight = "80vh";
+      this.matContentHeight = "93vh";
     }
   }
 

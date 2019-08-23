@@ -42,7 +42,8 @@ mat-icon {
     .bottom-icon-set {
         width: 50%;
         position: absolute;
-        margin-top: $icon-offset-top-margin;
+        top: $base-toolbar-height;
+        margin-top: $icon-offset-top-margin * 2;
         z-index: 1;
         @media(max-width: 600px) {
             position: absolute;

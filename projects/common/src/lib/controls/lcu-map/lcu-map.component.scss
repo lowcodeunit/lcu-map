@@ -88,7 +88,7 @@ mat-checkbox, mat-radio-button {
 
 #search-bar {
     position: absolute;
-    top: $search-bar-offset-top;
+    top: $search-bar-offset-top * 2;
     @media(max-width:600px){
         top: $search-bar-offset-top * 2;
     }

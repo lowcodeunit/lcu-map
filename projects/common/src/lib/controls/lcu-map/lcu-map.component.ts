@@ -26,9 +26,18 @@ import { UserMap } from '../../models/user-map.model';
 @Component({
   selector: 'lcu-map',
   templateUrl: './lcu-map.component.html',
-  styleUrls: ['./lcu-map.component.scss']
+  styleUrls: ['./lcu-map.component.scss'],
+  host: {'(document:click)': 'onDocClick($event)'}
 })
 export class LcuMapComponent implements OnInit {
+
+  // from host above
+  onDocClick(e) {
+    console.log(e.target.classList)
+    if (!e.target.classList.contains('layer-element')) {
+      this.ShowLayersDropdown = false;
+    }
+  }
 
   // FIELDS
 
@@ -694,6 +703,7 @@ export class LcuMapComponent implements OnInit {
    * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes
    */
   public BoundsChange(event): void {
+    this.ShowLayersDropdown = false;
     if(!event){
       return;
     }

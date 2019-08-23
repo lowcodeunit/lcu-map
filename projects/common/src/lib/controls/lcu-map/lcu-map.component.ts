@@ -981,9 +981,11 @@ export class LcuMapComponent implements OnInit {
 
   protected shiftCuratedLayerToTop() {
     let first = "Curated Layer";
-    this._userLayers.sort(function(layer1, layer2){ 
-      return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0; 
-    });
+    if (this._userLayers && this._userLayers !== undefined) {
+      this._userLayers.sort(function(layer1, layer2){ 
+        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0; 
+      });
+    }
   }
 
 }

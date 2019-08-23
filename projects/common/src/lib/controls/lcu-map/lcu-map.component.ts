@@ -33,7 +33,6 @@ export class LcuMapComponent implements OnInit {
 
   // from host above
   onDocClick(e) {
-    console.log(e.target.classList)
     if (!e.target.classList.contains('layer-element')) {
       this.ShowLayersDropdown = false;
     }

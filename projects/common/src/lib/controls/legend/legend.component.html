@@ -20,11 +20,25 @@
       </button>
 
       <button class="legend-button">
-        <mat-icon class="chevron-legend"  [inline]="true" style="margin-top: 1.75em">more_vert</mat-icon>
+        <mat-icon class="chevron-legend"  (click)="ToggleTools()" [inline]="true" 
+        style="margin-top: 1.75em; cursor: pointer;">more_vert</mat-icon>
       </button>
       </div>
 
       <h2 class="map-title" fxLayoutAlign="right" style="margin-left: 0.75em">{{MapTitle}}</h2>
+      <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">  
+          <mat-icon>schedule</mat-icon>
+          <mat-icon>format_list_numbered</mat-icon>
+          <mat-icon>image</mat-icon>
+          <mat-icon (click)="ShowMore()" style="cursor: pointer;">build</mat-icon>
+      </mat-toolbar>
+
+      <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">  
+        <mat-icon>sort_by_alpha</mat-icon>
+        <mat-icon>filter_list</mat-icon>
+        <mat-icon>visibility_off</mat-icon>
+        <mat-icon>delete</mat-icon>
+    </mat-toolbar>
       <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column" fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">

@@ -28,6 +28,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   public matContentWidth: string;
   public matContentHeight: string;
+  public Tools: string;
 
 
   // @Input('get-legend-locations')
@@ -100,6 +101,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.LegendOpen = false; 
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
+    this.Tools = "closed";
   }
 
   //LIFE CYCLE
@@ -123,6 +125,22 @@ export class LegendComponent implements OnInit, OnChanges {
    */
 
   //API METHODS
+public ShowMore(): void{
+  this.Tools = "advanced";
+}
+
+public ToggleTools():void{
+  if(this.Tools === "basic"){
+    this.Tools = "closed";
+  }
+  else if(this.Tools === "closed"){
+    this.Tools = "basic";
+  }
+  else if(this.Tools === "advanced"){
+    this.Tools = "basic";
+  }
+}
+
 
   public PanTo(marker: MapMarker) {
     if (typeof (marker.Longitude) === 'string') {
@@ -221,6 +239,9 @@ export class LegendComponent implements OnInit, OnChanges {
   public toggleDrawer() {
     if (this.drawer.opened) {
       this.drawer.close();
+      if(this.Tools !== "closed"){
+        this.Tools = "closed";
+      }
       this.LegendOpen = false;
       this.matContentWidth = "30px";
       this.matContentHeight = "30px";

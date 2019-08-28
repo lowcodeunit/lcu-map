@@ -48,7 +48,7 @@ mat-icon {
         @media(max-width: 600px) {
             position: absolute;
             top: $base-toolbar-height;
-            left: 0;
+            left: 80;
             margin-top: $icon-offset-top-margin * 2;
         }
         .center-buttons{

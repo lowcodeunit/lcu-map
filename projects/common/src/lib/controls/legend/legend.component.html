@@ -1,56 +1,59 @@
 <!-- New side nav -->
-<mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer() [ngStyle]="{height: matContentHeight}">
+<mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer()
+  [ngStyle]="{height: matContentHeight}">
 
-    <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
-        <div class="button-container" fxLayoutAlign="end start">
-    
-          <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
-            (click)="toggleDrawer();SetLocationList();">
-            <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
-          </button>
-    
-        </div>
-      </mat-sidenav-content>
-  <mat-sidenav class="legend-sidenav"  position="end" #sidenav mode="side" >
+  <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
+    <div class="button-container" fxLayoutAlign="end start">
+
+      <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
+        (click)="toggleDrawer();SetLocationList();">
+        <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
+      </button>
+
+    </div>
+  </mat-sidenav-content>
+  <mat-sidenav class="legend-sidenav" position="end" #sidenav mode="side">
     <div class="legend-content">
       <div class="legend-buttons" fxLayout="row" fxLayoutAlign="space-between center">
-        <button *ngIf="LegendOpen === true" class="legend-button"  mat-icon-button
-        (click)="toggleDrawer()">
-        <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
-      </button>
+        <button *ngIf="LegendOpen === true" class="legend-button" mat-icon-button (click)="toggleDrawer()">
+          <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
+        </button>
 
-      <button class="legend-button">
-        <mat-icon class="chevron-legend"  matTooltip="Options" (click)="ToggleTools()" [inline]="true" 
-        style="margin-top: 1.75em; cursor: pointer;">more_vert</mat-icon>
-      </button>
+        <button class="legend-button">
+          <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
+            style="margin-top: 1.75em; cursor: pointer;">more_vert</mat-icon>
+        </button>
       </div>
 
       <h2 class="map-title" fxLayoutAlign="right" style="margin-left: 0.75em">{{MapTitle}}</h2>
-      <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">  
-          <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
-          <mat-icon matTooltip="Top Lists">format_list_numbered</mat-icon>
-          <mat-icon matTooltip="Albums" >image</mat-icon>
-          <mat-icon matTooltip="Tools"(click)="ShowMore()" style="cursor: pointer;">build</mat-icon>
+      <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">
+        <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
+        <mat-icon matTooltip="Top Lists">format_list_numbered</mat-icon>
+        <mat-icon matTooltip="Albums">image</mat-icon>
+        <mat-icon matTooltip="Tools" (click)="ShowMore()" style="cursor: pointer;">build</mat-icon>
       </mat-toolbar>
 
-      <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">  
+      <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">
         <mat-icon matTooltip="Sort">sort_by_alpha</mat-icon>
         <mat-icon matTooltip="Filter">filter_list</mat-icon>
         <mat-icon matTooltip="Hide">visibility_off</mat-icon>
         <mat-icon matTooltip="Delete">delete</mat-icon>
-    </mat-toolbar>
-      <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column" fxLayoutAlign="start">
+      </mat-toolbar>
+      <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column"
+        fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
-          <img class="icon-image" src={{item.IconImageObject.url}}>
-          <div class="location-title">
-            {{ item.Title }}
+          <div *ngIf="item === SelectedLocation" class="selected-location">
+            <img class="icon-image" src={{item.IconImageObject.url}}>
+            <div class="location-title">
+              {{ item.Title }}
+            </div>
           </div>
         </div>
       </div>
     </div>
   </mat-sidenav>
- 
 
-  
+
+
 </mat-sidenav-container>

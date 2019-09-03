@@ -164,6 +164,11 @@ export class LcuMapComponent implements OnInit {
    */
   public CurrentlyActiveLocations: Array<MapMarker>;
 
+/**
+ * The current location selected to display in legend as highlighted
+ */
+  public  SelectedLocation: MapMarker;
+
   /**
    * Boolean that determines whether or not the search bar should be shown
    */
@@ -768,6 +773,7 @@ export class LcuMapComponent implements OnInit {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
+    this.SelectedLocation = marker;
     this.isEdit = false;
     let userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
     if (marker.LayerID === userLayerID) {

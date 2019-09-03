@@ -154,10 +154,11 @@ export class AppComponent implements OnInit {
 
     public GoToRandomMap() {
         // this.MapConfig = {
-            // id: '2',
-            // title: 'Broomfield Food',
-            // origin: { lat: 39.923587, lng: -105.087146 },
-            // zoom: 13,
+        //     ID: '2',
+        //     Title: 'Broomfield Food',
+        //     Latitude: 39.923587, 
+        //     Longitude: -105.087146,
+            // Zoom: 13,
             // locationList: [
             //     { id: '44', title: 'Steak house', lat: 39.939361, lng: -105.053863, iconName: 'restaurant', LayerID: '2' },
             //     { id: '45', title: 'Inauthentic Hibachi', lat: 39.922598, lng: -105.136252, iconName: 'restaurant', LayerID: '2' },

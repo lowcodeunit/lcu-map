@@ -29,6 +29,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public matContentWidth: string;
   public matContentHeight: string;
   public Tools: string;
+  public SelectedLocation: MapMarker;
 
 
   // @Input('get-legend-locations')
@@ -53,6 +54,11 @@ export class LegendComponent implements OnInit, OnChanges {
   @Input('currently-active-layers')
   public set CurrentlyActiveLayers(value: Array<string>) {
     this._currentlyActiveLayers = value;
+  }
+
+  @Input('selected-location')
+  public set SelectedLoaction(value: MapMarker){
+    this.SelectedLocation = value;
   }
 
   @Output('pan')
@@ -156,6 +162,7 @@ public ToggleTools():void{
     // console.log("Panning to: ", marker);
     this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
     this.DisplayBasicInfo.emit(marker);
+    this.SelectedLocation = marker;
     //console.log("Marker in legend = " + marker.Title);
   }
 

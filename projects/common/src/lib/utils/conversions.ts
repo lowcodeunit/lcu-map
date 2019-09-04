@@ -20,7 +20,7 @@ export class MapConversions {
     }
     const markerObject: IconImageObject = new IconImageObject();
     markerObject.url = '';
-    markerObject.scaledSize = { width: 40, height: 60 };
+    markerObject.scaledSize = { width: 40, height: 40 };
     markerSet.forEach(marker => {
       if (marker.IconLookup.toLowerCase() === iconUrl.toLowerCase()) {
         markerObject.url = marker.IconUrl;

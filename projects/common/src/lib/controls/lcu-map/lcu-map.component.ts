@@ -621,6 +621,8 @@ export class LcuMapComponent implements OnInit {
    */
   public ActivateSaveMapDialog(map): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
+      width: "252px",
+      height: "204px",
       data: {
         map,
        // locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
@@ -800,6 +802,8 @@ export class LcuMapComponent implements OnInit {
       if (marker) {
         setTimeout(() => {
           const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
+            width: "300px", 
+            height: "210px",
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
             data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }

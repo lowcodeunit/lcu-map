@@ -14,18 +14,21 @@
   </mat-sidenav-content>
   <mat-sidenav class="legend-sidenav" position="end" #sidenav mode="side">
     <div class="legend-content">
+
       <div class="legend-buttons" fxLayout="row" fxLayoutAlign="space-between center">
         <button *ngIf="LegendOpen === true" class="legend-button" mat-icon-button (click)="toggleDrawer()">
           <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
         </button>
 
+        <h2 class="map-title">{{MapTitle}}</h2>
+
         <button class="legend-button">
           <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
-            style="margin-top: 1.75em; cursor: pointer;">more_vert</mat-icon>
+            style="cursor: pointer;">more_vert</mat-icon>
         </button>
+
       </div>
 
-      <h2 class="map-title" fxLayoutAlign="right" style="margin-left: 0.75em">{{MapTitle}}</h2>
       <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">
         <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
         <mat-icon matTooltip="Top Lists">format_list_numbered</mat-icon>
@@ -44,10 +47,10 @@
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
           <!-- <div *ngIf="item === SelectedLocation" class="selected-location"> -->
-            <img class="icon-image" src={{item.IconImageObject.url}}>
-            <div class="location-title">
-              {{ item.Title }}
-            </div>
+          <img class="icon-image" src={{item.IconImageObject.url}}>
+          <div class="location-title">
+            {{ item.Title }}
+          </div>
           <!-- </div> -->
           <!-- <div *ngIf="item !== SelectedLocation">
           <img class="icon-image" src={{item.IconImageObject.url}}>

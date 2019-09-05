@@ -4,7 +4,7 @@
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
 
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+        <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
       <div class="center-buttons mat-icon-divs">
@@ -46,29 +46,29 @@
   </div>
 
   <!-- the search bar -->
-  <div [hidden]="!ShowSearchBar" id="search-bar">
+  <div [hidden]="!ShowSearchBar" id="search-bar" class="search-bar-element">
     <!-- the native Google API for POI location search -->
-    <div [hidden]="SearchMethod !== 'Google'">
+    <div [hidden]="SearchMethod !== 'Google'" class="search-bar-element">
       <input placeholder="search for Google locations" autocorrect="off" autocapitalize="off" spellcheck="off"
-        type="text" #search [formControl]="SearchControl">
+        type="text" #search [formControl]="SearchControl" class="search-bar-element">
     </div>
     <!-- the custom marker search bar -->
-    <form [hidden]="SearchMethod !== 'ambl_on'">
+    <form [hidden]="SearchMethod !== 'ambl_on'" class="search-bar-element">
       <input type="text" placeholder="search for ambl_on locations" aria-label="Assignee"
-        [formControl]="CustomLocationControl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn">
+        [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
-          [value]="location">
-          <span><img class="dropdown-marker-image" src="{{location.IconImageObject.Url}}"></span>
-          <span class="dropdown-marker-title-text">{{ location.Title }}</span>&nbsp;
-          <span class="dropdown-marker-location-text">{{ location.Town }}, {{ location.Country }}</span>
+          [value]="location" class="search-bar-element">
+          <span><img class="dropdown-marker-image search-bar-element" src="{{location.IconImageObject.Url}}"></span>
+          <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
+          <span class="dropdown-marker-location-text search-bar-element">{{ location.Town }}, {{ location.Country }}</span>
         </mat-option>
       </mat-autocomplete>
     </form>
     <!-- the radio buttons for search type (custom markers vs Google POI locations) -->
-    <div class="search-method-radio-group">
-      <mat-radio-group [(ngModel)]="SearchMethod">
-        <mat-radio-button *ngFor="let method of SearchMethods" [value]="method">
+    <div class="search-method-radio-group search-bar-element">
+      <mat-radio-group [(ngModel)]="SearchMethod" class="search-bar-element">
+        <mat-radio-button *ngFor="let method of SearchMethods" [value]="method" class="search-bar-element">
           {{method}}
         </mat-radio-button>
       </mat-radio-group>

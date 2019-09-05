@@ -102,8 +102,8 @@ export class AppComponent implements OnInit {
             { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' }
         ]
         this.MasterVisLocs = [
-            // { id: '41', title: 'Nice museum', lat: 40.049757, lng: -105.298199, iconName: 'museum', LayerID: '789' },
-            // { id: '42', title: 'Good hotel', lat: 40.028757, lng: -105.278199, iconName: 'hotel', town: 'Boulder', country: 'USA', state: "CO", phoneNumber: '303-123-4567', instagram: '@www', website: 'www', LayerID: '789', address: '1234 abc court', menu: 'menu.com', reservations: 'reservations.com', starRating: 3.5, awards: "Best place to sleep 2019", media: "media.com", generalInfo: "checkout is 11 am", notes: "Try to get a room that over looks the flat Irons.", photos: ["link", "link"] }
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '42', Title: 'Good hotel', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789' }
         ]
         this.UserLayers = [{ID: 123, Title: 'User Layer', Shared: false, Deletable: false},
         {ID: 456, Title: 'Curated Layer', Shared: true, Deletable: false},

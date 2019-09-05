@@ -96,7 +96,7 @@ mat-checkbox, mat-radio-button {
     z-index: 1;
 
     input {    
-        width: 80%;
+        width: 40%;
         margin: auto;
         display: block;
         margin-top: 10px;
@@ -106,7 +106,7 @@ mat-checkbox, mat-radio-button {
         font-size: 16px;
     }
     
-    background: rgba(255, 255, 255, 0.5);
+    //background: rgba(255, 255, 255, 0.5);
     padding-bottom: 10px;
 }
 
@@ -144,7 +144,7 @@ mat-option {
 
 .search-method-radio-group {
     position: relative;
-    left: 10%;
+    left: 30%;
     width: fit-content;
     padding: 5px;
     border-bottom-left-radius: 5px;

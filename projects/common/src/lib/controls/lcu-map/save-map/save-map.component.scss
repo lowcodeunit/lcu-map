@@ -8,3 +8,9 @@ mat-icon {
 h1 {
     display: inline;
 }
+
+::ng-deep .mat-dialog-container{
+    overflow: hidden;
+    width: 252px;
+    height: 204px;
+}

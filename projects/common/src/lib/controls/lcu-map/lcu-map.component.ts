@@ -33,8 +33,21 @@ export class LcuMapComponent implements OnInit {
 
   // from host above
   onDocClick(e) {
+    // close layer dropdown when user clicks outside the element:
     if (!e.target.classList.contains('layer-element')) {
       this.ShowLayersDropdown = false;
+    }
+    // close search bar element when user clicks outside the element:
+    let isSearchBarElement = false;
+    e.path.forEach(el => {
+      if (el.classList !== undefined) {
+        if (el.classList.contains('search-bar-element')) {
+          isSearchBarElement = true;
+        }
+      }
+    });
+    if (!isSearchBarElement) {
+      this.ShowSearchBar = false;
     }
   }
 

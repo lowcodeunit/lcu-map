@@ -58,13 +58,22 @@ export class AddMapMarkerComponent implements OnInit {
    * Converts data from the form to an icon to be placed on the map
    */
   public SetMarkerData(): void {
+
+    console.log("Marker icon: ", this.NewMarkerForm.value.icon.Icon)
+    if(this.NewMarkerForm.value.icon.Icon){
+      this.NewMarker.Icon = this.NewMarkerForm.value.icon.Icon;
+      this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList);
+    }
+    else{
+      this.NewMarker.Icon = "ambl_marker";
+      this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject("ambl_marker", this.passedData.iconList);
+    }
+
     this.NewMarker.ID = '';
     this.NewMarker.Title = this.NewMarkerForm.value.Title;
-    this.NewMarker.Icon = this.NewMarkerForm.value.icon.Icon;
     this.NewMarker.Latitude = this.passedData.Latitude;
     this.NewMarker.Longitude = this.passedData.Longitude;
-    this.NewMarker.LayerID = this.passedData.primary_map_id,
-    this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList);
+    this.NewMarker.LayerID = this.passedData.primary_map_id;
   }
   
   /**

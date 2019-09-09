@@ -26,6 +26,7 @@ export class MapConversions {
         markerObject.url = marker.IconUrl;
       }
     });
+    // console.log("marker Object = ", markerObject);
     return markerObject;
   }
 

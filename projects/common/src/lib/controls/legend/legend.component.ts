@@ -271,11 +271,11 @@ public ToggleTools():void{
   protected assignIconUrl(locList: Array<MapMarker>) {
     //let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
-      if(!locList[i].IconImageObject.url || locList[i].IconImageObject.url===null || locList[i].IconImageObject.url ===""){
+      if(!locList[i].IconImageObject.url || locList[i].IconImageObject.url===null || locList[i].IconImageObject.url ==="" ){
       let iconTemp = this.iconList.filter(loc => {
         return loc.IconLookup.toLocaleLowerCase() === locList[i].Icon.toLocaleLowerCase();
       });
-      if(iconTemp){
+      if(iconTemp && iconTemp.length >0){
        locList[i].IconImageObject.url = iconTemp[0].IconUrl;
       // temp.push(locList[i]);
       }

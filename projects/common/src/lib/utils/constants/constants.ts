@@ -75,6 +75,7 @@ export class Constants {
         { IconLookup: 'golf course', Icon: 'Golf Course', IconUrl: './assets/golf course.png' },
         { IconLookup: 'hotel', Icon: 'Hotel', IconUrl: './assets/lodging.png' },
         { IconLookup: 'national park', Icon: 'National Park', IconUrl: './assets/national park.png' },
-        { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' }
+        { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' },
+        { IconLookup: 'ambl_marker', Icon: 'ambl_marker', IconUrl: './assets/ambl_marker.png' }
     ];
 }

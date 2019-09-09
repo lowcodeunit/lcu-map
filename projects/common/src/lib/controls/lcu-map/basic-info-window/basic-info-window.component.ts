@@ -111,7 +111,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     setTimeout(() => {
       this.BasicInfoData = this.passedData.marker;
       this.CheckTitleLength(this.passedData.marker.Title)
-      this.MarkerSet = this.passedData.markerSet;
+      this.MarkerSet = this.passedData.markerSet.slice(0,-1);
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title })
       this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.Icon);
@@ -187,8 +187,15 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     }
     this.NewMarker.LayerID = this.passedData.layerID;
     this.NewMarker.Title = this.NewMarkerForm.value.title;
-    this.NewMarker.Icon = this.ChosenIcon.IconLookup;
-    this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
+    // console.log("Chosen Icon = ", this.ChosenIcon)
+    if(this.ChosenIcon){
+      this.NewMarker.Icon = this.ChosenIcon.IconLookup;
+      this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
+    }
+    else{
+      this.NewMarker.Icon = "ambl_marker";
+      this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject('ambl_marker', this.passedData.markerSet);
+    }
   }
 
   /**

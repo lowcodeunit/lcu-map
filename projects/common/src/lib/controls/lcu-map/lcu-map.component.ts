@@ -774,6 +774,7 @@ export class LcuMapComponent implements OnInit {
   public SaveNewMarker(marker: MapMarker): void {
     //console.log("data being returned = ", marker);
     if (!this.isEdit) {
+      console.log("emiting marker: ", marker)
       this.AddLocation.emit(marker);
     } else {
       this.EditLocation.emit(marker)

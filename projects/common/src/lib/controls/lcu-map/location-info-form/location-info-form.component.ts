@@ -171,8 +171,14 @@ export class LocationInfoFormComponent implements OnInit {
     }
     this.NewMarker.LayerID = this.MarkerData.primaryMapId;
     this.NewMarker.Title = this.NewMarkerForm.value.title;
+    if(this.ChosenIcon){
     this.NewMarker.Icon = this.ChosenIcon.IconLookup;
     this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
+    }
+    else{
+      this.NewMarker.Icon = 'ambl_marker';
+      this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 40, height: 68 });
+    }
   }
 
   /**

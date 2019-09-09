@@ -18,9 +18,9 @@ export class MapConversions {
     if (!markerSet || markerSet.length === 0) {
       return;
     }
-    const markerObject: IconImageObject = new IconImageObject();
-    markerObject.url = '';
-    markerObject.scaledSize = { width: 40, height: 40 };
+    const markerObject: IconImageObject = new IconImageObject('', { width: 40, height: 40 } );
+    // markerObject.url = '';
+    // markerObject.scaledSize = { width: 40, height: 40 };
     markerSet.forEach(marker => {
       if (marker.IconLookup.toLowerCase() === iconUrl.toLowerCase()) {
         markerObject.url = marker.IconUrl;

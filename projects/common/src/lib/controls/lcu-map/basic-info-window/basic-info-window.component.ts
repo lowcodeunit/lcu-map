@@ -8,6 +8,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LocationInfoService } from '../../../services/location-info.service';
+import { IconImageObject } from '../../../models/icon-image-object.model';
+
 
 
 @Component({
@@ -194,7 +196,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     }
     else{
       this.NewMarker.Icon = "ambl_marker";
-      this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject('ambl_marker', this.passedData.markerSet);
+      this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 40, height: 68 });
+
     }
   }
 

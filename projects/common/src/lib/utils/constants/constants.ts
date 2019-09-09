@@ -1,4 +1,5 @@
 import { MarkerInfo } from '../../models/marker-info.model';
+import { IconImageObject } from '../../models/icon-image-object.model';
 // import { IndividualMap } from '../../models/individual-map.model';
 
 export class Constants {
@@ -64,6 +65,9 @@ export class Constants {
     //         ]
     //     }
     // ];
+
+    public DEFAULT_AMBL_ON_MARKER: IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 40, height: 68 });
+   
 
     public static readonly DEFAULT_MAP_MARKER_SET: Array<MarkerInfo> = [
         { IconLookup: 'restaurant', Icon: 'Restaurant', IconUrl: './assets/restaurant.png' },

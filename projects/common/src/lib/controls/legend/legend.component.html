@@ -46,14 +46,14 @@
         fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
-          <div *ngIf="item === SelectedLocation" class="selected-location">
-          <img class="icon-image" src={{item.IconImageObject.url}}>
-          <div class="location-title">
-            {{ item.Title }}
+          <div *ngIf="item === SelectedLocation" class="selected-location" fxLayout="row" fxLayoutAlign="start center">
+            <img class="icon-image" src={{item.IconImageObject.url}}>
+            <div class="location-title">
+              {{ item.Title }}
+            </div>
           </div>
-          </div>
-          <div *ngIf="item !== SelectedLocation">
-          <img class="icon-image" src={{item.IconImageObject.url}}>
+          <div *ngIf="item !== SelectedLocation" fxLayout="row" fxLayoutAlign="start center">
+            <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title">
               {{ item.Title }}
             </div>

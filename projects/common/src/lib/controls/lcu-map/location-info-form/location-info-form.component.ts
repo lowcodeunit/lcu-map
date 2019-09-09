@@ -177,7 +177,7 @@ export class LocationInfoFormComponent implements OnInit {
     }
     else{
       this.NewMarker.Icon = 'ambl_marker';
-      this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 40, height: 68 });
+      this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 24, height: 40 });
     }
   }
 

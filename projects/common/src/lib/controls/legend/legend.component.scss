@@ -60,15 +60,18 @@
 // }
   
   .location-box {
-    padding: 0.75em 1em;
+    //padding: 0.75em 1em;
     border-top: solid 1px #ccc;
     display: flex; //TODO: if this is not included, after dragging to a location the previous format is lost
     cursor: move;
     font-size: 16px;
   }
 
-  .selected-location{
-    background-color: yellow;
+ 
+
+  .icon-title{
+    padding: 0.75em 1em;
+    width: 100%;
   }
 
   
@@ -93,4 +96,5 @@
   .location-list.cdk-drop-list-dragging .location-box:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     overflow: auto;
+    padding: 0px 0px 0px 0px !important;
   }

@@ -69,7 +69,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
-  
+
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
  
@@ -118,7 +118,7 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-     this.SetLocationList();
+    //  this.SetLocationList();
   }
 
 

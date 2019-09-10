@@ -433,7 +433,7 @@ export class LcuMapComponent implements OnInit {
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
-    console.log("is Highlighted = ", this.SelectedLocation);
+    // console.log("is Highlighted = ", this.SelectedLocation);
   }
   /**
    * In the do check, this.IconIsHighlighted is checked to see if it has changed to true

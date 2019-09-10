@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
 // import { IndividualMap } from '../../models/individual-map.model';
@@ -95,6 +95,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public LegendOpen: boolean;
 
 
+
   //CONSTRUCTOR
 
   constructor(protected mapService: MapService) {
@@ -114,14 +115,21 @@ export class LegendComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // this.SetLocationList();
+
   }
 
   ngOnChanges(){
     // console.log("Selected location from legend ",this.SelectedLocation);
       this.SetLocationList();
+      this.scroll(document.querySelector('#Selected'));
+
+  }
+  ngAfterContentInit(){
+
   }
 
 
+ 
 
   /**
    * @param lat The latitude to pan to
@@ -132,6 +140,15 @@ export class LegendComponent implements OnInit, OnChanges {
    */
 
   //API METHODS
+
+public scroll(element: any) {
+    console.log("ele =", element)
+    if(element){
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+
 public ShowMore(): void{
   this.Tools = "advanced";
 }

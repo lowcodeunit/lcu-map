@@ -433,7 +433,7 @@ export class LcuMapComponent implements OnInit {
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
-    // console.log("is Highlighted = ", this.IconIsHighlighted);
+    console.log("is Highlighted = ", this.SelectedLocation);
   }
   /**
    * In the do check, this.IconIsHighlighted is checked to see if it has changed to true
@@ -809,7 +809,7 @@ export class LcuMapComponent implements OnInit {
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
             data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
-          });
+          },);
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);
@@ -817,8 +817,9 @@ export class LcuMapComponent implements OnInit {
                 console.log(data)
                 this.SaveNewMarker(data);
               }
+              this.SelectedLocation = null;
             });
-        }, 50);
+        }, 50, this);
       }
     }
     // console.log("zooming to: ", marker)

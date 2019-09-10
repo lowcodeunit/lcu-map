@@ -113,12 +113,12 @@ export class LegendComponent implements OnInit, OnChanges {
   //LIFE CYCLE
 
   ngOnInit() {
-    this.SetLocationList();
+    // this.SetLocationList();
   }
 
   ngOnChanges(){
     console.log("Selected location from legend ",this.SelectedLocation);
-    //  this.SetLocationList();
+      this.SetLocationList();
   }
 
 
@@ -176,28 +176,12 @@ public ToggleTools():void{
    * (this is what is displayed on the drop down)
    */
   public SetLocationList() {
-    // //set to new so no duplicates present themselves
+     //set to new so no duplicates present themselves
     this.LocationsList = new Array<MapMarker>();
 
     let visLoc = new Array<MapMarker>();
-    // // console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
-    // // console.log("legend locations = ", this._legendLocations);
-    // //locations logic
-    
-    // // if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
-    // //   visLoc = this._legendLocations;
-    // // }
-    // // else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
-    // //   this._currentlyActiveLocations.forEach(loc => {
-    // //     visLoc.push(loc);
-    // //   });
-    // //   this._legendLocations.forEach(loc => {
-    // //     visLoc.push(loc);
-    // //   });
-    // // }
-    // // else {
         visLoc = this._currentlyActiveLocations;
-  // }
+  
     //layers logic
     if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
@@ -209,6 +193,8 @@ public ToggleTools():void{
     else {
       this.MapTitle = "No Layer Selected";
     }
+    //end layer logic
+    
     if (visLoc.length > 0) {
       this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList = visLoc;

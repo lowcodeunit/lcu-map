@@ -117,7 +117,7 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    console.log("Selected location from legend ",this.SelectedLocation);
+    // console.log("Selected location from legend ",this.SelectedLocation);
       this.SetLocationList();
   }
 
@@ -194,7 +194,7 @@ public ToggleTools():void{
       this.MapTitle = "No Layer Selected";
     }
     //end layer logic
-    
+
     if (visLoc.length > 0) {
       this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList = visLoc;

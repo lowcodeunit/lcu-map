@@ -42,7 +42,7 @@
         <mat-icon matTooltip="Hide">visibility_off</mat-icon>
         <mat-icon matTooltip="Delete">delete</mat-icon>
       </mat-toolbar>
-      <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column"
+      <div cdkDropList class="location-list" cdkDropListOrientation="vertical" (cdkDropListDropped)="drop($event)" fxLayout="column"
         fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">

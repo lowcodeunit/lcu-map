@@ -104,7 +104,6 @@ export class LegendComponent implements OnInit, OnChanges {
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
-    //this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
     this.LegendOpen = false; 
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
@@ -114,10 +113,11 @@ export class LegendComponent implements OnInit, OnChanges {
   //LIFE CYCLE
 
   ngOnInit() {
-    //this.SetLocationList();
+    this.SetLocationList();
   }
 
   ngOnChanges(){
+    console.log("Selected location from legend ",this.SelectedLocation);
     //  this.SetLocationList();
   }
 

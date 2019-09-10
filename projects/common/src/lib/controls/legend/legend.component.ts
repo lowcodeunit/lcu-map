@@ -142,7 +142,6 @@ export class LegendComponent implements OnInit, OnChanges {
   //API METHODS
 
 public scroll(element: any) {
-    console.log("ele =", element)
     if(element){
       element.scrollIntoView({ behavior: 'smooth' });
     }

@@ -121,9 +121,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
-      this.BasicInfoData = this.passedData.marker;;
+      this.BasicInfoData = this.passedData.marker;
       this.CheckTitleLength(this.passedData.marker.Title);
-      this.MarkerSet = this.passedData.markerSet;
+      this.MarkerSet = this.passedData.markerSet.slice(0, -1);
       this.DisplayMarkerSet = this.truncateArray(this.MarkerSet, 7);
       this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title });;
       this.NewMarker = { ...this.passedData.marker };

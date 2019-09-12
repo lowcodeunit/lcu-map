@@ -283,7 +283,7 @@ public ToggleTools():void{
       // temp.push(locList[i]);
       }
       else{
-        console.log("Icon url doesn't exist for ", locList[i].Icon )
+        // console.log("Icon url doesn't exist for ", locList[i].Icon )
       }
     }
     }

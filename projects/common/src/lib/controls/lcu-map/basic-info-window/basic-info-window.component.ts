@@ -21,8 +21,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // FIELDS
 
-
-
   // PROPERTIES
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

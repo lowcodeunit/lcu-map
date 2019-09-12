@@ -8,6 +8,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LocationInfoService } from '../../../services/location-info.service';
+import { IconImageObject } from '../../../models/icon-image-object.model';
+
 
 
 @Component({
@@ -121,11 +123,11 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
-      this.BasicInfoData = this.passedData.marker;
+      this.BasicInfoData = this.passedData.marker;;
       this.CheckTitleLength(this.passedData.marker.Title);
       this.MarkerSet = this.passedData.markerSet;
       this.DisplayMarkerSet = this.truncateArray(this.MarkerSet, 7);
-      this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title });
+      this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title });;
       this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.Icon);
       this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
@@ -200,8 +202,16 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     }
     this.NewMarker.LayerID = this.passedData.layerID;
     this.NewMarker.Title = this.NewMarkerForm.value.title;
-    this.NewMarker.Icon = this.ChosenIcon.IconLookup;
-    this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
+    // console.log("Chosen Icon = ", this.ChosenIcon)
+    if(this.ChosenIcon){
+      this.NewMarker.Icon = this.ChosenIcon.IconLookup;
+      this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.passedData.markerSet);
+    }
+    else{
+      this.NewMarker.Icon = "ambl_marker";
+      this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 24, height: 40 });
+
+    }
   }
 
   /**

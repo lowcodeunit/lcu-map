@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
 // import { IndividualMap } from '../../models/individual-map.model';
@@ -69,6 +69,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
+
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
  
@@ -94,6 +95,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public LegendOpen: boolean;
 
 
+
   //CONSTRUCTOR
 
   constructor(protected mapService: MapService) {
@@ -103,7 +105,6 @@ export class LegendComponent implements OnInit, OnChanges {
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
-    //this._currentlyActiveLayers = this.mapService.GetCurrentlyActiveLayers();
     this.LegendOpen = false; 
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
@@ -113,14 +114,22 @@ export class LegendComponent implements OnInit, OnChanges {
   //LIFE CYCLE
 
   ngOnInit() {
-    //this.SetLocationList();
+    // this.SetLocationList();
+
   }
 
   ngOnChanges(){
-     this.SetLocationList();
+    // console.log("Selected location from legend ",this.SelectedLocation);
+      this.SetLocationList();
+      this.scroll(document.querySelector('#Selected'));
+
+  }
+  ngAfterContentInit(){
+
   }
 
 
+ 
 
   /**
    * @param lat The latitude to pan to
@@ -131,6 +140,14 @@ export class LegendComponent implements OnInit, OnChanges {
    */
 
   //API METHODS
+
+public scroll(element: any) {
+    if(element){
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+
 public ShowMore(): void{
   this.Tools = "advanced";
 }
@@ -175,28 +192,12 @@ public ToggleTools():void{
    * (this is what is displayed on the drop down)
    */
   public SetLocationList() {
-    // //set to new so no duplicates present themselves
+     //set to new so no duplicates present themselves
     this.LocationsList = new Array<MapMarker>();
 
     let visLoc = new Array<MapMarker>();
-    // // console.log("_currentlyActiveLocations = ",this._currentlyActiveLocations);
-    // // console.log("legend locations = ", this._legendLocations);
-    // //locations logic
-    
-    // // if (this._legendLocations.length > 0  && this._currentlyActiveLocations.length === 0) {
-    // //   visLoc = this._legendLocations;
-    // // }
-    // // else if (this._legendLocations.length > 0 && this._currentlyActiveLocations.length > 0){
-    // //   this._currentlyActiveLocations.forEach(loc => {
-    // //     visLoc.push(loc);
-    // //   });
-    // //   this._legendLocations.forEach(loc => {
-    // //     visLoc.push(loc);
-    // //   });
-    // // }
-    // // else {
         visLoc = this._currentlyActiveLocations;
-  // }
+  
     //layers logic
     if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
@@ -208,6 +209,8 @@ public ToggleTools():void{
     else {
       this.MapTitle = "No Layer Selected";
     }
+    //end layer logic
+
     if (visLoc.length > 0) {
       this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList = visLoc;
@@ -257,7 +260,7 @@ public ToggleTools():void{
       this.drawer.open();
       this.LegendOpen = true;
       this.matContentWidth = "0px";
-      this.matContentHeight = "93vh";
+      this.matContentHeight = "87vh";
     }
   }
 
@@ -271,11 +274,11 @@ public ToggleTools():void{
   protected assignIconUrl(locList: Array<MapMarker>) {
     //let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
-      if(!locList[i].IconImageObject.url || locList[i].IconImageObject.url===null || locList[i].IconImageObject.url ===""){
+      if(!locList[i].IconImageObject.url || locList[i].IconImageObject.url===null || locList[i].IconImageObject.url ==="" ){
       let iconTemp = this.iconList.filter(loc => {
         return loc.IconLookup.toLocaleLowerCase() === locList[i].Icon.toLocaleLowerCase();
       });
-      if(iconTemp){
+      if(iconTemp && iconTemp.length >0){
        locList[i].IconImageObject.url = iconTemp[0].IconUrl;
       // temp.push(locList[i]);
       }

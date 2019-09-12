@@ -99,7 +99,8 @@ export class AppComponent implements OnInit {
             { IconLookup: 'golf course', Icon: 'Golf Course', IconUrl: './assets/golf course.png' },
             { IconLookup: 'hotel', Icon: 'Hotel', IconUrl: './assets/lodging.png' },
             { IconLookup: 'national park', Icon: 'National Park', IconUrl: './assets/national park.png' },
-            { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' }
+            { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' },
+            { IconLookup: 'ambl_marker', Icon: 'ambl_marker', IconUrl: './assets/ambl_marker.png' }
         ]
         this.MasterVisLocs = [
             { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },

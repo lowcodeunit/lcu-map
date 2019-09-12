@@ -1,5 +1,5 @@
 <!-- New side nav -->
-<mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer()
+<mat-sidenav-container  class="sidenav-container" (swiperight)=toggleDrawer()
   [ngStyle]="{height: matContentHeight}">
 
   <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
@@ -42,22 +42,22 @@
         <mat-icon matTooltip="Hide">visibility_off</mat-icon>
         <mat-icon matTooltip="Delete">delete</mat-icon>
       </mat-toolbar>
-      <div cdkDropList class="location-list" (cdkDropListDropped)="drop($event)" fxLayout="column"
+      <div cdkDropList class="location-list" cdkDropListOrientation="vertical" (cdkDropListDropped)="drop($event)" fxLayout="column"
         fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag (click)="PanTo(item)">
-          <!-- <div *ngIf="item === SelectedLocation" class="selected-location"> -->
-          <img class="icon-image" src={{item.IconImageObject.url}}>
-          <div class="location-title">
-            {{ item.Title }}
-          </div>
-          <!-- </div> -->
-          <!-- <div *ngIf="item !== SelectedLocation">
-          <img class="icon-image" src={{item.IconImageObject.url}}>
+          <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow" fxLayout="row" fxLayoutAlign="start center">
+            <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title">
               {{ item.Title }}
             </div>
-          </div> -->
+          </div>
+          <div *ngIf="item !== SelectedLocation" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
+            <img class="icon-image" src={{item.IconImageObject.url}}>
+            <div class="location-title">
+              {{ item.Title }}
+            </div>
+          </div>
         </div>
       </div>
     </div>

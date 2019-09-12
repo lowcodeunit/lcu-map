@@ -21,8 +21,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // FIELDS
 
-
-
   // PROPERTIES
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -42,8 +40,19 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public BasicInfoData: any;
 
+
   /**
-   * The set of available marker icons and paths to those icons
+   * boolean that indicates whether the expanded list of icons is showing or the truncated version
+   */
+  public IconSetExpanded: boolean;
+
+  /**
+   * the marker set that will be displayed to the user
+   */
+  public DisplayMarkerSet: Array<MarkerInfo>;
+
+  /**
+   * The set of marker icons coming in to the modal
    */
   public MarkerSet: Array<MarkerInfo>;
 
@@ -79,13 +88,14 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // CONSTRUCTORS
 
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any,
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public passedData: any,
     protected dialogRef: MatDialogRef<BasicInfoWindowComponent>,
     protected mapConversions: MapConversions,
     protected breakpointObserver: BreakpointObserver,
     private locationInfoService: LocationInfoService) {
     this.IsEdit = this.passedData.isEdit;
-
+    this.IconSetExpanded = false;
   }
 
   // LIFE CYCLE
@@ -112,9 +122,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
       this.BasicInfoData = this.passedData.marker;
-      this.CheckTitleLength(this.passedData.marker.Title)
-      this.MarkerSet = this.passedData.markerSet.slice(0,-1);
-      this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title })
+      this.CheckTitleLength(this.passedData.marker.Title);
+      this.MarkerSet = this.passedData.markerSet.slice(0, -1);
+      this.DisplayMarkerSet = this.truncateArray(this.MarkerSet, 7);
+      this.NewMarkerForm.patchValue({ title: this.BasicInfoData.Title });;
       this.NewMarker = { ...this.passedData.marker };
       this.setChosenIconIfExists(this.NewMarker.Icon);
       this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
@@ -130,12 +141,12 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   // API METHODS
-  public CheckTitleLength(title: string):void{
-    if(title.length > 25){
-      this.Title = title.substr(0,20) + '...';
+  public CheckTitleLength(title: string): void {
+    if (title.length > 25) {
+      this.Title = title.substr(0, 20) + '...';
       this.TitleEllipsis = true;
     }
-    else{
+    else {
       this.Title = title;
       this.TitleEllipsis = false;
     }
@@ -202,6 +213,19 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   /**
+   * toggles the visible selectable icon display between 7 and the max number of icons
+   */
+  public ToggleVisibleIcons() {
+    if (!this.IconSetExpanded) {
+      this.IconSetExpanded = true;
+      this.DisplayMarkerSet = this.truncateArray(this.MarkerSet);
+    } else {
+      this.IconSetExpanded = false;
+      this.DisplayMarkerSet = this.truncateArray(this.MarkerSet, 7);
+    }
+  }
+
+  /**
    * 
    * @param icon The icon chosen by the user
    * 
@@ -217,6 +241,17 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // HELPERS
 
+  /**
+   *
+   * @param arr the array to truncate
+   *
+   * @param num the index of the last element to show in the returned array
+   *
+   * returns the passed array after being truncated as indicated by the number passed
+   */
+  protected truncateArray(arr: Array<any>, num?: number) {
+    return num ? [...arr.slice(0, num)] : [...arr];
+  }
 
   /**
    * 

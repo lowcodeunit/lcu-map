@@ -147,11 +147,15 @@ public scroll(element: any) {
     }
 }
 
-
+/**
+ * Toggles Tools view to advanced
+ */
 public ShowMore(): void{
   this.Tools = "advanced";
 }
-
+/**
+ * toggles tools view based on current view
+ */
 public ToggleTools():void{
   if(this.Tools === "basic"){
     this.Tools = "closed";
@@ -164,7 +168,9 @@ public ToggleTools():void{
   }
 }
 
-
+/**
+ * pans map to @param marker lat and long
+ */
   public PanTo(marker: MapMarker) {
     if (typeof (marker.Longitude) === 'string') {
       //console.log("lng is a string");

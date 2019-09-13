@@ -57,8 +57,14 @@
             <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" src="{{icon.IconUrl}}"
               (click)="SetIcon(icon)" />
           </div>
-          <button *ngIf="!IconSetExpanded" mat-raised-button color="primary" color="primary" (click)="ToggleVisibleIcons()">...more</button>
-          <button *ngIf="IconSetExpanded" mat-raised-button color="primary" color="primary" (click)="ToggleVisibleIcons()">less...</button>
+          <div *ngIf="!IconSetExpanded" class="available-image-container" [fxFlex]="25">
+            <button mat-button color="primary" color="default" (click)="ToggleVisibleIcons()"
+              class="icon-expansion-buttons" matTooltip="Click to expand list of icons">...</button>
+          </div>
+          <div *ngIf="IconSetExpanded" class="available-image-container" [fxFlex]="25">
+            <button mat-button color="primary" color="default" (click)="ToggleVisibleIcons()"
+              class="icon-expansion-buttons" matTooltip="Click to contract list of icons">...</button>
+          </div>
         </div>
         <!-- </div> -->
         <!-- <mat-form-field>

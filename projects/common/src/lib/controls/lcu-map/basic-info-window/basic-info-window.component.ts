@@ -180,7 +180,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);
     //width x height
-    this.dialogRef.updateSize("500px", "250px");
+    this.dialogRef.updateSize("500px");
   }
 
   /**

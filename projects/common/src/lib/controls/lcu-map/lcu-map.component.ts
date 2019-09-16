@@ -554,11 +554,12 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
-            //console.log("Google Returned: ",res.result)
+            console.log("Google Returned: ",res.result)
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: res.result.name,
+              GoogleLocationName: res.result.name,
               Icon: res.result.icon,
               Latitude: res.result.geometry.location.lat,
               Longitude: res.result.geometry.location.lng,
@@ -853,7 +854,7 @@ export class LcuMapComponent implements OnInit {
     this.FilteredLocations = this.CustomLocationControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => typeof value === 'string' ? value : value.Title),
+        map(value => typeof value === 'string' ? value : value.GoogleLocationName),
         map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
       );
   }
@@ -925,6 +926,7 @@ export class LcuMapComponent implements OnInit {
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: place.name,
+              GoogleLocationName: place.name,
               Icon: place.icon,
               Latitude: place.geometry.location.lat(),
               Longitude: place.geometry.location.lng(),
@@ -947,6 +949,7 @@ export class LcuMapComponent implements OnInit {
    */
   protected filterCustomLocations(title: string): Array<MapMarker> {
     const filterValue = title.toLowerCase();
+    console.log("filter value = ", filterValue);
     return this.options.filter(option => option.Title.toLowerCase().indexOf(filterValue) === 0);
   }
 

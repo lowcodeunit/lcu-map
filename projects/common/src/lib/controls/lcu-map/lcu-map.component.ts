@@ -387,6 +387,9 @@ export class LcuMapComponent implements OnInit {
   @Output('map-bounds-change')
   public MapBoundsChange: EventEmitter<Array<number>>;
 
+  @Output('custom-search-change')
+  public CustomSearchChange: EventEmitter<string>;
+
 
 
   // CONSTRUCTORS
@@ -406,6 +409,7 @@ export class LcuMapComponent implements OnInit {
     this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.LayerChecked = new EventEmitter<UserLayer>();
     this.LayerUnchecked = new EventEmitter<UserLayer>();
+    this.CustomSearchChange = new EventEmitter<string>();
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'ambl_on';
@@ -742,6 +746,16 @@ export class LcuMapComponent implements OnInit {
         this.MapBoundsChange.emit(Bounds);
       }
     }, 1000);
+  }
+
+  /**
+   *
+   * @param e the value of the user-typed text
+   *
+   * emits the current value of the custom search bar each time user types something
+   */
+  public CustomSearchInputChange(e) {
+    this.CustomSearchChange.emit(e.target.value);
   }
 
   /**

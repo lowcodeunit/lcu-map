@@ -114,6 +114,10 @@ export class AppComponent implements OnInit {
 
     // API METHODS
 
+    public CustomSearchChanged(searchTerm) {
+        // console.log('the search term: ', searchTerm);
+    }
+
     /**
      * 
      * @param map The function run when the map is successfully saved

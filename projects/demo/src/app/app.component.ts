@@ -17,6 +17,11 @@ export class AppComponent implements OnInit {
 
     // PROPERTIES
 
+    public TestLocationSearchResults: any = [
+        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789' }
+    ]
+
     public VisibleLocations: Array<MapMarker>;
 
     /**
@@ -115,7 +120,9 @@ export class AppComponent implements OnInit {
     // API METHODS
 
     public CustomSearchChanged(searchTerm) {
-        // console.log('the search term: ', searchTerm);
+        console.log('user typed: ', searchTerm);
+        this.TestLocationSearchResults = {...this.TestLocationSearchResults};
+        console.log('sending in this as test result list: ', this.TestLocationSearchResults)
     }
 
     /**

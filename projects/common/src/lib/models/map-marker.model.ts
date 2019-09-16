@@ -121,6 +121,8 @@ export class MapMarker {
      */
     public IconImageObject?: IconImageObject;
 
+    public GoogleLocationName?: string;
+
     /**
      * 
      * @param icon The object containing data for a single point (a map marker) on a map (<agm-map>)
@@ -147,5 +149,6 @@ export class MapMarker {
         this.Photos = icon.Photos;
         this.Notes = icon.Notes;
         this.Type = icon.Type;
+        this.GoogleLocationName = icon.GoogleLocationName;
     }
 }

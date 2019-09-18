@@ -8,11 +8,11 @@
 
     <!-- The title fxLayoutAlign="space-between start"-->
     <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true" fxLayout="row" fxLayoutAlign="start center"
-      style="margin-right: 2em; margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
+      style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
       {{Title}}
     </mat-card-title>
     <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false" fxLayout="row" fxLayoutAlign="start center"
-      style="margin-right: 2em; margin-bottom: 1em; font-size: 20px">
+      style="margin-bottom: 1em; font-size: 20px">
       {{Title}}
     </mat-card-title>
     <!-- close button -->

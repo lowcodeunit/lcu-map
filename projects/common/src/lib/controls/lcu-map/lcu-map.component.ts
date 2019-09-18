@@ -27,7 +27,7 @@ import { UserMap } from '../../models/user-map.model';
   selector: 'lcu-map',
   templateUrl: './lcu-map.component.html',
   styleUrls: ['./lcu-map.component.scss'],
-  host: {'(document:click)': 'onDocClick($event)'}
+  host: { '(document:click)': 'onDocClick($event)' }
 })
 export class LcuMapComponent implements OnInit {
 
@@ -179,10 +179,10 @@ export class LcuMapComponent implements OnInit {
    */
   public CurrentlyActiveLocations: Array<MapMarker>;
 
-/**
- * The current location selected to display in legend as highlighted
- */
-  public  SelectedLocation: MapMarker;
+  /**
+   * The current location selected to display in legend as highlighted
+   */
+  public SelectedLocation: MapMarker;
 
   /**
    * Boolean that determines whether or not the search bar should be shown
@@ -234,10 +234,15 @@ export class LcuMapComponent implements OnInit {
    */
   public SearchControl: FormControl;
 
-
-
+  public CSIR;
   /**
-   * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo  
+   * the results of the user's custom location query to be displayed
+   */
+  @Input('custom-search-input-results')
+  public CustomSearchInputResults: Array<MapMarker>;
+  
+  /**
+   * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker) {
@@ -405,7 +410,7 @@ export class LcuMapComponent implements OnInit {
     private locationInfoService: LocationInfoService) {
     this.MapSaved = new EventEmitter,
       // this.PrimaryMapLocationListChanged = new EventEmitter;
-    this.VisibleLocationListChanged = new EventEmitter;
+      this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -560,7 +565,7 @@ export class LcuMapComponent implements OnInit {
                 townIndex = idx;
               }
             });
-            console.log("Google Returned: ",res.result)
+            console.log("Google Returned: ", res.result)
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
@@ -632,7 +637,7 @@ export class LcuMapComponent implements OnInit {
       height: "204px",
       data: {
         map,
-       // locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
+        // locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet,
         coordinates: this.currentBounds,
         userLayer: this.UserLayers.find(layer => layer.Shared === false)
@@ -730,7 +735,7 @@ export class LcuMapComponent implements OnInit {
    */
   public BoundsChange(event): void {
     this.ShowLayersDropdown = false;
-    if(!event){
+    if (!event) {
       return;
     }
     this.currentBounds.neLat = event.getNorthEast().lat();
@@ -758,6 +763,7 @@ export class LcuMapComponent implements OnInit {
    */
   public CustomSearchInputChange(e) {
     this.CustomSearchChange.emit(e.target.value);
+    this.setUpCustomMarkerSearch();
   }
 
   /**
@@ -821,12 +827,12 @@ export class LcuMapComponent implements OnInit {
       if (marker) {
         setTimeout(() => {
           const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
-            width: "300px", 
+            width: "300px",
             height: "210px",
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
             data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
-          },);
+          });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);
@@ -866,13 +872,18 @@ export class LcuMapComponent implements OnInit {
    * Sets up the search filtering for the custom marker search
    */
   protected setUpCustomMarkerSearch(): void {
-    this.options = this._visibleLocationsMasterList;
-    this.FilteredLocations = this.CustomLocationControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value.GoogleLocationName),
-        map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
-      );
+    if (this.CustomSearchInputResults && this.CustomSearchInputResults.length > 0) {
+      this.CustomSearchInputResults.forEach(loc => {
+        loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
+      });
+      this.options = this.CustomSearchInputResults;
+      this.FilteredLocations = this.CustomLocationControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.Title),
+          map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
+        );
+    }
   }
 
   /**
@@ -1026,8 +1037,8 @@ export class LcuMapComponent implements OnInit {
   protected shiftCuratedLayerToTop() {
     let first = "Curated Layer";
     if (this._userLayers && this._userLayers !== undefined) {
-      this._userLayers.sort(function(layer1, layer2){ 
-        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0; 
+      this._userLayers.sort(function (layer1, layer2) {
+        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
       });
     }
   }

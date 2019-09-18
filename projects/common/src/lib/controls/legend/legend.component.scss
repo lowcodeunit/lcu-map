@@ -14,9 +14,10 @@
 
 .legend-header {
   background-color: white;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 10;
 }
 
@@ -30,7 +31,7 @@
   background-color: transparent;
   border-right: transparent;
   border-left: transparent;
-  width: 300px;
+  width: 330px;
 }
 
 ::ng-deep .mat-drawer-inner-container {
@@ -58,14 +59,14 @@
 }
 
 .location-box {
-  border-bottom: solid 1px #ccc;
   display: flex; //TODO: if this is not included, after dragging to a location the previous format is lost
   cursor: move;
   font-size: 16px;
+  height: 25px;
 }
 
 .icon-title {
-  padding: 0.75em 1em;
+  padding: 0em 1em;
   width: 100%;
 }
 

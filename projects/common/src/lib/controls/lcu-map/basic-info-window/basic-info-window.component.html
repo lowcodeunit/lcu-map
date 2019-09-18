@@ -8,11 +8,11 @@
 
     <!-- The title fxLayoutAlign="space-between start"-->
     <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true" fxLayout="row" fxLayoutAlign="start center"
-      style="margin-right: 2em; margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
+      style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
       {{Title}}
     </mat-card-title>
     <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false" fxLayout="row" fxLayoutAlign="start center"
-      style="margin-right: 2em; margin-bottom: 1em; font-size: 20px">
+      style="margin-bottom: 1em; font-size: 20px">
       {{Title}}
     </mat-card-title>
     <!-- close button -->
@@ -53,12 +53,18 @@
         </mat-form-field> -->
         <!-- <div style="width: 100%"> -->
         <div fxLayout="row wrap">
-          <div [fxFlex]="25" *ngFor="let icon of DisplayMarkerSet">
+          <div [fxFlex]="25" *ngFor="let icon of DisplayMarkerSet" class="available-image-container">
             <img class="available-images" [ngClass]="{'chosen-icon': icon === ChosenIcon}" src="{{icon.IconUrl}}"
               (click)="SetIcon(icon)" />
           </div>
-          <button *ngIf="!IconSetExpanded" mat-raised-button color="primary" color="primary" (click)="ToggleVisibleIcons()">...more</button>
-          <button *ngIf="IconSetExpanded" mat-raised-button color="primary" color="primary" (click)="ToggleVisibleIcons()">less...</button>
+          <div *ngIf="!IconSetExpanded" class="available-image-container" [fxFlex]="25">
+            <button mat-button color="primary" color="default" (click)="ToggleVisibleIcons()"
+              class="icon-expansion-buttons" matTooltip="Click to expand list of icons">...</button>
+          </div>
+          <div *ngIf="IconSetExpanded" class="available-image-container" [fxFlex]="25">
+            <button mat-button color="primary" color="default" (click)="ToggleVisibleIcons()"
+              class="icon-expansion-buttons" matTooltip="Click to contract list of icons">...</button>
+          </div>
         </div>
         <!-- </div> -->
         <!-- <mat-form-field>

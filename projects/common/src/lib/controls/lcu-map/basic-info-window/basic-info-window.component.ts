@@ -158,9 +158,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Changes the position of the modal to the right hand side of the screen for more info state
    */
   public changePositionToRHS() {
-    this.dialogRef.updatePosition({ right: '10px', top: '35px', bottom: '35px' });
+    this.dialogRef.updatePosition({ right: '10px', top: '34px', bottom: '35px' });
     //width x height
-    this.dialogRef.updateSize("30vw", "88vh");
+    this.dialogRef.updateSize("330px", "634px");
     this.locationInfoService.SetHighlightIcon(true);
   }
 
@@ -180,7 +180,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);
     //width x height
-    this.dialogRef.updateSize("500px", "250px");
+    this.dialogRef.updateSize("500px");
   }
 
   /**

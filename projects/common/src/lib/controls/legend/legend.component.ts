@@ -147,11 +147,15 @@ public scroll(element: any) {
     }
 }
 
-
+/**
+ * Toggles Tools view to advanced
+ */
 public ShowMore(): void{
   this.Tools = "advanced";
 }
-
+/**
+ * toggles tools view based on current view
+ */
 public ToggleTools():void{
   if(this.Tools === "basic"){
     this.Tools = "closed";
@@ -164,7 +168,9 @@ public ToggleTools():void{
   }
 }
 
-
+/**
+ * pans map to @param marker lat and long
+ */
   public PanTo(marker: MapMarker) {
     if (typeof (marker.Longitude) === 'string') {
       //console.log("lng is a string");
@@ -260,7 +266,7 @@ public ToggleTools():void{
       this.drawer.open();
       this.LegendOpen = true;
       this.matContentWidth = "0px";
-      this.matContentHeight = "87vh";
+      this.matContentHeight = "88vh";
     }
   }
 
@@ -283,7 +289,7 @@ public ToggleTools():void{
       // temp.push(locList[i]);
       }
       else{
-        console.log("Icon url doesn't exist for ", locList[i].Icon )
+        // console.log("Icon url doesn't exist for ", locList[i].Icon )
       }
     }
     }

@@ -54,7 +54,7 @@
     </div>
     <!-- the custom marker search bar -->
     <form [hidden]="SearchMethod !== 'ambl_on'" class="search-bar-element">
-      <input type="text" placeholder="search for ambl_on locations" aria-label="Assignee"
+      <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for ambl_on locations" aria-label="Assignee"
         [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
@@ -77,7 +77,7 @@
 
   <!-- the map -->
   <div class="agm-map-container">
-    <agm-map class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
+    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
       (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.Latitude" [zoomControl]="true"
       [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude" [title]="_currentMapModel.Title"
       [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"

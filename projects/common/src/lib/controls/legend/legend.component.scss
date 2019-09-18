@@ -3,40 +3,50 @@
 }
 
 //has scroll bar
-.mat-sidenav-content{
+.mat-sidenav-content {
   z-index: -1;
-  // background-color:red;
-   overflow: hidden;
+  overflow: hidden;
 }
-.button-container{
+
+.button-container {
   background-color:transparent;
 }
-.legend-content{
+
+.legend-header {
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.legend-content {
   background-color: white;
   height: 100%;
-  overflow: auto; 
+  overflow: auto;
 }
-.legend-sidenav{
+
+.legend-sidenav {
   background-color: transparent;
   border-right: transparent;
   border-left: transparent;
   width: 330px;
-
 }
-::ng-deep .mat-drawer-inner-container{
+
+::ng-deep .mat-drawer-inner-container {
   background-color: white;
 }
 
 .legend-button {
-    background-color: transparent;
-    border-width:0;
-    outline: none;
-    font-size: 30px;
-    margin:0;
-    padding: 0;  
-    height: 35px !important;
+  background-color: transparent;
+  border-width:0;
+  outline: none;
+  font-size: 30px;
+  margin:0;
+  padding: 0;
+  height: 35px !important;
 }
-
 
 .mat-icon-button{
   height: 24px;
@@ -47,50 +57,37 @@
   height: 20px;
   padding-right: 20px;
 }
-// .legend-content{
-//   height: 100%;
-// }
-// .location-list{
-//   height: 100%;
-// }
-  
-  .location-box {
-    //padding: 0.75em 1em;
-    // border-top: solid 1px #ccc;
-    display: flex; //TODO: if this is not included, after dragging to a location the previous format is lost
-    cursor: move;
-    font-size: 16px;
-    height: 25px;
-  }
 
- 
+.location-box {
+  display: flex; //TODO: if this is not included, after dragging to a location the previous format is lost
+  cursor: move;
+  font-size: 16px;
+  height: 25px;
+}
 
-  .icon-title{
-    padding: 0em 1em;
-    width: 100%;
-  }
+.icon-title {
+  padding: 0em 1em;
+  width: 100%;
+}
 
-  
-  .cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
-  
-  .cdk-drag-placeholder {
-    opacity: 0;
-  }
-  
-  .cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  // .location-list{
-  //   //overflow: auto;
-  // }
-  .location-list.cdk-drop-list-dragging .location-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    overflow: auto;
-    padding: 0px 0px 0px 0px !important;
-  }
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.location-list.cdk-drop-list-dragging .location-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  overflow: auto;
+  padding: 0px 0px 0px 0px !important;
+}

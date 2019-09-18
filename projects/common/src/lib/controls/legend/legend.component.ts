@@ -266,7 +266,7 @@ public ToggleTools():void{
       this.drawer.open();
       this.LegendOpen = true;
       this.matContentWidth = "0px";
-      this.matContentHeight = "87vh";
+      this.matContentHeight = "88vh";
     }
   }
 

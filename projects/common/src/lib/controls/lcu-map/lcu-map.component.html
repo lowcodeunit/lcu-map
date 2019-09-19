@@ -36,11 +36,11 @@
     </div>
 
     <div class="top-icon-set" fxLayoutAlign="end start">
-      <lcu-legend class="legend" [current-map-model]="_currentMapModel"
+      <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
         [currently-active-locations]="_visibleLocationsMasterList"
         [selected-location]="SelectedLocation"
         [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)"
-        (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
+        (display-basic-info)="DisplayMarkerInfo($event)" (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
       </lcu-legend>
     </div>
   </div>

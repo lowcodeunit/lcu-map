@@ -70,6 +70,9 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
+  @Output('is-legend-open')
+  IsLegendOpen: EventEmitter<Boolean>;
+
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
  
@@ -109,6 +112,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
     this.Tools = "closed";
+    this.IsLegendOpen = new EventEmitter<Boolean>();
   }
 
   //LIFE CYCLE
@@ -255,6 +259,7 @@ public ToggleTools():void{
   public toggleDrawer() {
     if (this.drawer.opened) {
       this.drawer.close();
+      this.IsLegendOpen.emit(false);
       if(this.Tools !== "closed"){
         this.Tools = "closed";
       }
@@ -264,9 +269,10 @@ public ToggleTools():void{
 
     } else {
       this.drawer.open();
+      this.IsLegendOpen.emit(true);
       this.LegendOpen = true;
       this.matContentWidth = "0px";
-      this.matContentHeight = "88vh";
+      this.matContentHeight = "95vh";
     }
   }
 

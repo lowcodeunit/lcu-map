@@ -222,6 +222,10 @@ export class LcuMapComponent implements OnInit {
 
 
   public IconIsHighlighted: boolean;
+/**
+ * The top margin of the legend, so the icons are always in line
+ */
+  public LegendMargin: string;
 
   /**
    * The search input box
@@ -424,6 +428,7 @@ export class LcuMapComponent implements OnInit {
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
+    this.LegendMargin = "33px";
   }
 
   // LIFE CYCLE
@@ -513,6 +518,16 @@ export class LcuMapComponent implements OnInit {
 
 
   // }
+
+  
+  public ToggleLegendMargin(event){
+    if(event){
+    this.LegendMargin = '15px';
+    }
+    else{
+      this.LegendMargin = '33px';
+    }
+  }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
    * @param value 

@@ -15,7 +15,6 @@
 .legend-header {
   background-color: white;
   border-bottom: 1px solid #ccc;
-  margin-bottom: 5px;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -25,6 +24,7 @@
   background-color: white;
   height: 100%;
   overflow: auto;
+  padding-top: 5px;
 }
 
 .legend-sidenav {

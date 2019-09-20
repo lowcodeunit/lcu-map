@@ -110,13 +110,13 @@ export class MapMarker {
     public Notes?: string;
 
     /**
-     * the type of the location 
+     * the type of the location
      */
     public Type?: Array<string>;
 
     /**
      * The object representing all the necessary data to display an icon on the map
-     * 
+     *
      * It is not passed in with the markers, but will be populated by the map service
      */
     public IconImageObject?: IconImageObject;
@@ -124,7 +124,12 @@ export class MapMarker {
     public GoogleLocationName?: string;
 
     /**
-     * 
+     * A boolean for toggling a location checkmark in the legend
+     */
+    public Checked?: boolean;
+
+    /**
+     *
      * @param icon The object containing data for a single point (a map marker) on a map (<agm-map>)
      */
     constructor(icon: MapMarker) {

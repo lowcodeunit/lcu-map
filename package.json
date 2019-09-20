@@ -42,7 +42,7 @@
     "@angular/platform-browser-dynamic": "~8.1.2",
     "@angular/router": "~8.1.2",
     "@aspnet/signalr": "^1.1.4",
-    "@lcu-ide/common": "^0.13.586-angular8",
+    "@lcu/common": "^0.25.38",
     "@lowcodeunit-devkit/ng-lcu": "^0.1.20-integration",
     "@webcomponents/custom-elements": "^1.2.4",
     "@webcomponents/webcomponentsjs": "^2.2.10",

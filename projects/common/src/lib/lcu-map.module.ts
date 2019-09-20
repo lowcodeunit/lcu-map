@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FathymSharedModule } from '@lcu-ide/common';
+import { FathymSharedModule } from '@lcu/common';
 import { AgmCoreModule } from '@agm/core';
 import { LcuMapComponent } from './controls/lcu-map/lcu-map.component';
 import { MatIconModule, MatSelectModule, MatDialogModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatMenuModule, MatCheckboxModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatExpansionModule, MatAutocompleteModule, MatCardModule, MatToolbar, MatToolbarModule } from '@angular/material';

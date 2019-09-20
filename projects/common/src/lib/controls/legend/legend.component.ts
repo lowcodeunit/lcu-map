@@ -30,7 +30,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public matContentHeight: string;
   public Tools: string;
   public SelectedLocation: MapMarker;
-
+  public EditMode: boolean = false;
 
   // @Input('get-legend-locations')
   // public set GetLegendLocations(value: Array<MapMarker>) {
@@ -75,7 +75,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
- 
+
 
 
   /**
@@ -84,7 +84,7 @@ export class LegendComponent implements OnInit, OnChanges {
   protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
 
   /**
-   * The Title of the map which is displayed at the top of the Legend 
+   * The Title of the map which is displayed at the top of the Legend
    */
   public MapTitle: string;
 
@@ -108,7 +108,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
-    this.LegendOpen = false; 
+    this.LegendOpen = false;
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
     this.Tools = "closed";
@@ -133,13 +133,13 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
 
- 
+
 
   /**
    * @param lat The latitude to pan to
-   * 
+   *
    * @param long The longitude to pan to
-   * 
+   *
    * Calls function on map service that emits event with the given lat/lng
    */
 
@@ -156,6 +156,7 @@ public scroll(element: any) {
  */
 public ShowMore(): void{
   this.Tools = "advanced";
+  this.EditMode = true;
 }
 /**
  * toggles tools view based on current view
@@ -169,6 +170,7 @@ public ToggleTools():void{
   }
   else if(this.Tools === "advanced"){
     this.Tools = "basic";
+    this.EditMode = false;
   }
 }
 
@@ -176,29 +178,32 @@ public ToggleTools():void{
  * pans map to @param marker lat and long
  */
   public PanTo(marker: MapMarker) {
-    if (typeof (marker.Longitude) === 'string') {
-      //console.log("lng is a string");
-      marker.Longitude = parseFloat(marker.Longitude);
-      //console.log("marker.Longitude = ",marker.Longitude);
+    if (!this.EditMode) {
+      if (typeof (marker.Longitude) === 'string') {
+        //console.log("lng is a string");
+        marker.Longitude = parseFloat(marker.Longitude);
+        //console.log("marker.Longitude = ",marker.Longitude);
+      }
+      if (typeof (marker.Latitude) === 'string') {
+        //console.log("lat is a string");
+        marker.Latitude = parseFloat(marker.Latitude);
+        //console.log("marker.Latitude = ",marker.Latitude);
+      }
+      // console.log("Panning to: ", marker);
+      this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
+      this.DisplayBasicInfo.emit(marker);
+      this.SelectedLocation = marker;
+      //console.log("Marker in legend = " + marker.Title);
+    } else {
+      marker.Checked = !marker.Checked;
     }
-    if (typeof (marker.Latitude) === 'string') {
-      //console.log("lat is a string");
-      marker.Latitude = parseFloat(marker.Latitude);
-      //console.log("marker.Latitude = ",marker.Latitude);
-    }
-    // console.log("Panning to: ", marker);
-    this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
-    this.DisplayBasicInfo.emit(marker);
-    this.SelectedLocation = marker;
-    //console.log("Marker in legend = " + marker.Title);
   }
-
 
   /**
    * @param map the map config that is passed in
-   * 
+   *
    * this function loops through the map cofig and fills the LocationsList
-   * 
+   *
    * (this is what is displayed on the drop down)
    */
   public SetLocationList() {
@@ -207,7 +212,7 @@ public ToggleTools():void{
 
     let visLoc = new Array<MapMarker>();
         visLoc = this._currentlyActiveLocations;
-  
+
     //layers logic
     if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
@@ -235,10 +240,10 @@ public ToggleTools():void{
 
 
   /**
-   * @param event 
-   * 
+   * @param event
+   *
    * This is needed for the drag and drop to reflect the changes
-   * 
+   *
    * UpdateVisibleLocations assigns the newly ordered LocationsList to the VisibleLocations in mapService
    */
   drop(event: CdkDragDrop<string[]>) {
@@ -280,7 +285,7 @@ public ToggleTools():void{
   //HELPERS
   /**
    * @param locList an array of the mapMarkers
-   * 
+   *
    * assigns icon Url based on icon name vs the icon lookup
    */
   protected assignIconUrl(locList: Array<MapMarker>) {
@@ -312,9 +317,9 @@ public ToggleTools():void{
   }
 
   /**
-   * compares and sorts the objects based on orderIndex 
-   * 
-   * if the indexes are the same then it compares based on title so it is alphabetical 
+   * compares and sorts the objects based on orderIndex
+   *
+   * if the indexes are the same then it compares based on title so it is alphabetical
    */
   protected compareObject(obj1: MapMarker, obj2: MapMarker) {
     if (obj1.OrderIndex > obj2.OrderIndex)
@@ -333,7 +338,7 @@ public ToggleTools():void{
   }
   /**
    * without this the MapMarker objects that have an undefined indexOrder are put at the top
-   * 
+   *
    * this method sets the undefined indexOrder aside and appends them to the end of the array/legend
    */
   protected moveUndefinedToBottom(list: Array<MapMarker>) {

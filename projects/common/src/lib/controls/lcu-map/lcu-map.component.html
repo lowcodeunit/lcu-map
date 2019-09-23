@@ -56,7 +56,7 @@
     <form [hidden]="SearchMethod !== 'ambl_on'" class="search-bar-element">
       <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for ambl_on locations" aria-label="Assignee"
         [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
+      <mat-autocomplete (optionSelected)="LocationOptionSelected($event)" #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
           [value]="location" class="search-bar-element">
           <span><img class="dropdown-marker-image search-bar-element" src="{{location.IconImageObject.Url}}"></span>

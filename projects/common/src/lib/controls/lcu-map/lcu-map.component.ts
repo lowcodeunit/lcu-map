@@ -782,6 +782,16 @@ export class LcuMapComponent implements OnInit {
   }
 
   /**
+   * 
+   * @param e the event passed when user selects an option from the mat-autocomplete dropdown
+   * 
+   * calls the method that pans user to location and shows the location modal
+   */
+  public LocationOptionSelected(e) {
+    this.DropdownItemChosen(e.option.value);
+  }
+
+  /**
    * Angular function for use in custom marker location search
    */
   public DisplayFn(marker?: MapMarker): string | undefined {

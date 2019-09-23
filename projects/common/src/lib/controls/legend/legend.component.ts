@@ -158,6 +158,14 @@ public ShowMore(): void{
   this.Tools = "advanced";
   this.EditMode = true;
 }
+
+/**
+ * informs the map service that the TopLists button was clicked
+ */
+public TopListsClicked() {
+  this.mapService.LegendTopListsClicked();
+}
+
 /**
  * toggles tools view based on current view
  */

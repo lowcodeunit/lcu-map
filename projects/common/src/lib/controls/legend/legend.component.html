@@ -30,7 +30,7 @@
 
         <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">
             <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
-            <mat-icon matTooltip="Top Lists">format_list_numbered</mat-icon>
+            <mat-icon matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
             <mat-icon matTooltip="Albums">image</mat-icon>
             <mat-icon matTooltip="Tools" (click)="ShowMore()" style="cursor: pointer;">build</mat-icon>
           </mat-toolbar>

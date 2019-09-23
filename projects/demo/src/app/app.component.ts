@@ -154,6 +154,10 @@ export class AppComponent implements OnInit {
         // console.log('list of secondary locs: ', list);
     }
 
+    public TopListButtonClicked() {
+        alert('top list button clicked (from demo proj)')
+    }
+
     /**
      * 
      * @param map The updated version of the primary map

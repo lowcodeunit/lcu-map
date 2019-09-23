@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
@@ -29,7 +29,7 @@ import { UserMap } from '../../models/user-map.model';
   styleUrls: ['./lcu-map.component.scss'],
   host: { '(document:click)': 'onDocClick($event)' }
 })
-export class LcuMapComponent implements OnInit {
+export class LcuMapComponent implements OnInit, OnDestroy {
 
   // from host above
   onDocClick(e) {
@@ -128,6 +128,12 @@ export class LcuMapComponent implements OnInit {
    * Data that is being passed to the footer
    */
   public MarkerData: MarkerData;
+  
+  /**
+   * subscribes to map service to find out when legend's top lists button was clicked
+   */
+  public TopListsSubscription: Subscription;
+
   /**
    * Is true when screen size is small or xs, false otherwise
    */
@@ -401,6 +407,12 @@ export class LcuMapComponent implements OnInit {
   @Output('custom-search-change')
   public CustomSearchChange: EventEmitter<string>;
 
+  /**
+   * emits event to parent that the legend's top lists button was clicked
+   */
+  @Output ('top-lists-button-clicked')
+  public TopListsButtonClicked: EventEmitter<any>;
+
 
 
   // CONSTRUCTORS
@@ -421,6 +433,7 @@ export class LcuMapComponent implements OnInit {
     this.LayerChecked = new EventEmitter<UserLayer>();
     this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.CustomSearchChange = new EventEmitter<string>();
+    this.TopListsButtonClicked = new EventEmitter();
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'ambl_on';
@@ -430,7 +443,6 @@ export class LcuMapComponent implements OnInit {
     this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LegendMargin = "33px";
   }
-
   // LIFE CYCLE
   ngOnInit() {
     // this._currentMapModel.locationList.forEach(loc => {
@@ -444,12 +456,19 @@ export class LcuMapComponent implements OnInit {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     //this.resetMapCheckedState();
     this.setUpCustomMarkerSearch();
+    this.TopListsSubscription = this.mapService.TopListsClicked.subscribe(() => {
+      this.TopListsButtonClicked.emit();
+    });
   }
 
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
     // console.log("is Highlighted = ", this.SelectedLocation);
+  }
+
+  ngOnDestroy() {
+    this.TopListsSubscription.unsubscribe();
   }
   /**
    * In the do check, this.IconIsHighlighted is checked to see if it has changed to true

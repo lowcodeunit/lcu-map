@@ -37,10 +37,17 @@
 
     <div class="top-icon-set" fxLayoutAlign="end start">
       <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
+<<<<<<< Updated upstream
         [currently-active-locations]="_visibleLocationsMasterList"
         [selected-location]="SelectedLocation"
         [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)" (delete-locations)="DeleteLocations($event)"
         (display-basic-info)="DisplayMarkerInfo($event)" (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
+=======
+        [currently-active-locations]="_visibleLocationsMasterList" [selected-location]="SelectedLocation"
+        [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)"
+        (display-basic-info)="DisplayMarkerInfo($event)" (is-legend-open)="ToggleLegendMargin($event)"
+        (save-legend-locations)="SaveLegendLocations($event)">
+>>>>>>> Stashed changes
       </lcu-legend>
     </div>
   </div>
@@ -54,14 +61,16 @@
     </div>
     <!-- the custom marker search bar -->
     <form [hidden]="SearchMethod !== 'ambl_on'" class="search-bar-element">
-      <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for ambl_on locations" aria-label="Assignee"
-        [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
-      <mat-autocomplete (optionSelected)="LocationOptionSelected($event)" #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
+      <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for ambl_on locations"
+        aria-label="Assignee" [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
+      <mat-autocomplete (optionSelected)="LocationOptionSelected($event)"
+        #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
-          [value]="location" class="search-bar-element">
+          [value]="location" [ngClass]="{'display-none': !displayAutocompleteOptions, 'search-bar-element': true}">
           <span><img class="dropdown-marker-image search-bar-element" src="{{location.IconImageObject.Url}}"></span>
           <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
-          <span class="dropdown-marker-location-text search-bar-element">{{ location.Town }}, {{ location.Country }}</span>
+          <span class="dropdown-marker-location-text search-bar-element">{{ location.Town }},
+            {{ location.Country }}</span>
         </mat-option>
       </mat-autocomplete>
     </form>
@@ -77,11 +86,11 @@
 
   <!-- the map -->
   <div class="agm-map-container">
-    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
-      (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.Latitude" [zoomControl]="true"
-      [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude" [title]="_currentMapModel.Title"
-      [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
-      [usePanning]="true">
+    <agm-map [minZoom]="2" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+      [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.Latitude"
+      [zoomControl]="true" [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude"
+      [title]="_currentMapModel.Title" [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)"
+      (mapClick)="OnChoseLocation($event)" [usePanning]="true">
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
         <agm-marker [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"

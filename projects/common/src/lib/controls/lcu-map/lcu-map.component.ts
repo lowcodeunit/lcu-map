@@ -810,7 +810,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public CustomSearchInputChange(e) {
     this.CustomSearchChange.emit(e.target.value);
     this.setUpCustomMarkerSearch();
-    if (e.target.value.length > 0) {
+    if (e.target.value.length > 2) { // TODO: change '2' here to an @Input so it can be customized
       this.displayAutocompleteOptions = true;
     } else {
       this.displayAutocompleteOptions = false;

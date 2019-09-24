@@ -7,7 +7,7 @@ export class SubString implements PipeTransform {
     if(value.length > 35){
         newStr = value.substr(0,30);
         newStr+="..."
-        console.log("newStr",newStr)
+        // console.log("newStr",newStr)
         return newStr;
     }
     else{

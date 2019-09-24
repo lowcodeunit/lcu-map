@@ -21,7 +21,10 @@
 }
 
 
-
+.mat-dialog-actions{
+  position: relative;
+  //top adjusted in ts file
+}
 
 .link {
   text-decoration: none !important;

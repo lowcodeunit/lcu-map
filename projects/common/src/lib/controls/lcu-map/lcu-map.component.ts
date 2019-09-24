@@ -407,11 +407,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   @Output('custom-search-change')
   public CustomSearchChange: EventEmitter<string>;
 
+  @Output('locations-to-delete')
+  public LocationsToDelete: EventEmitter<Array<MapMarker>>;
+
   /**
    * emits event to parent that the legend's top lists button was clicked
    */
   @Output ('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
+
 
 
 
@@ -441,6 +445,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
+    this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = "33px";
   }
   // LIFE CYCLE
@@ -537,7 +542,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
 
   // }
-
+  public DeleteLocations(event){
+    this.LocationsToDelete.emit(event);
+  }
   
   public ToggleLegendMargin(event){
     if(event){

@@ -15,12 +15,13 @@ import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form
 import { LegendComponent } from './controls/legend/legend.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatTabsModule} from '@angular/material/tabs'
+import {MatTabsModule} from '@angular/material/tabs';
+import { DeleteLocationsComponent } from './controls/legend/delete-locations/delete-locations.component'
 
 
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent],
+  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
@@ -47,7 +48,7 @@ import {MatTabsModule} from '@angular/material/tabs'
     MatTabsModule
   ],
   providers: [GoogleMapsAPIWrapper],
-  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent],
-  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent]
+  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent],
+  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent]
 })
 export class LcuMapModule { }

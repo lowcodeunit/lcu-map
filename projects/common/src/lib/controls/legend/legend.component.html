@@ -51,14 +51,14 @@
           <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)="$event.stopPropagation()"></mat-checkbox>
           <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
-            <div class="location-title">
-              {{ item.Title }}
+            <div class="location-title" matTooltip={{item.Title}}>
+              {{ item.Title | substring }}
             </div>
           </div>
           <div *ngIf="item !== SelectedLocation" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
-            <div class="location-title">
-              {{ item.Title }}
+            <div class="location-title" matTooltip={{item.Title}}>
+              {{ item.Title | substring }}
             </div>
           </div>
         </div>

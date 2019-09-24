@@ -37,10 +37,10 @@
 
     <div class="top-icon-set" fxLayoutAlign="end start">
       <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
-        [currently-active-locations]="_visibleLocationsMasterList"
-        [selected-location]="SelectedLocation"
-        [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)" (delete-locations)="DeleteLocations($event)"
-        (display-basic-info)="DisplayMarkerInfo($event)" (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
+        [currently-active-locations]="_visibleLocationsMasterList" [selected-location]="SelectedLocation"
+        [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)"
+        (delete-locations)="DeleteLocations($event)" (display-basic-info)="DisplayMarkerInfo($event)"
+        (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
       </lcu-legend>
     </div>
   </div>
@@ -56,14 +56,17 @@
     <form [hidden]="SearchMethod !== 'ambl_on'" class="search-bar-element">
       <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for ambl_on locations"
         aria-label="Assignee" [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
-      <mat-autocomplete (optionSelected)="LocationOptionSelected($event)"
-        #auto="matAutocomplete" [displayWith]="DisplayFn" class="search-bar-element">
+      <mat-autocomplete (optionSelected)="LocationOptionSelected($event)" #auto="matAutocomplete"
+        [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
           [value]="location" [ngClass]="{'display-none': !displayAutocompleteOptions, 'search-bar-element': true}">
           <span><img class="dropdown-marker-image search-bar-element" src="{{location.IconImageObject.Url}}"></span>
           <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
-          <span class="dropdown-marker-location-text search-bar-element">{{ location.Address }}, {{ location.Town }},
-            {{ location.Country }}</span>
+          <span class="dropdown-marker-location-text search-bar-element">
+            <span *ngIf="location.Address !== undefined && location.Address !== null">{{ location.Address }}, </span>
+            <span *ngIf="location.Town !== undefined && location.Town !== null">{{ location.Town }}, </span>
+            <span *ngIf="location.Country !== undefined && location.Country !== null">{{ location.Country }}</span>
+          </span>
         </mat-option>
       </mat-autocomplete>
     </form>
@@ -88,7 +91,7 @@
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
         <agm-marker [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
           [iconUrl]="marker.IconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-        </agm-marker> 
+        </agm-marker>
       </div>
 
       <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"

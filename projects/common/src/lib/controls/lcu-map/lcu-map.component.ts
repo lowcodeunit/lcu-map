@@ -401,6 +401,9 @@ export class LcuMapComponent implements OnInit {
   @Output('custom-search-change')
   public CustomSearchChange: EventEmitter<string>;
 
+  @Output('locations-to-delete')
+  public LocationsToDelete: EventEmitter<Array<MapMarker>>;
+
 
 
   // CONSTRUCTORS
@@ -428,6 +431,7 @@ export class LcuMapComponent implements OnInit {
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
+    this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = "33px";
   }
 
@@ -518,7 +522,9 @@ export class LcuMapComponent implements OnInit {
 
 
   // }
-
+  public DeleteLocations(event){
+    this.LocationsToDelete.emit(event);
+  }
   
   public ToggleLegendMargin(event){
     if(event){

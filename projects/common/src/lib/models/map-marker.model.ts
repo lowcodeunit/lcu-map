@@ -155,5 +155,6 @@ export class MapMarker {
         this.Notes = icon.Notes;
         this.Type = icon.Type;
         this.GoogleLocationName = icon.GoogleLocationName;
+        this.Checked = icon.Checked;
     }
 }

@@ -38,8 +38,8 @@
           <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">
             <mat-icon matTooltip="Sort">sort_by_alpha</mat-icon>
             <mat-icon matTooltip="Filter">filter_list</mat-icon>
-            <mat-icon matTooltip="Hide">visibility_off</mat-icon>
-            <mat-icon matTooltip="Delete">delete</mat-icon>
+            <mat-icon matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
+            <mat-icon matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
           </mat-toolbar>
     </div>
 

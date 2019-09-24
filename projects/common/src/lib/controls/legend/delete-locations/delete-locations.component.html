@@ -1,0 +1,10 @@
+<mat-dialog-content>
+
+  <h1>Delete Locations?</h1>
+
+  <p>Are you sure you want to delete {{LocationsLength}} locations?</p>
+
+  <button mat-button color="primary" (click)="SetUserConfirmed(true)">Confirm</button>
+  <button mat-button color="default" (click)="SetUserConfirmed(false)">Cancel</button>
+
+</mat-dialog-content>

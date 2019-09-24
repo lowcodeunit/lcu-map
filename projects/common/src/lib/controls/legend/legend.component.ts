@@ -5,8 +5,9 @@ import { MapService } from '../../services/map.service';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav, MatDialog } from '@angular/material';
 import { UserMap } from '../../models/user-map.model';
+import { DeleteLocationsComponent } from './delete-locations/delete-locations.component';
 
 
 
@@ -32,12 +33,6 @@ export class LegendComponent implements OnInit, OnChanges {
   public SelectedLocation: MapMarker;
   public EditMode: boolean = false;
 
-  // @Input('get-legend-locations')
-  // public set GetLegendLocations(value: Array<MapMarker>) {
-  //   if (value !== undefined) {
-  //     this._legendLocations = value;
-  //   }
-  // }
 
   @Input('current-map-model')
   public set CurrentMapModel(value: UserMap) {
@@ -70,6 +65,9 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
+  @Output('delete-locations')
+  DeleteLegendLocations: EventEmitter<Array<MapMarker>>;
+
   @Output('is-legend-open')
   IsLegendOpen: EventEmitter<Boolean>;
 
@@ -97,14 +95,17 @@ export class LegendComponent implements OnInit, OnChanges {
 
   public LegendOpen: boolean;
 
+  public HiddenLocations: Array<MapMarker>;
+
 
 
   //CONSTRUCTOR
 
-  constructor(protected mapService: MapService) {
+  constructor(protected mapService: MapService, public Dialog: MatDialog ) {
     this.Pan = new EventEmitter<any>();
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
@@ -158,6 +159,45 @@ public ShowMore(): void{
   this.Tools = "advanced";
   this.EditMode = true;
 }
+
+
+public HideLocations():void{
+  this._currentlyActiveLocations.forEach(function(marker){
+    if(marker.Checked === true){
+      
+    }
+  })
+}
+
+// public DeleteLocations():void{
+//   let markersToDelete = new Array<MapMarker>();
+//   this._currentlyActiveLocations.forEach(function(marker){
+//     if(marker.Checked === true){
+//       markersToDelete.push(marker);
+//     }
+//   })
+//   this.DeleteLegendLocations.emit(markersToDelete);
+// }
+
+public DeleteLocationConfirmation(): void {
+  let markersToDelete = new Array<MapMarker>();
+  this._currentlyActiveLocations.forEach(function(marker){
+    if(marker.Checked === true){
+      markersToDelete.push(marker);
+    }
+  })
+  const dialogRef = this.Dialog.open(DeleteLocationsComponent, {
+    width: '500px',
+    data: { locationsLength: markersToDelete.length }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result === true) {
+      this.DeleteLegendLocations.emit(markersToDelete);
+    }
+  });
+}
+
 /**
  * toggles tools view based on current view
  */
@@ -180,20 +220,14 @@ public ToggleTools():void{
   public PanTo(marker: MapMarker) {
     if (!this.EditMode) {
       if (typeof (marker.Longitude) === 'string') {
-        //console.log("lng is a string");
         marker.Longitude = parseFloat(marker.Longitude);
-        //console.log("marker.Longitude = ",marker.Longitude);
       }
       if (typeof (marker.Latitude) === 'string') {
-        //console.log("lat is a string");
         marker.Latitude = parseFloat(marker.Latitude);
-        //console.log("marker.Latitude = ",marker.Latitude);
       }
-      // console.log("Panning to: ", marker);
       this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
-      //console.log("Marker in legend = " + marker.Title);
     } else {
       marker.Checked = !marker.Checked;
     }

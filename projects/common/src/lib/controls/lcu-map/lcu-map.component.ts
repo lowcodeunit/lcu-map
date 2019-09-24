@@ -875,6 +875,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
     this.SearchControl.setValue('');
+    this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
     this.SelectedLocation = marker;
     this.isEdit = false;

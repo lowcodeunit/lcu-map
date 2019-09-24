@@ -86,6 +86,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public TitleEllipsis: boolean;
 
+  public PositionTop: string;
+
   // CONSTRUCTORS
 
   constructor(
@@ -168,19 +170,29 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Change position of the dialog box to the center when modal is in basic state
    */
   public changePositionToCenter(highlight: boolean) {
+    setTimeout(x=>{
+      this.PositionTop = "80px";
+    },50,this)
     this.dialogRef.updatePosition({ top: '15px' });
     //width x height
     this.dialogRef.updateSize("300px", "210px");
     this.locationInfoService.SetHighlightIcon(highlight);
+    
+
   }
   /**
    * Called when the modal is displaying editable content
    */
   public changePositionTopOfCenter() {
+    setTimeout(x=>{
+      this.PositionTop = "-13px";
+    },50,this)
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);
     //width x height
     this.dialogRef.updateSize("500px");
+    
+
   }
 
   /**

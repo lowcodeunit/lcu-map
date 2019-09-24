@@ -19,6 +19,18 @@
     <mat-icon fxFlex fxLayoutAlign="end start" (click)="Close()" matTooltip="Close">close</mat-icon>
   </mat-card-header>
 
+  <div class="rating-container" fxFlex fxLayoutAlign="center center">
+    <a class="link" mat-icon-button>
+      <mat-icon matTooltip="Up" class="positive-rating" [ngClass]="{'selected-positive': Rating === 'positive'}" (click)="SelectRating('positive');">
+        thumb_up
+      </mat-icon>
+    </a>
+    <a class="link" mat-icon-button>
+      <mat-icon matTooltip="Down" class="negative-rating" [ngClass]="{'selected-negative': Rating === 'negative'}" (click)="SelectRating('negative');">
+        thumb_down
+      </mat-icon>
+    </a>
+  </div>
 
   <!-- content with scroll bar  -->
   <mat-dialog-content class="mat-dialog-content">

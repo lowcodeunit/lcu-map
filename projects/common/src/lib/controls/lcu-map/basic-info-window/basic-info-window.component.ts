@@ -31,9 +31,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   /**
    * determine what state the modal is in
-   * 
+   *
    * basic = basic info
-   * 
+   *
    * addToMap = able to edit the location
    */
   public ModalState = "basic";
@@ -85,6 +85,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   public Title: string;
 
   public TitleEllipsis: boolean;
+
+  public Rating: string;
 
   // CONSTRUCTORS
 
@@ -226,9 +228,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   /**
-   * 
+   *
    * @param icon The icon chosen by the user
-   * 
+   *
    * Sets the current ChosenIcon to the icon the user selected
    */
   public SetIcon(icon): void {
@@ -237,6 +239,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     } else {
       this.ChosenIcon = icon;
     }
+  }
+
+  public SelectRating(rating: string): void {
+    this.Rating = (this.Rating === rating) ? null : rating;
   }
 
   // HELPERS
@@ -254,9 +260,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   /**
-   * 
+   *
    * @param iconName The name of the current icon
-   * 
+   *
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
   protected setChosenIconIfExists(iconName: string): void {

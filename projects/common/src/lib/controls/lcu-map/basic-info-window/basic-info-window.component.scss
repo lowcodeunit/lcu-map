@@ -37,7 +37,7 @@
     height: 30px;
     border: solid transparent 2px;
   }
-  
+
   .chosen-icon {
     border: solid black 2px;
   }
@@ -93,4 +93,16 @@
   height: 30px;
   width: 30px;
   border-radius: 50%;
+}
+
+.rating-container {
+  .selected-positive {
+    color: green;
+    font-size: 2em;
+  }
+
+  .selected-negative {
+    color: red;
+    font-size: 2em;
+  }
 }

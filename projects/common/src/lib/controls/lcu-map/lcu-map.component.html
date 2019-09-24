@@ -88,7 +88,7 @@
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
         <agm-marker [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
           [iconUrl]="marker.IconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-        </agm-marker>
+        </agm-marker> 
       </div>
 
       <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"

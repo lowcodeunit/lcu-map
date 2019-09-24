@@ -37,17 +37,10 @@
 
     <div class="top-icon-set" fxLayoutAlign="end start">
       <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
-<<<<<<< Updated upstream
         [currently-active-locations]="_visibleLocationsMasterList"
         [selected-location]="SelectedLocation"
         [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)" (delete-locations)="DeleteLocations($event)"
         (display-basic-info)="DisplayMarkerInfo($event)" (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
-=======
-        [currently-active-locations]="_visibleLocationsMasterList" [selected-location]="SelectedLocation"
-        [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)"
-        (display-basic-info)="DisplayMarkerInfo($event)" (is-legend-open)="ToggleLegendMargin($event)"
-        (save-legend-locations)="SaveLegendLocations($event)">
->>>>>>> Stashed changes
       </lcu-legend>
     </div>
   </div>

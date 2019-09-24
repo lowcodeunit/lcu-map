@@ -169,15 +169,6 @@ public HideLocations():void{
   })
 }
 
-// public DeleteLocations():void{
-//   let markersToDelete = new Array<MapMarker>();
-//   this._currentlyActiveLocations.forEach(function(marker){
-//     if(marker.Checked === true){
-//       markersToDelete.push(marker);
-//     }
-//   })
-//   this.DeleteLegendLocations.emit(markersToDelete);
-// }
 
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();
@@ -196,6 +187,13 @@ public DeleteLocationConfirmation(): void {
       this.DeleteLegendLocations.emit(markersToDelete);
     }
   });
+}
+
+/**
+ * informs the map service that the TopLists button was clicked
+ */
+public TopListsClicked() {
+  this.mapService.LegendTopListsClicked();
 }
 
 /**

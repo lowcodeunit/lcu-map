@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EventEmitter } from '@angular/core';
 // import { IndividualMap } from '../models/individual-map.model';
 
 @Injectable({
@@ -20,14 +21,22 @@ export class MapService {
   protected apiKey: string = 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU';
 
   // PROPERTIES
-/**
- * The current Layers that are selected to display
- */
+
+  /**
+   * event emitter that tells lcu-map the legend's Top Lists button was clicked
+   */
+  public TopListsClicked: EventEmitter<any>;
+
+  /**
+   * The current Layers that are selected to display
+   */
   // protected CurrentlyActiveLayers: Array<IndividualMap>;
 
   // CONSTRUCTORS
 
-  constructor(protected http: HttpClient) { }
+  constructor(protected http: HttpClient) {
+    this.TopListsClicked = new EventEmitter<any>();
+  }
 
   // LIFE CYCLE
 
@@ -36,7 +45,7 @@ export class MapService {
   /**
    *
    * @param lat Latitude
-   * 
+   *
    * @param lng Longitude
    *
    * Gets surrounding POIs within 5 meters of the passed latitude and longitude
@@ -69,22 +78,28 @@ export class MapService {
     return this.http.get(fullUrl);
   }
 
+  /**
+   * emits event that the legend's top list button was clicked
+   */
+  public LegendTopListsClicked() {
+    this.TopListsClicked.emit('TopListsButtonClicked');
+  }
 
-/**
- * 
- * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
- */
+  /**
+   *
+   * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
+   */
   // public SetCurrentlyActiveLayers(layers: Array<IndividualMap>): void{
   //   this.CurrentlyActiveLayers = layers;
   // }
-/**
- * Allows access to the CurrentlyActiveLayers form outside of the service
- */
+  /**
+   * Allows access to the CurrentlyActiveLayers form outside of the service
+   */
   // public GetCurrentlyActiveLayers(): Array<IndividualMap>{
   //   return this.CurrentlyActiveLayers;
   // }
 
-  public GetMapApiKey(): string{
+  public GetMapApiKey(): string {
     return this.apiKey;
   }
   // HELPERS

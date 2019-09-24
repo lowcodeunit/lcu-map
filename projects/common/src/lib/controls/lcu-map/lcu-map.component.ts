@@ -144,6 +144,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public DisplayFooter: boolean;
 
   /**
+   * indicates whether or not to show the dropdown list for the search bar
+   */
+  public displayAutocompleteOptions: boolean = false;
+
+  /**
    * The current map marker that someone has selected to diplay info
    */
   public CurrentMapMarker: MapMarker;
@@ -805,6 +810,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public CustomSearchInputChange(e) {
     this.CustomSearchChange.emit(e.target.value);
     this.setUpCustomMarkerSearch();
+    if (e.target.value.length > 0) {
+      this.displayAutocompleteOptions = true;
+    } else {
+      this.displayAutocompleteOptions = false;
+    }
   }
 
   /**
@@ -815,6 +825,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public LocationOptionSelected(e) {
     this.DropdownItemChosen(e.option.value);
+    this.CustomLocationControl.setValue({});
   }
 
   /**

@@ -171,7 +171,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public changePositionToCenter(highlight: boolean) {
     setTimeout(x=>{
-      this.PositionTop = "80px";
+      this.PositionTop = "160px";
     },50,this)
     this.dialogRef.updatePosition({ top: '15px' });
     //width x height
@@ -185,7 +185,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public changePositionTopOfCenter() {
     setTimeout(x=>{
-      this.PositionTop = "-13px";
+      this.PositionTop = "200px";
     },50,this)
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);

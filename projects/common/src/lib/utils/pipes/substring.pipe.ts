@@ -4,8 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SubString implements PipeTransform {
   transform(value: string): string {
     let newStr: string = "";
-    if(value.length > 35){
-        newStr = value.substr(0,30);
+    if(value.length > 30){
+        newStr = value.substr(0,27);
         newStr+="..."
         // console.log("newStr",newStr)
         return newStr;

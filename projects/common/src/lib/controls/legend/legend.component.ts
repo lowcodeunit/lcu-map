@@ -168,11 +168,16 @@ public ShowMore(): void{
   this.EditMode = true;
 }
 
+public CheckMarker(event: MapMarker):void{
+  // console.log("checking: ", event);
+  event.Checked = !event.Checked;
+}
+
 
 public HideLocations():void{
   this._currentlyActiveLocations.forEach(function(marker){
     if(marker.Checked === true){
-      
+      //do something
     }
   })
 }
@@ -181,8 +186,10 @@ public HideLocations():void{
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();
   this._currentlyActiveLocations.forEach(function(marker){
+    console.log("enter loop")
     if(marker.Checked === true){
       markersToDelete.push(marker);
+      console.log("pushing marker: ", marker);
     }
   })
   const dialogRef = this.Dialog.open(DeleteLocationsComponent, {
@@ -235,8 +242,9 @@ public ToggleTools():void{
       this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
-    } else {
-      marker.Checked = !marker.Checked;
+    } 
+    else{
+      this.CheckMarker(marker);
     }
   }
 
@@ -308,6 +316,7 @@ public ToggleTools():void{
       this.IsLegendOpen.emit(false);
       if(this.Tools !== "closed"){
         this.Tools = "closed";
+        this.EditMode = false;
       }
       this.LegendOpen = false;
       this.matContentWidth = "30px";

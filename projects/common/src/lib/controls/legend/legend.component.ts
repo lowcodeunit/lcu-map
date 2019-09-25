@@ -169,8 +169,9 @@ public ShowMore(): void{
 }
 
 public CheckMarker(event: MapMarker):void{
-  // console.log("checking: ", event);
+  console.log("checking: ", event);
   event.Checked = !event.Checked;
+  console.log("checked = ", event.Checked);
 }
 
 

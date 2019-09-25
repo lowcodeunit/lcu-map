@@ -232,7 +232,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public FilteredLocations: Observable<MapMarker[]>;
 
 
-  public IconIsHighlighted: boolean;
+  // public IconIsHighlighted: boolean;
 /**
  * The top margin of the legend, so the icons are always in line
  */
@@ -446,7 +446,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'ambl_on';
-    this.IconIsHighlighted = false;
+    // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
@@ -474,6 +474,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+
     // console.log("is Highlighted = ", this.SelectedLocation);
   }
 
@@ -486,7 +487,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * if true the icon will be highlighted when more info is being displayed.
    */
   // ngDoCheck(){
-  //this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // console.log("do checking: ", this.IconIsHighlighted)
   // }
 
   // API METHODS

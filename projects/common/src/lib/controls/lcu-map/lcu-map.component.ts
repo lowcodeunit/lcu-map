@@ -941,6 +941,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
       });
       this.options = this.CustomSearchInputResults;
+      console.log(this.options)
       this.FilteredLocations = this.CustomLocationControl.valueChanges
         .pipe(
           startWith(''),

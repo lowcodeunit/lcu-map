@@ -82,7 +82,7 @@
 
   <!-- the map -->
   <div class="agm-map-container">
-    <agm-map [minZoom]="2" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
       [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.Latitude"
       [zoomControl]="true" [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude"
       [title]="_currentMapModel.Title" [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)"

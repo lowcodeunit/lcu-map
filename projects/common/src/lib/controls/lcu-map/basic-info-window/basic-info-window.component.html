@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div id="dialogRef" fxLayout="column" class="basic-info-window">
+<div id="dialogRef" fxLayout="column" [ngClass]="{'basic-info-window': ModalState !== 'moreInfo'}">
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
     <!-- if both website and title exist then the title is the link to the website -->
     <!-- <mat-card-title *ngIf="BasicInfoData?.Title && BasicInfoData?.Website" fxLayout="row" fxLayoutAlign="start">
@@ -192,5 +192,3 @@
 
   </mat-dialog-actions>
 </div>
-<img *ngIf="ModalState !== 'moreInfo'" class="down-arrow-to-location" src="./assets/White_triangle_inverted.png" alt=""
-  height="30px" width="75px">

@@ -1,27 +1,52 @@
-::ng-deep .mat-dialog-container{
+::ng-deep .mat-dialog-container {
   overflow: visible;
   border-radius: 0px;
   display: flex;
   flex-direction: column;
-  // justify-content: space-evenly;
-}
-::ng-deep .mat-dialog-content{
-    overflow: visible;
-  }
 
-::ng-deep .mat-tab-label{
+  .basic-info-window {
+    &::after {
+      border: 30px solid transparent;
+      border-top-color: white;
+      content: '';
+      height: 0;
+      left: 50%;
+      margin-left: -30px;
+      position: absolute;
+      top: 100%;
+      width: 0;
+    }
+  }
+}
+
+::ng-deep .mat-dialog-content {
+  overflow: visible;
+}
+
+::ng-deep .mat-tab-label {
   min-width: 33%!important;
   background-color: #827382;
   color: white;
   padding: 0;
 }
 
-::ng-deep .mat-tab-body-content{
+::ng-deep .mat-tab-body-content {
  overflow: hidden !important;
 }
 
+::ng-deep mat-tab-group {
+  width: 100%;
+}
 
-.mat-dialog-actions{
+::ng-deep .cdk-overlay-pane {
+  position: absolute !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-dialog-actions {
   position: fixed;
   //top adjusted in ts file
 }
@@ -30,63 +55,45 @@
   text-decoration: none !important;
 }
 
-
-  mat-form-field {
-    width: 100%;
-  }
-
-  .available-images {
-    width: 30px;
-    height: 30px;
-    border: solid transparent 2px;
-  }
-  
-  .chosen-icon {
-    border: solid black 2px;
-  }
-
-  .customHr {
-    width: 100%;
-    font-size: 1px;
-    line-height: 1.5px;
-
-    background-color: rgb(180, 180, 180);
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  .button {
-    display: inline;
-    // width: 100%;
-    margin-right: 2em;
-    // margin-bottom: 0.5em;
-    font-size: 12px;
-    // height: 25px;
-    background: rgba(180, 180, 180,0.5);
-    padding: 1.25em;
-    text-align: center;
-    border-radius: 5px;
-    color: black;
+.available-images {
+  width: 30px;
+  height: 30px;
+  border: solid transparent 2px;
 }
-  ::ng-deep .cdk-overlay-pane {
-    position: absolute !important;
-    //width: 30vw !important;
-  }
 
-  .down-arrow-to-location {
-    position: absolute;
-    bottom: -30px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+.chosen-icon {
+  border: solid black 2px;
+}
 
-  ::ng-deep mat-tab-group {
-    width: 100%;
-  }
+.customHr {
+  width: 100%;
+  font-size: 1px;
+  line-height: 1.5px;
+  background-color: rgb(180, 180, 180);
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.button {
+  display: inline;
+  margin-right: 2em;
+  font-size: 12px;
+  background: rgba(180, 180, 180,0.5);
+  padding: 1.25em;
+  text-align: center;
+  border-radius: 5px;
+  color: black;
+}
+.down-arrow-to-location {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
 .available-image-container {
   text-align: center;

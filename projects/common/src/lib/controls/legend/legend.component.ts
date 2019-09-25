@@ -187,7 +187,6 @@ public HideLocations():void{
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();
   this._currentlyActiveLocations.forEach(function(marker){
-    console.log("enter loop")
     if(marker.Checked === true){
       markersToDelete.push(marker);
       console.log("pushing marker: ", marker);
@@ -245,7 +244,11 @@ public ToggleTools():void{
       this.SelectedLocation = marker;
     } 
     else{
-      this.CheckMarker(marker);
+      console.log("called");
+      marker.Checked = !marker.Checked;
+      console.log("checked = ", marker.Checked);
+
+      // this.CheckMarker(marker);
     }
   }
 

@@ -896,7 +896,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             width: "300px",
             height: "210px",
             backdropClass: 'dialogRefBackdrop',
-            hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
+            hasBackdrop: false,
+            disableClose: true, 
             data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
           });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(

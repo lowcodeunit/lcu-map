@@ -1076,7 +1076,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   protected zoomInToPoint(value): void {
     this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
     this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    this._currentMapModel.Zoom = 16 + (Math.random() / 100);
+    // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
   /** 
    * @param photos

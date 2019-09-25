@@ -97,6 +97,8 @@ export class LegendComponent implements OnInit, OnChanges {
 
   public HiddenLocations: Array<MapMarker>;
 
+  public LegendContentMarginTop: string;
+
 
 
   //CONSTRUCTOR
@@ -114,6 +116,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.matContentHeight = "30px";
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<Boolean>();
+    this.LegendContentMarginTop = "0px";
   }
 
   //LIFE CYCLE
@@ -124,10 +127,13 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    if(this.LegendOpen){
+    if(this.LegendOpen && this.SelectedLoaction){
     // console.log("Selected location from legend ",this.SelectedLocation);
       this.SetLocationList();
       this.scroll(document.querySelector('#Selected'));
+      if(this.Tools !== "closed"){
+        this.LegendContentMarginTop = '65px';
+      }
     }
 
   }
@@ -204,6 +210,7 @@ public TopListsClicked() {
 public ToggleTools():void{
   if(this.Tools === "basic"){
     this.Tools = "closed";
+    this.LegendContentMarginTop = '0px';
   }
   else if(this.Tools === "closed"){
     this.Tools = "basic";

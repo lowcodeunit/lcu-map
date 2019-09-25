@@ -94,9 +94,8 @@
         </agm-marker>
       </div>
 
-      <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
-        [latitude]="_currentMapModel.origin.Latitude" [longitude]="_currentMapModel.origin.Longitude">
-
+      <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
+        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
       </agm-marker>
     </agm-map>
   </div>

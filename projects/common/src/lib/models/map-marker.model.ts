@@ -5,7 +5,7 @@ export class MapMarker {
     /**
      * The unique id of the individual map marker
      */
-    public ID: string;
+    public ID: any;
 
     public LayerID: string;
 

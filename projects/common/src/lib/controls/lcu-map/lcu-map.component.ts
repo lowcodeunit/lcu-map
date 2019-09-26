@@ -87,7 +87,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  protected _panTo: { lat: number, lng: number, zoom: number };
+  protected _panTo: { lat: number, lng: number, zoom:number };
 
   /**
    * The subscription for the basic-info-window modal
@@ -565,8 +565,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
    * @param value 
    */
-  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
+  public PanningTo(value: { lat: number, lng: number, zoom:number}): void {
+    if(!value.zoom){
+      value.zoom = this._currentMapModel.Zoom;
+    }
     this._panTo = value;
+    
     if (this._currentMapModel) {
       this._currentMapModel.Latitude = value.lat;
       this._currentMapModel.Longitude = value.lng;
@@ -991,7 +995,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           //console.log("place: ", place);
           this._currentMapModel.Latitude = place.geometry.location.lat();
           this._currentMapModel.Longitude = place.geometry.location.lng();
-          this._currentMapModel.zoom = 16;
+          // this._currentMapModel.zoom = 16;
 
           let townIndex = -1;
           let countryIndex = -1;

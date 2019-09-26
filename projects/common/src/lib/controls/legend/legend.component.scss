@@ -1,3 +1,5 @@
+
+
 .sidenav-container {
   background-color: transparent;
 }
@@ -18,6 +20,11 @@
   position: sticky;
   top: 0;
   z-index: 10;
+
+  .map-title{
+    font-size: 1.5em;
+    font-weight: 700;
+  }
 }
 
 .legend-content {
@@ -48,8 +55,8 @@
   height: 35px !important;
 }
 
-.mat-icon-button{
-  height: 24px;
+::ng-deep .mat-icon-button{
+  line-height: 0px !important;
 }
 
 .icon-image{

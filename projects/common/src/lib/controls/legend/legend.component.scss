@@ -80,7 +80,7 @@ mat-checkbox {
 }
 
 ::ng-deep .legend-checkbox.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background {
-  background-color: yellow;
+  background-color: #ff4081; //TODO dont use hard coded value for color
 }
 
 .icon-title {

@@ -245,10 +245,9 @@ public ToggleTools():void{
     } 
     else{
       console.log("called");
-      marker.Checked = !marker.Checked;
+      // marker.Checked = !marker.Checked;
+      this.CheckMarker(marker);
       console.log("checked = ", marker.Checked);
-
-      // this.CheckMarker(marker);
     }
   }
 

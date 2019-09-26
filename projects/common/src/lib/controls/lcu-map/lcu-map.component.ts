@@ -87,7 +87,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  protected _panTo: { lat: number, lng: number, zoom: number };
+  protected _panTo: { lat: number, lng: number, zoom:number };
 
   /**
    * The subscription for the basic-info-window modal
@@ -232,7 +232,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public FilteredLocations: Observable<MapMarker[]>;
 
 
-  public IconIsHighlighted: boolean;
+  // public IconIsHighlighted: boolean;
 /**
  * The top margin of the legend, so the icons are always in line
  */
@@ -446,7 +446,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'ambl_on';
-    this.IconIsHighlighted = false;
+    // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
@@ -474,6 +474,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+
     // console.log("is Highlighted = ", this.SelectedLocation);
   }
 
@@ -486,7 +487,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * if true the icon will be highlighted when more info is being displayed.
    */
   // ngDoCheck(){
-  //this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // console.log("do checking: ", this.IconIsHighlighted)
   // }
 
   // API METHODS
@@ -563,8 +565,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
    * @param value 
    */
-  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
+  public PanningTo(value: { lat: number, lng: number, zoom:number}): void {
+    if(!value.zoom){
+      value.zoom = this._currentMapModel.Zoom;
+    }
     this._panTo = value;
+    
     if (this._currentMapModel) {
       this._currentMapModel.Latitude = value.lat;
       this._currentMapModel.Longitude = value.lng;
@@ -894,7 +900,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             width: "300px",
             height: "210px",
             backdropClass: 'dialogRefBackdrop',
-            hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
+            hasBackdrop: false,
+            disableClose: true, 
             data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
           });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
@@ -988,7 +995,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           //console.log("place: ", place);
           this._currentMapModel.Latitude = place.geometry.location.lat();
           this._currentMapModel.Longitude = place.geometry.location.lng();
-          this._currentMapModel.zoom = 16;
+          // this._currentMapModel.zoom = 16;
 
           let townIndex = -1;
           let countryIndex = -1;
@@ -1073,7 +1080,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   protected zoomInToPoint(value): void {
     this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
     this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    this._currentMapModel.Zoom = 16 + (Math.random() / 100);
+    // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
   /** 
    * @param photos

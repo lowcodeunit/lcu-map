@@ -20,7 +20,7 @@
             <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
           </button>
 
-          <h2 class="map-title">{{MapTitle}}</h2>
+          <div class="map-title">{{MapTitle}}</div>
 
           <button class="legend-button">
             <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
@@ -48,7 +48,7 @@
         fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}" (click)="PanTo(item)">
-          <mat-checkbox class="legend-checkbox" *ngIf="EditMode" [checked]="item.Checked" disabled (click)="$event.stopPropagation()"></mat-checkbox>
+          <mat-checkbox class="legend-checkbox" *ngIf="EditMode" [checked]="item.Checked" disabled (click)=" $event.stopPropagation(); CheckMarker(item);"></mat-checkbox>
           <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title" matTooltip={{item.Title}}>

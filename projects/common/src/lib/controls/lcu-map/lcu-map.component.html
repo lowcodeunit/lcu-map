@@ -63,9 +63,13 @@
           <span><img class="dropdown-marker-image search-bar-element" src="{{location.IconImageObject.Url}}"></span>
           <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
           <span class="dropdown-marker-location-text search-bar-element">
-            <span *ngIf="location.Address && location.Address !== undefined && location.Address !== ''">{{ location.Address }}, </span>
-            <span *ngIf="location.Town && location.Town !== undefined && location.Town !== ''">{{ location.Town }}, </span>
-            <span *ngIf="location.Country && location.Country !== undefined && location.Country !== ''">{{ location.Country }}</span>
+            <span
+              *ngIf="location.Address && location.Address !== undefined && location.Address !== ''">{{ location.Address }},
+            </span>
+            <span *ngIf="location.Town && location.Town !== undefined && location.Town !== ''">{{ location.Town }},
+            </span>
+            <span
+              *ngIf="location.Country && location.Country !== undefined && location.Country !== ''">{{ location.Country }}</span>
           </span>
         </mat-option>
       </mat-autocomplete>
@@ -93,10 +97,8 @@
           [iconUrl]="marker.IconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
         </agm-marker>
       </div>
-
-      <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
-        [latitude]="_currentMapModel.origin.Latitude" [longitude]="_currentMapModel.origin.Longitude">
-
+      <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
+        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
       </agm-marker>
     </agm-map>
   </div>

@@ -169,8 +169,9 @@ public ShowMore(): void{
 }
 
 public CheckMarker(event: MapMarker):void{
-  // console.log("checking: ", event);
+  console.log("checking: ", event);
   event.Checked = !event.Checked;
+  console.log("checked = ", event.Checked);
 }
 
 
@@ -186,7 +187,6 @@ public HideLocations():void{
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();
   this._currentlyActiveLocations.forEach(function(marker){
-    console.log("enter loop")
     if(marker.Checked === true){
       markersToDelete.push(marker);
       console.log("pushing marker: ", marker);
@@ -239,12 +239,15 @@ public ToggleTools():void{
       if (typeof (marker.Latitude) === 'string') {
         marker.Latitude = parseFloat(marker.Latitude);
       }
-      this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
+      this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
     } 
     else{
+      console.log("called");
+      // marker.Checked = !marker.Checked;
       this.CheckMarker(marker);
+      console.log("checked = ", marker.Checked);
     }
   }
 

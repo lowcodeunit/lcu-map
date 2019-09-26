@@ -7,16 +7,17 @@
     </mat-card-title> -->
 
     <!-- The title fxLayoutAlign="space-between start"-->
-    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true" fxLayout="row" fxLayoutAlign="start center"
-      style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
+    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
+      fxLayoutAlign="start center" style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
       {{Title}}
     </mat-card-title>
-    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false" fxLayout="row" fxLayoutAlign="start center"
-      style="margin-bottom: 1em; font-size: 20px">
+    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
+      fxLayoutAlign="start center" style="margin-bottom: 1em; font-size: 20px">
       {{Title}}
     </mat-card-title>
     <!-- close button -->
-    <mat-icon fxFlex fxLayoutAlign="end start" (click)="Close()" matTooltip="Close">close</mat-icon>
+    <mat-icon fxFlex fxLayoutAlign="end start" (click)="Close()" matTooltip="Close" matTooltipPosition="right">close
+    </mat-icon>
   </mat-card-header>
 
 
@@ -171,7 +172,8 @@
 
   <!-- Buttons -->
 
-  <mat-dialog-actions class="mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between end" [ngStyle]="{'top': PositionTop}">
+  <mat-dialog-actions class="mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between end"
+    [ngStyle]="{'top': PositionTop}">
 
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>

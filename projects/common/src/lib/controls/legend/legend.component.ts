@@ -127,19 +127,18 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    if(this.LegendOpen && this.SelectedLoaction){
-    // console.log("Selected location from legend ",this.SelectedLocation);
+    //console.log("open: ", this.LegendOpen, " Selected: ", this.SelectedLocation);
+    if(this.LegendOpen && this.SelectedLocation){
       this.SetLocationList();
       this.scroll(document.querySelector('#Selected'));
       if(this.Tools !== "closed"){
         this.LegendContentMarginTop = '65px';
       }
     }
-
   }
-  ngAfterContentInit(){
+  // ngAfterContentInit(){
 
-  }
+  // }
 
 
 
@@ -154,10 +153,40 @@ export class LegendComponent implements OnInit, OnChanges {
 
   //API METHODS
 
-public scroll(element: any) {
+public scroll(element: any):void {
     if(element){
-      element.scrollIntoView({ behavior: 'smooth' });
+      let parent = document.getElementById("legend-sidenav-content")
+      let isOut = this.IsOutOfParentElement(element, parent);
+      if(isOut === true){
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
+}
+
+public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {  
+	// Get element's bounding
+  let childBound = child.getBoundingClientRect();
+  let parentBound = parent.getBoundingClientRect();
+  // console.log("ChildBounds = ", childBound)
+  // console.log("ParentBounds = ", parentBound)
+
+	// Check if it's out of the viewport on each side
+  if(childBound.top < 0){
+    return true;
+  }
+  if(childBound.left < 0){
+    return true;
+  }
+  if(childBound.bottom > parentBound.height){ 
+    return true;
+  }
+  if(childBound.right > parentBound.right){
+    return true;
+  }
+  else{
+    return false;
+  }
+
 }
 
 /**
@@ -242,12 +271,14 @@ public ToggleTools():void{
       this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
+      console.log("panto marker = ", marker)
     } 
     else{
-      console.log("called");
+      // console.log("called");
       // marker.Checked = !marker.Checked;
+      this.SelectedLocation = marker;
       this.CheckMarker(marker);
-      console.log("checked = ", marker.Checked);
+      // console.log("checked = ", marker.Checked);
     }
   }
 
@@ -329,7 +360,7 @@ public ToggleTools():void{
       this.drawer.open();
       this.IsLegendOpen.emit(true);
       this.LegendOpen = true;
-      this.matContentWidth = "0px";
+      this.matContentWidth = "100%";
       this.matContentHeight = "88vh";
     }
   }

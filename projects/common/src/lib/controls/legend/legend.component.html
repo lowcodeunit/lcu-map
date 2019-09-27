@@ -2,7 +2,7 @@
 <mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer()
   [ngStyle]="{height: matContentHeight}">
 
-  <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
+  <mat-sidenav-content class="mat-sidenav-content" id="legend-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
     <div class="button-container" fxLayoutAlign="end start">
 
       <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
@@ -43,7 +43,7 @@
           </mat-toolbar>
     </div>
 
-    <div class="legend-content" [ngStyle]="{'margin-top': LegendContentMarginTop}">
+    <div class="legend-content" id="legend-content" [ngStyle]="{'margin-top': LegendContentMarginTop}">
       <div cdkDropList class="location-list" cdkDropListOrientation="vertical" (cdkDropListDropped)="drop($event)" fxLayout="column"
         fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"

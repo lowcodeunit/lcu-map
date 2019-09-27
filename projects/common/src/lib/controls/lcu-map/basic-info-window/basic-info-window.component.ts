@@ -146,8 +146,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // API METHODS
   public CheckTitleLength(title: string): void {
-    if (title.length > 25) {
-      this.Title = title.substr(0, 20) + '...';
+    if (title.length > 33) {
+      this.Title = title.substr(0, 30) + '...';
       this.TitleEllipsis = true;
     }
     else {

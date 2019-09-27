@@ -3,6 +3,7 @@
   border-radius: 0px;
   display: flex;
   flex-direction: column;
+  padding:0px;
 
   .basic-info-window {
     height: 100%;
@@ -20,9 +21,19 @@
     }
   }
 }
+mat-card-title{
+  font-size: 20px;
+  padding-top: 20px;
+  padding-left: 5px;
+}
+
+.marker-info-container{
+  padding-left: 5px;
+}
 
 ::ng-deep lcu-basic-info-window {
   height: 100%;
+  padding: 0px;
 }
 
 ::ng-deep .mat-dialog-content {

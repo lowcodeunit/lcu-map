@@ -17,8 +17,8 @@
 
 
   <div *ngIf="Marker.Address">{{Marker.Address}}</div>
-  <div *ngIf="Marker.Town || Marker.Country || Marker.State">Location: {{Marker.Town}} {{Marker.State}}
-    {{Marker.Country}}</div>
+  <div *ngIf="Marker.Town ||  Marker.State">{{Marker.Town}} {{Marker.State}}</div>
+    <div *ngIf="Marker.Country">{{Marker.Country}}</div>
     <div class="links" fxLayout="row" fxLayoutAlign="space-around center">
         <a *ngIf="LinkedPhoneNumber" class="link" href={{LinkedPhoneNumber}} mat-icon-button>
           <mat-icon title="Call {{LinkedPhoneNumber}}" >call</mat-icon>

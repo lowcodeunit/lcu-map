@@ -29,9 +29,10 @@
       <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
 
       <div *ngIf="BasicInfoData?.Address">{{BasicInfoData?.Address}}</div>
-      <div *ngIf="BasicInfoData?.Town || BasicInfoData?.Country || BasicInfoData?.State">
+      <div *ngIf="BasicInfoData?.Town || BasicInfoData?.State">
         {{BasicInfoData?.Town}}, {{BasicInfoData?.State}}
-        {{BasicInfoData?.Country}}</div>
+      </div>
+      <div *ngIf="BasicInfoData?.Country ">{{BasicInfoData?.Country}}</div>
       <div *ngIf="BasicInfoData?.Telephone">{{BasicInfoData?.Telephone}}</div>
 
       <!-- </div> -->

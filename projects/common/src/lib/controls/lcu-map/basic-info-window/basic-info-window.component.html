@@ -172,9 +172,7 @@
 
   <!-- Buttons -->
 
-  <mat-dialog-actions class="mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between end"
-    [ngStyle]="{'top': PositionTop}">
-
+  <mat-dialog-actions class="mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between end">
     <button *ngIf="ModalState === 'addToMap'" mat-button mat-raised-button [mat-dialog-close]="NewMarker"
       (click)="SetMarkerData()" [disabled]="NewMarkerForm.invalid">Save</button>
 

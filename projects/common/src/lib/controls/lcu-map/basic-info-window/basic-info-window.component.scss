@@ -5,6 +5,8 @@
   flex-direction: column;
 
   .basic-info-window {
+    height: 100%;
+
     &::after {
       border: 30px solid transparent;
       border-top-color: white;
@@ -19,8 +21,14 @@
   }
 }
 
+::ng-deep lcu-basic-info-window {
+  height: 100%;
+}
+
 ::ng-deep .mat-dialog-content {
   overflow: visible;
+  display: flex;
+  flex-grow: 1;
 }
 
 ::ng-deep .mat-tab-label {
@@ -47,8 +55,8 @@ mat-form-field {
 }
 
 .mat-dialog-actions {
-  position: fixed;
-  //top adjusted in ts file
+  margin: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .link {

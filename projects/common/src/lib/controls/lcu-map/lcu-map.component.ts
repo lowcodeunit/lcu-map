@@ -555,7 +555,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   
   public ToggleLegendMargin(event){
     if(event){
-    this.LegendMargin = '15px';
+    this.LegendMargin = '35px';//15
     }
     else{
       this.LegendMargin = '33px';

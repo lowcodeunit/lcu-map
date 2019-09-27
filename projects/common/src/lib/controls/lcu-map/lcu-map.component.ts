@@ -57,7 +57,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   /**
    * The place id of the location the user clicked on
-   * 
+   *
    * This will be replaced by a direct call when AGM team puts out fix that allows user's click event to return place id directly from (mapClick)
    */
   protected placeId: string;
@@ -108,7 +108,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
 
 
-  // PROPERTIES 
+  // PROPERTIES
   //12 for bottom right & 9 for right bottom
   public ZoomOptions: Object = { position: 9 };
 
@@ -128,7 +128,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * Data that is being passed to the footer
    */
   public MarkerData: MarkerData;
-  
+
   /**
    * subscribes to map service to find out when legend's top lists button was clicked
    */
@@ -169,7 +169,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   /**
    * The list of choices of location search methods for user to choose
-   * 
+   *
    * Right now - we leave this as 'ambl_on' because specs changed at last minute
    * Later, we'll add an input to take a custom value
    */
@@ -255,7 +255,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   @Input('custom-search-input-results')
   public CustomSearchInputResults: Array<MapMarker>;
-  
+
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */
@@ -483,7 +483,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
   /**
    * In the do check, this.IconIsHighlighted is checked to see if it has changed to true
-   * 
+   *
    * if true the icon will be highlighted when more info is being displayed.
    */
   // ngDoCheck(){
@@ -508,7 +508,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
   /**
    *  Returns an array of strings that represent the titles of layers selected
-   * 
+   *
    *  Called by the legend to get the layer titles to be displayed in the legend
    */
   public GetSelectedUserLayers(): Array<string> {
@@ -524,7 +524,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     return LayerTitles;
   }
   /**
-   * 
+   *
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
    */
   // public UpdateCurrentlyActiveLayers(layer: IndividualMap): void {
@@ -552,7 +552,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public DeleteLocations(event){
     this.LocationsToDelete.emit(event);
   }
-  
+
   public ToggleLegendMargin(event){
     if(event){
     this.LegendMargin = '15px';
@@ -563,14 +563,14 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
   /**
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
-   * @param value 
+   * @param value
    */
   public PanningTo(value: { lat: number, lng: number, zoom:number}): void {
     if(!value.zoom){
       value.zoom = this._currentMapModel.Zoom;
     }
     this._panTo = value;
-    
+
     if (this._currentMapModel) {
       this._currentMapModel.Latitude = value.lat;
       this._currentMapModel.Longitude = value.lng;
@@ -579,7 +579,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
   /**
    * Saves the legend order/loactions via event emmiter
-   * @param val 
+   * @param val
    */
   public SaveLegendLocations(val: Array<MapMarker>): void {
     this.SavedLegendLocations.emit(val);
@@ -592,9 +592,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param event The event passed in upon user clicking the map
-   * 
+   *
    * Runs when user single-clicks location on map. Modal displays prompting user to enter info about custom location marker
    */
   public OnChoseLocation(event): void {
@@ -666,11 +666,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param event The event passed in upon user double-clicking the map
-   * 
+   *
    * Function that sets property 'isDoubleClicked' to true for a moment.
-   * 
+   *
    * This is necessary because when the events 'mapClick' and 'mapDblClick' appear on the same component, both will be fired
    */
   public OnMapDoubleClicked(event): void {
@@ -714,9 +714,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked
-   * 
+   *
    * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
    */
   public LayerClicked(event, layer?: UserLayer): void {
@@ -780,9 +780,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param event The event sent every time the boundary of the map changes
-   * 
+   *
    * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes
    */
   public BoundsChange(event): void {
@@ -824,9 +824,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param e the event passed when user selects an option from the mat-autocomplete dropdown
-   * 
+   *
    * calls the method that pans user to location and shows the location modal
    */
   public LocationOptionSelected(e) {
@@ -841,15 +841,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     return marker ? marker.Title : undefined;
   }
   /**
-   * 
+   *
    * @param val Toggles the displayFooter property to true or false
    */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
   }
   /**
-   * @param event 
-   * 
+   * @param event
+   *
    * sets the NewMapMarker value to the event and passes the value to SaveNewMarker
    */
   public SetNewMapMarker(event: MapMarker): void {
@@ -857,9 +857,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.SaveNewMarker(this.NewMapMarker);
   }
   /**
-   * 
-   * @param marker 
-   * 
+   *
+   * @param marker
+   *
    * Saves the new MapMarker
    */
   public SaveNewMarker(marker: MapMarker): void {
@@ -875,7 +875,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
-   * 
+   *
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
@@ -901,7 +901,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             height: "210px",
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: false,
-            disableClose: true, 
+            disableClose: true,
             data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
           });
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
@@ -921,18 +921,18 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param map The map onto which the click event listener will be attached
-   * 
+   *
    * Attaches a click listener to the map that returns an object that includes the place id
-   * 
+   *
    * The place id is then assigned to the placeId field for use in the (mapClick) event
-   * 
+   *
    * This will be removed once AGM team releases code that passes back the place id on (mapClick) directly
    */
   public OnMapReady(map): void {
     map.addListener('click', (loc) => {
-      loc.stop(); // stops the event that opens the default G-Maps info window
+      // loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
     });
   }
@@ -959,13 +959,13 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    * @param locationList The list of locations that come with the map that should be stripped
-   * 
+   *
    * @param bounds The bounds used to determine which locations to strip
-   * 
+   *
    * Strips locations that don't exist within the bounds and returns the altered array
-   * 
+   *
    * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
   // protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
@@ -1064,17 +1064,17 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   //   });
   // }
   /**
-   * 
-   * @param value 
-   * 
+   *
+   * @param value
+   *
    * Sets _currentMapModel.orgin to the values of the incoming lat and long
-   * 
+   *
    * ParseFloat is added to the incoming value in the instance that it is saved as a string
-   * 
+   *
    * AGM can only take Numbers as the lat and long values, strings will not process correctly
-   * 
+   *
    * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom
-   * 
+   *
    * if random decimals are not added then the map will not zoom/pan once user moves the map
    */
   protected zoomInToPoint(value): void {
@@ -1082,11 +1082,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
     // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
-  /** 
+  /**
    * @param photos
-   * 
-   * Takes and array of photos returned from the google api and pulls the photo reference out 
-   * 
+   *
+   * Takes and array of photos returned from the google api and pulls the photo reference out
+   *
    * and builds the url to call so image displays. (currently only pulling one image from loop)
    */
   protected buildPhotoArray(photos: Array<any>): Array<string> {

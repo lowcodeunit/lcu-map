@@ -95,6 +95,15 @@
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
         <agm-marker [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
           [iconUrl]="marker.IconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
+
+          <agm-info-window>
+            <strong>{{ marker.Title }}</strong>
+            <p>Bill <i>likes </i><strong>Lady boys</strong></p>
+
+            <div>
+              <button>More Info</button>
+            </div>
+          </agm-info-window>
         </agm-marker>
       </div>
       <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"

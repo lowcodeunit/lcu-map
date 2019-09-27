@@ -3,7 +3,7 @@
   border-radius: 0px;
   display: flex;
   flex-direction: column;
-  padding:0px;
+  padding:5px;
 
   .basic-info-window {
     height: 100%;
@@ -33,7 +33,6 @@ mat-card-title{
 
 ::ng-deep lcu-basic-info-window {
   height: 100%;
-  padding: 0px;
 }
 
 ::ng-deep .mat-dialog-content {

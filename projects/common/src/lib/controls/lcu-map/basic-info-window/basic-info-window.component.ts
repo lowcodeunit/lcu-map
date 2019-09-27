@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
@@ -93,11 +93,13 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public passedData: any,
     protected dialogRef: MatDialogRef<BasicInfoWindowComponent>,
+    protected dialog: MatDialog,
     protected mapConversions: MapConversions,
     protected breakpointObserver: BreakpointObserver,
     private locationInfoService: LocationInfoService) {
     this.IsEdit = this.passedData.isEdit;
     this.IconSetExpanded = false;
+    this.dialog.closeAll();
   }
 
   // LIFE CYCLE

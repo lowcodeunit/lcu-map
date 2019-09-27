@@ -617,7 +617,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 townIndex = idx;
               }
             });
-            console.log("Google Returned: ", res.result)
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,

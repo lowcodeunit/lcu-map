@@ -88,8 +88,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public TitleEllipsis: boolean;
 
-  public PositionTop: string;
-
   // CONSTRUCTORS
 
   constructor(
@@ -133,6 +131,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
+     
       this.BasicInfoData = this.passedData.marker;
       this.CheckTitleLength(this.passedData.marker.Title);
       this.MarkerSet = this.passedData.markerSet.slice(0, -1);
@@ -144,8 +143,13 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.locationInfoService.SetPhoneNumberUrl(this.NewMarker);
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
       this.Type = this.locationInfoService.GetType(this.NewMarker);
-    }, 50);
-    this.changePositionToCenter(false);
+      if(this.passedData.isMoreInfo){
+        this.ModalState = "moreInfo";
+      }
+      else{
+        this.changePositionToCenter(false);
+      }
+    }, 50); 
   }
 
   ngOnDestroy() {
@@ -180,9 +184,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Change position of the dialog box to the center when modal is in basic state
    */
   public changePositionToCenter(highlight: boolean) {
-    setTimeout(x=>{
-      this.PositionTop = "160px";
-    },50,this)
     this.dialogRef.updatePosition({ top: '15px' });
     //width x height
     this.dialogRef.updateSize("300px", "210px");
@@ -194,9 +195,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Called when the modal is displaying editable content
    */
   public changePositionTopOfCenter() {
-    setTimeout(x=>{
-      this.PositionTop = "200px";
-    },50,this)
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);
     //width x height

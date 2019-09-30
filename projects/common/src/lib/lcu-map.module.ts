@@ -18,11 +18,10 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTabsModule} from '@angular/material/tabs';
 import { DeleteLocationsComponent } from './controls/legend/delete-locations/delete-locations.component'
 import { SubString } from './utils/pipes/substring.pipe';
-
-
+import { BasicInfoWindowRewriteComponent } from 'projects/common/src/lib/controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent, SubString],
+  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent, SubString, BasicInfoWindowRewriteComponent],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
@@ -42,14 +41,14 @@ import { SubString } from './utils/pipes/substring.pipe';
     MatToolbarModule,
     HttpClientModule,
     MatExpansionModule,
-    MatCardModule,    
+    MatCardModule,
     MatAutocompleteModule,
     DragDropModule,
     MatSidenavModule,
     MatTabsModule
   ],
   providers: [GoogleMapsAPIWrapper],
-  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent],
-  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent]
+  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent, BasicInfoWindowRewriteComponent],
+  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent, BasicInfoWindowRewriteComponent]
 })
 export class LcuMapModule { }

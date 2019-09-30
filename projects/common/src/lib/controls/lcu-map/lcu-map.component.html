@@ -94,20 +94,19 @@
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
         <agm-marker [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
-          [iconUrl]="marker.IconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
+          [iconUrl]="marker.IconImageObject">
 
           <agm-info-window>
-            <strong>{{ marker.Title }}</strong>
-            <p>Bill <i>likes </i><strong>Lady boys</strong></p>
-
-            <div>
-              <button>More Info</button>
-            </div>
+            <lcu-basic-info-window-rewrite [markerData]="marker"></lcu-basic-info-window-rewrite>
           </agm-info-window>
         </agm-marker>
       </div>
       <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
         [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
+
+        <agm-info-window [isOpen]="SelectedLocation" (infoWindowClose)="SelectedLocation = null;">
+            <lcu-basic-info-window-rewrite [markerData]="SelectedLocation"></lcu-basic-info-window-rewrite>
+        </agm-info-window>
       </agm-marker>
     </agm-map>
   </div>

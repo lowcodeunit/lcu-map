@@ -4,24 +4,19 @@ import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
-import { Constants } from '../../utils/constants/constants';
 import { MapConversions } from '../../utils/conversions';
 import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 // @ts-ignore
 import { } from '@types/googlemaps';
-import { BasicInfoWindowComponent } from './basic-info-window/basic-info-window.component';
 import { Subscription, Observable } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/layout';
 import { MarkerData } from '../../models/marker-data.model';
-import * as uuid from 'uuid';
 import { map, startWith } from 'rxjs/operators';
 import { LocationInfoService } from '../../services/location-info.service';
 import { UserLayer } from '../../models/user-layer.model';
 import { UserMap } from '../../models/user-map.model';
-
-
 
 @Component({
   selector: 'lcu-map',
@@ -427,12 +422,16 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   // CONSTRUCTORS
 
 
-  constructor(private dialog: MatDialog, private mapConversions: MapConversions,
+  constructor(
+    private dialog: MatDialog,
+    private mapConversions: MapConversions,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone, private wrapper: GoogleMapsAPIWrapper,
+    private ngZone: NgZone,
+    private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService,
     protected breakpointObserver: BreakpointObserver,
-    private locationInfoService: LocationInfoService) {
+    private locationInfoService: LocationInfoService
+  ) {
     this.MapSaved = new EventEmitter,
       // this.PrimaryMapLocationListChanged = new EventEmitter;
       this.VisibleLocationListChanged = new EventEmitter;
@@ -598,6 +597,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * Runs when user single-clicks location on map. Modal displays prompting user to enter info about custom location marker
    */
   public OnChoseLocation(event): void {
+    this.SelectedLocation = null;
+
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
@@ -617,7 +618,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 townIndex = idx;
               }
             });
-            console.log("Google Returned: ", res.result)
+            console.log('Google Returned: ', res.result);
+
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
@@ -863,60 +865,35 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * Saves the new MapMarker
    */
   public SaveNewMarker(marker: MapMarker): void {
-    //console.log("data being returned = ", marker);
     if (!this.isEdit) {
-      console.log("emiting marker: ", marker)
       this.AddLocation.emit(marker);
     } else {
-      this.EditLocation.emit(marker)
+      this.EditLocation.emit(marker);
     }
-    //this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-    //this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
+
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    *
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
-  //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
     this.SelectedLocation = marker;
     this.isEdit = false;
-    let userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+    const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+
     if (marker.LayerID === userLayerID) {
       this.isEdit = true;
     }
+
     if (this.IsMobile) {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
-    if (this.IsMobile === false) {
-      if (marker) {
-        setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
-            width: "300px",
-            height: "210px",
-            backdropClass: 'dialogRefBackdrop',
-            hasBackdrop: false,
-            disableClose: true,
-            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
-          });
-          this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-            data => {
-              //console.log("data being returned = ", data);
-              if (data !== undefined && data !== null) {
-                console.log(data)
-                this.SaveNewMarker(data);
-              }
-              this.SelectedLocation = null;
-            });
-        }, 50, this);
-      }
-    }
-    // console.log("zooming to: ", marker)
+
     this.zoomInToPoint(marker);
   }
 
@@ -932,7 +909,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public OnMapReady(map): void {
     map.addListener('click', (loc) => {
-      // loc.stop(); // stops the event that opens the default G-Maps info window
+      loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
     });
   }

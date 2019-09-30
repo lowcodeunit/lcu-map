@@ -1,0 +1,18 @@
+<div fxLayout="column">
+  <div fxLayout="row" fx class="basic-info-header">
+      {{ Marker.Title }}
+  </div>
+  <div class="basic-info-content">
+      <p *ngIf="!Marker" style="margin:0; color:grey">No Content</p>
+
+      <div *ngIf="Marker?.Address">{{ Marker?.Address }}</div>
+      <div *ngIf="Marker?.Town || Marker?.Country || Marker?.State">
+        {{ Marker?.Town }}, {{ Marker?.State }} {{ Marker?.Country }}
+      </div>
+      <div *ngIf="Marker?.Telephone">{{ Marker?.Telephone }}</div>
+  </div>
+  <div class="basic-info-buttons" fxLayoutAlign="space-between end">
+      <button mat-button mat-raised-button>More Info</button>
+      <button mat-button mat-raised-button>+</button>
+  </div>
+</div>

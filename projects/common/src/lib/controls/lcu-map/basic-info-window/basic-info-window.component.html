@@ -7,11 +7,11 @@
     </mat-card-title> -->
 
     <!-- The title fxLayoutAlign="space-between start"-->
-    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
+    <mat-card-title  class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
       fxLayoutAlign="start center" style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
       {{Title}}
     </mat-card-title>
-    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
+    <mat-card-title class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
       fxLayoutAlign="start center">
       {{Title}}
     </mat-card-title>

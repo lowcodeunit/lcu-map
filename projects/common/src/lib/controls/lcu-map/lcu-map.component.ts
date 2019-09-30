@@ -845,6 +845,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
+    if(!val){
+      this.SelectedLocation = null;
+    }
   }
   /**
    * @param event 

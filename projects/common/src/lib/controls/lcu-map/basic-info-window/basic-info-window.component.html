@@ -7,11 +7,11 @@
     </mat-card-title> -->
 
     <!-- The title fxLayoutAlign="space-between start"-->
-    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
+    <mat-card-title  class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
       fxLayoutAlign="start center" style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
       {{Title}}
     </mat-card-title>
-    <mat-card-title *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
+    <mat-card-title class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
       fxLayoutAlign="start center">
       {{Title}}
     </mat-card-title>
@@ -109,8 +109,9 @@
               <mat-icon title="Website" style="font-size: 35px">public</mat-icon>
             </a>
 
+
             <a class="link" *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" mat-icon-button>
-              <img src="./assets/instagram_glyph.png" alt="" height="33px" width="33px" title="Instagram">
+              <mat-icon title="Instagram" svgIcon="instagram"></mat-icon>
             </a>
 
             <!-- <a *ngIf="BasicInfoData?.menu" class="link" href={{BasicInfoData?.menu}} target="_blank" mat-icon-button>
@@ -123,8 +124,8 @@
             </a>
 
             <!-- NO FUNCTIONALITY -->
-            <a class="link" target="_blank" mat-icon-button>
-              <mat-icon title="Directions" style="font-size: 37px">directions</mat-icon>
+            <a *ngIf="BasicInfoData?.Directions" class="link" target="_blank" mat-icon-button>
+              <mat-icon title="Directions" style="font-size: 33px">directions</mat-icon>
             </a>
 
           </div>

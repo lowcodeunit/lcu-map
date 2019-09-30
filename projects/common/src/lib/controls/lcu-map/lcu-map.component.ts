@@ -238,6 +238,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
  */
   public LegendMargin: string;
 
+  public DisplayingMoreInfo: Boolean;
+
   /**
    * The search input box
    */
@@ -452,6 +454,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = "33px";
+    this.DisplayingMoreInfo = false;
   }
   // LIFE CYCLE
   ngOnInit() {
@@ -875,13 +878,17 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     //this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
     //this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
+
+  DisplayMoreInfo(event:Boolean):void{
+    this.DisplayingMoreInfo = event;
+  }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
-  public DisplayMarkerInfo(marker: MapMarker, moreInfo?: boolean): void {
+  public DisplayMarkerInfo(marker: MapMarker): void {
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
@@ -898,14 +905,33 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     if (this.IsMobile === false) {
       if (marker) {
         setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
+          let dialogRef: any;
+          if(!this.DisplayingMoreInfo){
+          dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             width: "300px",
             height: "210px",
+            position:{top: "15px"},
             backdropClass: 'dialogRefBackdrop',
             hasBackdrop: false,
             disableClose: true, 
-            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
+            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit, isMoreInfo: this.DisplayingMoreInfo }
           });
+        }
+        else{
+          dialogRef = this.dialog.open(BasicInfoWindowComponent, {
+            width: "330px", 
+            height: "88vh",
+            position:{
+            right: '10px', 
+            top: '35px', 
+            bottom: '35px'
+            },
+            backdropClass: 'dialogRefBackdrop',
+            hasBackdrop: false,
+            disableClose: true, 
+            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit, isMoreInfo: this.DisplayingMoreInfo }
+          });
+        }
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);
@@ -914,6 +940,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 this.SaveNewMarker(data);
               }
               this.SelectedLocation = null;
+              this.DisplayingMoreInfo = false;
             });
         }, 50, this);
       }

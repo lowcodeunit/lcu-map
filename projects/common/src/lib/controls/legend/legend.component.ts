@@ -18,6 +18,7 @@ import { DeleteLocationsComponent } from './delete-locations/delete-locations.co
 })
 
 export class LegendComponent implements OnInit, OnChanges {
+  [x: string]: any;
 
 
 
@@ -65,6 +66,9 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
+  @Output('display-more-info')
+  DisplayMoreInfo: EventEmitter<Boolean>;
+
   @Output('delete-locations')
   DeleteLegendLocations: EventEmitter<Array<MapMarker>>;
 
@@ -99,6 +103,11 @@ export class LegendComponent implements OnInit, OnChanges {
 
   public LegendContentMarginTop: string;
 
+   /**
+   * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
+   */
+  protected expectedDoubleClickElapsedTime: number = 500;
+
 
 
   //CONSTRUCTOR
@@ -117,6 +126,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<Boolean>();
     this.LegendContentMarginTop = "0px";
+    this.DisplayMoreInfo = new EventEmitter<Boolean>();
   }
 
   //LIFE CYCLE
@@ -257,10 +267,21 @@ public ToggleTools():void{
   }
 }
 
+public ShowMoreInfo(item:MapMarker):void{
+  this.isDoubleClick = true;
+  setTimeout(x => {
+    this.isDoubleClick = false;
+  }, 500);
+  this.DisplayMoreInfo.emit(true);
+  this.PanTo(item);
+}
+
 /**
  * pans map to @param marker lat and long
  */
   public PanTo(marker: MapMarker) {
+    setTimeout(x => {
+    if (!this.isDoubleClick) {
     if (!this.EditMode) {
       if (typeof (marker.Longitude) === 'string') {
         marker.Longitude = parseFloat(marker.Longitude);
@@ -280,6 +301,8 @@ public ToggleTools():void{
       this.CheckMarker(marker);
       // console.log("checked = ", marker.Checked);
     }
+  }
+}, this.expectedDoubleClickElapsedTime);
   }
 
   /**

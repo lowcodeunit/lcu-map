@@ -40,6 +40,7 @@
         [currently-active-locations]="_visibleLocationsMasterList" [selected-location]="SelectedLocation"
         [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)"
         (delete-locations)="DeleteLocations($event)" (display-basic-info)="DisplayMarkerInfo($event)"
+        (display-more-info)="DisplayMoreInfo($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
       </lcu-legend>
     </div>

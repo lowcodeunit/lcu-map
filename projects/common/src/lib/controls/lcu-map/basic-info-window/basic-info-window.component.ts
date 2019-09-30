@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -96,10 +98,16 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     protected dialog: MatDialog,
     protected mapConversions: MapConversions,
     protected breakpointObserver: BreakpointObserver,
-    private locationInfoService: LocationInfoService) {
+    private locationInfoService: LocationInfoService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer) {
     this.IsEdit = this.passedData.isEdit;
     this.IconSetExpanded = false;
     this.dialog.closeAll();
+    this.matIconRegistry.addSvgIcon(
+      "instagram",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/instagram.svg")
+    );
   }
 
   // LIFE CYCLE

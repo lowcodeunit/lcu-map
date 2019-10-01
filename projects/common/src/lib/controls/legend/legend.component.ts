@@ -19,19 +19,49 @@ import { DeleteLocationsComponent } from './delete-locations/delete-locations.co
 
 export class LegendComponent implements OnInit, OnChanges {
 
-
-
   //PROPERTIES
   protected _currentlyActiveLocations: Array<MapMarker>;
   protected _currentMapModel: UserMap;
   protected _legendLocations: Array<MapMarker>;
   protected _currentlyActiveLayers: Array<string>;
+   /**
+   * The MarkerInfo where the icon url can be refrenced
+   */
+  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
+   /**
+   * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
+   */
+  protected expectedDoubleClickElapsedTime: number = 500;
+
+  protected isDoubleClick: boolean;
 
   public matContentWidth: string;
   public matContentHeight: string;
   public Tools: string;
   public SelectedLocation: MapMarker;
   public EditMode: boolean = false;
+
+   
+
+  /**
+   * The Title of the map which is displayed at the top of the Legend
+   */
+  public MapTitle: string;
+
+  /**
+   * The List of locations that will be displayed in the legend
+   */
+  //public LocationsList: Array<LocationListModel> = new Array<LocationListModel>();
+
+  public LocationsList: Array<MapMarker> = new Array<MapMarker>();
+
+  public LegendOpen: boolean;
+
+  public HiddenLocations: Array<MapMarker>;
+
+  // public LegendContentMarginTop: string;
+
+  
 
 
   @Input('current-map-model')
@@ -65,37 +95,22 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('save-legend-locations')
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
+  @Output('display-more-info')
+  DisplayMoreInfo: EventEmitter<boolean>;
+
   @Output('delete-locations')
   DeleteLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('is-legend-open')
-  IsLegendOpen: EventEmitter<Boolean>;
+  IsLegendOpen: EventEmitter<boolean>;
 
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
 
 
 
-  /**
-   * The MarkerInfo where the icon url can be refrenced
-   */
-  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
 
-  /**
-   * The Title of the map which is displayed at the top of the Legend
-   */
-  public MapTitle: string;
 
-  /**
-   * The List of locations that will be displayed in the legend
-   */
-  //public LocationsList: Array<LocationListModel> = new Array<LocationListModel>();
-
-  public LocationsList: Array<MapMarker> = new Array<MapMarker>();
-
-  public LegendOpen: boolean;
-
-  public HiddenLocations: Array<MapMarker>;
 
 
 
@@ -113,7 +128,9 @@ export class LegendComponent implements OnInit, OnChanges {
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
     this.Tools = "closed";
-    this.IsLegendOpen = new EventEmitter<Boolean>();
+    this.IsLegendOpen = new EventEmitter<boolean>();
+    // this.LegendContentMarginTop = "0px";
+    this.DisplayMoreInfo = new EventEmitter<boolean>();
   }
 
   //LIFE CYCLE
@@ -124,14 +141,18 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    // console.log("Selected location from legend ",this.SelectedLocation);
+    //console.log("open: ", this.LegendOpen, " Selected: ", this.SelectedLocation);
+    if(this.LegendOpen && this.SelectedLocation){
       this.SetLocationList();
       this.scroll(document.querySelector('#Selected'));
-
+      if(this.Tools !== "closed"){
+        // this.LegendContentMarginTop = '65px';
+      }
+    }
   }
-  ngAfterContentInit(){
+  // ngAfterContentInit(){
 
-  }
+  // }
 
 
 
@@ -146,10 +167,40 @@ export class LegendComponent implements OnInit, OnChanges {
 
   //API METHODS
 
-public scroll(element: any) {
+public scroll(element: any):void {
     if(element){
-      element.scrollIntoView({ behavior: 'smooth' });
+      let parent = document.getElementById("legend-sidenav-content")
+      let isOut = this.IsOutOfParentElement(element, parent);
+      if(isOut === true){
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
+}
+
+public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {  
+	// Get element's bounding
+  let childBound = child.getBoundingClientRect();
+  let parentBound = parent.getBoundingClientRect();
+  // console.log("ChildBounds = ", childBound)
+  // console.log("ParentBounds = ", parentBound)
+
+	// Check if it's out of the viewport on each side
+  if(childBound.top < 0){
+    return true;
+  }
+  if(childBound.left < 0){
+    return true;
+  }
+  if(childBound.bottom > parentBound.height){ 
+    return true;
+  }
+  if(childBound.right > parentBound.right){
+    return true;
+  }
+  else{
+    return false;
+  }
+
 }
 
 /**
@@ -160,11 +211,17 @@ public ShowMore(): void{
   this.EditMode = true;
 }
 
+public CheckMarker(event: MapMarker):void{
+  console.log("checking: ", event);
+  event.Checked = !event.Checked;
+  console.log("checked = ", event.Checked);
+}
+
 
 public HideLocations():void{
   this._currentlyActiveLocations.forEach(function(marker){
     if(marker.Checked === true){
-      
+      //do something
     }
   })
 }
@@ -175,6 +232,7 @@ public DeleteLocationConfirmation(): void {
   this._currentlyActiveLocations.forEach(function(marker){
     if(marker.Checked === true){
       markersToDelete.push(marker);
+      console.log("pushing marker: ", marker);
     }
   })
   const dialogRef = this.Dialog.open(DeleteLocationsComponent, {
@@ -202,6 +260,7 @@ public TopListsClicked() {
 public ToggleTools():void{
   if(this.Tools === "basic"){
     this.Tools = "closed";
+    // this.LegendContentMarginTop = '0px';
   }
   else if(this.Tools === "closed"){
     this.Tools = "basic";
@@ -212,10 +271,21 @@ public ToggleTools():void{
   }
 }
 
+public ShowMoreInfo(item:MapMarker):void{
+  this.isDoubleClick = true;
+  setTimeout(x => {
+    this.isDoubleClick = false;
+  }, 500);
+  this.DisplayMoreInfo.emit(true);
+  this.PanTo(item);
+}
+
 /**
  * pans map to @param marker lat and long
  */
   public PanTo(marker: MapMarker) {
+    setTimeout(x => {
+    if (!this.isDoubleClick) {
     if (!this.EditMode) {
       if (typeof (marker.Longitude) === 'string') {
         marker.Longitude = parseFloat(marker.Longitude);
@@ -223,12 +293,20 @@ public ToggleTools():void{
       if (typeof (marker.Latitude) === 'string') {
         marker.Latitude = parseFloat(marker.Latitude);
       }
-      this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude, zoom: 15 + Math.random() }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
+      this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
-    } else {
-      marker.Checked = !marker.Checked;
+      console.log("panto marker = ", marker)
+    } 
+    else{
+      // console.log("called");
+      // marker.Checked = !marker.Checked;
+      this.SelectedLocation = marker;
+      this.CheckMarker(marker);
+      // console.log("checked = ", marker.Checked);
     }
+  }
+}, this.expectedDoubleClickElapsedTime);
   }
 
   /**
@@ -299,6 +377,7 @@ public ToggleTools():void{
       this.IsLegendOpen.emit(false);
       if(this.Tools !== "closed"){
         this.Tools = "closed";
+        this.EditMode = false;
       }
       this.LegendOpen = false;
       this.matContentWidth = "30px";
@@ -308,8 +387,8 @@ public ToggleTools():void{
       this.drawer.open();
       this.IsLegendOpen.emit(true);
       this.LegendOpen = true;
-      this.matContentWidth = "0px";
-      this.matContentHeight = "95vh";
+      this.matContentWidth = "100%";
+      this.matContentHeight = "88vh";
     }
   }
 

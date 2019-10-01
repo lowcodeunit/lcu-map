@@ -1,3 +1,5 @@
+
+
 .sidenav-container {
   background-color: transparent;
 }
@@ -18,11 +20,16 @@
   position: sticky;
   top: 0;
   z-index: 10;
+
+  .map-title{
+    font-size: 1.5em;
+    font-weight: 700;
+  }
 }
 
 .legend-content {
   background-color: white;
-  height: 88%;
+  height: 92%;//92%
   overflow: auto;
   padding-top: 5px;
 }
@@ -32,6 +39,7 @@
   border-right: transparent;
   border-left: transparent;
   width: 330px;
+  // margin-bottom:35px;//match to lcu-legend margin top
 }
 
 ::ng-deep .mat-drawer-inner-container {
@@ -42,14 +50,14 @@
   background-color: transparent;
   border-width:0;
   outline: none;
-  font-size: 30px;
+  font-size: 37px;
   margin:0;
   padding: 0;
   height: 35px !important;
 }
 
-.mat-icon-button{
-  height: 24px;
+::ng-deep .mat-icon-button{
+  line-height: 0px !important;
 }
 
 .icon-image{

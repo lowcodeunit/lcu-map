@@ -18,8 +18,8 @@ export class AppComponent implements OnInit {
     // PROPERTIES
 
     public TestLocationSearchResults: any = [
-        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789' }
+        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Country: 'USA', Icon: 'museum', LayerID: '789', Address: '321 Heyo Str' },
+        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', Address: '123 Sup Street', LayerID: '789', Country: 'USA', Town: 'Hillbilly Town' }
     ]
 
     public VisibleLocations: Array<MapMarker>;
@@ -109,7 +109,35 @@ export class AppComponent implements OnInit {
         ]
         this.MasterVisLocs = [
             { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '42', Title: 'Good hotel', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789' }
+            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789', Instagram: "@vail" },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 41.049757, Longitude: -104.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 42.049757, Longitude: -104.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
+
         ]
         this.UserLayers = [{ID: 123, Title: 'User Layer', Shared: false, Deletable: false},
         {ID: 456, Title: 'Curated Layer', Shared: true, Deletable: false},
@@ -120,9 +148,9 @@ export class AppComponent implements OnInit {
     // API METHODS
 
     public CustomSearchChanged(searchTerm) {
-        console.log('user typed: ', searchTerm);
+        // console.log('user typed: ', searchTerm);
         this.TestLocationSearchResults = {...this.TestLocationSearchResults};
-        console.log('sending in this as test result list: ', this.TestLocationSearchResults)
+        // console.log('sending in this as test result list: ', this.TestLocationSearchResults)
     }
 
     /**

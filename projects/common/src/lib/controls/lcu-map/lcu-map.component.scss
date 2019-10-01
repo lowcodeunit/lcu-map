@@ -60,9 +60,9 @@ mat-icon {
 
     }
 }
-#highlighted-marker{
-    opacity: 50%;
-}
+// #highlighted-marker{
+//     opacity: 50%;
+// }
 
 .dialogRefBackdrop{
     background-color: transparent;
@@ -154,4 +154,8 @@ mat-option {
     border-radius: 5px;
     box-shadow: grey 3px 3px 7px;
     top: 25px;
+}
+
+.display-none {
+    display: none;
 }

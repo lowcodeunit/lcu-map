@@ -17,11 +17,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTabsModule} from '@angular/material/tabs';
 import { DeleteLocationsComponent } from './controls/legend/delete-locations/delete-locations.component'
+import { SubString } from './utils/pipes/substring.pipe';
 
 
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent],
+  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent, SubString],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,

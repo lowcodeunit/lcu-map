@@ -87,7 +87,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  protected _panTo: { lat: number, lng: number, zoom: number };
+  protected _panTo: { lat: number, lng: number, zoom:number };
 
   /**
    * The subscription for the basic-info-window modal
@@ -142,6 +142,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * The boolean that is passed to the footer to display or not display the footer
    */
   public DisplayFooter: boolean;
+
+  /**
+   * indicates whether or not to show the dropdown list for the search bar
+   */
+  public displayAutocompleteOptions: boolean = false;
 
   /**
    * The current map marker that someone has selected to diplay info
@@ -227,11 +232,13 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public FilteredLocations: Observable<MapMarker[]>;
 
 
-  public IconIsHighlighted: boolean;
+  // public IconIsHighlighted: boolean;
 /**
  * The top margin of the legend, so the icons are always in line
  */
   public LegendMargin: string;
+
+  public DisplayingMoreInfo: Boolean;
 
   /**
    * The search input box
@@ -441,12 +448,13 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
     this.SearchMethod = 'ambl_on';
-    this.IconIsHighlighted = false;
+    // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = "33px";
+    this.DisplayingMoreInfo = false;
   }
   // LIFE CYCLE
   ngOnInit() {
@@ -469,6 +477,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+
     // console.log("is Highlighted = ", this.SelectedLocation);
   }
 
@@ -481,7 +490,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * if true the icon will be highlighted when more info is being displayed.
    */
   // ngDoCheck(){
-  //this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
+  // console.log("do checking: ", this.IconIsHighlighted)
   // }
 
   // API METHODS
@@ -548,7 +558,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   
   public ToggleLegendMargin(event){
     if(event){
-    this.LegendMargin = '15px';
+    this.LegendMargin = '35px';//15
     }
     else{
       this.LegendMargin = '33px';
@@ -558,8 +568,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * legend uses this function to take incoming data from child class and sets the according values to allow panning
    * @param value 
    */
-  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
+  public PanningTo(value: { lat: number, lng: number, zoom:number}): void {
+    if(!value.zoom){
+      value.zoom = this._currentMapModel.Zoom;
+    }
     this._panTo = value;
+    
     if (this._currentMapModel) {
       this._currentMapModel.Latitude = value.lat;
       this._currentMapModel.Longitude = value.lng;
@@ -606,7 +620,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 townIndex = idx;
               }
             });
-            console.log("Google Returned: ", res.result)
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
@@ -615,7 +628,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Icon: res.result.icon,
               Latitude: res.result.geometry.location.lat,
               Longitude: res.result.geometry.location.lng,
-              Telephone: res.result.formatted_phone_number,
+              Telephone: res.result.international_phone_number,
               Website: res.result.website,
               Town: res.result.address_components[townIndex].long_name,
               Country: res.result.address_components[countryIndex].long_name,
@@ -805,6 +818,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public CustomSearchInputChange(e) {
     this.CustomSearchChange.emit(e.target.value);
     this.setUpCustomMarkerSearch();
+    if (e.target.value.length > 2) { // TODO: change '2' here to an @Input so it can be customized
+      this.displayAutocompleteOptions = true;
+    } else {
+      this.displayAutocompleteOptions = false;
+    }
   }
 
   /**
@@ -815,6 +833,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public LocationOptionSelected(e) {
     this.DropdownItemChosen(e.option.value);
+    this.CustomLocationControl.setValue({});
   }
 
   /**
@@ -829,6 +848,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
+    if(!val){
+      this.SelectedLocation = null;
+    }
   }
   /**
    * @param event 
@@ -856,6 +878,10 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     //this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
     //this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
   }
+
+  DisplayMoreInfo(event:Boolean):void{
+    this.DisplayingMoreInfo = event;
+  }
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    * 
@@ -863,6 +889,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
+    this.SearchControl.setValue('');
+    this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
     this.SelectedLocation = marker;
     this.isEdit = false;
@@ -877,13 +905,33 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     if (this.IsMobile === false) {
       if (marker) {
         setTimeout(() => {
-          const dialogRef = this.dialog.open(BasicInfoWindowComponent, {
+          let dialogRef: any;
+          if(!this.DisplayingMoreInfo){
+          dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             width: "300px",
             height: "210px",
+            position:{top: "15px"},
             backdropClass: 'dialogRefBackdrop',
-            hasBackdrop: !(this.locationInfoService.GetHighlightedIcon()),
-            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit }
+            hasBackdrop: false,
+            disableClose: true, 
+            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit, isMoreInfo: this.DisplayingMoreInfo }
           });
+        }
+        else{
+          dialogRef = this.dialog.open(BasicInfoWindowComponent, {
+            width: "330px", 
+            height: "88vh",
+            position:{
+            right: '10px', 
+            top: '35px', 
+            bottom: '35px'
+            },
+            backdropClass: 'dialogRefBackdrop',
+            hasBackdrop: false,
+            disableClose: true, 
+            data: { marker, markerSet: this.MapMarkerSet, layerID: this.UserLayers.find(lay => lay.Shared === false).ID, isEdit: this.isEdit, isMoreInfo: this.DisplayingMoreInfo }
+          });
+        }
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
               //console.log("data being returned = ", data);
@@ -892,6 +940,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 this.SaveNewMarker(data);
               }
               this.SelectedLocation = null;
+              this.DisplayingMoreInfo = false;
             });
         }, 50, this);
       }
@@ -928,6 +977,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
       });
       this.options = this.CustomSearchInputResults;
+      // console.log(this.options)
       this.FilteredLocations = this.CustomLocationControl.valueChanges
         .pipe(
           startWith(''),
@@ -974,7 +1024,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           //console.log("place: ", place);
           this._currentMapModel.Latitude = place.geometry.location.lat();
           this._currentMapModel.Longitude = place.geometry.location.lng();
-          this._currentMapModel.zoom = 16;
+          // this._currentMapModel.zoom = 16;
 
           let townIndex = -1;
           let countryIndex = -1;
@@ -1008,7 +1058,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Icon: place.icon,
               Latitude: place.geometry.location.lat(),
               Longitude: place.geometry.location.lng(),
-              Telephone: place.formatted_phone_number,
+              Telephone: place.international_phone_number,
               Website: place.website,
               Town: place.address_components[townIndex].long_name,
               Country: place.address_components[countryIndex].long_name,
@@ -1027,7 +1077,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   protected filterCustomLocations(title: string): Array<MapMarker> {
     const filterValue = title.toLowerCase();
-    console.log("filter value = ", filterValue);
+    // console.log("filter value = ", filterValue);
     return this.options.filter(option => option.Title.toLowerCase().indexOf(filterValue) === 0);
   }
 
@@ -1059,7 +1109,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   protected zoomInToPoint(value): void {
     this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
     this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    this._currentMapModel.Zoom = 16 + (Math.random() / 100);
+    // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
   /** 
    * @param photos

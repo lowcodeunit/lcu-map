@@ -1,89 +1,124 @@
-::ng-deep .mat-dialog-container{
+// $instagram-logo: 'data:image/svg+xml;utf8,<svg svg id="instagram-logo" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+
+::ng-deep .mat-dialog-container {
   overflow: visible;
   border-radius: 0px;
   display: flex;
   flex-direction: column;
-  // justify-content: space-evenly;
-}
-::ng-deep .mat-dialog-content{
-    overflow: visible;
-  }
+  padding:5px;
 
-::ng-deep .mat-tab-label{
+  .basic-info-window {
+    height: 100%;
+
+    &::after {
+      border: 30px solid transparent;
+      border-top-color: white;
+      content: '';
+      height: 0;
+      left: 50%;
+      margin-left: -30px;
+      position: absolute;
+      top: 100%;
+      width: 0;
+    }
+  }
+}
+mat-card-title{
+  font-size: 20px;
+  padding-top: 20px;
+}
+mat-card-header{
+  margin-left: -15px;
+}
+// ::ng-deep .mat-card-header-text .basic-info-title  {
+//   margin: 0px 0px 16px 0px !important;
+// }
+
+// .marker-info-container{
+//   padding-left: 5px;
+// }
+
+::ng-deep lcu-basic-info-window {
+  height: 100%;
+}
+
+::ng-deep .mat-dialog-content {
+  overflow: visible;
+  display: flex;
+  flex-grow: 1;
+}
+
+::ng-deep .mat-tab-label {
   min-width: 33%!important;
   background-color: #827382;
   color: white;
   padding: 0;
 }
 
-::ng-deep .mat-tab-body-content{
+::ng-deep .mat-tab-body-content {
  overflow: hidden !important;
 }
 
+::ng-deep mat-tab-group {
+  width: 100%;
+}
 
+::ng-deep .cdk-overlay-pane {
+  position: absolute !important;
+}
 
+mat-form-field {
+  width: 100%;
+}
+
+.mat-dialog-actions {
+  margin: 0 !important;
+  padding-bottom: 0 !important;
+}
 
 .link {
   text-decoration: none !important;
 }
 
-
-  mat-form-field {
-    width: 100%;
-  }
-
-  .available-images {
-    width: 30px;
-    height: 30px;
-    border: solid transparent 2px;
-  }
-
-  .chosen-icon {
-    border: solid black 2px;
-  }
-
-  .customHr {
-    width: 100%;
-    font-size: 1px;
-    line-height: 1.5px;
-
-    background-color: rgb(180, 180, 180);
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  .button {
-    display: inline;
-    // width: 100%;
-    margin-right: 2em;
-    // margin-bottom: 0.5em;
-    font-size: 12px;
-    // height: 25px;
-    background: rgba(180, 180, 180,0.5);
-    padding: 1.25em;
-    text-align: center;
-    border-radius: 5px;
-    color: black;
+.available-images {
+  width: 30px;
+  height: 30px;
+  border: solid transparent 2px;
 }
-  ::ng-deep .cdk-overlay-pane {
-    position: absolute !important;
-    //width: 30vw !important;
-  }
 
-  .down-arrow-to-location {
-    position: absolute;
-    bottom: -50px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+.chosen-icon {
+  border: solid black 2px;
+}
 
-  ::ng-deep mat-tab-group {
-    width: 100%;
-  }
+.customHr {
+  width: 100%;
+  font-size: 1px;
+  line-height: 1.5px;
+  background-color: rgb(180, 180, 180);
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.button {
+  display: inline;
+  margin-right: 2em;
+  font-size: 12px;
+  background: rgba(180, 180, 180,0.5);
+  padding: 1.25em;
+  text-align: center;
+  border-radius: 5px;
+  color: black;
+}
+.down-arrow-to-location {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
 .available-image-container {
   text-align: center;
@@ -105,4 +140,7 @@
     color: red;
     font-size: 2em;
   }
+}
+mat-tab-group{
+  width:320px;
 }

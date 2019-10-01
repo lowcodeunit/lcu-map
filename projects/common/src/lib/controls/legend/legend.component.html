@@ -2,7 +2,7 @@
 <mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer()
   [ngStyle]="{height: matContentHeight}">
 
-  <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
+  <mat-sidenav-content class="mat-sidenav-content" id="legend-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
     <div class="button-container" fxLayoutAlign="end start">
 
       <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
@@ -20,7 +20,7 @@
             <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
           </button>
 
-          <h2 class="map-title">{{MapTitle}}</h2>
+          <div class="map-title">{{MapTitle}}</div>
 
           <button class="legend-button">
             <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
@@ -43,22 +43,22 @@
           </mat-toolbar>
     </div>
 
-    <div class="legend-content">
+    <div class="legend-content" id="legend-content">
       <div cdkDropList class="location-list" cdkDropListOrientation="vertical" (cdkDropListDropped)="drop($event)" fxLayout="column"
         fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
-          *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}" (click)="PanTo(item)">
-          <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)="$event.stopPropagation()"></mat-checkbox>
+          *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}" (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
+          <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
           <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
-            <div class="location-title">
-              {{ item.Title }}
+            <div class="location-title" matTooltip={{item.Title}}>
+              {{ item.Title | substring }}
             </div>
           </div>
           <div *ngIf="item !== SelectedLocation" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
-            <div class="location-title">
-              {{ item.Title }}
+            <div class="location-title" matTooltip={{item.Title}}>
+              {{ item.Title | substring }}
             </div>
           </div>
         </div>

@@ -61,7 +61,7 @@
         [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
           [value]="location" [ngClass]="{'display-none': !displayAutocompleteOptions, 'search-bar-element': true}">
-          <span><img class="dropdown-marker-image search-bar-element" src="{{location.IconImageObject.Url}}"></span>
+          <span><img class="dropdown-marker-image search-bar-element" [src]="location.IconImageObject.url"></span>
           <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
           <span class="dropdown-marker-location-text search-bar-element">
             <span

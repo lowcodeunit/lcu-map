@@ -315,7 +315,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   @Input('user-layers')
   public set UserLayers(value: Array<UserLayer>) {
     this._userLayers = value;
-    this.shiftCuratedLayerToTop();
   }
   public get UserLayers() {
     return this._userLayers;
@@ -1137,15 +1136,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     }
     //console.log("returning: ", photoUrls);
     return photoUrls;
-  }
-
-  protected shiftCuratedLayerToTop() {
-    let first = "Curated";
-    if (this._userLayers && this._userLayers !== undefined) {
-      this._userLayers.sort(function (layer1, layer2) {
-        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
-      });
-    }
   }
 
 }

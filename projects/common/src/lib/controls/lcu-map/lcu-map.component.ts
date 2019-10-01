@@ -849,7 +849,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
     if(!val){
-      this.SelectedLocation = null;
+      this.SelectedLocation = undefined;
     }
   }
   /**
@@ -889,6 +889,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
+    
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
@@ -939,7 +940,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 console.log(data)
                 this.SaveNewMarker(data);
               }
-              this.SelectedLocation = undefined;
+              // console.log("sL=", this.SelectedLocation)
+               this.SelectedLocation = undefined;
               this.DisplayingMoreInfo = false;
             });
         }, 50, this);

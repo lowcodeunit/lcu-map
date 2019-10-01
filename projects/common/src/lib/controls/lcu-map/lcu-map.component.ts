@@ -1140,7 +1140,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   protected shiftCuratedLayerToTop() {
-    let first = "Curated Layer";
+    let first = "Curated";
     if (this._userLayers && this._userLayers !== undefined) {
       this._userLayers.sort(function (layer1, layer2) {
         return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;

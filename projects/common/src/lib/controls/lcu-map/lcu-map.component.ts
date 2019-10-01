@@ -939,7 +939,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 console.log(data)
                 this.SaveNewMarker(data);
               }
-              this.SelectedLocation = null;
+              this.SelectedLocation = undefined;
               this.DisplayingMoreInfo = false;
             });
         }, 50, this);

@@ -83,7 +83,9 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @Input('selected-location')
   public set SelectedLoaction(value: MapMarker){
+    if(value){
     this.SelectedLocation = value;
+    }
   }
 
   @Output('pan')

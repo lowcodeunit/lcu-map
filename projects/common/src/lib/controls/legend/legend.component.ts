@@ -18,21 +18,50 @@ import { DeleteLocationsComponent } from './delete-locations/delete-locations.co
 })
 
 export class LegendComponent implements OnInit, OnChanges {
-  [x: string]: any;
-
-
 
   //PROPERTIES
   protected _currentlyActiveLocations: Array<MapMarker>;
   protected _currentMapModel: UserMap;
   protected _legendLocations: Array<MapMarker>;
   protected _currentlyActiveLayers: Array<string>;
+   /**
+   * The MarkerInfo where the icon url can be refrenced
+   */
+  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
+   /**
+   * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
+   */
+  protected expectedDoubleClickElapsedTime: number = 500;
+
+  protected isDoubleClick: boolean;
 
   public matContentWidth: string;
   public matContentHeight: string;
   public Tools: string;
   public SelectedLocation: MapMarker;
   public EditMode: boolean = false;
+
+   
+
+  /**
+   * The Title of the map which is displayed at the top of the Legend
+   */
+  public MapTitle: string;
+
+  /**
+   * The List of locations that will be displayed in the legend
+   */
+  //public LocationsList: Array<LocationListModel> = new Array<LocationListModel>();
+
+  public LocationsList: Array<MapMarker> = new Array<MapMarker>();
+
+  public LegendOpen: boolean;
+
+  public HiddenLocations: Array<MapMarker>;
+
+  // public LegendContentMarginTop: string;
+
+  
 
 
   @Input('current-map-model')
@@ -67,46 +96,21 @@ export class LegendComponent implements OnInit, OnChanges {
   SaveLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('display-more-info')
-  DisplayMoreInfo: EventEmitter<Boolean>;
+  DisplayMoreInfo: EventEmitter<boolean>;
 
   @Output('delete-locations')
   DeleteLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('is-legend-open')
-  IsLegendOpen: EventEmitter<Boolean>;
+  IsLegendOpen: EventEmitter<boolean>;
 
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
 
 
 
-  /**
-   * The MarkerInfo where the icon url can be refrenced
-   */
-  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
 
-  /**
-   * The Title of the map which is displayed at the top of the Legend
-   */
-  public MapTitle: string;
 
-  /**
-   * The List of locations that will be displayed in the legend
-   */
-  //public LocationsList: Array<LocationListModel> = new Array<LocationListModel>();
-
-  public LocationsList: Array<MapMarker> = new Array<MapMarker>();
-
-  public LegendOpen: boolean;
-
-  public HiddenLocations: Array<MapMarker>;
-
-  public LegendContentMarginTop: string;
-
-   /**
-   * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
-   */
-  protected expectedDoubleClickElapsedTime: number = 500;
 
 
 
@@ -124,9 +128,9 @@ export class LegendComponent implements OnInit, OnChanges {
     this.matContentWidth = "30px";
     this.matContentHeight = "30px";
     this.Tools = "closed";
-    this.IsLegendOpen = new EventEmitter<Boolean>();
-    this.LegendContentMarginTop = "0px";
-    this.DisplayMoreInfo = new EventEmitter<Boolean>();
+    this.IsLegendOpen = new EventEmitter<boolean>();
+    // this.LegendContentMarginTop = "0px";
+    this.DisplayMoreInfo = new EventEmitter<boolean>();
   }
 
   //LIFE CYCLE
@@ -142,7 +146,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.SetLocationList();
       this.scroll(document.querySelector('#Selected'));
       if(this.Tools !== "closed"){
-        this.LegendContentMarginTop = '65px';
+        // this.LegendContentMarginTop = '65px';
       }
     }
   }
@@ -256,7 +260,7 @@ public TopListsClicked() {
 public ToggleTools():void{
   if(this.Tools === "basic"){
     this.Tools = "closed";
-    this.LegendContentMarginTop = '0px';
+    // this.LegendContentMarginTop = '0px';
   }
   else if(this.Tools === "closed"){
     this.Tools = "basic";

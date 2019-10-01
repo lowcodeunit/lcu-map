@@ -1,24 +1,24 @@
 <!-- Modal -->
 <div id="dialogRef" fxLayout="column" [ngClass]="{'basic-info-window': ModalState !== 'moreInfo'}">
-  <mat-card-header fxLayout="row" fxLayoutAlign="space-between start">
+  <div fxLayout="row" fxLayoutAlign="space-between start">
     <!-- if both website and title exist then the title is the link to the website -->
     <!-- <mat-card-title *ngIf="BasicInfoData?.Title && BasicInfoData?.Website" fxLayout="row" fxLayoutAlign="start">
       <a *ngIf="BasicInfoData?.Website" class="link" href={{BasicInfoData.Website}} target="_blank" style="margin-right: 2em">{{BasicInfoData.Title}}</a>
     </mat-card-title> -->
 
     <!-- The title fxLayoutAlign="space-between start"-->
-    <mat-card-title  class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
+    <div class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === true && ModalState !== 'addToMap'" fxLayout="row"
       fxLayoutAlign="start center" style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}}>
       {{Title}}
-    </mat-card-title>
-    <mat-card-title class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
-      fxLayoutAlign="start center">
+  </div>
+    <div class="basic-info-title" *ngIf="BasicInfoData?.Title && TitleEllipsis === false && ModalState !== 'addToMap'" fxLayout="row"
+      fxLayoutAlign="start center" style="margin-bottom: 1em; font-size: 20px" matTooltip={{BasicInfoData?.Title}>
       {{Title}}
-    </mat-card-title>
+  </div>
     <!-- close button -->
     <mat-icon fxFlex fxLayoutAlign="end start" (click)="Close()" matTooltip="Close" matTooltipPosition="right">close
     </mat-icon>
-  </mat-card-header>
+  </div>
 
 
   <!-- content with scroll bar  -->

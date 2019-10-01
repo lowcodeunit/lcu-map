@@ -27,9 +27,12 @@ mat-card-title{
   font-size: 20px;
   padding-top: 20px;
 }
-::ng-deep .mat-card-header-text .basic-info-title  {
-  margin: 0px 0px 16px 0px !important;
+mat-card-header{
+  margin-left: -15px;
 }
+// ::ng-deep .mat-card-header-text .basic-info-title  {
+//   margin: 0px 0px 16px 0px !important;
+// }
 
 // .marker-info-container{
 //   padding-left: 5px;

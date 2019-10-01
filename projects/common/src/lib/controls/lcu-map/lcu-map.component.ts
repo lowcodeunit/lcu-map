@@ -207,6 +207,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   /**
    * The array of available map views to be chosen by the user (default is standard)
+   * 
+   * TODO: Make this an @Input that devs can use to customize map type and display names for the types
    */
   public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },
@@ -1138,7 +1140,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   protected shiftCuratedLayerToTop() {
-    let first = "Curated Layer";
+    let first = "Curated";
     if (this._userLayers && this._userLayers !== undefined) {
       this._userLayers.sort(function (layer1, layer2) {
         return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;

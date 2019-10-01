@@ -142,10 +142,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
   ngOnChanges(){
     //console.log("open: ", this.LegendOpen, " Selected: ", this.SelectedLocation);
-    if(this.LegendOpen && this.SelectedLocation){
-      // this.SetLocationList();
-      this.scroll(document.querySelector('#Selected'));
-    }
+   
     if(this.LegendOpen && !this.SelectedLocation){
       this.SetLocationList();
     }
@@ -296,10 +293,12 @@ public ShowMoreInfo(item:MapMarker):void{
       this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
-      console.log("panto marker = ", marker)
+      if(this.LegendOpen && this.SelectedLocation){
+        this.scroll(document.querySelector('#Selected'));
+      }
+      // console.log("panto marker = ", marker)
     } 
     else{
-      // console.log("called");
       // marker.Checked = !marker.Checked;
       this.SelectedLocation = marker;
       this.CheckMarker(marker);

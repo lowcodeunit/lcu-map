@@ -210,7 +210,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },
-    { value: 'satellite', display: 'Satellite' },
+    { value: 'hybrid', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
 

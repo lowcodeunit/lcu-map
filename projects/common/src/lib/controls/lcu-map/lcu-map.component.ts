@@ -207,6 +207,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   /**
    * The array of available map views to be chosen by the user (default is standard)
+   * 
+   * TODO: Make this an @Input that devs can use to customize map type and display names for the types
    */
   public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },

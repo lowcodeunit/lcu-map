@@ -977,7 +977,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
       });
       this.options = this.CustomSearchInputResults;
-      console.log(this.options)
+      // console.log(this.options)
       this.FilteredLocations = this.CustomLocationControl.valueChanges
         .pipe(
           startWith(''),
@@ -1077,7 +1077,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   protected filterCustomLocations(title: string): Array<MapMarker> {
     const filterValue = title.toLowerCase();
-    console.log("filter value = ", filterValue);
+    // console.log("filter value = ", filterValue);
     return this.options.filter(option => option.Title.toLowerCase().indexOf(filterValue) === 0);
   }
 

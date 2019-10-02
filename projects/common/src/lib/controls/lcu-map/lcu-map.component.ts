@@ -477,9 +477,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    // console.log("selected Loc = ", this.SelectedLocation);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
 
     // console.log("is Highlighted = ", this.SelectedLocation);
+  }
+  ngDoCheck(){
+    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    // console.log("selected Loc = ", this.SelectedLocation);
   }
 
   ngOnDestroy() {
@@ -850,7 +856,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
     if(!val){
-      this.SelectedLocation = undefined;
+      this.locationInfoService.SetSelectedLocation(undefined);
     }
   }
   /**
@@ -890,11 +896,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
+    // if(this.dialog.openDialogs.length > 0){
+    //   this.dialog.closeAll();
+    // }
     
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
-    this.SelectedLocation = marker;
+    this.locationInfoService.SetSelectedLocation(marker);
+    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
     this.isEdit = false;
     let userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
     if (marker.LayerID === userLayerID) {
@@ -942,7 +952,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 this.SaveNewMarker(data);
               }
               // console.log("sL=", this.SelectedLocation)
-               this.SelectedLocation = undefined;
+              // this.SelectedLocation = undefined;
               this.DisplayingMoreInfo = false;
             });
         }, 50, this);

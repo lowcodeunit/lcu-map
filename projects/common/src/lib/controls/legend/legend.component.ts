@@ -84,14 +84,13 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @Input('selected-location')
   public set SelectedLoaction(value: MapMarker){
-    if(value || this.undefinedCounter ===2){
+    // if(value || this.undefinedCounter ===2){
     this.SelectedLocation = value;
-    this.undefinedCounter =0;
-
-    }
-    if(!value){
-      this.undefinedCounter+=1;
-    }
+    // this.undefinedCounter =0;
+    // }
+    // if(!value){
+    //   this.undefinedCounter+=1;
+    // }
   }
 
   @Output('pan')

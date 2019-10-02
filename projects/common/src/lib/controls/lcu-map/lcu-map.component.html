@@ -97,7 +97,7 @@
           [iconUrl]="marker.IconImageObject">
 
           <agm-info-window>
-            <lcu-basic-info-window-rewrite [markerData]="marker"></lcu-basic-info-window-rewrite>
+            <lcu-basic-info-window-rewrite [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
           </agm-info-window>
         </agm-marker>
       </div>
@@ -105,7 +105,7 @@
         [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
 
         <agm-info-window [isOpen]="SelectedLocation" (infoWindowClose)="SelectedLocation = null;">
-            <lcu-basic-info-window-rewrite [markerData]="SelectedLocation"></lcu-basic-info-window-rewrite>
+            <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
         </agm-info-window>
       </agm-marker>
     </agm-map>

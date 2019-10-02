@@ -1,18 +1,85 @@
-<div fxLayout="column">
-  <div fxLayout="row" fx class="basic-info-header">
-      {{ Marker.Title }}
-  </div>
-  <div class="basic-info-content">
-      <p *ngIf="!Marker" style="margin:0; color:grey">No Content</p>
+<div fxLayout="column" class="basic-info-container">
 
-      <div *ngIf="Marker?.Address">{{ Marker?.Address }}</div>
-      <div *ngIf="Marker?.Town || Marker?.Country || Marker?.State">
-        {{ Marker?.Town }}, {{ Marker?.State }} {{ Marker?.Country }}
-      </div>
-      <div *ngIf="Marker?.Telephone">{{ Marker?.Telephone }}</div>
+  <div class="basic-info-header" matTooltip={{marker?.Title}}>
+      {{ marker.Title }}
   </div>
+
+  <div *ngIf="currentState === modalStateType.BASIC" fxLayoutAlign="space-between" class="basic-info-content">
+
+    <div fxLayout="column" fxLayoutAlign="start start" class="content-left">
+        <div *ngIf="basicInfoBlocks && basicInfoBlocks.length">
+          <div fxLayout="row" *ngFor="let block of basicInfoBlocks">
+            {{ block }}
+          </div>
+        </div>
+        <div *ngIf="!basicInfoBlocks || !basicInfoBlocks.length" class="content-missing">
+          No Content
+        </div>
+    </div>
+
+    <div id="testIDLayout" fxLayout="column" fxLayoutAlign="start center" class="content-right">
+      <svg class="progress-ring" height="80" width="80">
+        <g>
+          <circle
+            class="progress-ring__circle_bg"
+            stroke-width="4"
+            stroke="#F1F4F6"
+            fill="transparent"
+            r="32"
+            cx="40"
+            cy="40">
+          </circle>
+          <path *ngIf="true" transform="translate(30, 29)" d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+          <path *ngIf="false" transform="translate(30, 29)" d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
+        </g>
+
+        <circle
+          id="progress-ring-{{marker.ID}}"
+          class="progress-ring__circle"
+          stroke-width="4"
+          stroke="#67C7C5"
+          fill="transparent"
+          r="32"
+          cx="40"
+          cy="40">
+        </circle>
+      </svg>
+      <div class="content-percent">
+        {{ marker.Rating }}%
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="currentState === modalStateType.ADD_TO_MAP" class="add-to-map-content">
+      <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="newMarkerForm" fxLayoutGap="30px">
+          <mat-form-field>
+            <mat-label>Marker Title</mat-label>
+            <input type="text" matInput formControlName="title">
+            <mat-hint>The title for the map marker</mat-hint>
+            <mat-error>Invalid or missing title</mat-error>
+          </mat-form-field>
+
+          <div fxLayout="row wrap">
+            <div [fxFlex]="25" *ngFor="let icon of displayMarkerSet" class="available-image-container">
+              <img class="available-images" [ngClass]="{'chosen-icon': icon === chosenIcon}" src="{{icon.IconUrl}}"
+                (click)="setIcon(icon)" />
+            </div>
+            <div *ngIf="!iconSetExpanded" class="available-image-container" [fxFlex]="25">
+              <button mat-button color="primary" color="default" (click)="toggleVisibleIcons()"
+                class="icon-expansion-buttons" matTooltip="Click to expand list of icons">...</button>
+            </div>
+            <div *ngIf="iconSetExpanded" class="available-image-container" [fxFlex]="25">
+              <button mat-button color="primary" color="default" (click)="toggleVisibleIcons()"
+                class="icon-expansion-buttons" matTooltip="Click to contract list of icons">...</button>
+            </div>
+          </div>
+        </form>
+  </div>
+
   <div class="basic-info-buttons" fxLayoutAlign="space-between end">
-      <button mat-button mat-raised-button>More Info</button>
-      <button mat-button mat-raised-button>+</button>
+      <button *ngIf="currentState === modalStateType.BASIC" mat-button mat-raised-button (click)="openMoreInfo()">More Info</button>
+      <button *ngIf="currentState === modalStateType.BASIC" mat-button mat-raised-button (click)="changeView(modalStateType.ADD_TO_MAP)">{{isEdit ? 'Edit' : '+'}}</button>
+      <button *ngIf="currentState === modalStateType.ADD_TO_MAP" mat-button mat-raised-button>Save</button>
+      <button *ngIf="currentState === modalStateType.ADD_TO_MAP" mat-button mat-raised-button (click)="changeView(modalStateType.BASIC)">Cancel</button>
   </div>
 </div>

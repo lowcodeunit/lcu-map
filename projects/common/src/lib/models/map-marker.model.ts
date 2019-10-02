@@ -128,6 +128,8 @@ export class MapMarker {
      */
     public Checked?: boolean;
 
+    public Rating?: number;
+
     /**
      *
      * @param icon The object containing data for a single point (a map marker) on a map (<agm-map>)

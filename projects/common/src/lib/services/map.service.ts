@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
+import { MapMarker } from '../models/map-marker.model';
 // import { IndividualMap } from '../models/individual-map.model';
 
 @Injectable({
@@ -27,6 +28,8 @@ export class MapService {
    */
   public TopListsClicked: EventEmitter<any>;
 
+  public MoreInfoClicked: EventEmitter<any>;
+
   /**
    * The current Layers that are selected to display
    */
@@ -36,6 +39,7 @@ export class MapService {
 
   constructor(protected http: HttpClient) {
     this.TopListsClicked = new EventEmitter<any>();
+    this.MoreInfoClicked = new EventEmitter<any>();
   }
 
   // LIFE CYCLE
@@ -83,6 +87,10 @@ export class MapService {
    */
   public LegendTopListsClicked() {
     this.TopListsClicked.emit('TopListsButtonClicked');
+  }
+
+  public MoreInfoClickedEvent(selectedMarker: MapMarker): void {
+    this.MoreInfoClicked.emit(selectedMarker);
   }
 
   /**

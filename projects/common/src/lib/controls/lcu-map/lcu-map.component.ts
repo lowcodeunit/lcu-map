@@ -17,6 +17,7 @@ import { map, startWith } from 'rxjs/operators';
 import { LocationInfoService } from '../../services/location-info.service';
 import { UserLayer } from '../../models/user-layer.model';
 import { UserMap } from '../../models/user-map.model';
+import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
 
 @Component({
   selector: 'lcu-map',
@@ -468,6 +469,13 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.TopListsSubscription = this.mapService.TopListsClicked.subscribe(() => {
       this.TopListsButtonClicked.emit();
     });
+
+    this.mapService.MoreInfoClicked.subscribe(
+      (data) => {
+        console.log('WE GOT THE EVENT!!!', data);
+        this.openMoreInfoDialog(data);
+      }
+    )
   }
 
   ngOnChanges() {
@@ -1090,6 +1098,30 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
       });
     }
+  }
+
+  protected openMoreInfoDialog(marker: MapMarker): void {
+    let dialogRef: any = this.dialog.open(MoreInfoWindowComponent, {
+            width: '330px',
+            height: '95vh',
+            position: { right: '10px', top: '15px', bottom: '35px' },
+            backdropClass: 'dialogRefBackdrop',
+            hasBackdrop: false,
+            disableClose: true,
+            data: {
+              marker,
+              markerSet: this.MapMarkerSet,
+              layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
+              isEdit: this.isEdit
+            }
+          });
+
+    // this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
+    //   (data) => {
+    //     if (data !== undefined && data !== null) {
+    //       this.SaveNewMarker(data);
+    //     }
+    //   });
   }
 
 }

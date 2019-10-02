@@ -33,6 +33,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { DeleteLocationsComponent } from './controls/legend/delete-locations/delete-locations.component'
 import { SubString } from './utils/pipes/substring.pipe';
 import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
+import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-w
     LegendComponent,
     DeleteLocationsComponent,
     SubString,
-    BasicInfoWindowRewriteComponent
+    BasicInfoWindowRewriteComponent,
+    MoreInfoWindowComponent
   ],
   imports: [
     FathymSharedModule,
@@ -80,7 +82,8 @@ import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-w
     LocationInfoFormComponent,
     LegendComponent,
     DeleteLocationsComponent,
-    BasicInfoWindowRewriteComponent
+    BasicInfoWindowRewriteComponent,
+    MoreInfoWindowComponent
   ],
   entryComponents: [
     LcuMapComponent,
@@ -91,7 +94,8 @@ import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-w
     LocationInfoFormComponent,
     LegendComponent,
     DeleteLocationsComponent,
-    BasicInfoWindowRewriteComponent
+    BasicInfoWindowRewriteComponent,
+    MoreInfoWindowComponent
   ]
 })
 export class LcuMapModule { }

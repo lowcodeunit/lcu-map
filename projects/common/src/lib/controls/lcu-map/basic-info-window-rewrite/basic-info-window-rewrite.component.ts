@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/cor
 import { MapMarker } from '../../../models/map-marker.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerInfo } from '../../../models/marker-info.model';
+import { MapService } from '../../../services/map.service';
 
 export enum ModalStateType {
   BASIC = 'BASIC',
@@ -33,7 +34,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
 
   @Input() public mapMarkerSet: MarkerInfo[];
 
-  constructor() { }
+  constructor(protected mapService: MapService) { }
 
   public ngOnInit(): void {
     console.log('ngOnInit', this.marker);
@@ -135,7 +136,8 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   }
 
   public openMoreInfo(): void {
-
+    console.log('openMoreInfo clicked: ', this.marker);
+    this.mapService.MoreInfoClickedEvent(this.marker);
   }
 
 }

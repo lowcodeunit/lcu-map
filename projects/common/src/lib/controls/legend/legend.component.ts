@@ -58,6 +58,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public LegendOpen: boolean;
 
   public HiddenLocations: Array<MapMarker>;
+  protected undefinedCounter: number;
 
   // public LegendContentMarginTop: string;
 
@@ -84,6 +85,7 @@ export class LegendComponent implements OnInit, OnChanges {
   @Input('selected-location')
   public set SelectedLoaction(value: MapMarker){
     this.SelectedLocation = value;
+    this.scrolled = false;
   }
 
   @Output('pan')
@@ -109,7 +111,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
 
 
-
+protected scrolled: boolean;
 
 
 
@@ -131,23 +133,25 @@ export class LegendComponent implements OnInit, OnChanges {
     this.IsLegendOpen = new EventEmitter<boolean>();
     // this.LegendContentMarginTop = "0px";
     this.DisplayMoreInfo = new EventEmitter<boolean>();
+    this.scrolled = false;
+    this.HiddenLocations = new Array<MapMarker>();
   }
 
   //LIFE CYCLE
 
   ngOnInit() {
-    // this.SetLocationList();
-
+   
   }
 
   ngOnChanges(){
     //console.log("open: ", this.LegendOpen, " Selected: ", this.SelectedLocation);
-    if(this.LegendOpen && this.SelectedLocation){
+   
+    if(this.LegendOpen && !this.SelectedLocation){
       this.SetLocationList();
+      this.CheckIfHidden();
+    }
+    if(this.LegendOpen && this.SelectedLocation){
       this.scroll(document.querySelector('#Selected'));
-      if(this.Tools !== "closed"){
-        // this.LegendContentMarginTop = '65px';
-      }
     }
   }
   // ngAfterContentInit(){
@@ -167,12 +171,18 @@ export class LegendComponent implements OnInit, OnChanges {
 
   //API METHODS
 
-public scroll(element: any):void {
+protected scroll(element: any):void {
     if(element){
-      let parent = document.getElementById("legend-sidenav-content")
+      let parent = document.getElementById("legend-content")
       let isOut = this.IsOutOfParentElement(element, parent);
-      if(isOut === true){
+      if(isOut === false){
+        this.scrolled = true;
+      }
+      if(isOut === true && this.scrolled === false){
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          this.scrolled = true;
+        },500);
       }
     }
 }
@@ -185,10 +195,11 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
   // console.log("ParentBounds = ", parentBound)
 
 	// Check if it's out of the viewport on each side
-  if(childBound.top < 0){
+  
+  if(childBound.top < parentBound.top){
     return true;
   }
-  if(childBound.left < 0){
+  if(childBound.left > parentBound.left){
     return true;
   }
   if(childBound.bottom > parentBound.height){ 
@@ -201,6 +212,16 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
     return false;
   }
 
+}
+
+public CheckIfHidden():void{
+  for(let i = 0; i < this._currentlyActiveLocations.length; i++){
+    if(this._currentlyActiveLocations[i].Hidden){
+      console.log("hiding: ", this._currentlyActiveLocations[i]);
+      this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+      this._currentlyActiveLocations.splice(i, 1);
+    }
+  }
 }
 
 /**
@@ -219,11 +240,19 @@ public CheckMarker(event: MapMarker):void{
 
 
 public HideLocations():void{
-  this._currentlyActiveLocations.forEach(function(marker){
-    if(marker.Checked === true){
-      //do something
+  console.log("locs", this._currentlyActiveLocations);
+  let temp = this._currentlyActiveLocations;
+  for(let i = 0; i < temp.length; i++){
+    if(temp[i].Checked){
+      temp[i].Hidden = true;
+      console.log("hiding: ", temp[i]);
+      this.HiddenLocations.push(temp[i]);
+      temp.splice(i, 1);
     }
-  })
+  }
+  this._currentlyActiveLocations = temp;
+  console.log("hid ", this.HiddenLocations);
+  this.SetLocationList();
 }
 
 
@@ -296,10 +325,12 @@ public ShowMoreInfo(item:MapMarker):void{
       this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
-      console.log("panto marker = ", marker)
+      if(this.LegendOpen && this.SelectedLocation){
+        this.scroll(document.querySelector('#Selected'));
+      }
+      // console.log("panto marker = ", marker)
     } 
     else{
-      // console.log("called");
       // marker.Checked = !marker.Checked;
       this.SelectedLocation = marker;
       this.CheckMarker(marker);

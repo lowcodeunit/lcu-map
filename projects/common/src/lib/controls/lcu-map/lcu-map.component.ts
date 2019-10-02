@@ -207,10 +207,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   /**
    * The array of available map views to be chosen by the user (default is standard)
+   * 
+   * TODO: Make this an @Input that devs can use to customize map type and display names for the types
    */
   public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },
-    { value: 'satellite', display: 'Satellite' },
+    { value: 'hybrid', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
 
@@ -313,7 +315,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   @Input('user-layers')
   public set UserLayers(value: Array<UserLayer>) {
     this._userLayers = value;
-    this.shiftCuratedLayerToTop();
   }
   public get UserLayers() {
     return this._userLayers;
@@ -476,9 +477,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    // console.log("selected Loc = ", this.SelectedLocation);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
 
     // console.log("is Highlighted = ", this.SelectedLocation);
+  }
+  ngDoCheck(){
+    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    // console.log("selected Loc = ", this.SelectedLocation);
   }
 
   ngOnDestroy() {
@@ -619,7 +626,13 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 // if location is outside a "town", set it to "county"
                 townIndex = idx;
               }
+              if (townIndex === -1){
+                //if there is no county associated set to closest long_name
+                townIndex = 0;
+              }
             });
+            // console.log("result: ", res.result);
+            // console.log("town index = ", townIndex);
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
@@ -849,7 +862,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
     if(!val){
-      this.SelectedLocation = null;
+      this.locationInfoService.SetSelectedLocation(undefined);
     }
   }
   /**
@@ -892,7 +905,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
-    this.SelectedLocation = marker;
+    this.locationInfoService.SetSelectedLocation(marker);
+    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
     this.isEdit = false;
     let userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
     if (marker.LayerID === userLayerID) {
@@ -939,7 +953,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 console.log(data)
                 this.SaveNewMarker(data);
               }
-              this.SelectedLocation = null;
+              // console.log("sL=", this.SelectedLocation)
+              // this.SelectedLocation = undefined;
               this.DisplayingMoreInfo = false;
             });
         }, 50, this);
@@ -1048,7 +1063,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             // let photoArray: Array<string>;
             // if(res.result.pho)
 
-            //console.log("placePhotos: ", placePhotos);
+            console.log("place: ", place);
 
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
@@ -1133,15 +1148,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     }
     //console.log("returning: ", photoUrls);
     return photoUrls;
-  }
-
-  protected shiftCuratedLayerToTop() {
-    let first = "Curated Layer";
-    if (this._userLayers && this._userLayers !== undefined) {
-      this._userLayers.sort(function (layer1, layer2) {
-        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
-      });
-    }
   }
 
 }

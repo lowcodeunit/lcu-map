@@ -84,13 +84,8 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @Input('selected-location')
   public set SelectedLoaction(value: MapMarker){
-    // if(value || this.undefinedCounter ===2){
     this.SelectedLocation = value;
-    // this.undefinedCounter =0;
-    // }
-    // if(!value){
-    //   this.undefinedCounter+=1;
-    // }
+    this.scrolled = false;
   }
 
   @Output('pan')
@@ -116,7 +111,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
 
 
-
+protected scrolled: boolean;
 
 
 
@@ -138,13 +133,13 @@ export class LegendComponent implements OnInit, OnChanges {
     this.IsLegendOpen = new EventEmitter<boolean>();
     // this.LegendContentMarginTop = "0px";
     this.DisplayMoreInfo = new EventEmitter<boolean>();
+    this.scrolled = false;
   }
 
   //LIFE CYCLE
 
   ngOnInit() {
-    // this.SetLocationList();
-
+   
   }
 
   ngOnChanges(){
@@ -152,6 +147,9 @@ export class LegendComponent implements OnInit, OnChanges {
    
     if(this.LegendOpen && !this.SelectedLocation){
       this.SetLocationList();
+    }
+    if(this.LegendOpen && this.SelectedLocation){
+      this.scroll(document.querySelector('#Selected'));
     }
   }
   // ngAfterContentInit(){
@@ -173,10 +171,16 @@ export class LegendComponent implements OnInit, OnChanges {
 
 public scroll(element: any):void {
     if(element){
-      let parent = document.getElementById("legend-sidenav-content")
+      let parent = document.getElementById("legend-content")
       let isOut = this.IsOutOfParentElement(element, parent);
-      if(isOut === true){
+      if(isOut === false){
+        this.scrolled = true;
+      }
+      if(isOut === true && this.scrolled === false){
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          this.scrolled = true;
+        },500);
       }
     }
 }
@@ -189,10 +193,11 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
   // console.log("ParentBounds = ", parentBound)
 
 	// Check if it's out of the viewport on each side
-  if(childBound.top < 0){
+  
+  if(childBound.top < parentBound.top){
     return true;
   }
-  if(childBound.left < 0){
+  if(childBound.left > parentBound.left){
     return true;
   }
   if(childBound.bottom > parentBound.height){ 

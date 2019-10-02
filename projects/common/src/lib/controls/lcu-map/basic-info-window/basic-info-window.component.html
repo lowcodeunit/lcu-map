@@ -20,11 +20,10 @@
     </mat-icon>
   </div>
 
-
   <!-- content with scroll bar  -->
-  <mat-dialog-content class="mat-dialog-content">
+  <mat-dialog-content class="mat-dialog-content" fxLayoutAlign="space-between">
     <!-- display basic data -->
-    <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column" fxLayoutAlign="start start"
+    <div *ngIf="ModalState === 'basic'" class="basic-info" fxLayout="column" fxLayoutAlign="start start" fxFlex
       class="marker-info-container">
       <p *ngIf="Type" style="margin:0; color:grey">{{Type}}</p>
 
@@ -34,8 +33,12 @@
       </div>
       <div *ngIf="BasicInfoData?.Country ">{{BasicInfoData?.Country}}</div>
       <div *ngIf="BasicInfoData?.Telephone">{{BasicInfoData?.Telephone}}</div>
+    </div>
 
-      <!-- </div> -->
+    <div *ngIf="ModalState === 'basic' && BasicInfoData?.Rating" class="current-rating-container" fxLayout="column" fxLayoutAlign="center center">
+      <mat-icon class="current-rating">
+        {{ BasicInfoData?.Rating === 'positive' ? 'thumb_up' : 'thumb_down' }}
+      </mat-icon>
     </div>
 
     <!-- form data add to map -->
@@ -89,7 +92,18 @@
       <mat-tab-group mat-stretch-tabs>
         <mat-tab label="General">
 
-          <p style="margin-top: 1.5em; margin-bottom: 1.5em">Voting Blah Blah Blah</p>
+          <div class="rating-container" fxFlex fxLayoutAlign="center center">
+            <a class="link" mat-icon-button (click)="SelectRating('positive')">
+              <mat-icon matTooltip="Vote Up" [ngClass]="{'selected-positive': Rating === 'positive'}">
+                thumb_up
+              </mat-icon>
+            </a>
+            <a class="link" mat-icon-button (click)="SelectRating('negative')">
+              <mat-icon matTooltip="Vote Down" [ngClass]="{'selected-negative': Rating === 'negative'}">
+                thumb_down
+              </mat-icon>
+            </a>
+          </div>
 
           <div class="customHr">.</div>
 

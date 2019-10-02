@@ -129,6 +129,34 @@ mat-form-field {
   width: 30px;
   border-radius: 50%;
 }
+
+.rating-container {
+  padding: 15px;
+
+  .mat-icon-button {
+    height: initial;
+  }
+
+  .selected-positive {
+    color: #00B050;
+    font-size: 2em;
+  }
+
+  .selected-negative {
+    color: #FF0000;
+    font-size: 2em;
+  }
+}
+
+.current-rating-container {
+  width: 100px;
+
+  .current-rating {
+    font-size: 30px;
+  }
+
+}
+
 mat-tab-group{
   width:320px;
 }

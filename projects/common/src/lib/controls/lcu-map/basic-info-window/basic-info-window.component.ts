@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 import { MarkerInfo } from '../../../models/marker-info.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -31,9 +33,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   /**
    * determine what state the modal is in
-   * 
+   *
    * basic = basic info
-   * 
+   *
    * addToMap = able to edit the location
    */
   public ModalState = "basic";
@@ -86,18 +88,26 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public TitleEllipsis: boolean;
 
-  public PositionTop: string;
+  public Rating: string;
 
   // CONSTRUCTORS
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public passedData: any,
     protected dialogRef: MatDialogRef<BasicInfoWindowComponent>,
+    protected dialog: MatDialog,
     protected mapConversions: MapConversions,
     protected breakpointObserver: BreakpointObserver,
-    private locationInfoService: LocationInfoService) {
+    private locationInfoService: LocationInfoService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer) {
     this.IsEdit = this.passedData.isEdit;
     this.IconSetExpanded = false;
+    this.dialog.closeAll();
+    this.matIconRegistry.addSvgIcon(
+      "instagram",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/instagram.svg")
+    );
   }
 
   // LIFE CYCLE
@@ -123,6 +133,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     // TODO: Change so we don't use setTimeout in basic-info-window.components.ts waiting for state setTimeout also in lcu-map.component.ts DisplayInfoMarker()
     setTimeout(() => {
+     
       this.BasicInfoData = this.passedData.marker;
       this.CheckTitleLength(this.passedData.marker.Title);
       this.MarkerSet = this.passedData.markerSet.slice(0, -1);
@@ -134,8 +145,13 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.locationInfoService.SetPhoneNumberUrl(this.NewMarker);
       this.LinkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
       this.Type = this.locationInfoService.GetType(this.NewMarker);
-    }, 50);
-    this.changePositionToCenter(false);
+      if(this.passedData.isMoreInfo){
+        this.ModalState = "moreInfo";
+      }
+      else{
+        this.changePositionToCenter(false);
+      }
+    }, 50); 
   }
 
   ngOnDestroy() {
@@ -144,8 +160,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   // API METHODS
   public CheckTitleLength(title: string): void {
-    if (title.length > 25) {
-      this.Title = title.substr(0, 20) + '...';
+    if (title.length > 30) {
+      this.Title = title.substr(0, 27) + '...';
       this.TitleEllipsis = true;
     }
     else {
@@ -160,9 +176,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Changes the position of the modal to the right hand side of the screen for more info state
    */
   public changePositionToRHS() {
-    this.dialogRef.updatePosition({ right: '10px', top: '15px', bottom: '35px' });
+    this.dialogRef.updatePosition({ right: '10px', top: '35px', bottom: '35px' });
     //width x height
-    this.dialogRef.updateSize("330px", "95vh");
+    this.dialogRef.updateSize("330px", "88vh");
     this.locationInfoService.SetHighlightIcon(true);
   }
 
@@ -170,9 +186,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Change position of the dialog box to the center when modal is in basic state
    */
   public changePositionToCenter(highlight: boolean) {
-    setTimeout(x=>{
-      this.PositionTop = "160px";
-    },50,this)
     this.dialogRef.updatePosition({ top: '15px' });
     //width x height
     this.dialogRef.updateSize("300px", "210px");
@@ -184,9 +197,6 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Called when the modal is displaying editable content
    */
   public changePositionTopOfCenter() {
-    setTimeout(x=>{
-      this.PositionTop = "200px";
-    },50,this)
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);
     //width x height
@@ -200,6 +210,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public Close(): void {
     this.locationInfoService.SetHighlightIcon(false);
+    this.locationInfoService.SetSelectedLocation(undefined);
     this.dialogRef.close();
   }
 
@@ -222,6 +233,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 24, height: 40 });
 
     }
+    this.Close();
   }
 
   /**
@@ -238,9 +250,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   /**
-   * 
+   *
    * @param icon The icon chosen by the user
-   * 
+   *
    * Sets the current ChosenIcon to the icon the user selected
    */
   public SetIcon(icon): void {
@@ -249,6 +261,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     } else {
       this.ChosenIcon = icon;
     }
+  }
+
+  public SelectRating(rating: string): void {
+    this.Rating = (this.Rating === rating) ? null : rating;
   }
 
   // HELPERS
@@ -266,9 +282,9 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   }
 
   /**
-   * 
+   *
    * @param iconName The name of the current icon
-   * 
+   *
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
   protected setChosenIconIfExists(iconName: string): void {

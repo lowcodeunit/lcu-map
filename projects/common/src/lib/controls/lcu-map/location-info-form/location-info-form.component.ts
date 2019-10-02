@@ -7,6 +7,8 @@ import { MarkerData } from '../../../models/marker-data.model';
 import * as uuid from 'uuid';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -92,10 +94,16 @@ export class LocationInfoFormComponent implements OnInit {
   //public FormView: string;
   //CONSTRUCTORS
 
-  constructor(protected mapConversions: MapConversions, private locationInfoService: LocationInfoService) {
+  constructor(protected mapConversions: MapConversions, 
+    private locationInfoService: LocationInfoService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer) {
     this.CloseFooter = new EventEmitter<boolean>();
     this.NewMapMarker = new EventEmitter<MapMarker>();
-
+    this.matIconRegistry.addSvgIcon(
+      "instagram",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/instagram.svg")
+    );
   }
 
 

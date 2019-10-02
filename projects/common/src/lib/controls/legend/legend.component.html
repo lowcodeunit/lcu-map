@@ -2,7 +2,8 @@
 <mat-sidenav-container autosize class="sidenav-container" (swiperight)=toggleDrawer()
   [ngStyle]="{height: matContentHeight}">
 
-  <mat-sidenav-content class="mat-sidenav-content" [ngStyle]="{width: matContentWidth, height: matContentHeight}">
+  <mat-sidenav-content class="mat-sidenav-content" id="legend-sidenav-content"
+    [ngStyle]="{width: matContentWidth, height: matContentHeight}">
     <div class="button-container" fxLayoutAlign="end start">
 
       <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
@@ -16,40 +17,42 @@
   <mat-sidenav class="legend-sidenav" position="end" #sidenav mode="side">
     <div class="legend-header">
       <div class="legend-buttons" fxLayout="row" fxLayoutAlign="space-between center">
-          <button *ngIf="LegendOpen === true" class="legend-button" mat-icon-button (click)="toggleDrawer()">
-            <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
-          </button>
+        <button *ngIf="LegendOpen === true" class="legend-button" mat-icon-button (click)="toggleDrawer()">
+          <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
+        </button>
 
-          <div class="map-title">{{MapTitle}}</div>
+        <div class="map-title">{{MapTitle}}</div>
 
-          <button class="legend-button">
-            <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
-              style="cursor: pointer;">more_vert</mat-icon>
-          </button>
-        </div>
+        <button class="legend-button">
+          <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
+            style="cursor: pointer;">more_vert</mat-icon>
+        </button>
+      </div>
 
-        <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">
-            <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
-            <mat-icon matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
-            <mat-icon matTooltip="Albums">image</mat-icon>
-            <mat-icon matTooltip="Tools" (click)="ShowMore()" style="cursor: pointer;">build</mat-icon>
-          </mat-toolbar>
+      <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">
+        <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
+        <mat-icon matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
+        <mat-icon matTooltip="Albums">image</mat-icon>
+        <mat-icon matTooltip="Tools" (click)="ShowMore()" style="cursor: pointer;">build</mat-icon>
+      </mat-toolbar>
 
-          <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">
-            <mat-icon matTooltip="Sort">sort_by_alpha</mat-icon>
-            <mat-icon matTooltip="Filter">filter_list</mat-icon>
-            <mat-icon matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
-            <mat-icon matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
-          </mat-toolbar>
+      <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">
+        <mat-icon matTooltip="Sort">sort_by_alpha</mat-icon>
+        <mat-icon matTooltip="Filter">filter_list</mat-icon>
+        <mat-icon matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
+        <mat-icon matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
+      </mat-toolbar>
     </div>
 
-    <div class="legend-content" [ngStyle]="{'margin-top': LegendContentMarginTop}">
-      <div cdkDropList class="location-list" cdkDropListOrientation="vertical" (cdkDropListDropped)="drop($event)" fxLayout="column"
-        fxLayoutAlign="start">
+    <div class="legend-content" id="legend-content">
+      <div cdkDropList class="location-list" cdkDropListOrientation="vertical" (cdkDropListDropped)="drop($event)"
+        fxLayout="column" fxLayoutAlign="start">
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
-          *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}" (click)="PanTo(item)">
+          *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}"
+          (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
           <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
-          <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow" fxLayout="row" fxLayoutAlign="start center">
+          <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow"
+            fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title" matTooltip={{item.Title}}>
               {{ item.Title | substring }}
@@ -62,6 +65,19 @@
             </div>
           </div>
         </div>
+        <div *ngIf="EditMode">Hidden
+        <div class="hidden-locations" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+          *ngFor="let item of HiddenLocations" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}"
+          (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
+          <mat-checkbox [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
+          <div class="icon-title" fxLayout="row" fxLayoutAlign="start center">
+            <img class="icon-image" src={{item.IconImageObject.url}}>
+            <div class="location-title" matTooltip={{item.Title}}>
+              {{ item.Title | substring }}
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   </mat-sidenav>

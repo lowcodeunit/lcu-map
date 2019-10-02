@@ -203,10 +203,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   /**
    * The array of available map views to be chosen by the user (default is standard)
+   *
+   * TODO: Make this an @Input that devs can use to customize map type and display names for the types
    */
   public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Standard' },
-    { value: 'satellite', display: 'Satellite' },
+    { value: 'hybrid', display: 'Satellite' },
     { value: 'terrain', display: 'Topographical' }
   ]
 
@@ -233,6 +235,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
  * The top margin of the legend, so the icons are always in line
  */
   public LegendMargin: string;
+
+  public DisplayingMoreInfo: Boolean;
 
   /**
    * The search input box
@@ -307,7 +311,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   @Input('user-layers')
   public set UserLayers(value: Array<UserLayer>) {
     this._userLayers = value;
-    this.shiftCuratedLayerToTop();
   }
   public get UserLayers() {
     return this._userLayers;
@@ -452,6 +455,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = "33px";
+    this.DisplayingMoreInfo = false;
   }
   // LIFE CYCLE
   ngOnInit() {
@@ -480,9 +484,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   ngOnChanges() {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    // console.log("selected Loc = ", this.SelectedLocation);
     // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
 
     // console.log("is Highlighted = ", this.SelectedLocation);
+  }
+  ngDoCheck(){
+    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    // console.log("selected Loc = ", this.SelectedLocation);
   }
 
   ngOnDestroy() {
@@ -562,7 +572,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   public ToggleLegendMargin(event){
     if(event){
-    this.LegendMargin = '15px';
+    this.LegendMargin = '35px';//15
     }
     else{
       this.LegendMargin = '33px';
@@ -624,6 +634,10 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
                 // if location is outside a "town", set it to "county"
                 townIndex = idx;
+              }
+              if (townIndex === -1){
+                //if there is no county associated set to closest long_name
+                townIndex = 0;
               }
             });
             console.log('Google Returned: ', res.result);
@@ -856,6 +870,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
+    if(!val){
+      this.locationInfoService.SetSelectedLocation(undefined);
+    }
   }
   /**
    * @param event
@@ -889,7 +906,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
-    this.SelectedLocation = marker;
+    this.locationInfoService.SetSelectedLocation(marker);
+    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
     this.isEdit = false;
     const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
 
@@ -901,7 +919,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
-
     this.zoomInToPoint(marker);
   }
 
@@ -933,7 +950,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
       });
       this.options = this.CustomSearchInputResults;
-      console.log(this.options)
+      // console.log(this.options)
       this.FilteredLocations = this.CustomLocationControl.valueChanges
         .pipe(
           startWith(''),
@@ -1004,7 +1021,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             // let photoArray: Array<string>;
             // if(res.result.pho)
 
-            //console.log("placePhotos: ", placePhotos);
+            console.log("place: ", place);
 
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
@@ -1033,7 +1050,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   protected filterCustomLocations(title: string): Array<MapMarker> {
     const filterValue = title.toLowerCase();
-    console.log("filter value = ", filterValue);
+    // console.log("filter value = ", filterValue);
     return this.options.filter(option => option.Title.toLowerCase().indexOf(filterValue) === 0);
   }
 

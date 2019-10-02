@@ -11,6 +11,8 @@ export class LocationInfoService {
   protected phoneNumberUrl: string;
 
   protected isHighlighted: boolean;
+
+  protected selectedLocation: MapMarker;
   //CONSTRUCTORS
   constructor(private mapService: MapService) {
     this.isHighlighted = false;
@@ -59,7 +61,13 @@ export class LocationInfoService {
     }
     return type;
   } 
-
+  
+  public GetSelectedLocation(): MapMarker{
+    return this.selectedLocation;
+  }
+  public SetSelectedLocation(marker: MapMarker):void{
+    this.selectedLocation = marker;
+  }
   
 
   //HELPERS

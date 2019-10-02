@@ -130,6 +130,8 @@ export class MapMarker {
 
     public Rating?: number;
 
+    public Hidden?: boolean;
+
     /**
      *
      * @param icon The object containing data for a single point (a map marker) on a map (<agm-map>)
@@ -158,5 +160,6 @@ export class MapMarker {
         this.Type = icon.Type;
         this.GoogleLocationName = icon.GoogleLocationName;
         this.Checked = icon.Checked;
+        this.Hidden = icon.Hidden;
     }
 }

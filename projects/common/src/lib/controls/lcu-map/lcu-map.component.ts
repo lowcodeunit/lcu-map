@@ -626,7 +626,13 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 // if location is outside a "town", set it to "county"
                 townIndex = idx;
               }
+              if (townIndex === -1){
+                //if there is no county associated set to closest long_name
+                townIndex = 0;
+              }
             });
+            // console.log("result: ", res.result);
+            // console.log("town index = ", townIndex);
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
@@ -896,10 +902,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    */
   //TODO: Change so we don't use setTimeout in timeout in lcu-map.component.ts DisplayInfoMarker()  waiting for state also in timeout in basic-info-window.components.ts
   public DisplayMarkerInfo(marker: MapMarker): void {
-    // if(this.dialog.openDialogs.length > 0){
-    //   this.dialog.closeAll();
-    // }
-    
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
@@ -1061,7 +1063,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             // let photoArray: Array<string>;
             // if(res.result.pho)
 
-            //console.log("placePhotos: ", placePhotos);
+            console.log("place: ", place);
 
             this.DisplayMarkerInfo(new MapMarker({
               ID: '',

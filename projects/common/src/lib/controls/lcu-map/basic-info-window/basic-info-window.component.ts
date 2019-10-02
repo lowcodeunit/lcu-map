@@ -231,6 +231,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
       this.NewMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png',{ width: 24, height: 40 });
 
     }
+    this.Close();
   }
 
   /**

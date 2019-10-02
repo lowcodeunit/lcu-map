@@ -134,6 +134,7 @@ protected scrolled: boolean;
     // this.LegendContentMarginTop = "0px";
     this.DisplayMoreInfo = new EventEmitter<boolean>();
     this.scrolled = false;
+    this.HiddenLocations = new Array<MapMarker>();
   }
 
   //LIFE CYCLE
@@ -147,6 +148,7 @@ protected scrolled: boolean;
    
     if(this.LegendOpen && !this.SelectedLocation){
       this.SetLocationList();
+      this.CheckIfHidden();
     }
     if(this.LegendOpen && this.SelectedLocation){
       this.scroll(document.querySelector('#Selected'));
@@ -169,7 +171,7 @@ protected scrolled: boolean;
 
   //API METHODS
 
-public scroll(element: any):void {
+protected scroll(element: any):void {
     if(element){
       let parent = document.getElementById("legend-content")
       let isOut = this.IsOutOfParentElement(element, parent);
@@ -212,6 +214,16 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
 
 }
 
+public CheckIfHidden():void{
+  for(let i = 0; i < this._currentlyActiveLocations.length; i++){
+    if(this._currentlyActiveLocations[i].Hidden){
+      console.log("hiding: ", this._currentlyActiveLocations[i]);
+      this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+      this._currentlyActiveLocations.splice(i, 1);
+    }
+  }
+}
+
 /**
  * Toggles Tools view to advanced
  */
@@ -228,11 +240,19 @@ public CheckMarker(event: MapMarker):void{
 
 
 public HideLocations():void{
-  this._currentlyActiveLocations.forEach(function(marker){
-    if(marker.Checked === true){
-      //do something
+  console.log("locs", this._currentlyActiveLocations);
+  let temp = this._currentlyActiveLocations;
+  for(let i = 0; i < temp.length; i++){
+    if(temp[i].Checked){
+      temp[i].Hidden = true;
+      console.log("hiding: ", temp[i]);
+      this.HiddenLocations.push(temp[i]);
+      temp.splice(i, 1);
     }
-  })
+  }
+  this._currentlyActiveLocations = temp;
+  console.log("hid ", this.HiddenLocations);
+  this.SetLocationList();
 }
 
 

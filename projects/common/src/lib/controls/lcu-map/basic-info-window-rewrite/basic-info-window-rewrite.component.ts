@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2 } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerInfo } from '../../../models/marker-info.model';
 import { MapService } from '../../../services/map.service';
+import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
 
 export enum ModalStateType {
   BASIC = 'BASIC',
@@ -21,20 +22,27 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public currentState: ModalStateType;
   public displayMarkerSet: Array<MarkerInfo>;
   public iconSetExpanded: boolean = false;
+  public infoWindow: AgmInfoWindow;
   public isEdit: boolean = false;
   public markerSet: Array<MarkerInfo>;
   public modalStateType = ModalStateType;
   public newMarkerForm: FormGroup;
 
+  // TODO: Remove these later
   public circle: any;
-  public radius: number;
   public circumference: number;
+  public offset: number;
+  public radius: number;
 
   @Input() public marker: MapMarker;
 
   @Input() public mapMarkerSet: MarkerInfo[];
 
-  constructor(protected mapService: MapService) { }
+  constructor(
+    protected mapService: MapService,
+    protected infoWindowManager: InfoWindowManager,
+    protected renderer: Renderer2
+  ) { }
 
   public ngOnInit(): void {
     console.log('ngOnInit', this.marker);
@@ -42,8 +50,18 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     this.currentState = ModalStateType.BASIC;
 
     this.newMarkerForm = new FormGroup({
-      title: new FormControl('', { validators: [Validators.required] })
+      title: new FormControl(this.marker.Title, { validators: [Validators.required] })
     });
+
+    this.mapService.MapMarkerClicked.subscribe(
+      (infoWindow: AgmInfoWindow) => {
+        this.infoWindow = infoWindow;
+
+        if (this.marker.Title === infoWindow.hostMarker.title) {
+          this.initRatingInfo(this.marker.Rating);
+        }
+      }
+    );
   }
 
   public ngAfterViewInit(): void {
@@ -54,7 +72,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     this.circle.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
     this.circle.style.strokeDashoffset = `${this.circumference}`;
     this.marker.Rating = Math.round(Math.random() * 100);
-    this.initRatingInfo(this.marker.Rating);
 
 
     this.markerSet = this.mapMarkerSet.slice(0, -1);
@@ -87,14 +104,13 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   }
 
   public initRatingInfo(percent: number): void {
-    console.log('initRatingInfo', percent);
-    this.circle.style.strokeDashoffset = this.circumference;
-    const offset = this.circumference - percent / 100 * this.circumference;
-    this.circle.style.strokeDashoffset = offset;
+    this.renderer.setStyle(this.circle, 'stroke-dasharray', `${this.circumference} ${this.circumference}`);
+    this.renderer.setStyle(this.circle, 'stroke-dashoffset', this.circumference);
+    this.offset = this.circumference - (percent / 100 * this.circumference);
 
-    setTimeout(() => { // TODO: set this off of an 'opened' event of some kind
-      this.circle.style.strokeDashoffset = offset;
-    }, 1000);
+    setTimeout(() => {
+      this.renderer.setStyle(this.circle, 'stroke-dashoffset', this.offset);
+    }, 200);
   }
 
   public changeView(newState: ModalStateType): void {
@@ -138,6 +154,16 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public openMoreInfo(): void {
     console.log('openMoreInfo clicked: ', this.marker);
     this.mapService.MoreInfoClickedEvent(this.marker);
+    this.infoWindow.close();
+  }
+
+  /**
+   * Closes the modal
+   */
+  public Close(): void {
+    console.log('Close clicked: ');
+    this.infoWindow.close();
+    this.changeView(this.modalStateType.BASIC);
   }
 
 }

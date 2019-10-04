@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { MapMarker } from '../models/map-marker.model';
+import { AgmInfoWindow } from '@agm/core';
 // import { IndividualMap } from '../models/individual-map.model';
 
 @Injectable({
@@ -28,6 +29,8 @@ export class MapService {
    */
   public TopListsClicked: EventEmitter<any>;
 
+  public MapMarkerClicked: EventEmitter<any>;
+
   public MoreInfoClicked: EventEmitter<any>;
 
   /**
@@ -39,6 +42,7 @@ export class MapService {
 
   constructor(protected http: HttpClient) {
     this.TopListsClicked = new EventEmitter<any>();
+    this.MapMarkerClicked = new EventEmitter<any>();
     this.MoreInfoClicked = new EventEmitter<any>();
   }
 
@@ -87,6 +91,10 @@ export class MapService {
    */
   public LegendTopListsClicked() {
     this.TopListsClicked.emit('TopListsButtonClicked');
+  }
+
+  public MapMarkerClickedEvent(infoWindow: AgmInfoWindow): void {
+    this.MapMarkerClicked.emit(infoWindow);
   }
 
   public MoreInfoClickedEvent(selectedMarker: MapMarker): void {

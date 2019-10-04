@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, Elem
 import { MatDialog } from '@angular/material';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
-import { GoogleMapsAPIWrapper } from '@agm/core';
+import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
 import { MapConversions } from '../../utils/conversions';
 import { FormControl } from '@angular/forms';
@@ -238,11 +238,16 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
   public DisplayingMoreInfo: Boolean;
 
+  public prevInfoWindow: AgmInfoWindow;
+
   /**
    * The search input box
    */
   @ViewChild('search', { static: false })
   public SearchElementRef: ElementRef;
+
+  @ViewChild('googleInfoWindow', { static: false })
+  public GoogleInfoWindowRef: AgmInfoWindow;
 
   /**
    * The form control for the location search box
@@ -434,7 +439,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     private wrapper: GoogleMapsAPIWrapper,
     private mapService: MapService,
     protected breakpointObserver: BreakpointObserver,
-    private locationInfoService: LocationInfoService
+    private locationInfoService: LocationInfoService,
+    protected infoWindowManager: InfoWindowManager
   ) {
     this.MapSaved = new EventEmitter,
       // this.PrimaryMapLocationListChanged = new EventEmitter;
@@ -897,6 +903,10 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     }
   }
 
+  DisplayMoreInfo(event:Boolean):void{
+    this.DisplayingMoreInfo = event;
+  }
+
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
    *
@@ -920,6 +930,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
       this.ShowFooter(true);
     }
     this.zoomInToPoint(marker);
+    this.OnMarkerClicked(this.GoogleInfoWindowRef);
   }
 
   /**
@@ -1139,6 +1150,17 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     //       this.SaveNewMarker(data);
     //     }
     //   });
+  }
+
+  public OnMarkerClicked(infoWindow: AgmInfoWindow): void {
+    console.log('OnMarkerClicked', infoWindow);
+    if (this.prevInfoWindow) {
+      this.prevInfoWindow.close();
+      this.SelectedLocation = null;
+    }
+    this.prevInfoWindow = infoWindow;
+    this.mapService.MapMarkerClickedEvent(infoWindow);
+    infoWindow.open();
   }
 
 }

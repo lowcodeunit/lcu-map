@@ -1,56 +1,62 @@
 <div fxLayout="column" class="basic-info-container">
 
-  <div class="basic-info-header" matTooltip={{marker?.Title}}>
-      {{ marker.Title }}
+  <div class="basic-info-header" fxLayout="row">
+    <div class="basic-info-title" matTooltip={{marker?.Title}}>
+      {{ marker?.Title }}
+    </div>
+    <mat-icon (click)="Close()" matTooltip="Close" matTooltipPosition="right">
+      close
+    </mat-icon>
   </div>
 
-  <div *ngIf="currentState === modalStateType.BASIC" fxLayoutAlign="space-between" class="basic-info-content">
+  <div [hidden]="!(currentState === modalStateType.BASIC)">
+      <div fxLayoutAlign="space-between" class="basic-info-content">
+        <div fxLayout="column" fxLayoutAlign="start start" class="content-left">
+            <div *ngIf="basicInfoBlocks && basicInfoBlocks.length">
+              <div fxLayout="row" *ngFor="let block of basicInfoBlocks">
+                {{ block }}
+              </div>
+            </div>
+            <div *ngIf="!basicInfoBlocks || !basicInfoBlocks.length" class="content-missing">
+              No Content
+            </div>
+        </div>
 
-    <div fxLayout="column" fxLayoutAlign="start start" class="content-left">
-        <div *ngIf="basicInfoBlocks && basicInfoBlocks.length">
-          <div fxLayout="row" *ngFor="let block of basicInfoBlocks">
-            {{ block }}
+        <div id="testIDLayout" fxLayout="column" fxLayoutAlign="start center" class="content-right">
+          <svg class="progress-ring" height="80" width="80">
+            <g>
+              <circle
+                class="progress-ring__circle_bg"
+                stroke-width="4"
+                stroke="#F1F4F6"
+                fill="transparent"
+                r="32"
+                cx="40"
+                cy="40">
+              </circle>
+              <path *ngIf="true" transform="translate(30, 29)" d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+              <path *ngIf="false" transform="translate(30, 29)" d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
+            </g>
+
+            <circle
+              id="progress-ring-{{marker.ID}}"
+              class="progress-ring__circle"
+              stroke-width="4"
+              stroke="#67C7C5"
+              fill="transparent"
+              r="32"
+              cx="40"
+              cy="40">
+            </circle>
+          </svg>
+          <div class="content-percent">
+            {{ marker?.Rating }}%
           </div>
         </div>
-        <div *ngIf="!basicInfoBlocks || !basicInfoBlocks.length" class="content-missing">
-          No Content
-        </div>
-    </div>
-
-    <div id="testIDLayout" fxLayout="column" fxLayoutAlign="start center" class="content-right">
-      <svg class="progress-ring" height="80" width="80">
-        <g>
-          <circle
-            class="progress-ring__circle_bg"
-            stroke-width="4"
-            stroke="#F1F4F6"
-            fill="transparent"
-            r="32"
-            cx="40"
-            cy="40">
-          </circle>
-          <path *ngIf="true" transform="translate(30, 29)" d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
-          <path *ngIf="false" transform="translate(30, 29)" d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
-        </g>
-
-        <circle
-          id="progress-ring-{{marker.ID}}"
-          class="progress-ring__circle"
-          stroke-width="4"
-          stroke="#67C7C5"
-          fill="transparent"
-          r="32"
-          cx="40"
-          cy="40">
-        </circle>
-      </svg>
-      <div class="content-percent">
-        {{ marker.Rating }}%
       </div>
-    </div>
-
   </div>
-  <div *ngIf="currentState === modalStateType.ADD_TO_MAP" class="add-to-map-content">
+
+  <div [hidden]="(currentState === modalStateType.BASIC)" class="add-to-map-content">
       <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="newMarkerForm" fxLayoutGap="30px">
           <mat-form-field>
             <mat-label>Marker Title</mat-label>

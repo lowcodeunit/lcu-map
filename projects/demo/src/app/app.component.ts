@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MarkerInfo } from '@lcu-ide/dynamic-map-common/lib/models/marker-info.model';
 // import { IndividualMap } from 'projects/common/src/lcu.api';
-import { MapMarker, UserMap } from 'projects/common/src/lcu.api';
+import { MapMarker, UserMap, MarkerInfo } from 'projects/common/src/lcu.api';
 import { UserLayer } from 'projects/common/src/lib/models/user-layer.model';
 
 @Component({
@@ -66,7 +65,7 @@ export class AppComponent implements OnInit {
         //     ]
         // }
     ]
-    
+
 
     /**
      * Passed to the @Input for panning, generates a random 'pan to' location and zoom level
@@ -106,39 +105,11 @@ export class AppComponent implements OnInit {
             { IconLookup: 'national park', Icon: 'National Park', IconUrl: './assets/national park.png' },
             { IconLookup: 'bar', Icon: 'Bar', IconUrl: './assets/bar.png' },
             { IconLookup: 'ambl_marker', Icon: 'ambl_marker', IconUrl: './assets/ambl_marker.png' }
-        ]
+        ];
         this.MasterVisLocs = [
             { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789', Instagram: "@vail" },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 41.049757, Longitude: -104.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 42.049757, Longitude: -104.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-
-        ]
+            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789', Instagram: "@vail" }
+        ];
         this.UserLayers = [{ID: 123, Title: 'User', Shared: false, Deletable: false},
         {ID: 456, Title: 'Curated', Shared: true, Deletable: false},
         {ID: 789, Title: 'My Friend\'s Layer', Shared: true, Deletable: false}];
@@ -154,7 +125,7 @@ export class AppComponent implements OnInit {
     }
 
     /**
-     * 
+     *
      * @param map The function run when the map is successfully saved
      */
     public MapSaved(map) {
@@ -162,10 +133,10 @@ export class AppComponent implements OnInit {
     }
 
     /**
-     * 
+     *
      * @param lat The latitude to pan to
      * @param lng The longitude to pan to
-     * 
+     *
      * Upon clicking, the map will pan to the given location (0,0)
      */
     public GoToRandomLoc() {
@@ -173,9 +144,9 @@ export class AppComponent implements OnInit {
     }
 
     /**
-     * 
+     *
      * @param list The new list of active secondary locations
-     * 
+     *
      * Logs to the console the updated list of active secondary locations
      */
     public ListChanged(list) {
@@ -187,9 +158,9 @@ export class AppComponent implements OnInit {
     }
 
     /**
-     * 
+     *
      * @param map The updated version of the primary map
-     * 
+     *
      * Runs when the primary map is changed
      */
     public PrimMapChanged(map) {
@@ -200,7 +171,7 @@ export class AppComponent implements OnInit {
         // this.MapConfig = {
         //     ID: '2',
         //     Title: 'Broomfield Food',
-        //     Latitude: 39.923587, 
+        //     Latitude: 39.923587,
         //     Longitude: -105.087146,
             // Zoom: 13,
             // locationList: [

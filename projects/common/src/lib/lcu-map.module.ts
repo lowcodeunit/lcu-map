@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FathymSharedModule } from '@lcu/common';
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, InfoWindowManager, MarkerManager } from '@agm/core';
 import { LcuMapComponent } from './controls/lcu-map/lcu-map.component';
 import { MatIconModule,
          MatSelectModule,
@@ -74,7 +74,11 @@ import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/mor
     MatSidenavModule,
     MatTabsModule
   ],
-  providers: [GoogleMapsAPIWrapper],
+  providers: [
+    GoogleMapsAPIWrapper,
+    InfoWindowManager,
+    MarkerManager
+  ],
   exports: [
     LcuMapComponent,
     BasicInfoWindowComponent,

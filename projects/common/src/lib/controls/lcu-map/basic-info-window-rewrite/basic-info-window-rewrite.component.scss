@@ -1,11 +1,14 @@
 ::ng-deep .gm-style .gm-style-iw-c {
   border-radius: 0 !important;
-  // height: 210px;
   padding: 0 !important;
   width: 300px;
 
   .gm-style-iw-d {
     overflow: hidden !important;
+  }
+
+  button.gm-ui-hover-effect {
+    display: none !important;
   }
 }
 
@@ -15,14 +18,22 @@
     padding: 10px;
   }
 
+  mat-icon {
+    cursor: pointer;
+  }
+
   .basic-info-header {
     background-color: #4A918E;
     color: white;
-    flex: 1;
     font-size: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    padding: 10px;
+
+    .basic-info-title {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   .basic-info-content {
@@ -90,4 +101,8 @@
     }
   }
 
+}
+
+mat-form-field {
+  width: 100%;
 }

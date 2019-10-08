@@ -935,8 +935,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           dialogRef = this.dialog.open(BasicInfoWindowComponent, {
             width: "330px", 
             height: "88vh",
-            position:{
-            right: '10px', 
+            position:{ 
+            right:'10px',
             top: '35px', 
             bottom: '35px'
             },

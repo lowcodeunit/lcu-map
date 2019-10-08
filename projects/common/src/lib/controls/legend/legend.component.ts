@@ -128,7 +128,7 @@ protected scrolled: boolean;
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
     this.matContentWidth = "40px";
-    this.matContentHeight = "30px";
+    this.matContentHeight = "40px";
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<boolean>();
     // this.LegendContentMarginTop = "0px";
@@ -416,7 +416,7 @@ public ShowMoreInfo(item:MapMarker):void{
       }
       this.LegendOpen = false;
       this.matContentWidth = "40px";
-      this.matContentHeight = "30px";
+      this.matContentHeight = "40px";
 
     } else {
       this.drawer.open();

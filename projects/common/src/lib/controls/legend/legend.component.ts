@@ -359,13 +359,13 @@ public ShowMoreInfo(item:MapMarker):void{
     if(this._currentMapModel){
       this.MapTitle = this._currentMapModel.Title;
     }
-    else if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
-      this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
-      // console.log("Layers = ", this._currentlyActiveLayers);
-    }
-    else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
-      this.MapTitle = this._currentlyActiveLayers[0];
-    }
+    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
+    //   this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
+    //   // console.log("Layers = ", this._currentlyActiveLayers);
+    // }
+    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
+    //   this.MapTitle = this._currentlyActiveLayers[0];
+    // }
     else {
       this.MapTitle = "No Layer Selected";
     }

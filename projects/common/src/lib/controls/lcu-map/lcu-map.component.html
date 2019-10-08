@@ -98,9 +98,9 @@
           [iconUrl]="marker.IconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
         </agm-marker>
       </div>
-      <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
+      <!-- <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
         [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
-      </agm-marker>
+      </agm-marker> -->
     </agm-map>
   </div>
   <!-- Footer Menu to display Marker Info -->

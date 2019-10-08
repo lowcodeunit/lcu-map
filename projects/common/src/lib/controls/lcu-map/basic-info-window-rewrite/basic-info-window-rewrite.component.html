@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div id="testIDLayout" fxLayout="column" fxLayoutAlign="start center" class="content-right">
+        <div [hidden]="!marker?.Rating" fxLayout="column" fxLayoutAlign="start center" class="content-right">
           <svg class="progress-ring" height="80" width="80">
             <g>
               <circle
@@ -38,7 +38,7 @@
               <path *ngIf="false" transform="translate(30, 29)" d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
             </g>
 
-            <circle
+            <circle #progressCircle
               id="progress-ring-{{marker.ID}}"
               class="progress-ring__circle"
               stroke-width="4"
@@ -49,8 +49,8 @@
               cy="40">
             </circle>
           </svg>
-          <div class="content-percent">
-            {{ marker?.Rating }}%
+          <div *ngIf="marker.Rating" class="content-percent">
+            {{ marker.Rating }}
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
             <mat-error>Invalid or missing title</mat-error>
           </mat-form-field>
 
-          <div fxLayout="row wrap">
+          <div *ngIf="displayMarkerSet && displayMarkerSet.length" fxLayout="row wrap">
             <div [fxFlex]="25" *ngFor="let icon of displayMarkerSet" class="available-image-container">
               <img class="available-images" [ngClass]="{'chosen-icon': icon === chosenIcon}" src="{{icon.IconUrl}}"
                 (click)="setIcon(icon)" />
@@ -85,7 +85,7 @@
   <div class="basic-info-buttons" fxLayoutAlign="space-between end">
       <button *ngIf="currentState === modalStateType.BASIC" mat-button mat-raised-button (click)="openMoreInfo()">More Info</button>
       <button *ngIf="currentState === modalStateType.BASIC" mat-button mat-raised-button (click)="changeView(modalStateType.ADD_TO_MAP)">{{isEdit ? 'Edit' : '+'}}</button>
-      <button *ngIf="currentState === modalStateType.ADD_TO_MAP" mat-button mat-raised-button>Save</button>
+      <button *ngIf="currentState === modalStateType.ADD_TO_MAP" mat-button mat-raised-button (click)="setMarkerData()">Save</button>
       <button *ngIf="currentState === modalStateType.ADD_TO_MAP" mat-button mat-raised-button (click)="changeView(modalStateType.BASIC)">Cancel</button>
   </div>
 </div>

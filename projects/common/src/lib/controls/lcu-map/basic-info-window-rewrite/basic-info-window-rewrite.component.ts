@@ -1,15 +1,28 @@
-import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerInfo } from '../../../models/marker-info.model';
 import { MapService } from '../../../services/map.service';
 import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
+import { LocationInfoService } from '../../../services/location-info.service';
+import { IconImageObject } from '../../../models/icon-image-object.model';
+import { MapConversions } from '../../../utils/conversions';
+import { Subscription } from 'rxjs';
 
+/**
+ * Enum for holding the current state of the 'Basic Info' modal/popover.
+ */
 export enum ModalStateType {
   BASIC = 'BASIC',
   ADD_TO_MAP = 'ADD_TO_MAP'
 }
 
+/**
+ * The BasicInfoWindowRewriteComponent
+ *
+ * A View for displaying the the basic information for a user's custom Map Marker.
+ * This is utilized by the AGM Info Window and set into its content.
+ */
 @Component({
   selector: 'lcu-basic-info-window-rewrite',
   templateUrl: './basic-info-window-rewrite.component.html',
@@ -23,66 +36,90 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public displayMarkerSet: Array<MarkerInfo>;
   public iconSetExpanded: boolean = false;
   public infoWindow: AgmInfoWindow;
-  public isEdit: boolean = false;
+  public mapMarkerClickedSubscription: Subscription;
   public markerSet: Array<MarkerInfo>;
   public modalStateType = ModalStateType;
+  public newMarker: MapMarker;
   public newMarkerForm: FormGroup;
 
-  // TODO: Remove these later
-  public circle: any;
-  public circumference: number;
-  public offset: number;
-  public radius: number;
+  protected pCircumference: number;
+  protected progressCircle: any;
 
+  @Input() public isEdit: boolean;
+  @Input() public mapMarkerSet: MarkerInfo[];
   @Input() public marker: MapMarker;
 
-  @Input() public mapMarkerSet: MarkerInfo[];
+  @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
+    this.progressCircle = elRef.nativeElement;
+  }
 
   constructor(
-    protected mapService: MapService,
     protected infoWindowManager: InfoWindowManager,
+    protected locationInfoService: LocationInfoService,
+    protected mapConversions: MapConversions,
+    protected mapService: MapService,
     protected renderer: Renderer2
   ) { }
 
+  /**
+   * Angular lifecycle hook that gets called on initialization.
+   */
   public ngOnInit(): void {
-    console.log('ngOnInit', this.marker);
     this.buildBasicInfoContent(this.marker);
     this.currentState = ModalStateType.BASIC;
+    this.marker.Rating = Math.round(Math.random() * 100); // Setting random number until backend is ready
+    this.markerSet = this.mapMarkerSet.slice(0, -1);
+    this.displayMarkerSet = this.truncateArray(this.markerSet, 7);
 
     this.newMarkerForm = new FormGroup({
       title: new FormControl(this.marker.Title, { validators: [Validators.required] })
     });
 
-    this.mapService.MapMarkerClicked.subscribe(
+    if (this.isEdit) {
+      this.newMarker = this.marker;
+    } else {
+      this.newMarker = {
+        ID: '',
+        LayerID: '0',
+        Title: '',
+        Icon: '',
+        Latitude: this.marker.Latitude,
+        Longitude: this.marker.Longitude
+      };
+    }
+
+    this.mapMarkerClickedSubscription = this.mapService.MapMarkerClicked.subscribe(
       (infoWindow: AgmInfoWindow) => {
         this.infoWindow = infoWindow;
 
-        if (this.marker.Title === infoWindow.hostMarker.title) {
+        if (this.marker.Rating) {
           this.initRatingInfo(this.marker.Rating);
         }
       }
     );
   }
 
+  /**
+   * Angular lifecycle hook that gets called after the view has finished initializing.
+   */
   public ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
-    this.circle = document.querySelector(`#progress-ring-${this.marker.ID}`);
-    this.radius = this.circle.r.baseVal.value;
-    this.circumference = this.radius * 2 * Math.PI;
-    this.circle.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
-    this.circle.style.strokeDashoffset = `${this.circumference}`;
-    this.marker.Rating = Math.round(Math.random() * 100);
-
-
-    this.markerSet = this.mapMarkerSet.slice(0, -1);
-    this.displayMarkerSet = this.truncateArray(this.markerSet, 7);
+    this.initProgressCircle();
   }
 
+  /**
+   * Angular lifecycle hook that gets called when a view is removed from the DOM.
+   */
   public ngOnDestroy(): void {
-    console.log('ngOnDestroy');
     this.marker = null;
+    this.mapMarkerClickedSubscription.unsubscribe();
   }
 
+  /**
+   * Utility to parse the address information of a given MapMarker and only print non-null data.
+   * Needed since a lot of the data could be null or undefined.
+   *
+   * @param marker The MapMarker to get the data from.
+   */
   public buildBasicInfoContent(marker: MapMarker): void {
     const blocks: string[] = [];
 
@@ -103,24 +140,44 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     this.basicInfoBlocks = blocks.filter(val => val !== undefined && val !== null);
   }
 
+  /**
+   * Initializes the SVG progress circle to get and set the necessary values for displaying a rating.
+   */
+  public initProgressCircle(): void {
+    if (this.progressCircle) {
+      const radius = this.progressCircle.r.baseVal.value;
+      this.pCircumference = radius * 2 * Math.PI;
+      this.progressCircle.style.strokeDasharray = `${this.pCircumference} ${this.pCircumference}`;
+      this.progressCircle.style.strokeDashoffset = `${this.pCircumference}`;
+    }
+  }
+
+  /**
+   * Triggers an CSS animation to offset the progress circle based on the value given.
+   *
+   * @param percent The percent of total ratings for a given location.
+   */
   public initRatingInfo(percent: number): void {
-    this.renderer.setStyle(this.circle, 'stroke-dasharray', `${this.circumference} ${this.circumference}`);
-    this.renderer.setStyle(this.circle, 'stroke-dashoffset', this.circumference);
-    this.offset = this.circumference - (percent / 100 * this.circumference);
+    const offset = this.pCircumference - (percent / 100 * this.pCircumference);
 
     setTimeout(() => {
-      this.renderer.setStyle(this.circle, 'stroke-dashoffset', this.offset);
+      this.renderer.setStyle(this.progressCircle, 'stroke-dashoffset', offset);
     }, 200);
   }
 
+  /**
+   * Changes the current inner view of 'Basic Info' window based on a state.
+   *
+   * @param newState The new ModalStateType to change the view to.
+   */
   public changeView(newState: ModalStateType): void {
     this.currentState = newState;
   }
 
   /**
-   * Toggles the visible selectable icon display between 7 and the max number of icons
+   * Toggles the visible selectable icon display between 7 and the max number of icons.
    */
-  public toggleVisibleIcons() {
+  public toggleVisibleIcons(): void {
     if (!this.iconSetExpanded) {
       this.iconSetExpanded = true;
       this.displayMarkerSet = this.truncateArray(this.markerSet);
@@ -131,17 +188,19 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   }
 
   /**
-   * Returns the passed array after being truncated as indicated by the number passed
-   * @param arr the array to truncate
-   * @param num the index of the last element to show in the returned array
+   * Returns the passed array after being truncated as indicated by the number passed.
+   *
+   * @param arr The array to truncate.
+   * @param num The index of the last element to show in the returned array.
    */
   protected truncateArray(arr: Array<any>, num?: number) {
     return num ? [...arr.slice(0, num)] : [...arr];
   }
 
   /**
-   * Sets the current ChosenIcon to the icon the user selected
-   * @param icon The icon chosen by the user
+   * Sets the current ChosenIcon to the icon the user selected.
+   *
+   * @param icon The icon chosen by the user.
    */
   public setIcon(icon): void {
     if (this.chosenIcon === icon) {
@@ -151,19 +210,45 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     }
   }
 
+  /**
+   * Emits an event back to the map to open the 'More Info' dialog.
+   */
   public openMoreInfo(): void {
-    console.log('openMoreInfo clicked: ', this.marker);
     this.mapService.MoreInfoClickedEvent(this.marker);
     this.infoWindow.close();
   }
 
   /**
-   * Closes the modal
+   * Sets the marker data to the user entered data
+   */
+  public setMarkerData(): void {
+    if (!this.isEdit) {
+      this.newMarker.ID = '';
+    }
+    this.newMarker.LayerID = this.marker.LayerID;
+    this.newMarker.Title = this.newMarkerForm.value.title;
+    if (this.chosenIcon) {
+      this.newMarker.Icon = this.chosenIcon.IconLookup;
+      this.newMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.chosenIcon.IconLookup, this.markerSet);
+    } else {
+      this.newMarker.Icon = 'ambl_marker';
+      this.newMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png', { width: 24, height: 40 });
+    }
+    this.mapService.MapMarkerSavedEvent(this.newMarker);
+    this.Close();
+  }
+
+
+  /**
+   * Emits an event back to the map to close the info window.
    */
   public Close(): void {
-    console.log('Close clicked: ');
-    this.infoWindow.close();
+    this.mapService.InfoWindowClosedEvent();
     this.changeView(this.modalStateType.BASIC);
+
+    if (this.infoWindow) {
+      this.infoWindow.close();
+    }
   }
 
 }

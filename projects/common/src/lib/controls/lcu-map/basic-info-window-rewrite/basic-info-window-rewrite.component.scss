@@ -50,6 +50,10 @@
       .content-percent {
         font-size: 12px;
         font-weight: bold;
+
+        &:after {
+          content: '%';
+        }
       }
 
       .progress-ring {

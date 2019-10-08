@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
@@ -25,7 +25,7 @@ import { MoreInfoWindowComponent } from './more-info-window/more-info-window.com
   styleUrls: ['./lcu-map.component.scss'],
   host: { '(document:click)': 'onDocClick($event)' }
 })
-export class LcuMapComponent implements OnInit, OnDestroy {
+export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
   // from host above
   onDocClick(e) {
@@ -187,9 +187,14 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   public CurrentlyActiveLocations: Array<MapMarker>;
 
   /**
-   * The current location selected to display in legend as highlighted
+   * The current Google location selected to display in legend as highlighted
    */
   public SelectedLocation: MapMarker;
+
+  /**
+   * The current user map marker selected to display Basic info popover
+   */
+  public SelectedMarker: MapMarker;
 
   /**
    * Boolean that determines whether or not the search bar should be shown
@@ -246,6 +251,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   @ViewChild('search', { static: false })
   public SearchElementRef: ElementRef;
 
+  /**
+   * The Info Window that displays when a Google map icon was clicked.
+   */
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
@@ -425,22 +433,17 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   @Output ('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
 
-
-
-
-  // CONSTRUCTORS
-
-
   constructor(
-    private dialog: MatDialog,
-    private mapConversions: MapConversions,
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
-    private wrapper: GoogleMapsAPIWrapper,
-    private mapService: MapService,
     protected breakpointObserver: BreakpointObserver,
-    private locationInfoService: LocationInfoService,
-    protected infoWindowManager: InfoWindowManager
+    protected changeDetector: ChangeDetectorRef,
+    protected dialog: MatDialog,
+    protected infoWindowManager: InfoWindowManager,
+    protected locationInfoService: LocationInfoService,
+    protected mapConversions: MapConversions,
+    protected mapService: MapService,
+    protected mapsAPILoader: MapsAPILoader,
+    protected ngZone: NgZone,
+    protected wrapper: GoogleMapsAPIWrapper
   ) {
     this.MapSaved = new EventEmitter,
       // this.PrimaryMapLocationListChanged = new EventEmitter;
@@ -463,8 +466,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.LegendMargin = "33px";
     this.DisplayingMoreInfo = false;
   }
-  // LIFE CYCLE
-  ngOnInit() {
+
+  public ngOnInit(): void {
     // this._currentMapModel.locationList.forEach(loc => {
     //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     // });
@@ -482,60 +485,50 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
     this.mapService.MoreInfoClicked.subscribe(
       (data) => {
-        console.log('WE GOT THE EVENT!!!', data);
         this.openMoreInfoDialog(data);
+      }
+    );
+
+    this.mapService.InfoWindowClosed.subscribe(
+      () => {
+        this.SelectedMarker = null;
+        this.SelectedLocation = null;
+      }
+    );
+
+    this.mapService.MapMarkerSaved.subscribe(
+      (marker: MapMarker) => {
+        console.log('MapMarkerSaved event!', marker);
+        this.SaveNewMarker(marker);
       }
     )
   }
 
-  ngOnChanges() {
+  public ngOnChanges(): void {
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    // this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
-    // console.log("selected Loc = ", this.SelectedLocation);
-    // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
-
-    // console.log("is Highlighted = ", this.SelectedLocation);
-  }
-  ngDoCheck(){
-    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
-    // console.log("selected Loc = ", this.SelectedLocation);
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.TopListsSubscription.unsubscribe();
   }
+
   /**
-   * In the do check, this.IconIsHighlighted is checked to see if it has changed to true
-   *
-   * if true the icon will be highlighted when more info is being displayed.
+   * Breakpoints for screen sizes
    */
-  // ngDoCheck(){
-  // this.IconIsHighlighted = this.locationInfoService.GetHighlightedIcon();
-  // console.log("do checking: ", this.IconIsHighlighted)
-  // }
-
-  // API METHODS
-
-
-  /**
-    * Breakpoints for screen sizes
-    */
   protected monitorBreakpoints(): void {
     this.observerSubscription = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
       .subscribe((result: BreakpointState) => {
-        // console.log(result.matches);
-        // console.log(result);
         this.IsMobile = result.matches;
         this.observerSubscription.unsubscribe();
       });
   }
+
   /**
-   *  Returns an array of strings that represent the titles of layers selected
-   *
-   *  Called by the legend to get the layer titles to be displayed in the legend
+   *  Returns an array of strings that represent the titles of layers selected.
+   *  Called by the legend to get the layer titles to be displayed in the legend.
    */
   public GetSelectedUserLayers(): Array<string> {
-    let LayerTitles = new Array<string>();
+    const LayerTitles = new Array<string>();
     if (this._userLayers) {
       this._userLayers.forEach(function (layer) {
         if (this._selectedUserLayers.includes(layer.ID)) {
@@ -546,6 +539,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
 
     return LayerTitles;
   }
+
   /**
    *
    * @param layer will be added to an array of active layers if it doesnt already exist in the array
@@ -569,27 +563,26 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   //   else {
   //     // console.log("Layer =", layer);
   //   }
-
-
   // }
-  public DeleteLocations(event){
+
+  public DeleteLocations(event) {
     this.LocationsToDelete.emit(event);
   }
 
-  public ToggleLegendMargin(event){
-    if(event){
-    this.LegendMargin = '35px';//15
-    }
-    else{
+  public ToggleLegendMargin(event) {
+    if (event) {
+      this.LegendMargin = '35px';
+    } else {
       this.LegendMargin = '33px';
     }
   }
+
   /**
-   * legend uses this function to take incoming data from child class and sets the according values to allow panning
+   * Legend uses this function to take incoming data from child class and sets the according values to allow panning.
    * @param value
    */
-  public PanningTo(value: { lat: number, lng: number, zoom:number}): void {
-    if(!value.zoom){
+  public PanningTo(value: { lat: number, lng: number, zoom: number}): void {
+    if (!value.zoom) {
       value.zoom = this._currentMapModel.Zoom;
     }
     this._panTo = value;
@@ -600,28 +593,29 @@ export class LcuMapComponent implements OnInit, OnDestroy {
       this._currentMapModel.Zoom = value.zoom;
     }
   }
+
   /**
-   * Saves the legend order/loactions via event emmiter
+   * Saves the legend order/loactions via event emmiter.
    * @param val
    */
   public SaveLegendLocations(val: Array<MapMarker>): void {
     this.SavedLegendLocations.emit(val);
   }
+
   /**
-   * Toggles the location search bar hidden / shown
+   * Toggles the location search bar hidden / shown.
    */
   public ShowLocationSearchBarClicked(): void {
     this.ShowSearchBar = this.ShowSearchBar === true ? false : true;
   }
 
   /**
-   *
-   * @param event The event passed in upon user clicking the map
-   *
-   * Runs when user single-clicks location on map. Modal displays prompting user to enter info about custom location marker
+   * Runs when user single-clicks location on map. Modal displays prompting user to enter info about custom location marker.
+   * @param event The event passed in upon user clicking the map.
    */
   public OnChoseLocation(event): void {
     this.SelectedLocation = null;
+    this.changeDetector.detectChanges();
 
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
@@ -646,9 +640,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
                 townIndex = 0;
               }
             });
-            console.log('Google Returned: ', res.result);
-
-            this.DisplayMarkerInfo(new MapMarker({
+            // console.log('Google Returned: ', res.result);
+            const newMarker = new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: res.result.name,
@@ -662,8 +655,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Country: res.result.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
-            })
-            );
+            });
+            this.DisplayMarkerInfo(newMarker);
           }
         });
 
@@ -696,12 +689,10 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *
-   * @param event The event passed in upon user double-clicking the map
-   *
    * Function that sets property 'isDoubleClicked' to true for a moment.
+   * This is necessary because when the events 'mapClick' and 'mapDblClick' appear on the same component, both will be fired.
    *
-   * This is necessary because when the events 'mapClick' and 'mapDblClick' appear on the same component, both will be fired
+   * @param event The event passed in upon user double-clicking the map.
    */
   public OnMapDoubleClicked(event): void {
     this.isDoubleClick = true;
@@ -711,7 +702,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Activates the dialog for user to enter name of map which will then be 'saved'
+   * Activates the dialog for user to enter name of map which will then be 'saved'.
    */
   public ActivateSaveMapDialog(map): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
@@ -735,7 +726,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Run when user clicks a custom location marker from custom location search
+   * Run when user clicks a custom location marker from custom location search.
    */
   public DropdownItemChosen(loc): void {
     this._currentMapModel.Latitude = loc.Latitude;
@@ -744,10 +735,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown.
    *
-   * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked
-   *
-   * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown
+   * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked.
    */
   public LayerClicked(event, layer?: UserLayer): void {
     //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
@@ -810,10 +800,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes.
    *
-   * @param event The event sent every time the boundary of the map changes
-   *
-   * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes
+   * @param event The event sent every time the boundary of the map changes.
    */
   public BoundsChange(event): void {
     this.ShowLayersDropdown = false;
@@ -826,7 +815,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.currentBounds.swLng = event.getSouthWest().lng();
 
     let Bounds: Array<number> = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
-    //console.log("bounds change = ", Bounds);
 
     this.lastBoundsChangeMillisecond = new Date().getTime();
     setTimeout(() => {
@@ -838,10 +826,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Emits the current value of the custom search bar each time user types something.
    *
-   * @param e the value of the user-typed text
-   *
-   * emits the current value of the custom search bar each time user types something
+   * @param e the value of the user-typed text.
    */
   public CustomSearchInputChange(e) {
     this.CustomSearchChange.emit(e.target.value);
@@ -854,10 +841,9 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Calls the method that pans user to location and shows the location modal.
    *
-   * @param e the event passed when user selects an option from the mat-autocomplete dropdown
-   *
-   * calls the method that pans user to location and shows the location modal
+   * @param e the event passed when user selects an option from the mat-autocomplete dropdown.
    */
   public LocationOptionSelected(e) {
     this.DropdownItemChosen(e.option.value);
@@ -865,21 +851,23 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Angular function for use in custom marker location search
+   * Angular function for use in custom marker location search.
    */
   public DisplayFn(marker?: MapMarker): string | undefined {
     return marker ? marker.Title : undefined;
   }
+
   /**
    *
-   * @param val Toggles the displayFooter property to true or false
+   * @param val Toggles the displayFooter property to true or false.
    */
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
-    if(!val){
+    if (!val) {
       this.locationInfoService.SetSelectedLocation(undefined);
     }
   }
+
   /**
    * @param event
    *
@@ -889,11 +877,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     this.NewMapMarker = event;
     this.SaveNewMarker(this.NewMapMarker);
   }
+
   /**
+   * Saves the new MapMarker.
    *
-   * @param marker
+   * @param marker The MapMarker to save.
    *
-   * Saves the new MapMarker
    */
   public SaveNewMarker(marker: MapMarker): void {
     if (!this.isEdit) {
@@ -903,21 +892,22 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  DisplayMoreInfo(event:Boolean):void{
+  DisplayMoreInfo(event: boolean): void {
     this.DisplayingMoreInfo = event;
   }
 
   /**
-   * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent
+   * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent.
    *
-   * @param marker holds the MapMarker with all its information to be displayed in the basic info window
+   * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
   public DisplayMarkerInfo(marker: MapMarker): void {
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
     this.locationInfoService.SetSelectedLocation(marker);
-    this.SelectedLocation = this.locationInfoService.GetSelectedLocation();
+    this.SelectedLocation = marker;
+    this.changeDetector.detectChanges();
     this.isEdit = false;
     const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
 
@@ -929,19 +919,16 @@ export class LcuMapComponent implements OnInit, OnDestroy {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
+    this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
     this.zoomInToPoint(marker);
-    this.OnMarkerClicked(this.GoogleInfoWindowRef);
   }
 
   /**
+   * Attaches a click listener to the map that returns an object that includes the place id.
+   * The place id is then assigned to the placeId field for use in the (mapClick) event.
+   * This will be removed once AGM team releases code that passes back the place id on (mapClick) directly.
    *
    * @param map The map onto which the click event listener will be attached
-   *
-   * Attaches a click listener to the map that returns an object that includes the place id
-   *
-   * The place id is then assigned to the placeId field for use in the (mapClick) event
-   *
-   * This will be removed once AGM team releases code that passes back the place id on (mapClick) directly
    */
   public OnMapReady(map): void {
     map.addListener('click', (loc) => {
@@ -950,10 +937,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     });
   }
 
-  // HELPERS
-
   /**
-   * Sets up the search filtering for the custom marker search
+   * Sets up the search filtering for the custom marker search.
    */
   protected setUpCustomMarkerSearch(): void {
     if (this.CustomSearchInputResults && this.CustomSearchInputResults.length > 0) {
@@ -961,7 +946,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
       });
       this.options = this.CustomSearchInputResults;
-      // console.log(this.options)
       this.FilteredLocations = this.CustomLocationControl.valueChanges
         .pipe(
           startWith(''),
@@ -972,14 +956,11 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Strips locations that don't exist within the bounds and returns the altered array.
+   * TODO: write the edge case for locations that exist on map where lat or lng overlap
    *
    * @param locationList The list of locations that come with the map that should be stripped
-   *
    * @param bounds The bounds used to determine which locations to strip
-   *
-   * Strips locations that don't exist within the bounds and returns the altered array
-   *
-   * TODO: write the edge case for locations that exist on map where lat or lng overlap
    */
   // protected stripOutsideLocations(locationList: Array<MapMarker>, bounds: any): Array<MapMarker> {
   //   return locationList.filter((loc: MapMarker) =>
@@ -991,7 +972,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   // }
 
   /**
-   * Runs the boiler plate code that sets up location searching for AGM Google Maps
+   * Runs the boiler plate code that sets up location searching for AGM Google Maps.
    */
   protected runAutocompleteSearchPrep(): void {
     this.SearchControl = new FormControl();
@@ -1005,10 +986,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          //console.log("place: ", place);
           this._currentMapModel.Latitude = place.geometry.location.lat();
           this._currentMapModel.Longitude = place.geometry.location.lng();
-          // this._currentMapModel.zoom = 16;
 
           let townIndex = -1;
           let countryIndex = -1;
@@ -1028,10 +1007,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           });
           //let placePhotos: Array<string> = new Array<string>();
           this.mapService.GetPlaceDetails(place.place_id).subscribe((res: any) => {
-            // console.log("result = ", res.result);
-            // let photoArray: Array<string>;
-            // if(res.result.pho)
-
             console.log("place: ", place);
 
             this.DisplayMarkerInfo(new MapMarker({
@@ -1057,16 +1032,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Filter for use in custom marker location search
+   * Filter for use in custom marker location search.
    */
   protected filterCustomLocations(title: string): Array<MapMarker> {
     const filterValue = title.toLowerCase();
-    // console.log("filter value = ", filterValue);
     return this.options.filter(option => option.Title.toLowerCase().indexOf(filterValue) === 0);
   }
 
   /**
-   * Sets primary layer to checked and secondary layers to unchecked and resets active location
+   * Sets primary layer to checked and secondary layers to unchecked and resets active location.
    */
   // protected resetMapCheckedState(): void {
   //   this.PrimaryChecked = true;
@@ -1076,46 +1050,40 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   //     this.CurrentlyActiveLocations.push(loc);
   //   });
   // }
+
   /**
+   * Sets _currentMapModel.orgin to the values of the incoming lat and long.
+   * ParseFloat is added to the incoming value in the instance that it is saved as a string.
+   * AGM can only take Numbers as the lat and long values, strings will not process correctly.
+   * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom.
+   * If random decimals are not added then the map will not zoom/pan once user moves the map.
    *
    * @param value
-   *
-   * Sets _currentMapModel.orgin to the values of the incoming lat and long
-   *
-   * ParseFloat is added to the incoming value in the instance that it is saved as a string
-   *
-   * AGM can only take Numbers as the lat and long values, strings will not process correctly
-   *
-   * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom
-   *
-   * if random decimals are not added then the map will not zoom/pan once user moves the map
    */
   protected zoomInToPoint(value): void {
     this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
     this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
     // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
   }
+
   /**
-   * @param photos
-   *
    * Takes and array of photos returned from the google api and pulls the photo reference out
+   * and builds the url to call so image displays. (currently only pulling one image from loop).
    *
-   * and builds the url to call so image displays. (currently only pulling one image from loop)
+   * @param photos
    */
   protected buildPhotoArray(photos: Array<any>): Array<string> {
-    //console.log("photos = ", photos);
-    let width = 100; //the max width of the image to display
+    let width = 100; // the max width of the image to display
     let photoUrls: Array<string>;
     let apiKey: string = this.mapService.GetMapApiKey();
     if (photos) {
       photoUrls = new Array<string>();
-      //Just getting the first photo for now but set up to be full loop for future
+      // Just getting the first photo for now but set up to be full loop for future
       for (let i = 0; i < 1; i++) {
         let photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&photoreference=" + photos[i].photo_reference + "&key=" + apiKey;
         photoUrls.push(photoUrl);
       }
     }
-    //console.log("returning: ", photoUrls);
     return photoUrls;
   }
 
@@ -1128,39 +1096,63 @@ export class LcuMapComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Opens the 'More Info' dialog when the button is pressed in the 'Basic Info' info window.
+   *
+   * @param marker The MapMarker data to pass to the 'More Info' dialog.
+   */
   protected openMoreInfoDialog(marker: MapMarker): void {
-    let dialogRef: any = this.dialog.open(MoreInfoWindowComponent, {
-            width: '330px',
-            height: '95vh',
-            position: { right: '10px', top: '15px', bottom: '35px' },
-            backdropClass: 'dialogRefBackdrop',
-            hasBackdrop: false,
-            disableClose: true,
-            data: {
-              marker,
-              markerSet: this.MapMarkerSet,
-              layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
-              isEdit: this.isEdit
-            }
-          });
+    const dialogRef: any = this.dialog.open(MoreInfoWindowComponent, {
+      width: '330px',
+      height: '95vh',
+      position: { right: '10px', top: '15px', bottom: '35px' },
+      backdropClass: 'dialogRefBackdrop',
+      hasBackdrop: false,
+      disableClose: true,
+      data: {
+        marker,
+        markerSet: this.MapMarkerSet,
+        layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
+        isEdit: this.isEdit
+      }
+    });
 
-    // this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
-    //   (data) => {
-    //     if (data !== undefined && data !== null) {
-    //       this.SaveNewMarker(data);
-    //     }
-    //   });
+    dialogRef.afterClosed().subscribe(
+      (data) => {
+        if (data !== undefined && data !== null) {
+          this.SaveNewMarker(data);
+        }
+      }
+    );
   }
 
-  public OnMarkerClicked(infoWindow: AgmInfoWindow): void {
-    console.log('OnMarkerClicked', infoWindow);
-    if (this.prevInfoWindow) {
-      this.prevInfoWindow.close();
-      this.SelectedLocation = null;
-    }
-    this.prevInfoWindow = infoWindow;
+  /**
+   * Handles the show/hide lifecycle of a selected AMBL-ON Map Marker and initializes the
+   * basic info popover to display Map Marker information.
+   *
+   * @param infoWindow The current AGM info window.
+   * @param marker The Map Marker that was selected.
+   */
+  public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
+    this.SelectedLocation = null;
+    this.SelectedMarker = marker;
+    this.changeDetector.detectChanges();
+
     this.mapService.MapMarkerClickedEvent(infoWindow);
-    infoWindow.open();
+  }
+
+  /**
+   * Handles the show/hide lifecycle of a selected GOOGLE Map Marker and initializes the
+   * basic info popover to display Map Marker information.
+   *
+   * @param infoWindow The current AGM info window.
+   * @param marker The Map Marker that was selected.
+   */
+  public OnLocationClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
+    this.SelectedMarker = null;
+    this.changeDetector.detectChanges();
+
+    this.mapService.MapMarkerClickedEvent(infoWindow);
   }
 
 }

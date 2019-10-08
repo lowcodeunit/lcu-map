@@ -122,9 +122,16 @@
               mat-icon-button>
               <mat-icon title="Website" style="font-size: 35px">public</mat-icon>
             </a>
+            <a *ngIf="!BasicInfoData?.Website" class="link" disabled target="_blank"
+              mat-icon-button>
+              <mat-icon title="Website" style="font-size: 35px">public</mat-icon>
+            </a>
 
 
             <a class="link" *ngIf="InstagramUrl" href={{InstagramUrl}} target="_blank" mat-icon-button>
+              <mat-icon title="Instagram" svgIcon="instagram"></mat-icon>
+            </a>
+            <a class="link" *ngIf="!InstagramUrl" disabled target="_blank" mat-icon-button>
               <mat-icon title="Instagram" svgIcon="instagram"></mat-icon>
             </a>
 
@@ -137,8 +144,11 @@
               <mat-icon title="Reservations" style="font-size: 33px">book_mark</mat-icon>
             </a>
 
-            <!-- NO FUNCTIONALITY  *ngIf="BasicInfoData?.Directions"-->
-            <a  class="link" target="_blank" mat-icon-button>
+            <!-- NO FUNCTIONALITY  -->
+            <a  *ngIf="BasicInfoData?.Directions"class="link" target="_blank" mat-icon-button>
+              <mat-icon title="Directions" style="font-size: 33px">directions</mat-icon>
+            </a>
+            <a *ngIf="!BasicInfoData?.Directions" class="link" target="_blank" disabled mat-icon-button>
               <mat-icon title="Directions" style="font-size: 33px">directions</mat-icon>
             </a>
 

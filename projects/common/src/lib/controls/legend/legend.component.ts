@@ -127,7 +127,7 @@ protected scrolled: boolean;
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
-    this.matContentWidth = "30px";
+    this.matContentWidth = "40px";
     this.matContentHeight = "30px";
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<boolean>();
@@ -355,7 +355,11 @@ public ShowMoreInfo(item:MapMarker):void{
         visLoc = this._currentlyActiveLocations;
 
     //layers logic
-    if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
+
+    if(this._currentMapModel){
+      this.MapTitle = this._currentMapModel.Title;
+    }
+    else if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
       this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
       // console.log("Layers = ", this._currentlyActiveLayers);
     }
@@ -411,7 +415,7 @@ public ShowMoreInfo(item:MapMarker):void{
         this.EditMode = false;
       }
       this.LegendOpen = false;
-      this.matContentWidth = "30px";
+      this.matContentWidth = "40px";
       this.matContentHeight = "30px";
 
     } else {

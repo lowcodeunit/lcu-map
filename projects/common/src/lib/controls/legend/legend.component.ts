@@ -291,6 +291,12 @@ public DeleteLocationConfirmation(): void {
       console.log("pushing marker: ", marker);
     }
   })
+  this.HiddenLocations.forEach(function(marker){
+    if(marker.Checked === true){
+      markersToDelete.push(marker);
+      console.log("pushing marker: ", marker);
+    }
+  })
   const dialogRef = this.Dialog.open(DeleteLocationsComponent, {
     width: '500px',
     data: { locationsLength: markersToDelete.length }

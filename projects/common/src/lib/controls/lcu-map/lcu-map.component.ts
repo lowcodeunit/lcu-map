@@ -397,8 +397,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
   /**
    * The event emitted when the legend is closed and the order/locations are saved to local storage
    */
-  @Output('saved-legend-locations')
-  public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
+  @Output('edited-legend-locations')
+  public EditedLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('layer-checked')
   public LayerChecked: EventEmitter<UserLayer>;
@@ -441,7 +441,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
       this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
-    this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.LayerChecked = new EventEmitter<UserLayer>();
     this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.CustomSearchChange = new EventEmitter<string>();
@@ -591,8 +591,8 @@ export class LcuMapComponent implements OnInit, OnDestroy {
    * Saves the legend order/loactions via event emmiter
    * @param val 
    */
-  public SaveLegendLocations(val: Array<MapMarker>): void {
-    this.SavedLegendLocations.emit(val);
+  public EditLegendLocations(val: Array<MapMarker>): void {
+    this.EditedLegendLocations.emit(val);
   }
   /**
    * Toggles the location search bar hidden / shown

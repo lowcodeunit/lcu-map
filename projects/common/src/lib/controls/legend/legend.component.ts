@@ -101,11 +101,11 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
 
-  @Output('save-legend-locations')
-  SaveLegendLocations: EventEmitter<Array<MapMarker>>;
-
   @Output('display-more-info')
   DisplayMoreInfo: EventEmitter<boolean>;
+
+  @Output('edit-legend-locations')
+  EditLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('delete-locations')
   DeleteLegendLocations: EventEmitter<Array<MapMarker>>;
@@ -128,7 +128,7 @@ protected scrolled: boolean;
   constructor(protected mapService: MapService, public Dialog: MatDialog ) {
     this.Pan = new EventEmitter<any>();
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
-    this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
@@ -251,34 +251,38 @@ public CheckMarker(event: MapMarker):void{
 
 public HideLocations():void{
   // console.log("locs", this._currentlyActiveLocations);
-  let temp = this._currentlyActiveLocations;
+  // let temp = this._currentlyActiveLocations;
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
-    if(temp[i].Checked){
-      temp[i].isHidden = true;
-      temp[i].Checked = false;
-      console.log("hiding: ", temp[i]);
-      this.HiddenLocations.push(temp[i]);
+    if(this._currentlyActiveLocations[i].Checked){
+      this._currentlyActiveLocations[i].isHidden = true;
+      this._currentlyActiveLocations[i].Checked = false;
+      // console.log("hiding: ", this._currentlyActiveLocations[i]);
+      this.HiddenLocations.push(this._currentlyActiveLocations[i]);
     }
   }
-  //loop through and remove from _currentlyActiveLocations
-  this._currentlyActiveLocations = temp;
-  console.log("hid ", this.HiddenLocations);
+  // this._currentlyActiveLocations = temp;
+  // console.log("hid ", this.HiddenLocations);
+  this.EditLegendLocations.emit(this.HiddenLocations);
   this.SetLocationList();
 }
 
 public MakeVisible():void{
   let tempHidden = new Array<MapMarker>();
+  //list of markers to emit to backend 
+  let nowVisible = new Array<MapMarker>();
   this.HiddenLocations.forEach(function(marker){
     if(marker.Checked === true){
       marker.Checked = false;
       marker.isHidden = false;
       this._currentlyActiveLocations.push(marker);
+      nowVisible.push(marker);
     }
     else{
       tempHidden.push(marker);
     }
   },this)
   this.HiddenLocations = tempHidden;
+  this.EditLegendLocations.emit(nowVisible);
   this.SetLocationList();
 }
 
@@ -403,7 +407,7 @@ public ShowMoreInfo(item:MapMarker):void{
     else {
       this.MapTitle = "No Layer Selected";
     }
-    //end layer logic
+    //end title logic
 
     if (visLoc.length > 0) {
       this.LocationsList = this.assignIconUrl(visLoc);
@@ -429,7 +433,7 @@ public ShowMoreInfo(item:MapMarker):void{
     //console.log("drop event called");
     moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
     this.giveOrder();
-    this.SaveLegendLocations.emit(this.LocationsList);
+    this.EditLegendLocations.emit(this.LocationsList);
   }
 
   public CloseLegend():void{

@@ -65,6 +65,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * Angular lifecycle hook that gets called on initialization.
    */
   public ngOnInit(): void {
+    console.log('BASIC INFO COMPONENT - ngOnInit()');
     this.buildBasicInfoContent(this.marker);
     this.currentState = ModalStateType.BASIC;
     this.marker.Rating = Math.round(Math.random() * 100); // Setting random number until backend is ready
@@ -103,6 +104,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * Angular lifecycle hook that gets called after the view has finished initializing.
    */
   public ngAfterViewInit(): void {
+    console.log('BASIC INFO COMPONENT - ngAfterViewInit()');
     this.initProgressCircle();
   }
 
@@ -158,6 +160,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * @param percent The percent of total ratings for a given location.
    */
   public initRatingInfo(percent: number): void {
+    console.log('BASIC INFO COMPONENT - initRatingInfo()', percent);
     const offset = this.pCircumference - (percent / 100 * this.pCircumference);
 
     setTimeout(() => {

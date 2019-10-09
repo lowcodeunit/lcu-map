@@ -65,9 +65,16 @@ export class LegendComponent implements OnInit, OnChanges {
  */
   public HiddenListVisible: boolean;
 
-  protected undefinedCounter: number;
+  // protected undefinedCounter: number;
 
   // public LegendContentMarginTop: string;
+
+/**
+ * tracker so if a location is selected and the user scrolls the list, the scroll function doesnt scroll
+ * 
+ * away from the location that the user scrolled to
+ */
+  protected scrolled: boolean;
 
   
 
@@ -118,7 +125,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
 
 
-protected scrolled: boolean;
+
 
 
 
@@ -187,8 +194,10 @@ protected scroll(element: any):void {
         this.scrolled = true;
       }
       if(isOut === true && this.scrolled === false){
+        console.log("scrolled")
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         setTimeout(() => {
+          //wait for scrolling to finish
           this.scrolled = true;
         },500);
       }
@@ -199,8 +208,8 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
 	// Get element's bounding
   let childBound = child.getBoundingClientRect();
   let parentBound = parent.getBoundingClientRect();
-  // console.log("ChildBounds = ", childBound)
-  // console.log("ParentBounds = ", parentBound)
+  console.log("ChildBounds = ", childBound)
+  console.log("ParentBounds = ", parentBound)
 
 	// Check if it's out of the viewport on each side
   

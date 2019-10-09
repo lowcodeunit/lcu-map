@@ -208,23 +208,29 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
 	// Get element's bounding
   let childBound = child.getBoundingClientRect();
   let parentBound = parent.getBoundingClientRect();
-  console.log("ChildBounds = ", childBound)
-  console.log("ParentBounds = ", parentBound)
+  // console.log("ChildBounds = ", childBound)
+  // console.log("ParentBounds = ", parentBound)
 
 	// Check if it's out of the viewport on each side
   
   if(childBound.top < parentBound.top){
     return true;
   }
-  if(childBound.left > parentBound.left){
-    return true;
-  }
+
+  //commented out since we are only concerned with child being out of view above and below parent
+  //when checkboxes are present it puts the childs left outside the parents left, even though it's not
+  //out of view.
+
+  // if(childBound.left > parentBound.left){
+  //   return true;
+  // }
+  // if(childBound.right > parentBound.right){
+  //   return true;
+  // }
   if(childBound.bottom > parentBound.height){ 
     return true;
   }
-  if(childBound.right > parentBound.right){
-    return true;
-  }
+  
   else{
     return false;
   }

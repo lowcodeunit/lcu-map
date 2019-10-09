@@ -65,12 +65,14 @@
             </div>
           </div>
         </div>
-        <div *ngIf="EditMode" class="hidden-container">
-          <div class="hidden-header" fxLayoutAlign="start center">
+        <div *ngIf="EditMode && HiddenLocations.length > 0" class="hidden-container">
+          <div class="hidden-header" fxLayout = "row" fxLayoutAlign="space-between center">
             <div>Hidden</div>
-            <mat-icon *ngIf="HiddenListVisible === false" (click)="ToggleHiddenListVisibility()">chevron_right
+            <mat-icon *ngIf="HiddenListVisible === false" (click)="ToggleHiddenListVisibility()" matTooltip="Expand Hidden Locations">chevron_right
             </mat-icon>
-            <mat-icon *ngIf="HiddenListVisible === true" (click)="ToggleHiddenListVisibility()">keyboard_arrow_down
+            <mat-icon *ngIf="HiddenListVisible === true" (click)="MakeVisible()" matTooltip="Unhide Locations">visibility</mat-icon>
+
+            <mat-icon *ngIf="HiddenListVisible === true" (click)="ToggleHiddenListVisibility()" matTooltip="Collapse Hidden Locations">keyboard_arrow_down
             </mat-icon>
           </div>
           <div *ngIf="HiddenListVisible === true" class="hidden-locations-container">

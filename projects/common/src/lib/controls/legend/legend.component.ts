@@ -265,19 +265,21 @@ public CheckMarker(event: MapMarker):void{
 
 
 public HideLocations():void{
-  // console.log("locs", this._currentlyActiveLocations);
+  console.log("locs", this._currentlyActiveLocations);
   // let temp = this._currentlyActiveLocations;
+  let justHid = new Array<MapMarker>();
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
-    if(this._currentlyActiveLocations[i].Checked){
+    if(this._currentlyActiveLocations[i].Checked === true){
       this._currentlyActiveLocations[i].isHidden = true;
       this._currentlyActiveLocations[i].Checked = false;
-      // console.log("hiding: ", this._currentlyActiveLocations[i]);
+      console.log("hiding: ", this._currentlyActiveLocations[i]);
       this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+      justHid.push(this._currentlyActiveLocations[i]);
     }
   }
   // this._currentlyActiveLocations = temp;
   // console.log("hid ", this.HiddenLocations);
-  this.EditLegendLocations.emit(this.HiddenLocations);
+  this.EditLegendLocations.emit(justHid);
   this.SetLocationList();
 }
 

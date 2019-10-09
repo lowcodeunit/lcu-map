@@ -56,8 +56,15 @@ export class LegendComponent implements OnInit, OnChanges {
   public LocationsList: Array<MapMarker> = new Array<MapMarker>();
 
   public LegendOpen: boolean;
-
+/**
+ * List of locations that are hidden
+ */
   public HiddenLocations: Array<MapMarker>;
+/**
+ * to determine if the hidden list is visible
+ */
+  public HiddenListVisible: boolean;
+
   protected undefinedCounter: number;
 
   // public LegendContentMarginTop: string;
@@ -135,6 +142,7 @@ protected scrolled: boolean;
     this.DisplayMoreInfo = new EventEmitter<boolean>();
     this.scrolled = false;
     this.HiddenLocations = new Array<MapMarker>();
+    this.HiddenListVisible = false;
   }
 
   //LIFE CYCLE
@@ -213,10 +221,12 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
   }
 
 }
-
+public ToggleHiddenListVisibility(){
+  this.HiddenListVisible = !this.HiddenListVisible;
+}
 public CheckIfHidden():void{
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
-    if(this._currentlyActiveLocations[i].Hidden){
+    if(this._currentlyActiveLocations[i].isHidden){
       console.log("hiding: ", this._currentlyActiveLocations[i]);
       this.HiddenLocations.push(this._currentlyActiveLocations[i]);
       this._currentlyActiveLocations.splice(i, 1);
@@ -240,16 +250,17 @@ public CheckMarker(event: MapMarker):void{
 
 
 public HideLocations():void{
-  console.log("locs", this._currentlyActiveLocations);
+  // console.log("locs", this._currentlyActiveLocations);
   let temp = this._currentlyActiveLocations;
-  for(let i = 0; i < temp.length; i++){
+  for(let i = 0; i < this._currentlyActiveLocations.length; i++){
     if(temp[i].Checked){
-      temp[i].Hidden = true;
+      temp[i].isHidden = true;
+      temp[i].Checked = false;
       console.log("hiding: ", temp[i]);
       this.HiddenLocations.push(temp[i]);
-      temp.splice(i, 1);
     }
   }
+  //loop through and remove from _currentlyActiveLocations
   this._currentlyActiveLocations = temp;
   console.log("hid ", this.HiddenLocations);
   this.SetLocationList();
@@ -350,6 +361,7 @@ public ShowMoreInfo(item:MapMarker):void{
   public SetLocationList() {
      //set to new so no duplicates present themselves
     this.LocationsList = new Array<MapMarker>();
+    this.removeHiddenLocations();
 
     let visLoc = new Array<MapMarker>();
         visLoc = this._currentlyActiveLocations;
@@ -507,6 +519,16 @@ public ShowMoreInfo(item:MapMarker):void{
       })
     }
     return locList;
+  }
+
+  protected removeHiddenLocations():void{
+    let templist = new Array<MapMarker>();
+    this._currentlyActiveLocations.forEach( function(marker){
+      if(marker.isHidden === false || !marker.isHidden){
+        templist.push(marker);
+      }
+    },this)
+    this._currentlyActiveLocations = templist;
   }
 
 }

@@ -266,6 +266,22 @@ public HideLocations():void{
   this.SetLocationList();
 }
 
+public MakeVisible():void{
+  let tempHidden = new Array<MapMarker>();
+  this.HiddenLocations.forEach(function(marker){
+    if(marker.Checked === true){
+      marker.Checked = false;
+      marker.isHidden = false;
+      this._currentlyActiveLocations.push(marker);
+    }
+    else{
+      tempHidden.push(marker);
+    }
+  },this)
+  this.HiddenLocations = tempHidden;
+  this.SetLocationList();
+}
+
 
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();

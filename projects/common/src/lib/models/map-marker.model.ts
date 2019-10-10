@@ -128,6 +128,7 @@ export class MapMarker {
      */
     public Checked?: boolean;
 
+    public Rating?: number;
 
     public IsHidden?: boolean;
 

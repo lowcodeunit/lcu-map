@@ -20,10 +20,10 @@ mat-icon {
         }
 
         .legend {
-            position: absolute;  
+            position: absolute;
         }
     }
-    
+
     .top-icon-set{
         width: 10%;
         position: absolute;
@@ -51,7 +51,7 @@ mat-icon {
             z-index: 1;
         }
     }
-    
+
     agm-map {
         height: calc(100vh - #{$base-toolbar-height});
         @media(max-width:600px){
@@ -91,7 +91,7 @@ mat-checkbox, mat-radio-button {
     width: 100%;
     z-index: 1;
 
-    input {    
+    input {
         width: 40%;
         margin: auto;
         display: block;
@@ -101,16 +101,16 @@ mat-checkbox, mat-radio-button {
         padding: 10px;
         font-size: 16px;
     }
-    
+
     //background: rgba(255, 255, 255, 0.5);
     padding-bottom: 10px;
 }
 
 
 .footer{
-    position: fixed; 
-    bottom: 0px;  
-    z-index: 5 !important; 
+    position: fixed;
+    bottom: 0px;
+    z-index: 5 !important;
     background-color: white;
     width:100%;
 }

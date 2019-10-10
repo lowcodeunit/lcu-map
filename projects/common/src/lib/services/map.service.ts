@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
+import { MapMarker } from '../models/map-marker.model';
+import { AgmInfoWindow } from '@agm/core';
 // import { IndividualMap } from '../models/individual-map.model';
 
 @Injectable({
@@ -21,10 +23,10 @@ export class MapService {
   protected apiKey: string = 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU';
 
   // PROPERTIES
-
-  /**
-   * event emitter that tells lcu-map the legend's Top Lists button was clicked
-   */
+  public InfoWindowClosed: EventEmitter<any>;
+  public MapMarkerClicked: EventEmitter<AgmInfoWindow>;
+  public MapMarkerSaved: EventEmitter<MapMarker>;
+  public MoreInfoClicked: EventEmitter<MapMarker>;
   public TopListsClicked: EventEmitter<any>;
 
   /**
@@ -35,6 +37,10 @@ export class MapService {
   // CONSTRUCTORS
 
   constructor(protected http: HttpClient) {
+    this.InfoWindowClosed = new EventEmitter<any>();
+    this.MapMarkerClicked = new EventEmitter<AgmInfoWindow>();
+    this.MapMarkerSaved = new EventEmitter<MapMarker>();
+    this.MoreInfoClicked = new EventEmitter<MapMarker>();
     this.TopListsClicked = new EventEmitter<any>();
   }
 
@@ -83,6 +89,22 @@ export class MapService {
    */
   public LegendTopListsClicked() {
     this.TopListsClicked.emit('TopListsButtonClicked');
+  }
+
+  public MapMarkerClickedEvent(infoWindow: AgmInfoWindow): void {
+    this.MapMarkerClicked.emit(infoWindow);
+  }
+
+  public MoreInfoClickedEvent(selectedMarker: MapMarker): void {
+    this.MoreInfoClicked.emit(selectedMarker);
+  }
+
+  public InfoWindowClosedEvent(): void {
+    this.InfoWindowClosed.emit();
+  }
+
+  public MapMarkerSavedEvent(marker: MapMarker): void {
+    this.MapMarkerSaved.emit(marker);
   }
 
   /**

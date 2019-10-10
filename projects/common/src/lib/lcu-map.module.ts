@@ -1,8 +1,22 @@
 import { NgModule } from '@angular/core';
 import { FathymSharedModule } from '@lcu/common';
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, InfoWindowManager, MarkerManager } from '@agm/core';
 import { LcuMapComponent } from './controls/lcu-map/lcu-map.component';
-import { MatIconModule, MatSelectModule, MatDialogModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatMenuModule, MatCheckboxModule, MatRadioModule, MatDividerModule, MatTooltipModule, MatExpansionModule, MatAutocompleteModule, MatCardModule, MatToolbar, MatToolbarModule } from '@angular/material';
+import { MatIconModule,
+         MatSelectModule,
+         MatDialogModule,
+         MatButtonModule,
+         MatInputModule,
+         MatFormFieldModule,
+         MatMenuModule,
+         MatCheckboxModule,
+         MatRadioModule,
+         MatDividerModule,
+         MatTooltipModule,
+         MatExpansionModule,
+         MatAutocompleteModule,
+         MatCardModule,
+         MatToolbarModule } from '@angular/material';
 import { AddMapMarkerComponent } from './controls/lcu-map/add-map-marker/add-map-marker.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,11 +32,23 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTabsModule} from '@angular/material/tabs';
 import { DeleteLocationsComponent } from './controls/legend/delete-locations/delete-locations.component'
 import { SubString } from './utils/pipes/substring.pipe';
-
-
+import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
+import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
 
 @NgModule({
-  declarations: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent, SubString],
+  declarations: [
+    LcuMapComponent,
+    AddMapMarkerComponent,
+    SaveMapComponent,
+    BasicInfoWindowComponent,
+    InfoFooterComponent,
+    LocationInfoFormComponent,
+    LegendComponent,
+    DeleteLocationsComponent,
+    SubString,
+    BasicInfoWindowRewriteComponent,
+    MoreInfoWindowComponent
+  ],
   imports: [
     FathymSharedModule,
     FlexLayoutModule,
@@ -42,14 +68,38 @@ import { SubString } from './utils/pipes/substring.pipe';
     MatToolbarModule,
     HttpClientModule,
     MatExpansionModule,
-    MatCardModule,    
+    MatCardModule,
     MatAutocompleteModule,
     DragDropModule,
     MatSidenavModule,
     MatTabsModule
   ],
-  providers: [GoogleMapsAPIWrapper],
-  exports: [LcuMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent],
-  entryComponents: [LcuMapComponent, AddMapMarkerComponent, SaveMapComponent, BasicInfoWindowComponent, InfoFooterComponent, LocationInfoFormComponent, LegendComponent, DeleteLocationsComponent]
+  providers: [
+    GoogleMapsAPIWrapper,
+    InfoWindowManager,
+    MarkerManager
+  ],
+  exports: [
+    LcuMapComponent,
+    BasicInfoWindowComponent,
+    InfoFooterComponent,
+    LocationInfoFormComponent,
+    LegendComponent,
+    DeleteLocationsComponent,
+    BasicInfoWindowRewriteComponent,
+    MoreInfoWindowComponent
+  ],
+  entryComponents: [
+    LcuMapComponent,
+    AddMapMarkerComponent,
+    SaveMapComponent,
+    BasicInfoWindowComponent,
+    InfoFooterComponent,
+    LocationInfoFormComponent,
+    LegendComponent,
+    DeleteLocationsComponent,
+    BasicInfoWindowRewriteComponent,
+    MoreInfoWindowComponent
+  ]
 })
 export class LcuMapModule { }

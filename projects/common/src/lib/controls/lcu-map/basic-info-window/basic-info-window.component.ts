@@ -130,7 +130,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
         Title: '',
         Icon: '',
         Latitude: 0,
-        Longitude: 0
+        Longitude: 0,
+        IsHidden: false
       }
     }
   }

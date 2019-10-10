@@ -617,7 +617,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             let stateIndex = -1;
             let countryIndex = -1;
             res.result.address_components.forEach((comp, idx) => {
-              console.log(comp)
               if (comp.types.includes('locality')) {
                 townIndex = idx;
               }
@@ -649,7 +648,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Telephone: res.result.international_phone_number,
               Website: res.result.website,
               Town: res.result.address_components[townIndex].long_name,
-              State: res.result.address_components[stateIndex].long_name,
+              State: res.result.address_components[stateIndex] ? res.result.address_components[stateIndex].long_name : '',
               Country: res.result.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
@@ -956,7 +955,6 @@ export class LcuMapComponent implements OnInit, OnDestroy {
             data => {
               console.log("data being returned = ", data);
               if (data !== undefined && data !== null) {
-                console.log(data)
                 this.SaveNewMarker(data);
               }
               
@@ -1085,7 +1083,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Telephone: place.international_phone_number,
               Website: place.website,
               Town: place.address_components[townIndex].long_name,
-              State: place.address_components[stateIndex].long_name,
+              State: place.address_components[stateIndex] ? place.address_components[stateIndex].long_name : '',
               Country: place.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types

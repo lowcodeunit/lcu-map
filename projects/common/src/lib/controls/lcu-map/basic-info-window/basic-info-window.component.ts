@@ -215,7 +215,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    */
   public Close(): void {
     this.locationInfoService.SetHighlightIcon(false);
-    this.locationInfoService.SetSelectedLocation(undefined);
+    // this.locationInfoService.SetSelectedLocation(undefined);
+    console.log("new Marker = ", this.NewMarker);
     this.dialogRef.close();
   }
 

@@ -279,7 +279,11 @@ public HideLocations():void{
   }
   // this._currentlyActiveLocations = temp;
   // console.log("hid ", this.HiddenLocations);
-  this.EditLegendLocations.emit(justHid);
+  
+  //to avoid error in back end
+  if(justHid.length > 0){
+    this.EditLegendLocations.emit(justHid);
+  }
   this.SetLocationList();
 }
 

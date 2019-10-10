@@ -51,33 +51,44 @@
           *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}"
           (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
           <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
-          <div *ngIf="item === SelectedLocation" class="icon-title" id="Selected" style="background-color: yellow"
+          <div *ngIf="item === SelectedLocation  && (item.isHidden === false || !item.isHidden)" class="icon-title" id="Selected" style="background-color: yellow"
             fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title" matTooltip={{item.Title}}>
               {{ item.Title | substring }}
             </div>
           </div>
-          <div *ngIf="item !== SelectedLocation" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
+          <div *ngIf="item !== SelectedLocation && (item.isHidden === false || !item.isHidden)" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title" matTooltip={{item.Title}}>
               {{ item.Title | substring }}
             </div>
           </div>
         </div>
-        <div *ngIf="EditMode">Hidden
-        <div class="hidden-locations" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
-          *ngFor="let item of HiddenLocations" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}"
-          (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
-          <mat-checkbox [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
-          <div class="icon-title" fxLayout="row" fxLayoutAlign="start center">
-            <img class="icon-image" src={{item.IconImageObject.url}}>
-            <div class="location-title" matTooltip={{item.Title}}>
-              {{ item.Title | substring }}
+        <div *ngIf="EditMode && HiddenLocations.length > 0" class="hidden-container">
+          <div class="hidden-header" fxLayout = "row" fxLayoutAlign="space-between center">
+            <div>Hidden</div>
+            <mat-icon *ngIf="HiddenListVisible === false" (click)="ToggleHiddenListVisibility()" matTooltip="Expand Hidden Locations" [ngStyle]="{'cursor':  'pointer'}">chevron_right
+            </mat-icon>
+            <mat-icon *ngIf="HiddenListVisible === true" (click)="MakeVisible()" matTooltip="Unhide Locations" [ngStyle]="{'cursor':  'pointer'}">visibility</mat-icon>
+
+            <mat-icon *ngIf="HiddenListVisible === true" (click)="ToggleHiddenListVisibility()" matTooltip="Collapse Hidden Locations" [ngStyle]="{'cursor':  'pointer'}">keyboard_arrow_down
+            </mat-icon>
+          </div>
+          <div *ngIf="HiddenListVisible === true" class="hidden-locations-container">
+            <div class="hidden-locations" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+              *ngFor="let item of HiddenLocations" cdkDrag [ngStyle]="{'cursor':  'pointer'}"
+              (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
+              <mat-checkbox [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
+              <div class="icon-title" fxLayout="row" fxLayoutAlign="start center">
+                <img class="icon-image" src={{item.IconImageObject.url}}>
+                <div class="location-title" matTooltip={{item.Title}}>
+                  {{ item.Title | substring }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </mat-sidenav>

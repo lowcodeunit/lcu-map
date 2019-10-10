@@ -90,6 +90,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public Rating: string;
 
+  public OverlayRight: string;
+
+  public Accolades: Array<string>;
+
   // CONSTRUCTORS
 
   constructor(
@@ -103,6 +107,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     private domSanitizer: DomSanitizer) {
     this.IsEdit = this.passedData.isEdit;
     this.IconSetExpanded = false;
+    this.Accolades = new Array<string>();
     this.dialog.closeAll();
     this.matIconRegistry.addSvgIcon(
       "instagram",
@@ -176,9 +181,10 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
    * Changes the position of the modal to the right hand side of the screen for more info state
    */
   public changePositionToRHS() {
-    this.dialogRef.updatePosition({ right: '10px', top: '35px', bottom: '35px' });
+    this.dialogRef.updatePosition({ top: '35px', bottom: '35px', right: '10px' });
     //width x height
     this.dialogRef.updateSize("330px", "88vh");
+    this.OverlayRight = "10px";
     this.locationInfoService.SetHighlightIcon(true);
   }
 
@@ -200,8 +206,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     this.dialogRef.updatePosition({ top: '0px' });
     this.locationInfoService.SetHighlightIcon(false);
     //width x height
-    this.dialogRef.updateSize("310px");
-    
+    this.dialogRef.updateSize("310px");    
 
   }
 
@@ -211,7 +216,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
   public Close(): void {
     this.locationInfoService.SetHighlightIcon(false);
     this.locationInfoService.SetSelectedLocation(undefined);
-    this.dialogRef.close();
+    console.log("new Marker = ", this.NewMarker);
+    this.dialogRef.close(this.NewMarker);
   }
 
   /**

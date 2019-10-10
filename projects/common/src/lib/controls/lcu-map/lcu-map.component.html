@@ -41,7 +41,7 @@
         [currently-active-layers]="GetSelectedUserLayers()" (pan)="PanningTo($event)"
         (delete-locations)="DeleteLocations($event)" (display-basic-info)="DisplayMarkerInfo($event)"
         (display-more-info)="DisplayMoreInfo($event)"
-        (is-legend-open)="ToggleLegendMargin($event)" (save-legend-locations)="SaveLegendLocations($event)">
+        (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)">
       </lcu-legend>
     </div>
   </div>
@@ -69,6 +69,8 @@
             </span>
             <span *ngIf="location.Town && location.Town !== undefined && location.Town !== ''">{{ location.Town }},
             </span>
+            <span *ngIf="location.State && location.State !== undefined && location.State !== ''">{{ location.State }},
+            </span>
             <span
               *ngIf="location.Country && location.Country !== undefined && location.Country !== ''">{{ location.Country }}</span>
           </span>
@@ -94,7 +96,7 @@
       (mapClick)="OnChoseLocation($event)" [usePanning]="true">
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
-        <agm-marker [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
+        <agm-marker *ngIf="marker.isHidden === false || !marker.isHidden" [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
           [iconUrl]="marker.IconImageObject" (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
           <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
@@ -102,9 +104,7 @@
           </agm-info-window>
         </agm-marker>
       </div>
-      <agm-marker *ngIf="SelectedLocation" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5"
-        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
-
+      <agm-marker *ngIf="SelectedLocation" [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
             <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
         </agm-info-window>

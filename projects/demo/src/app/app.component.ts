@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
     // PROPERTIES
 
     public TestLocationSearchResults: any = [
-        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Country: 'USA', Icon: 'museum', LayerID: '789', Address: '321 Heyo Str' },
-        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', Address: '123 Sup Street', LayerID: '789', Country: 'USA', Town: 'Hillbilly Town' }
+        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Country: 'USA', Icon: 'museum', LayerID: '789', Address: '321 Heyo Str', State: 'Colorado' },
+        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', Address: '123 Sup Street', LayerID: '789', Country: 'USA', State: 'Colorado', Town: 'Hillbilly Town' }
     ]
 
     public VisibleLocations: Array<MapMarker>;

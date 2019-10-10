@@ -56,11 +56,25 @@ export class LegendComponent implements OnInit, OnChanges {
   public LocationsList: Array<MapMarker> = new Array<MapMarker>();
 
   public LegendOpen: boolean;
-
+/**
+ * List of locations that are hidden
+ */
   public HiddenLocations: Array<MapMarker>;
-  protected undefinedCounter: number;
+/**
+ * to determine if the hidden list is visible
+ */
+  public HiddenListVisible: boolean;
+
+  // protected undefinedCounter: number;
 
   // public LegendContentMarginTop: string;
+
+/**
+ * tracker so if a location is selected and the user scrolls the list, the scroll function doesnt scroll
+ * 
+ * away from the location that the user scrolled to
+ */
+  protected scrolled: boolean;
 
   
 
@@ -94,11 +108,11 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
 
-  @Output('save-legend-locations')
-  SaveLegendLocations: EventEmitter<Array<MapMarker>>;
-
   @Output('display-more-info')
   DisplayMoreInfo: EventEmitter<boolean>;
+
+  @Output('edit-legend-locations')
+  EditLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('delete-locations')
   DeleteLegendLocations: EventEmitter<Array<MapMarker>>;
@@ -111,7 +125,7 @@ export class LegendComponent implements OnInit, OnChanges {
 
 
 
-protected scrolled: boolean;
+
 
 
 
@@ -121,20 +135,21 @@ protected scrolled: boolean;
   constructor(protected mapService: MapService, public Dialog: MatDialog ) {
     this.Pan = new EventEmitter<any>();
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
-    this.SaveLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
-    this.matContentWidth = "30px";
-    this.matContentHeight = "30px";
+    this.matContentWidth = "40px";
+    this.matContentHeight = "40px";
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<boolean>();
     // this.LegendContentMarginTop = "0px";
     this.DisplayMoreInfo = new EventEmitter<boolean>();
     this.scrolled = false;
     this.HiddenLocations = new Array<MapMarker>();
+    this.HiddenListVisible = false;
   }
 
   //LIFE CYCLE
@@ -153,6 +168,7 @@ protected scrolled: boolean;
     if(this.LegendOpen && this.SelectedLocation){
       this.scroll(document.querySelector('#Selected'));
     }
+    this.SetLocationList();
   }
   // ngAfterContentInit(){
 
@@ -179,8 +195,10 @@ protected scroll(element: any):void {
         this.scrolled = true;
       }
       if(isOut === true && this.scrolled === false){
+        console.log("scrolled")
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         setTimeout(() => {
+          //wait for scrolling to finish
           this.scrolled = true;
         },500);
       }
@@ -199,24 +217,32 @@ public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {
   if(childBound.top < parentBound.top){
     return true;
   }
-  if(childBound.left > parentBound.left){
-    return true;
-  }
+
+  //commented out since we are only concerned with child being out of view above and below parent
+  //when checkboxes are present it puts the childs left outside the parents left, even though it's not
+  //out of view.
+
+  // if(childBound.left > parentBound.left){
+  //   return true;
+  // }
+  // if(childBound.right > parentBound.right){
+  //   return true;
+  // }
   if(childBound.bottom > parentBound.height){ 
     return true;
   }
-  if(childBound.right > parentBound.right){
-    return true;
-  }
+  
   else{
     return false;
   }
 
 }
-
+public ToggleHiddenListVisibility(){
+  this.HiddenListVisible = !this.HiddenListVisible;
+}
 public CheckIfHidden():void{
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
-    if(this._currentlyActiveLocations[i].Hidden){
+    if(this._currentlyActiveLocations[i].IsHidden){
       console.log("hiding: ", this._currentlyActiveLocations[i]);
       this.HiddenLocations.push(this._currentlyActiveLocations[i]);
       this._currentlyActiveLocations.splice(i, 1);
@@ -241,17 +267,44 @@ public CheckMarker(event: MapMarker):void{
 
 public HideLocations():void{
   console.log("locs", this._currentlyActiveLocations);
-  let temp = this._currentlyActiveLocations;
-  for(let i = 0; i < temp.length; i++){
-    if(temp[i].Checked){
-      temp[i].Hidden = true;
-      console.log("hiding: ", temp[i]);
-      this.HiddenLocations.push(temp[i]);
-      temp.splice(i, 1);
+  // let temp = this._currentlyActiveLocations;
+  let justHid = new Array<MapMarker>();
+  for(let i = 0; i < this._currentlyActiveLocations.length; i++){
+    if(this._currentlyActiveLocations[i].Checked === true){
+      this._currentlyActiveLocations[i].IsHidden = true;
+      this._currentlyActiveLocations[i].Checked = false;
+      console.log("hiding: ", this._currentlyActiveLocations[i]);
+      this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+      justHid.push(this._currentlyActiveLocations[i]);
     }
   }
-  this._currentlyActiveLocations = temp;
-  console.log("hid ", this.HiddenLocations);
+  // this._currentlyActiveLocations = temp;
+  // console.log("hid ", this.HiddenLocations);
+
+  //to avoid error in back end
+  if(justHid.length > 0){
+    this.EditLegendLocations.emit(justHid);
+  }
+  this.SetLocationList();
+}
+
+public MakeVisible():void{
+  let tempHidden = new Array<MapMarker>();
+  //list of markers to emit to backend 
+  let nowVisible = new Array<MapMarker>();
+  this.HiddenLocations.forEach(function(marker){
+    if(marker.Checked === true){
+      marker.Checked = false;
+      marker.IsHidden = false;
+      this._currentlyActiveLocations.push(marker);
+      nowVisible.push(marker);
+    }
+    else{
+      tempHidden.push(marker);
+    }
+  },this)
+  this.HiddenLocations = tempHidden;
+  this.EditLegendLocations.emit(nowVisible);
   this.SetLocationList();
 }
 
@@ -259,6 +312,12 @@ public HideLocations():void{
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();
   this._currentlyActiveLocations.forEach(function(marker){
+    if(marker.Checked === true){
+      markersToDelete.push(marker);
+      console.log("pushing marker: ", marker);
+    }
+  })
+  this.HiddenLocations.forEach(function(marker){
     if(marker.Checked === true){
       markersToDelete.push(marker);
       console.log("pushing marker: ", marker);
@@ -350,22 +409,27 @@ public ShowMoreInfo(item:MapMarker):void{
   public SetLocationList() {
      //set to new so no duplicates present themselves
     this.LocationsList = new Array<MapMarker>();
+    this.removeHiddenLocations();
 
     let visLoc = new Array<MapMarker>();
         visLoc = this._currentlyActiveLocations;
 
     //layers logic
-    if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
-      this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
-      // console.log("Layers = ", this._currentlyActiveLayers);
+
+    if(this._currentMapModel){
+      this.MapTitle = this._currentMapModel.Title;
     }
-    else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
-      this.MapTitle = this._currentlyActiveLayers[0];
-    }
+    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
+    //   this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
+    //   // console.log("Layers = ", this._currentlyActiveLayers);
+    // }
+    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
+    //   this.MapTitle = this._currentlyActiveLayers[0];
+    // }
     else {
       this.MapTitle = "No Layer Selected";
     }
-    //end layer logic
+    //end title logic
 
     if (visLoc.length > 0) {
       this.LocationsList = this.assignIconUrl(visLoc);
@@ -391,7 +455,7 @@ public ShowMoreInfo(item:MapMarker):void{
     //console.log("drop event called");
     moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
     this.giveOrder();
-    this.SaveLegendLocations.emit(this.LocationsList);
+    this.EditLegendLocations.emit(this.LocationsList);
   }
 
   public CloseLegend():void{
@@ -411,8 +475,8 @@ public ShowMoreInfo(item:MapMarker):void{
         this.EditMode = false;
       }
       this.LegendOpen = false;
-      this.matContentWidth = "30px";
-      this.matContentHeight = "30px";
+      this.matContentWidth = "40px";
+      this.matContentHeight = "40px";
 
     } else {
       this.drawer.open();
@@ -503,6 +567,16 @@ public ShowMoreInfo(item:MapMarker):void{
       })
     }
     return locList;
+  }
+
+  protected removeHiddenLocations():void{
+    let templist = new Array<MapMarker>();
+    this._currentlyActiveLocations.forEach( function(marker){
+      if(marker.IsHidden === false || !marker.IsHidden){
+        templist.push(marker);
+      }
+    },this)
+    this._currentlyActiveLocations = templist;
   }
 
 }

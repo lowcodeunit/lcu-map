@@ -406,8 +406,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The event emitted when the legend is closed and the order/locations are saved to local storage
    */
-  @Output('saved-legend-locations')
-  public SavedLegendLocations: EventEmitter<Array<MapMarker>>;
+  @Output('edited-legend-locations')
+  public EditedLegendLocations: EventEmitter<Array<MapMarker>>;
 
   @Output('layer-checked')
   public LayerChecked: EventEmitter<UserLayer>;
@@ -450,7 +450,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       this.VisibleLocationListChanged = new EventEmitter;
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
-    this.SavedLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.LayerChecked = new EventEmitter<UserLayer>();
     this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.CustomSearchChange = new EventEmitter<string>();
@@ -598,8 +598,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * Saves the legend order/loactions via event emmiter.
    * @param val
    */
-  public SaveLegendLocations(val: Array<MapMarker>): void {
-    this.SavedLegendLocations.emit(val);
+  public EditLegendLocations(val: Array<MapMarker>): void {
+    this.EditedLegendLocations.emit(val);
   }
 
   /**
@@ -623,10 +623,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
         this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
             let townIndex = -1;
+            let stateIndex = -1;
             let countryIndex = -1;
             res.result.address_components.forEach((comp, idx) => {
+              console.log(comp)
               if (comp.types.includes('locality')) {
                 townIndex = idx;
+              }
+              if (comp.types.includes('administrative_area_level_1')) {
+                stateIndex = idx;
               }
               if (comp.types.includes('country')) {
                 countryIndex = idx;
@@ -652,6 +657,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
               Telephone: res.result.international_phone_number,
               Website: res.result.website,
               Town: res.result.address_components[townIndex].long_name,
+              State: res.result.address_components[stateIndex].long_name,
               Country: res.result.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
@@ -990,11 +996,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
           this._currentMapModel.Longitude = place.geometry.location.lng();
 
           let townIndex = -1;
+          let stateIndex = -1;
           let countryIndex = -1;
           place.address_components.forEach((comp, idx) => {
             if (comp.types.length > 0) {
               if (comp.types.includes('locality')) {
                 townIndex = idx;
+              }
+              if (comp.types.includes('administrative_area_level_1')) {
+                stateIndex = idx;
               }
               if (comp.types.includes('country')) {
                 countryIndex = idx;
@@ -1020,6 +1030,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
               Telephone: place.international_phone_number,
               Website: place.website,
               Town: place.address_components[townIndex].long_name,
+              State: place.address_components[stateIndex].long_name,
               Country: place.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types

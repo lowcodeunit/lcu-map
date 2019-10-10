@@ -129,7 +129,7 @@ export class MapMarker {
     public Checked?: boolean;
 
 
-    public isHidden?: boolean;
+    public IsHidden?: boolean;
 
     /**
      *
@@ -159,6 +159,6 @@ export class MapMarker {
         this.Type = icon.Type;
         this.GoogleLocationName = icon.GoogleLocationName;
         this.Checked = icon.Checked;
-        this.isHidden = icon.isHidden;
+        this.IsHidden = icon.IsHidden;
     }
 }

@@ -242,7 +242,7 @@ public ToggleHiddenListVisibility(){
 }
 public CheckIfHidden():void{
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
-    if(this._currentlyActiveLocations[i].isHidden){
+    if(this._currentlyActiveLocations[i].IsHidden){
       console.log("hiding: ", this._currentlyActiveLocations[i]);
       this.HiddenLocations.push(this._currentlyActiveLocations[i]);
       this._currentlyActiveLocations.splice(i, 1);
@@ -271,7 +271,7 @@ public HideLocations():void{
   let justHid = new Array<MapMarker>();
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
     if(this._currentlyActiveLocations[i].Checked === true){
-      this._currentlyActiveLocations[i].isHidden = true;
+      this._currentlyActiveLocations[i].IsHidden = true;
       this._currentlyActiveLocations[i].Checked = false;
       console.log("hiding: ", this._currentlyActiveLocations[i]);
       this.HiddenLocations.push(this._currentlyActiveLocations[i]);
@@ -295,7 +295,7 @@ public MakeVisible():void{
   this.HiddenLocations.forEach(function(marker){
     if(marker.Checked === true){
       marker.Checked = false;
-      marker.isHidden = false;
+      marker.IsHidden = false;
       this._currentlyActiveLocations.push(marker);
       nowVisible.push(marker);
     }
@@ -572,7 +572,7 @@ public ShowMoreInfo(item:MapMarker):void{
   protected removeHiddenLocations():void{
     let templist = new Array<MapMarker>();
     this._currentlyActiveLocations.forEach( function(marker){
-      if(marker.isHidden === false || !marker.isHidden){
+      if(marker.IsHidden === false || !marker.IsHidden){
         templist.push(marker);
       }
     },this)

@@ -92,6 +92,8 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
 
   public OverlayRight: string;
 
+  public Accolades: Array<string>;
+
   // CONSTRUCTORS
 
   constructor(
@@ -105,6 +107,7 @@ export class BasicInfoWindowComponent implements AfterViewInit, OnInit {
     private domSanitizer: DomSanitizer) {
     this.IsEdit = this.passedData.isEdit;
     this.IconSetExpanded = false;
+    this.Accolades = new Array<string>();
     this.dialog.closeAll();
     this.matIconRegistry.addSvgIcon(
       "instagram",

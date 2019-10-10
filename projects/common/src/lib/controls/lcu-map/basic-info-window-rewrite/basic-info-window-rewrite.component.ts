@@ -121,11 +121,13 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public buildBasicInfoContent(marker: MapMarker): void {
     const blocks: string[] = [];
 
+    /* TEST DATA
     marker.Address = '123 Pearl street';
     marker.Telephone = '+1 800-423-0039';
     marker.Town = 'Boulder';
     marker.State = 'Colorado';
     marker.Country = 'United States of America';
+    */
 
     let addrLine: string = marker.Town ? marker.Town : '';
     addrLine += marker.State ? marker.Town ? ', ' + marker.State : marker.State : '';

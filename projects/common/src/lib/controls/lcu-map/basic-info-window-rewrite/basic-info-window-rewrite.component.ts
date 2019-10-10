@@ -92,10 +92,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     this.mapMarkerClickedSubscription = this.mapService.MapMarkerClicked.subscribe(
       (infoWindow: AgmInfoWindow) => {
         this.infoWindow = infoWindow;
-
-        if (this.marker.Rating) {
-          this.initRatingInfo(this.marker.Rating);
-        }
       }
     );
   }
@@ -151,6 +147,10 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
       this.pCircumference = radius * 2 * Math.PI;
       this.progressCircle.style.strokeDasharray = `${this.pCircumference} ${this.pCircumference}`;
       this.progressCircle.style.strokeDashoffset = `${this.pCircumference}`;
+
+      if (this.marker.Rating) {
+        this.initRatingInfo(this.marker.Rating);
+      }
     }
   }
 

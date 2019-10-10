@@ -614,10 +614,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
             let townIndex = -1;
+            let stateIndex = -1;
             let countryIndex = -1;
             res.result.address_components.forEach((comp, idx) => {
+              console.log(comp)
               if (comp.types.includes('locality')) {
                 townIndex = idx;
+              }
+              if (comp.types.includes('administrative_area_level_1')) {
+                stateIndex = idx;
               }
               if (comp.types.includes('country')) {
                 countryIndex = idx;
@@ -644,6 +649,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Telephone: res.result.international_phone_number,
               Website: res.result.website,
               Town: res.result.address_components[townIndex].long_name,
+              State: res.result.address_components[stateIndex].long_name,
               Country: res.result.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
@@ -1041,11 +1047,15 @@ export class LcuMapComponent implements OnInit, OnDestroy {
           // this._currentMapModel.zoom = 16;
 
           let townIndex = -1;
+          let stateIndex = -1;
           let countryIndex = -1;
           place.address_components.forEach((comp, idx) => {
             if (comp.types.length > 0) {
               if (comp.types.includes('locality')) {
                 townIndex = idx;
+              }
+              if (comp.types.includes('administrative_area_level_1')) {
+                stateIndex = idx;
               }
               if (comp.types.includes('country')) {
                 countryIndex = idx;
@@ -1075,6 +1085,7 @@ export class LcuMapComponent implements OnInit, OnDestroy {
               Telephone: place.international_phone_number,
               Website: place.website,
               Town: place.address_components[townIndex].long_name,
+              State: place.address_components[stateIndex].long_name,
               Country: place.address_components[countryIndex].long_name,
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types

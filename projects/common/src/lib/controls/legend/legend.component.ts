@@ -168,6 +168,7 @@ export class LegendComponent implements OnInit, OnChanges {
     if(this.LegendOpen && this.SelectedLocation){
       this.scroll(document.querySelector('#Selected'));
     }
+    this.SetLocationList();
   }
   // ngAfterContentInit(){
 
@@ -279,7 +280,7 @@ public HideLocations():void{
   }
   // this._currentlyActiveLocations = temp;
   // console.log("hid ", this.HiddenLocations);
-  
+
   //to avoid error in back end
   if(justHid.length > 0){
     this.EditLegendLocations.emit(justHid);

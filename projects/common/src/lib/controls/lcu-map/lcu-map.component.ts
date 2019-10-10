@@ -948,13 +948,12 @@ export class LcuMapComponent implements OnInit, OnDestroy {
         }
           this.markerInfoSubscription = dialogRef.afterClosed().subscribe(
             data => {
-              //console.log("data being returned = ", data);
+              console.log("data being returned = ", data);
               if (data !== undefined && data !== null) {
                 console.log(data)
                 this.SaveNewMarker(data);
               }
-              // console.log("sL=", this.SelectedLocation)
-              // this.SelectedLocation = undefined;
+              
               this.DisplayingMoreInfo = false;
             });
         }, 50, this);

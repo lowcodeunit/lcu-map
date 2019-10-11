@@ -152,6 +152,10 @@ export class AppComponent implements OnInit {
         console.log('saved map: ', map);
     }
 
+    public SearchLocationChosen(e) {
+        // console.log(e)
+    }
+
     /**
      *
      * @param lat The latitude to pan to

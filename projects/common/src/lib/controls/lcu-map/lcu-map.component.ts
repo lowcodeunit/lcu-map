@@ -269,6 +269,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   @Input('custom-search-input-results')
   public CustomSearchInputResults: Array<MapMarker>;
 
+  @Input('repress-search-options-list')
+  public RepressSearchOptionsList: boolean = false;
+
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */

@@ -41,6 +41,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public Tools: string;
   public SelectedLocation: MapMarker;
   public EditMode: boolean = false;
+  public LegendContentHeight: string;
 
    
 
@@ -151,6 +152,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.scrolled = false;
     this.HiddenLocations = new Array<MapMarker>();
     this.HiddenListVisible = false;
+    this.LegendContentHeight="92%";
   }
 
   //LIFE CYCLE
@@ -169,7 +171,7 @@ export class LegendComponent implements OnInit, OnChanges {
     if(this.LegendOpen && this.SelectedLocation){
       this.scroll(document.querySelector('#Selected'));
     }
-    this.SetLocationList();
+    // this.SetLocationList();
     this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
     // console.log("selected location: ", this.SelectedLocation)
   }
@@ -351,10 +353,12 @@ public TopListsClicked() {
 public ToggleTools():void{
   if(this.Tools === "basic"){
     this.Tools = "closed";
-    // this.LegendContentMarginTop = '0px';
+    this.LegendContentHeight = '92%';
   }
   else if(this.Tools === "closed"){
     this.Tools = "basic";
+    this.LegendContentHeight = '80%';
+
   }
   else if(this.Tools === "advanced"){
     this.Tools = "basic";

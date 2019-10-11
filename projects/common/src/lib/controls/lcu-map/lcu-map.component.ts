@@ -403,6 +403,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
+  @Output('search-location-chosen')
+  public SearchLocationChosen: EventEmitter<MapMarker>;
+
   /**
    * The event emitted when the legend is closed and the order/locations are saved to local storage
    */
@@ -448,6 +451,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.MapSaved = new EventEmitter,
       // this.PrimaryMapLocationListChanged = new EventEmitter;
       this.VisibleLocationListChanged = new EventEmitter;
+      this.SearchLocationChosen = new EventEmitter<MapMarker>();
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -853,6 +857,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   public LocationOptionSelected(e) {
     this.DropdownItemChosen(e.option.value);
+    this.SearchLocationChosen.emit(e.option.value);
     this.CustomLocationControl.setValue({});
   }
 

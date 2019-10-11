@@ -897,8 +897,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  DisplayMoreInfo(event: boolean): void {
-    this.DisplayingMoreInfo = event;
+  DisplayMoreInfo(marker: MapMarker): void {
+    this.openMoreInfoDialog(marker);
   }
 
   /**
@@ -1114,8 +1114,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   protected openMoreInfoDialog(marker: MapMarker): void {
     const dialogRef: any = this.dialog.open(MoreInfoWindowComponent, {
       width: '330px',
-      height: '95vh',
-      position: { right: '10px', top: '15px', bottom: '35px' },
+      height: '88vh',
+      position: { right: '10px', top: '35px', bottom: '35px' },
       backdropClass: 'dialogRefBackdrop',
       hasBackdrop: false,
       disableClose: true,

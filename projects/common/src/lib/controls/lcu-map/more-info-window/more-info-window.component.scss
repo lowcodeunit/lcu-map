@@ -97,6 +97,6 @@
   width: 100%;
 }
 
-::ng-deep .cdk-overlay-pane {
-  position: absolute !important;
-}
+// ::ng-deep .cdk-overlay-pane {
+//   position: absolute !important; //having this doesnt allow for margin on the right
+// }

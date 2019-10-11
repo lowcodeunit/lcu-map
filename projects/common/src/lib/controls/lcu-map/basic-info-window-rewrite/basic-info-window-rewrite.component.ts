@@ -239,7 +239,8 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
       this.newMarker.Icon = 'ambl_marker';
       this.newMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png', { width: 24, height: 40 });
     }
-    this.mapService.MapMarkerSavedEvent(this.newMarker);
+    // this.mapService.MapMarkerSavedEvent(this.newMarker);
+    this.mapService.MapMarkerSavedEvent(this.marker);
     this.Close();
   }
 

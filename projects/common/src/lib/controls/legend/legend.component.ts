@@ -8,6 +8,7 @@ import { Constants } from '../../utils/constants/constants';
 import { MatSidenav, MatDialog } from '@angular/material';
 import { UserMap } from '../../models/user-map.model';
 import { DeleteLocationsComponent } from './delete-locations/delete-locations.component';
+import { LocationInfoService } from '../../services/location-info.service';
 
 
 
@@ -96,14 +97,14 @@ export class LegendComponent implements OnInit, OnChanges {
     this._currentlyActiveLayers = value;
   }
 
-  @Input('selected-location')
-  public set SelectedLoaction(value: MapMarker){
-    this.SelectedLocation = value;
-    this.scrolled = false;
-  }
+  // @Input('selected-location')
+  // public set SelectedLoaction(value: MapMarker){
+  //   this.SelectedLocation = value;
+  //   this.scrolled = false;
+  // }
 
-  @Output('pan')
-  Pan: EventEmitter<any>;
+  // @Output('pan')
+  // Pan: EventEmitter<any>;
 
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
@@ -132,8 +133,8 @@ export class LegendComponent implements OnInit, OnChanges {
 
   //CONSTRUCTOR
 
-  constructor(protected mapService: MapService, public Dialog: MatDialog ) {
-    this.Pan = new EventEmitter<any>();
+  constructor(protected mapService: MapService, public Dialog: MatDialog, protected locationInfoService: LocationInfoService ) {
+    // this.Pan = new EventEmitter<any>();
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -169,6 +170,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.scroll(document.querySelector('#Selected'));
     }
     this.SetLocationList();
+    this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
     // console.log("selected location: ", this.SelectedLocation)
   }
   // ngAfterContentInit(){
@@ -383,7 +385,7 @@ public ShowMoreInfo(item:MapMarker):void{
       if (typeof (marker.Latitude) === 'string') {
         marker.Latitude = parseFloat(marker.Latitude);
       }
-      this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
+      // this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
       this.DisplayBasicInfo.emit(marker);
       this.SelectedLocation = marker;
       if(this.LegendOpen && this.SelectedLocation){

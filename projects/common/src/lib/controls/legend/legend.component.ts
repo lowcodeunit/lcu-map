@@ -171,7 +171,7 @@ export class LegendComponent implements OnInit, OnChanges {
     }
     // this.SetLocationList();
     this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
-    console.log("selected location: ", this.SelectedLocation)
+    // console.log("selected location: ", this.SelectedLocation)
   }
   // ngAfterContentInit(){
 

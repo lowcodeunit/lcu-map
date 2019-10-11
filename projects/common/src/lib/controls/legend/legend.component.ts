@@ -410,7 +410,7 @@ public ShowMoreInfo(item:MapMarker):void{
    */
   public SetLocationList() {
      //set to new so no duplicates present themselves
-         console.log("selected location: ", this.SelectedLocation)
+        //  console.log("selected location: ", this.SelectedLocation)
 
     this.LocationsList = new Array<MapMarker>();
     this.removeHiddenLocations();

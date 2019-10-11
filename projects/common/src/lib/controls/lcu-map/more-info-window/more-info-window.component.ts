@@ -15,6 +15,7 @@ export class MoreInfoWindowComponent implements OnInit {
   public linkedPhoneNumber: string;
   public rating: string;
   public instagramUrl: string;
+  public accolades: Array<string>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public passedData: any,
@@ -30,9 +31,9 @@ export class MoreInfoWindowComponent implements OnInit {
   public ngOnInit(): void {
     console.log('ngOnInit', this.passedData);
     this.marker = this.passedData.marker;
-
     this.instagramUrl = this.locationInfoService.BuildInstagramUrl(this.marker);
     this.linkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
+    this.accolades = new Array<string>();
   }
 
   public SelectRating(rating: string): void {

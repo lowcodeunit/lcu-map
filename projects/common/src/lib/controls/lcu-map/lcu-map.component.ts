@@ -907,6 +907,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
   public DisplayMarkerInfo(marker: MapMarker): void {
+    console.log("displaying info")
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
@@ -924,7 +925,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
-    this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+    
+      this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+    
+
     this.zoomInToPoint(marker);
   }
 
@@ -1098,7 +1102,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   protected shiftCuratedLayerToTop() {
-    let first = "Curated Layer";
+    let first = "Curated";
     if (this._userLayers && this._userLayers !== undefined) {
       this._userLayers.sort(function (layer1, layer2) {
         return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
@@ -1161,7 +1165,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public OnLocationClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
     this.SelectedMarker = null;
     this.changeDetector.detectChanges();
-
     this.mapService.MapMarkerClickedEvent(infoWindow);
   }
 

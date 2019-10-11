@@ -169,6 +169,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.scroll(document.querySelector('#Selected'));
     }
     this.SetLocationList();
+    // console.log("selected location: ", this.SelectedLocation)
   }
   // ngAfterContentInit(){
 
@@ -409,6 +410,8 @@ public ShowMoreInfo(item:MapMarker):void{
    */
   public SetLocationList() {
      //set to new so no duplicates present themselves
+         console.log("selected location: ", this.SelectedLocation)
+
     this.LocationsList = new Array<MapMarker>();
     this.removeHiddenLocations();
 

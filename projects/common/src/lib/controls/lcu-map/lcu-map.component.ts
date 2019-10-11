@@ -919,7 +919,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.ShowSearchBar = false;
     this.locationInfoService.SetSelectedMarker(marker);
     this.SelectedLocation = marker;
-    this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
     this.isEdit = false;
     const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
@@ -1158,6 +1157,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
      this.SelectedLocation = null;
     this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
+    this.locationInfoService.SetSelectedMarker(marker);
 
     this.mapService.MapMarkerClickedEvent(infoWindow);
   }

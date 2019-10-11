@@ -250,6 +250,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public Close(): void {
     this.mapService.InfoWindowClosedEvent();
     this.changeView(this.modalStateType.BASIC);
+    this.locationInfoService.SetSelectedMarker(undefined);
 
     if (this.infoWindow) {
       this.infoWindow.close();

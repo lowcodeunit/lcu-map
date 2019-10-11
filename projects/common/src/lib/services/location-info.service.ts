@@ -12,7 +12,7 @@ export class LocationInfoService {
 
   protected isHighlighted: boolean;
 
-  protected selectedLocation: MapMarker;
+  protected selectedMarker: MapMarker;
   //CONSTRUCTORS
   constructor(private mapService: MapService) {
     this.isHighlighted = false;
@@ -63,11 +63,11 @@ export class LocationInfoService {
     return type;
   } 
   
-  public GetSelectedLocation(): MapMarker{
-    return this.selectedLocation;
+  public GetSelectedMarker(): MapMarker{
+    return this.selectedMarker;
   }
-  public SetSelectedLocation(marker: MapMarker):void{
-    this.selectedLocation = marker;
+  public SetSelectedMarker(marker: MapMarker):void{
+    this.selectedMarker = marker;
   }
   
 

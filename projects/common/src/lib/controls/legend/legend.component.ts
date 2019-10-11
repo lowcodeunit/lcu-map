@@ -169,9 +169,9 @@ export class LegendComponent implements OnInit, OnChanges {
     if(this.LegendOpen && this.SelectedLocation){
       this.scroll(document.querySelector('#Selected'));
     }
-    this.SetLocationList();
+    // this.SetLocationList();
     this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
-    // console.log("selected location: ", this.SelectedLocation)
+    console.log("selected location: ", this.SelectedLocation)
   }
   // ngAfterContentInit(){
 

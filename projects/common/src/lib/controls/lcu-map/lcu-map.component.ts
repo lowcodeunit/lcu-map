@@ -493,7 +493,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       () => {
         this.SelectedMarker = null;
         this.SelectedLocation = null;
-        console.log("setting selected location to null")
+        console.log("setting selected location & Selected Marker to null")
       }
     );
 
@@ -870,7 +870,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public ShowFooter(val: boolean): void {
     this.DisplayFooter = val;
     if (!val) {
-      this.locationInfoService.SetSelectedLocation(undefined);
+      this.locationInfoService.SetSelectedMarker(undefined);
     }
   }
 
@@ -912,8 +912,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
-    this.locationInfoService.SetSelectedLocation(marker);
+    this.locationInfoService.SetSelectedMarker(marker);
     this.SelectedLocation = marker;
+    this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
     this.isEdit = false;
     const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
@@ -1149,7 +1150,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    // this.SelectedLocation = null;
+     this.SelectedLocation = null;
     this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
 

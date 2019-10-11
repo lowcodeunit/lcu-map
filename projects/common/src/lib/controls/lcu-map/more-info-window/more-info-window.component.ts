@@ -45,7 +45,7 @@ export class MoreInfoWindowComponent implements OnInit {
    */
   public Close(): void {
     this.locationInfoService.SetHighlightIcon(false);
-    this.locationInfoService.SetSelectedLocation(undefined);
+    this.locationInfoService.SetSelectedMarker(undefined);
     this.dialogRef.close();
   }
 

@@ -109,7 +109,7 @@ export class LegendComponent implements OnInit, OnChanges {
   DisplayBasicInfo: EventEmitter<MapMarker>;
 
   @Output('display-more-info')
-  DisplayMoreInfo: EventEmitter<boolean>;
+  DisplayMoreInfo: EventEmitter<MapMarker>;
 
   @Output('edit-legend-locations')
   EditLegendLocations: EventEmitter<Array<MapMarker>>;
@@ -146,7 +146,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<boolean>();
     // this.LegendContentMarginTop = "0px";
-    this.DisplayMoreInfo = new EventEmitter<boolean>();
+    this.DisplayMoreInfo = new EventEmitter<MapMarker>();
     this.scrolled = false;
     this.HiddenLocations = new Array<MapMarker>();
     this.HiddenListVisible = false;
@@ -361,11 +361,12 @@ public ToggleTools():void{
 
 public ShowMoreInfo(item:MapMarker):void{
   this.isDoubleClick = true;
+  this.DisplayMoreInfo.emit(item);
+  this.PanTo(item);
   setTimeout(x => {
     this.isDoubleClick = false;
   }, 500);
-  this.DisplayMoreInfo.emit(true);
-  this.PanTo(item);
+  
 }
 
 /**

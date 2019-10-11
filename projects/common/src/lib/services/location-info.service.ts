@@ -34,6 +34,7 @@ export class LocationInfoService {
 
   public BuildInstagramUrl(marker: MapMarker): string{
     if(marker.Instagram){
+      console.log("insta ", marker.Instagram)
       let tempInsta = marker.Instagram.slice(1);
       return "https://www.instagram.com/"+tempInsta+"/";
     }

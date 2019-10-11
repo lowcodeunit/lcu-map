@@ -26,7 +26,7 @@
             <mat-icon title="Website" style="font-size: 35px">public</mat-icon>
           </a>
           <a [disabled]="!instagramUrl" class="link" href={{instagramUrl}} target="_blank" mat-icon-button>
-            <mat-icon title="Instagram" svgIcon="instagram"></mat-icon>
+            <mat-icon title="Instagram" svgIcon="instagram" style="width: 30px; height:30px"></mat-icon>
           </a>
           <a [disabled]="!marker?.Reservations" href={{marker?.Reservations}} target="_blank" mat-icon-button>
             <mat-icon title="Reservations" style="font-size: 33px">book_mark</mat-icon>
@@ -52,12 +52,12 @@
           </div>
         </div>
 
-        <div class="more-info-accolades">
+        <div *ngIf="Accolades" class="more-info-accolades">
           <div class="accolades-title" fxLayoutAlign="center center">Accolades</div>
-          <div class="accolades-content" fxLayout="column" fxLayoutAlign="start">
-            <div>Michelin: 2 stars (2016)</div>
-            <div>The World’s 50 Best Restaurants: 36 (2019), 44 (2018), 57 (2017)</div>
-            <div>Bon Appetit’s America’s Best New Restaurants: Nominee (2018)</div>
+          <div class="accolades-section" fxLayout="column" fxLayoutAlign="start" *ngFor="let award of Accolades">
+            <div>{{award.Title}}</div>
+            <div>{{award.Rank}}</div>
+            <div>{{award.Year}}</div>
           </div>
 
         </div>

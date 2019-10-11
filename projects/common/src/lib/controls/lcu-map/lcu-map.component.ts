@@ -254,6 +254,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The Info Window that displays when a Google map icon was clicked.
    */
+  @ViewChild('amblInfoWindow', { static: false })
+  public AmblInfoWindowRef: AgmInfoWindow;
+
+  /**
+   * The Info Window that displays when a Google map icon was clicked.
+   */
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
@@ -919,13 +925,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     if (marker.LayerID === userLayerID) {
       this.isEdit = true;
     }
-
-    if (this.IsMobile) {
-      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
-      this.ShowFooter(true);
-    }
     this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
-    this.zoomInToPoint(marker);
   }
 
   /**
@@ -1144,11 +1144,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    this.SelectedLocation = null;
-    this.SelectedMarker = marker;
-    this.changeDetector.detectChanges();
-
-    this.mapService.MapMarkerClickedEvent(infoWindow);
+    if (this.IsMobile) {
+      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
+      this.ShowFooter(true);
+    } else {
+      this.SelectedLocation = null;
+      this.SelectedMarker = marker;
+      this.changeDetector.detectChanges();
+      this.mapService.MapMarkerClickedEvent(infoWindow);
+    }
+    this.zoomInToPoint(marker);
   }
 
   /**
@@ -1159,10 +1164,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker The Map Marker that was selected.
    */
   public OnLocationClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    this.SelectedMarker = null;
-    this.changeDetector.detectChanges();
-
-    this.mapService.MapMarkerClickedEvent(infoWindow);
+    if (this.IsMobile) {
+      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
+      this.ShowFooter(true);
+    } else {
+      this.SelectedMarker = null;
+      this.changeDetector.detectChanges();
+      this.mapService.MapMarkerClickedEvent(infoWindow);
+    }
+    this.zoomInToPoint(marker);
   }
 
 }

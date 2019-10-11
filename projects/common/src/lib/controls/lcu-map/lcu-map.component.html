@@ -97,15 +97,15 @@
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
         <agm-marker *ngIf="marker.isHidden === false || !marker.isHidden" [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
-          [iconUrl]="marker.IconImageObject" (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
+          [iconUrl]="marker.IconImageObject" (markerClick)="OnMarkerClicked(AmblInfoWindowRef, marker)">
 
-          <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
+          <agm-info-window #amblInfoWindow *ngIf="!IsMobile" [isOpen]="SelectedMarker?.ID === marker.ID">
             <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="true" [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
           </agm-info-window>
         </agm-marker>
       </div>
       <agm-marker *ngIf="SelectedLocation" [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
-        <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
+        <agm-info-window #googleInfoWindow *ngIf="!IsMobile" [isOpen]="SelectedLocation !== null">
             <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
         </agm-info-window>
       </agm-marker>

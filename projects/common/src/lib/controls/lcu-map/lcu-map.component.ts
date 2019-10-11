@@ -493,6 +493,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       () => {
         this.SelectedMarker = null;
         this.SelectedLocation = null;
+        console.log("setting selected location to null")
       }
     );
 
@@ -1148,7 +1149,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    this.SelectedLocation = null;
+    // this.SelectedLocation = null;
     this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
 

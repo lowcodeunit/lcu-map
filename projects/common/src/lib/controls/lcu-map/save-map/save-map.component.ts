@@ -39,7 +39,7 @@ export class SaveMapComponent implements OnInit {
       ID: '',
       Title: '',
       Zoom: 0,
-      Coordinates: [1,2,3,4],
+      Coordinates: [1, 2, 3, 4],
       Primary: true,
       Shared: true,
       Deletable: true,
@@ -64,6 +64,7 @@ export class SaveMapComponent implements OnInit {
     //   loc.LayerID = this.NewMap.ID;
     // });
     // New data to send to back end for state API:
+
     const coords = this.passedData.coordinates;
     this.NewMap.ID = '';
     this.NewMap.Title = this.NewMapForm.value.Title;
@@ -74,7 +75,7 @@ export class SaveMapComponent implements OnInit {
     this.NewMap.Deletable = true;
     this.NewMap.DefaultLayerID = this.passedData.userLayer.ID;
     this.NewMap.Latitude = this.passedData.map.latitude;
-    this.NewMap.Longitude = this.passedData.map.longitude;
+    this.NewMap.Longitude = this.correctInvalidLongitudes(this.passedData.map.longitude);
     // the below adds visible secondary location markers as well as primary
     // this.passedData.secondaryMarkers.forEach(loc => {
     //   if (loc.showMarker === true) {
@@ -91,5 +92,25 @@ export class SaveMapComponent implements OnInit {
   }
 
   // HELPERS
+
+  /**
+   *
+   * @param lng the longitude to make valid
+   *
+   * the agm map passes back compounding longitude values if the user scrolls too far horizontally (the world makes one full rotation)
+   *
+   * this method checks if the user has rotated the earth and corrects the longitude for any "invalid" longitude values
+   */
+  protected correctInvalidLongitudes(lng: number): number {
+    return findValidLng(lng);
+
+    function findValidLng(n) {
+      if (n < 180 && n > -180) { // if valid, return the number that was passed in:
+        return n;
+      } else { // else, adjust the number appropriately by 360 until valid
+        return n < -180 ? findValidLng(n + 360) : findValidLng(n - 360);
+      }
+    }
+  }
 
 }

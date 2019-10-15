@@ -500,7 +500,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       () => {
         this.SelectedMarker = null;
         this.SelectedLocation = null;
-        console.log("setting selected location & Selected Marker to null")
+        // console.log("setting selected location & Selected Marker to null")
       }
     );
 
@@ -916,7 +916,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
   public DisplayMarkerInfo(marker: MapMarker): void {
-    console.log("displaying info")
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;

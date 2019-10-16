@@ -59,9 +59,7 @@
   <div [hidden]="(currentState === modalStateType.BASIC)" class="add-to-map-content">
       <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="newMarkerForm" fxLayoutGap="30px">
           <mat-form-field>
-            <mat-label>Marker Title</mat-label>
             <input type="text" matInput formControlName="title">
-            <mat-hint>The title for the map marker</mat-hint>
             <mat-error>Invalid or missing title</mat-error>
           </mat-form-field>
 

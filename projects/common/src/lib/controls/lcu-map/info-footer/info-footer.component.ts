@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, DoCheck, AfterContentInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, Output, EventEmitter } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MarkerData } from '../../../models/marker-data.model';
 import { LocationInfoService } from '../../../services/location-info.service';

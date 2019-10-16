@@ -18,6 +18,7 @@ import { LocationInfoService } from '../../services/location-info.service';
 import { UserLayer } from '../../models/user-layer.model';
 import { UserMap } from '../../models/user-map.model';
 import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
+import { IconImageObject } from '../../models/icon-image-object.model';
 
 @Component({
   selector: 'lcu-map',
@@ -656,13 +657,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
                 townIndex = 0;
               }
             });
-            // console.log('Google Returned: ', res.result);
+            console.log('Google Returned: ', res.result);
             const newMarker = new MapMarker({
               ID: '',
               LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
               Title: res.result.name,
               GoogleLocationName: res.result.name,
               Icon: res.result.icon,
+              IconUrl:'./assets/ambl_marker.png',
               Latitude: res.result.geometry.location.lat,
               Longitude: res.result.geometry.location.lng,
               Telephone: res.result.international_phone_number,
@@ -673,6 +675,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
               Photos: this.buildPhotoArray(res.result.photos),
               Type: res.result.types
             });
+            //not sure why this has to be outside of the original declaration otherwise the 
+            //IconImageObject is undefined
+            newMarker.IconImageObject = new IconImageObject("./assets/ambl_marker.png",{height:40,width:40});
+            ;
             this.DisplayMarkerInfo(newMarker);
           }
         });
@@ -920,6 +926,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
   public DisplayMarkerInfo(marker: MapMarker): void {
+    
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
@@ -937,7 +944,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
-    
+    console.log("displaying marker", marker)
       this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
     
 
@@ -1164,8 +1171,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
     this.locationInfoService.SetSelectedMarker(marker);
-
     this.mapService.MapMarkerClickedEvent(infoWindow);
+    // console.log('existing marker', marker);
+    //never calls DisplayMarkerInfo which does the check for mobile
   }
 
   /**

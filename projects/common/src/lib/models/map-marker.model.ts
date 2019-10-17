@@ -161,5 +161,6 @@ export class MapMarker {
         this.GoogleLocationName = icon.GoogleLocationName;
         this.Checked = icon.Checked;
         this.IsHidden = icon.IsHidden;
+        this.IconImageObject = icon.IconImageObject;
     }
 }

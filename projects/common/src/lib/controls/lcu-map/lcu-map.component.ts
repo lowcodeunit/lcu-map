@@ -87,7 +87,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Input property that allows panning to a certain lat/lng and zoom level on the current map
    */
-  protected _panTo: { lat: number, lng: number, zoom:number };
+  protected _panTo: { lat: number, lng: number, zoom: number };
 
   /**
    * The subscription for the basic-info-window modal
@@ -240,9 +240,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
 
   // public IconIsHighlighted: boolean;
-/**
- * The top margin of the legend, so the icons are always in line
- */
+  /**
+   * The top margin of the legend, so the icons are always in line
+   */
   public LegendMargin: string;
 
   public DisplayingMoreInfo: Boolean;
@@ -440,7 +440,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * emits event to parent that the legend's top lists button was clicked
    */
-  @Output ('top-lists-button-clicked')
+  @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
 
   constructor(
@@ -458,7 +458,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.MapSaved = new EventEmitter,
       // this.PrimaryMapLocationListChanged = new EventEmitter;
       this.VisibleLocationListChanged = new EventEmitter;
-      this.SearchLocationChosen = new EventEmitter<MapMarker>();
+    this.SearchLocationChosen = new EventEmitter<MapMarker>();
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -524,8 +524,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public ngOnDestroy(): void {
     this.TopListsSubscription.unsubscribe();
     this.observerSubscription.unsubscribe();
-    if(this.markerInfoSubscription){
-     this.markerInfoSubscription.unsubscribe();
+    if (this.markerInfoSubscription) {
+      this.markerInfoSubscription.unsubscribe();
     }
   }
 
@@ -598,7 +598,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * Legend uses this function to take incoming data from child class and sets the according values to allow panning.
    * @param value
    */
-  public PanningTo(value: { lat: number, lng: number, zoom: number}): void {
+  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
     if (!value.zoom) {
       value.zoom = this._currentMapModel.Zoom;
     }
@@ -639,79 +639,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
         this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
-            let townIndex = -1;
-            let stateIndex = -1;
-            let countryIndex = -1;
-            res.result.address_components.forEach((comp, idx) => {
-              if (comp.types.includes('locality')) {
-                townIndex = idx;
-              }
-              if (comp.types.includes('administrative_area_level_1')) {
-                stateIndex = idx;
-              }
-              if (comp.types.includes('country')) {
-                countryIndex = idx;
-              }
-              if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
-                // if location is outside a "town", set it to "county"
-                townIndex = idx;
-              }
-              if (townIndex === -1){
-                //if there is no county associated set to closest long_name
-                townIndex = 0;
-              }
-            });
-            console.log('Google Returned: ', res.result);
-            const newMarker = new MapMarker({
-              ID: '',
-              LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
-              Title: res.result.name,
-              GoogleLocationName: res.result.name,
-              Icon: res.result.icon,
-              IconUrl:'./assets/ambl_marker.png',
-              Latitude: res.result.geometry.location.lat,
-              Longitude: res.result.geometry.location.lng,
-              Telephone: res.result.international_phone_number,
-              Website: res.result.website,
-              Town: res.result.address_components[townIndex] ? res.result.address_components[townIndex].long_name : '',
-              State: res.result.address_components[stateIndex] ? res.result.address_components[stateIndex].long_name : '',
-              Country: res.result.address_components[countryIndex].long_name,
-              Photos: this.buildPhotoArray(res.result.photos),
-              Type: res.result.types
-            });
-            //not sure why this has to be outside of the original declaration otherwise the 
-            //IconImageObject is undefined
-            newMarker.IconImageObject = new IconImageObject("./assets/ambl_marker.png",{height:40,width:40});
-            ;
-            this.DisplayMarkerInfo(newMarker);
+            this.callDisplayMarkerWithGooglePlaceDetails(res.result);
           }
         });
-
-        // this is temporarily disabled (adding a random map marker to any lat/lng on the map)
-        // it will be commented back in at a later sprint when it is required again:
-
-        // const dialogRef = this.dialog.open(AddMapMarkerComponent, {
-        //   data: {
-        //     lat: event.coords.lat,
-        //     lng: event.coords.lng,
-        //     iconList: this.MapMarkerSet,
-        //     primary_map_id: this._currentMapModel.ID
-        //   }
-        // });
-
-        // dialogRef.afterClosed().subscribe(res => {
-        //   if (res) {
-        //     this._currentMapModel.locationList.push(res);
-        //     if (this.CurrentlyActiveLayers.filter(map => map.ID === this._currentMapModel.ID).length > 0) {
-        //       this.CurrentlyActiveLocations.push(res); // if primary map is being shown, show new icon as well
-        //     }
-        //     this.PrimaryMapLocationListChanged.emit(this._currentMapModel);
-        //     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-        //   }
-        // }); // END for saving points on map that are NOT Google Maps POIs:
-
-        // }); // end of 'subscribe' to mapService
       }
+    // this timeout is necessary because it is used to determine whether the user has single clicked or double clicked
     }, this.expectedDoubleClickElapsedTime);
   }
 
@@ -932,7 +864,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
   public DisplayMarkerInfo(marker: MapMarker): void {
-    
+
     this.SearchControl.setValue('');
     this.displayAutocompleteOptions = false;
     this.ShowSearchBar = false;
@@ -951,8 +883,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       this.ShowFooter(true);
     }
     console.log("displaying marker", marker)
-      this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
-    
+    this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+
 
     this.zoomInToPoint(marker);
   }
@@ -1020,54 +952,74 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          this._currentMapModel.Latitude = place.geometry.location.lat();
-          this._currentMapModel.Longitude = place.geometry.location.lng();
-
-          let townIndex = -1;
-          let stateIndex = -1;
-          let countryIndex = -1;
-          place.address_components.forEach((comp, idx) => {
-            if (comp.types.length > 0) {
-              if (comp.types.includes('locality')) {
-                townIndex = idx;
-              }
-              if (comp.types.includes('administrative_area_level_1')) {
-                stateIndex = idx;
-              }
-              if (comp.types.includes('country')) {
-                countryIndex = idx;
-              }
-              if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
-                // if location is outside a "town", set it to "county"
-                townIndex = idx;
-              }
-            }
-          });
-          //let placePhotos: Array<string> = new Array<string>();
-          this.mapService.GetPlaceDetails(place.place_id).subscribe((res: any) => {
-            console.log("place: ", place);
-
-            this.DisplayMarkerInfo(new MapMarker({
-              ID: '',
-              LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
-              Title: place.name,
-              GoogleLocationName: place.name,
-              Icon: place.icon,
-              Latitude: place.geometry.location.lat(),
-              Longitude: place.geometry.location.lng(),
-              Telephone: place.international_phone_number,
-              Website: place.website,
-              Town: place.address_components[townIndex] ? place.address_components[townIndex].long_name : '',
-              State: place.address_components[stateIndex] ? place.address_components[stateIndex].long_name : '',
-              Country: place.address_components[countryIndex].long_name,
-              Photos: this.buildPhotoArray(res.result.photos),
-              Type: res.result.types
-            })
-            );
-          });
+          this.callDisplayMarkerWithGooglePlaceDetails(place);
         });
       });
     });
+  }
+
+  /**
+   *
+   * @param results the results of the google api call
+   *
+   * takes the results of a google api call and opens the info window for that place
+   */
+  protected callDisplayMarkerWithGooglePlaceDetails(results) {
+    let townIndex = -1;
+    let stateIndex = -1;
+    let countryIndex = -1;
+    results.address_components.forEach((comp, idx) => {
+      if (comp.types.length > 0) {
+        if (comp.types.includes('locality')) {
+          townIndex = idx;
+        }
+        if (comp.types.includes('administrative_area_level_1')) {
+          stateIndex = idx;
+        }
+        if (comp.types.includes('country')) {
+          countryIndex = idx;
+        }
+        if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
+          // if location is outside a "town", set it to "county"
+          townIndex = idx;
+        }
+      }
+    });
+
+    this.DisplayMarkerInfo(new MapMarker({
+      ID: '',
+      LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
+      Title: results.name,
+      GoogleLocationName: results.name,
+      Icon: results.icon,
+      Latitude: this.normalizeLatitudeAndLongitude(results, true),
+      Longitude: this.normalizeLatitudeAndLongitude(results, false),
+      Telephone: results.international_phone_number,
+      Website: results.website,
+      Town: results.address_components[townIndex] ? results.address_components[townIndex].long_name : '',
+      State: results.address_components[stateIndex] ? results.address_components[stateIndex].long_name : '',
+      Country: results.address_components[countryIndex].long_name,
+      Photos: this.buildPhotoArray(results.photos),
+      Type: results.types,
+      IconImageObject: new IconImageObject('./assets/ambl_marker.png', { height: 40, width: 40 })
+    }));
+  }
+
+  /**
+   *
+   * @param mapMarkerData the results of the google api call
+   *
+   * @param isLat boolean that indicates whether to return latitude data or longitude data
+   *
+   * takes google places api call results and lat/lng boolean and returns normalized values for latitude or longitude
+   */
+  protected normalizeLatitudeAndLongitude(mapMarkerData, isLat: boolean): number {
+    const markerData = mapMarkerData.geometry.location;
+    if (isLat) {
+      return typeof markerData.lat === 'function' ? markerData.lat() : markerData.lat;
+    } else {
+      return typeof markerData.lng === 'function' ? markerData.lng() : markerData.lng;
+    }
   }
 
   /**
@@ -1173,7 +1125,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-     this.SelectedLocation = null;
+    this.SelectedLocation = null;
     this.SelectedMarker = marker;
     this.changeDetector.detectChanges();
     this.locationInfoService.SetSelectedMarker(marker);

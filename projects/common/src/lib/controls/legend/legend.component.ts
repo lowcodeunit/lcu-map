@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapService } from '../../services/map.service';
-// import { IndividualMap } from '../../models/individual-map.model';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
@@ -80,7 +79,6 @@ export class LegendComponent implements OnInit, OnChanges {
 
   
 
-
   @Input('current-map-model')
   public set CurrentMapModel(value: UserMap) {
     this._currentMapModel = value;
@@ -97,15 +95,6 @@ export class LegendComponent implements OnInit, OnChanges {
   public set CurrentlyActiveLayers(value: Array<string>) {
     this._currentlyActiveLayers = value;
   }
-
-  // @Input('selected-location')
-  // public set SelectedLoaction(value: MapMarker){
-  //   this.SelectedLocation = value;
-  //   this.scrolled = false;
-  // }
-
-  // @Output('pan')
-  // Pan: EventEmitter<any>;
 
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
@@ -124,18 +113,9 @@ export class LegendComponent implements OnInit, OnChanges {
 
   @ViewChild('sidenav', {static: false}) public drawer: MatSidenav;
 
-
-
-
-
-
-
-
-
   //CONSTRUCTOR
 
   constructor(protected mapService: MapService, public Dialog: MatDialog, protected locationInfoService: LocationInfoService ) {
-    // this.Pan = new EventEmitter<any>();
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -147,7 +127,6 @@ export class LegendComponent implements OnInit, OnChanges {
     this.matContentHeight = "40px";
     this.Tools = "closed";
     this.IsLegendOpen = new EventEmitter<boolean>();
-    // this.LegendContentMarginTop = "0px";
     this.DisplayMoreInfo = new EventEmitter<MapMarker>();
     this.scrolled = false;
     this.HiddenLocations = new Array<MapMarker>();
@@ -175,13 +154,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
     // console.log("selected location: ", this.SelectedLocation)
   }
-  // ngAfterContentInit(){
-
-  // }
-
-
-
-
+  
   /**
    * @param lat The latitude to pan to
    *
@@ -192,59 +165,16 @@ export class LegendComponent implements OnInit, OnChanges {
 
   //API METHODS
 
-protected scroll(element: any):void {
-    if(element){
-      let parent = document.getElementById("legend-content")
-      let isOut = this.IsOutOfParentElement(element, parent);
-      if(isOut === false){
-        this.scrolled = true;
-      }
-      if(isOut === true && this.scrolled === false){
-        console.log("scrolled")
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => {
-          //wait for scrolling to finish
-          this.scrolled = true;
-        },500);
-      }
-    }
-}
-
-public IsOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {  
-	// Get element's bounding
-  let childBound = child.getBoundingClientRect();
-  let parentBound = parent.getBoundingClientRect();
-  // console.log("ChildBounds = ", childBound)
-  // console.log("ParentBounds = ", parentBound)
-
-	// Check if it's out of the viewport on each side
-  
-  if(childBound.top < parentBound.top){
-    return true;
-  }
-
-  //commented out since we are only concerned with child being out of view above and below parent
-  //when checkboxes are present it puts the childs left outside the parents left, even though it's not
-  //out of view.
-
-  // if(childBound.left > parentBound.left){
-  //   return true;
-  // }
-  // if(childBound.right > parentBound.right){
-  //   return true;
-  // }
-  if(childBound.bottom > parentBound.height){ 
-    return true;
-  }
-  
-  else{
-    return false;
-  }
-
-}
+/**
+ * Toggles the HiddenLocation list in the legend
+ */
 public ToggleHiddenListVisibility(){
   this.HiddenListVisible = !this.HiddenListVisible;
 }
+
+/**
+ * Checks to see if any locations should be hidden coming from the back-end
+ */
 public CheckIfHidden():void{
   for(let i = 0; i < this._currentlyActiveLocations.length; i++){
     if(this._currentlyActiveLocations[i].IsHidden){
@@ -255,21 +185,21 @@ public CheckIfHidden():void{
   }
 }
 
-/**
- * Toggles Tools view to advanced
- */
-public ShowMore(): void{
-  this.Tools = "advanced";
-  this.EditMode = true;
-}
 
+/**
+ * Marks the MapMarker as being checked
+ * 
+ * @param event Marker to check
+ */
 public CheckMarker(event: MapMarker):void{
   console.log("checking: ", event);
   event.Checked = !event.Checked;
   console.log("checked = ", event.Checked);
 }
 
-
+/**
+ * Hides the checked locations in the _currentlyActiveLocations and pushes them to the HiddenLocation Array
+ */
 public HideLocations():void{
   console.log("locs", this._currentlyActiveLocations);
   // let temp = this._currentlyActiveLocations;
@@ -293,6 +223,9 @@ public HideLocations():void{
   this.SetLocationList();
 }
 
+/**
+ * Makes the the markers from the HiddenLocations that are checked visible again.
+ */
 public MakeVisible():void{
   let tempHidden = new Array<MapMarker>();
   //list of markers to emit to backend 
@@ -313,7 +246,11 @@ public MakeVisible():void{
   this.SetLocationList();
 }
 
-
+/**
+ * Pulls up the Delete-location modal for users to confirm deletion
+ * 
+ * delets both hidden and visible locations
+ */
 public DeleteLocationConfirmation(): void {
   let markersToDelete = new Array<MapMarker>();
   this._currentlyActiveLocations.forEach(function(marker){
@@ -366,6 +303,18 @@ public ToggleTools():void{
   }
 }
 
+/**
+ * Toggles Tools view to advanced
+ */
+public ShowMoreTools(): void{
+  this.Tools = "advanced";
+  this.EditMode = true;
+}
+
+/**
+ * When an item from the legend is double-clicked it will display the mor info-window
+ * @param item marker to display
+ */
 public ShowMoreInfo(item:MapMarker):void{
   this.isDoubleClick = true;
   this.DisplayMoreInfo.emit(item);
@@ -424,18 +373,14 @@ public ShowMoreInfo(item:MapMarker):void{
     let visLoc = new Array<MapMarker>();
         visLoc = this._currentlyActiveLocations;
 
-    //layers logic
+    //Map Title Logic
 
     if(this._currentMapModel){
       this.MapTitle = this._currentMapModel.Title;
+    }    
+    else if(this._currentlyActiveLayers && this._currentlyActiveLayers[0]){
+      this.MapTitle = this._currentlyActiveLayers[0];
     }
-    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers.length > 1) {
-    //   this.MapTitle = "Layers (" + this._currentlyActiveLayers.length + ")";
-    //   // console.log("Layers = ", this._currentlyActiveLayers);
-    // }
-    // else if (this._currentlyActiveLayers && this._currentlyActiveLayers[0]) {
-    //   this.MapTitle = this._currentlyActiveLayers[0];
-    // }
     else {
       this.MapTitle = "No Layer Selected";
     }
@@ -453,29 +398,21 @@ public ShowMoreInfo(item:MapMarker):void{
     }
   }
 
-
-  /**
-   * @param event
-   *
-   * This is needed for the drag and drop to reflect the changes
-   *
-   * UpdateVisibleLocations assigns the newly ordered LocationsList to the VisibleLocations in mapService
-   */
-  drop(event: CdkDragDrop<string[]>) {
-    //console.log("drop event called");
-    moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
-    this.giveOrder();
-    this.EditLegendLocations.emit(this.LocationsList);
-  }
-
+/**
+ * To track whether or not the legend is closed
+ */
   public CloseLegend():void{
     this.LegendOpen = false;
   }
-
+/**
+ * To track whether or not the legend is open
+ */
   public OpenLegend():void{
     this.LegendOpen = true;
   }
-
+/**
+ * Toggles the side nav where the legend lives
+ */
   public toggleDrawer() {
     if (this.drawer.opened) {
       this.drawer.close();
@@ -523,6 +460,20 @@ public ShowMoreInfo(item:MapMarker):void{
     return locList;
   }
 
+   /**
+   * @param event
+   *
+   * This is needed for the drag and drop to reflect the changes
+   *
+   * UpdateVisibleLocations assigns the newly ordered LocationsList to the VisibleLocations in mapService
+   */
+  protected drop(event: CdkDragDrop<string[]>) {
+    //console.log("drop event called");
+    moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
+    this.giveOrder();
+    this.EditLegendLocations.emit(this.LocationsList);
+  }
+
   /**
    * Gives order to the MapMarkers based on how the user orders the legend
    */
@@ -537,17 +488,18 @@ public ShowMoreInfo(item:MapMarker):void{
    *
    * if the indexes are the same then it compares based on title so it is alphabetical
    */
-  protected compareObject(obj1: MapMarker, obj2: MapMarker) {
-    if (obj1.OrderIndex > obj2.OrderIndex)
+  protected compareObject(marker1: MapMarker, marker2: MapMarker) {
+    // Compare based on OrderIndex
+    if (marker1.OrderIndex > marker2.OrderIndex)
       return 1;
-    if (obj1.OrderIndex < obj2.OrderIndex)
+    if (marker1.OrderIndex < marker2.OrderIndex)
       return -1;
+    //If same OrderIndex, Compare based on Alphabet
+    if (marker1.OrderIndex === marker2.OrderIndex) {
 
-    if (obj1.OrderIndex === obj2.OrderIndex) {
-
-      if (obj1.Title.toUpperCase() > obj2.Title.toUpperCase())
+      if (marker1.Title.toUpperCase() > marker2.Title.toUpperCase())
         return 1;
-      if (obj1.Title.toUpperCase() < obj2.Title.toUpperCase())
+      if (marker1.Title.toUpperCase() < marker2.Title.toUpperCase())
         return -1;
     }
     return 0;
@@ -579,6 +531,9 @@ public ShowMoreInfo(item:MapMarker):void{
     return locList;
   }
 
+  /**
+   * Removes the Hidden locations from the _currentlyActiveLocations so they do not display in the legend
+   */
   protected removeHiddenLocations():void{
     let templist = new Array<MapMarker>();
     this._currentlyActiveLocations.forEach( function(marker){
@@ -588,5 +543,63 @@ public ShowMoreInfo(item:MapMarker):void{
     },this)
     this._currentlyActiveLocations = templist;
   }
+/**
+ * Called when a user selects a location from the map while the legend is open
+ * 
+ * @param element #Selected
+ */
+  protected scroll(element: any):void {
+    if(element){
+      let parent = document.getElementById("legend-content")
+      let isOut = this.isOutOfParentElement(element, parent);
+      if(isOut === false){
+        this.scrolled = true;
+      }
+      if(isOut === true && this.scrolled === false){
+        console.log("scrolled")
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          //wait for scrolling to finish
+          this.scrolled = true;
+        },500);
+      }
+    }
+}
+
+/**
+ * Checks to see if the @child element is outside the @parent element
+ */
+protected isOutOfParentElement(child: HTMLElement, parent: HTMLElement):boolean {  
+	// Get element's bounding
+  let childBound = child.getBoundingClientRect();
+  let parentBound = parent.getBoundingClientRect();
+  // console.log("ChildBounds = ", childBound)
+  // console.log("ParentBounds = ", parentBound)
+
+	// Check if it's out of the viewport on each side
+  
+  if(childBound.top < parentBound.top){
+    return true;
+  }
+
+  //commented out since we are only concerned with child being out of view above and below parent
+  //when checkboxes are present it puts the childs left outside the parents left, even though it's not
+  //out of view.
+
+  // if(childBound.left > parentBound.left){
+  //   return true;
+  // }
+  // if(childBound.right > parentBound.right){
+  //   return true;
+  // }
+  if(childBound.bottom > parentBound.height){ 
+    return true;
+  }
+  
+  else{
+    return false;
+  }
+
+}
 
 }

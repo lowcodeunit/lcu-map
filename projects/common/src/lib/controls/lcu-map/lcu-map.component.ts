@@ -965,27 +965,38 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * takes the results of a google api call and opens the info window for that place
    */
   protected callDisplayMarkerWithGooglePlaceDetails(results) {
-    let townIndex = -1;
+    const googleTypeValues = {
+      town: 'locality',
+      township: 'administrative_area_level_3',
+      county: 'administrative_area_level_2',
+      state: 'administrative_area_level_1',
+      country: 'country'
+    };
+    let twnCtyTwnshpIndex = -1;
     let stateIndex = -1;
     let countryIndex = -1;
     results.address_components.forEach((comp, idx) => {
       if (comp.types.length > 0) {
-        if (comp.types.includes('locality')) {
-          townIndex = idx;
+        if (comp.types.includes(googleTypeValues.town)) {
+          twnCtyTwnshpIndex = idx;
         }
-        if (comp.types.includes('administrative_area_level_1')) {
+        if (twnCtyTwnshpIndex === -1 && comp.types.includes(googleTypeValues.county)) {
+          twnCtyTwnshpIndex = idx; // if no town, set to county
+        }
+        if (twnCtyTwnshpIndex === -1 && comp.types.includes(googleTypeValues.township)) {
+          twnCtyTwnshpIndex = idx; // if no town or county, set to township
+        }
+        if (comp.types.includes(googleTypeValues.state)) {
           stateIndex = idx;
         }
-        if (comp.types.includes('country')) {
+        if (comp.types.includes(googleTypeValues.country)) {
           countryIndex = idx;
-        }
-        if (townIndex === -1 && comp.types.includes('administrative_area_level_2')) {
-          // if location is outside a "town", set it to "county"
-          townIndex = idx;
         }
       }
     });
 
+    // Maybe TODO: Make the call to the API and then put the time out here,
+    // only displaying the marker if it's a single click... for performance improvement
     this.DisplayMarkerInfo(new MapMarker({
       ID: '',
       LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
@@ -996,9 +1007,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       Longitude: this.normalizeLatitudeAndLongitude(results, false),
       Telephone: results.international_phone_number,
       Website: results.website,
-      Town: results.address_components[townIndex] ? results.address_components[townIndex].long_name : '',
+      Town: results.address_components[twnCtyTwnshpIndex] ? results.address_components[twnCtyTwnshpIndex].long_name : '',
       State: results.address_components[stateIndex] ? results.address_components[stateIndex].long_name : '',
-      Country: results.address_components[countryIndex].long_name,
+      Country: results.address_components[countryIndex] ? results.address_components[countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
       IconImageObject: new IconImageObject('./assets/ambl_marker.png', { height: 40, width: 40 })

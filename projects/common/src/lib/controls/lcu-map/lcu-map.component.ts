@@ -687,7 +687,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Run when user clicks a custom location marker from custom location search.
    */
-  public DropdownItemChosen(loc): void {
+  public DropdownItemChosen(loc:any): void {
     this._currentMapModel.Latitude = loc.Latitude;
     this._currentMapModel.Longitude = loc.Longitude;
     this.DisplayMarkerInfo(loc);

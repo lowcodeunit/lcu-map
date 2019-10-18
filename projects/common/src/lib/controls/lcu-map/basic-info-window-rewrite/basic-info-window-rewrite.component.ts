@@ -103,6 +103,13 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     console.log('BASIC INFO COMPONENT - ngAfterViewInit()');
     this.initProgressCircle();
   }
+/**
+ * Angular lifecycle hook that will get called when the marker changes, otherwise data for info blocks
+ * will stay the same when user navigates to new location from google search
+ */
+  public ngOnChanges():void{
+    this.buildBasicInfoContent(this.marker);
+  }
 
   /**
    * Angular lifecycle hook that gets called when a view is removed from the DOM.
@@ -138,6 +145,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     blocks.push(marker.Telephone);
 
     this.basicInfoBlocks = blocks.filter(val => val !== undefined && val !== null);
+    console.log("basic info block: ", this.basicInfoBlocks);
   }
 
   /**

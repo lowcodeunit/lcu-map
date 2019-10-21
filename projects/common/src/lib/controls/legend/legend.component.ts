@@ -433,6 +433,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.IsLegendOpen.emit(false);
       if (this.Tools !== "closed") {
         this.Tools = "closed";
+        this.LegendContentHeight = '92%';
         this.EditMode = false;
       }
       this.LegendOpen = false;

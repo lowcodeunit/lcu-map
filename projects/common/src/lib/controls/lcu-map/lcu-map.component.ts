@@ -94,6 +94,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   protected markerInfoSubscription: Subscription;
 
+  /**
+   * The subscription for the google api call
+   */
+  protected googlePlacesApiSubscription: Subscription;
 
   /**
    * Subscription for the break point observer(determines the screen size the app is running on)
@@ -522,6 +526,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy(): void {
+    this.googlePlacesApiSubscription.unsubscribe();
     this.TopListsSubscription.unsubscribe();
     this.observerSubscription.unsubscribe();
     if (this.markerInfoSubscription) {
@@ -637,7 +642,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
       if (!this.isDoubleClick) {
 
-        this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
+        this.googlePlacesApiSubscription = this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res.result !== undefined && res !== null) {
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
           }

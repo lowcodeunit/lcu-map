@@ -65,7 +65,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * Angular lifecycle hook that gets called on initialization.
    */
   public ngOnInit(): void {
-    console.log('BASIC INFO COMPONENT - ngOnInit()');
+    console.log('BASIC INFO COMPONENT - ngOnInit()', this.isEdit);
     this.buildBasicInfoContent(this.marker);
     this.currentState = ModalStateType.BASIC;
     this.marker.Rating = Math.round(Math.random() * 100); // Setting random number until backend is ready

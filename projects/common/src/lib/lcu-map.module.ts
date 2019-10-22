@@ -34,6 +34,7 @@ import { DeleteLocationsComponent } from './controls/legend/delete-locations/del
 import { SubString } from './utils/pipes/substring.pipe';
 import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
 import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
+import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/mor
     LegendComponent,
     DeleteLocationsComponent,
     SubString,
+    CheckBoxSubString,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent
   ],

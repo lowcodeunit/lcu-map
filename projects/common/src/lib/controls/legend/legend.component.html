@@ -51,19 +51,25 @@
           *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}"
           (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
           <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
-          <div *ngIf="item === SelectedLocation  && (item.IsHidden === false || !item.IsHidden)" class="icon-title" id="Selected" style="background-color: #4A918E"
+          <div *ngIf="item === SelectedLocation  && (item.IsHidden === false || !item.IsHidden) && !EditMode" class="icon-title" id="Selected" style="background-color: #4A918E"
             fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title" matTooltip={{item.Title}}>
               {{ item.Title | substring }}
             </div>
           </div>
-          <div *ngIf="item !== SelectedLocation && (item.IsHidden === false || !item.IsHidden)" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
+          <div *ngIf="item !== SelectedLocation && (item.IsHidden === false || !item.IsHidden) && !EditMode" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
             <img class="icon-image" src={{item.IconImageObject.url}}>
             <div class="location-title" matTooltip={{item.Title}}>
               {{ item.Title | substring }}
             </div>
           </div>
+          <div *ngIf="item !== SelectedLocation && (item.IsHidden === false || !item.IsHidden) && EditMode" class="icon-title" fxLayout="row" fxLayoutAlign="start center">
+              <img class="icon-image" src={{item.IconImageObject.url}}>
+              <div class="location-title" matTooltip={{item.Title}}>
+                {{ item.Title | checkboxsubstring }}
+              </div>
+            </div>
         </div>
         <div *ngIf="EditMode && HiddenLocations.length > 0" class="hidden-container">
           <div class="hidden-header" fxLayout = "row" fxLayoutAlign="space-between center">

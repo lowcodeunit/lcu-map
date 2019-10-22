@@ -643,12 +643,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       if (!this.isDoubleClick) {
 
         this.googlePlacesApiSubscription = this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
-          if (res.result !== undefined && res !== null) {
+          if (res && res.result !== undefined) {
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
+          } else {
+            console.log('the results are either null or undefined')
           }
         });
       }
-    // this timeout is necessary because it is used to determine whether the user has single clicked or double clicked
+      // this timeout is necessary because it is used to determine whether the user has single clicked or double clicked
     }, this.expectedDoubleClickElapsedTime);
   }
 
@@ -692,7 +694,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Run when user clicks a custom location marker from custom location search.
    */
-  public DropdownItemChosen(loc:any): void {
+  public DropdownItemChosen(loc: any): void {
     this._currentMapModel.Latitude = loc.Latitude;
     this._currentMapModel.Longitude = loc.Longitude;
     this.DisplayMarkerInfo(loc);
@@ -970,35 +972,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * takes the results of a google api call and opens the info window for that place
    */
   protected callDisplayMarkerWithGooglePlaceDetails(results) {
-    const googleTypeValues = {
-      town: 'locality',
-      township: 'administrative_area_level_3',
-      county: 'administrative_area_level_2',
-      state: 'administrative_area_level_1',
-      country: 'country'
-    };
-    let twnCtyTwnshpIndex = -1;
-    let stateIndex = -1;
-    let countryIndex = -1;
-    results.address_components.forEach((comp, idx) => {
-      if (comp.types.length > 0) {
-        if (comp.types.includes(googleTypeValues.town)) {
-          twnCtyTwnshpIndex = idx;
-        }
-        if (twnCtyTwnshpIndex === -1 && comp.types.includes(googleTypeValues.county)) {
-          twnCtyTwnshpIndex = idx; // if no town, set to county
-        }
-        if (twnCtyTwnshpIndex === -1 && comp.types.includes(googleTypeValues.township)) {
-          twnCtyTwnshpIndex = idx; // if no town or county, set to township
-        }
-        if (comp.types.includes(googleTypeValues.state)) {
-          stateIndex = idx;
-        }
-        if (comp.types.includes(googleTypeValues.country)) {
-          countryIndex = idx;
-        }
-      }
-    });
+
+    const regionIndices = this.getLocationRegionIndices(results);
 
     // Maybe TODO: Make the call to the API and then put the time out here,
     // only displaying the marker if it's a single click... for performance improvement
@@ -1012,13 +987,57 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       Longitude: this.normalizeLatitudeAndLongitude(results, false),
       Telephone: results.international_phone_number,
       Website: results.website,
-      Town: results.address_components[twnCtyTwnshpIndex] ? results.address_components[twnCtyTwnshpIndex].long_name : '',
-      State: results.address_components[stateIndex] ? results.address_components[stateIndex].long_name : '',
-      Country: results.address_components[countryIndex] ? results.address_components[countryIndex].long_name : '',
+      Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
+        results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
+      State: results.address_components[regionIndices.stateIndex] ?
+        results.address_components[regionIndices.stateIndex].long_name : '',
+      Country: results.address_components[regionIndices.countryIndex] ?
+        results.address_components[regionIndices.countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
       IconImageObject: new IconImageObject('./assets/ambl_marker.png', { height: 40, width: 40 })
     }));
+  }
+
+  /**
+   *
+   * @param googleResults the results from the google places api call
+   *
+   * takes google places api call results and returns object of indices where necessary regional data exists
+   */
+  protected getLocationRegionIndices(googleResults): any {
+    const regionIndices = {
+      twnCtyTwnshpIndex: -1,
+      stateIndex: -1,
+      countryIndex: -1
+    };
+    const typeValues = {
+      town: 'locality',
+      township: 'administrative_area_level_3',
+      county: 'administrative_area_level_2',
+      state: 'administrative_area_level_1',
+      country: 'country'
+    };
+    googleResults.address_components.forEach((comp, idx) => {
+      if (comp.types.length > 0) {
+        if (comp.types.includes(typeValues.town)) {
+          regionIndices.twnCtyTwnshpIndex = idx;
+        }
+        if (regionIndices.twnCtyTwnshpIndex === -1 && comp.types.includes(typeValues.county)) {
+          regionIndices.twnCtyTwnshpIndex = idx; // if no town, set to county
+        }
+        if (regionIndices.twnCtyTwnshpIndex === -1 && comp.types.includes(typeValues.township)) {
+          regionIndices.twnCtyTwnshpIndex = idx; // if no town or county, set to township
+        }
+        if (comp.types.includes(typeValues.state)) {
+          regionIndices.stateIndex = idx;
+        }
+        if (comp.types.includes(typeValues.country)) {
+          regionIndices.countryIndex = idx;
+        }
+      }
+    });
+    return regionIndices;
   }
 
   /**

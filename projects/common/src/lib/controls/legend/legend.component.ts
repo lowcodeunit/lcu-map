@@ -34,6 +34,7 @@ export class LegendComponent implements OnInit, OnChanges {
   protected expectedDoubleClickElapsedTime: number = 500;
 
   protected isDoubleClick: boolean;
+  protected hiddenLocationIds: Array<any>;
 
   public matContentWidth: string;
   public matContentHeight: string;
@@ -132,6 +133,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.HiddenLocations = new Array<MapMarker>();
     this.HiddenListVisible = false;
     this.LegendContentHeight = "93%";
+    this.hiddenLocationIds = new Array<any>();
   }
 
   //LIFE CYCLE
@@ -180,9 +182,11 @@ export class LegendComponent implements OnInit, OnChanges {
       if (this._currentlyActiveLocations[i].IsHidden) {
         console.log("hiding: ", this._currentlyActiveLocations[i]);
         this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+        this.hiddenLocationIds.push(this._currentlyActiveLocations[i].ID);
         this._currentlyActiveLocations.splice(i, 1);
       }
-      else if(this.HiddenLocations.includes(this._currentlyActiveLocations[i])){
+      else if(this.hiddenLocationIds.includes(this._currentlyActiveLocations[i].ID)){
+        console.log("IsHidden is false but ID is in hiddenLocationIds array")
         this._currentlyActiveLocations.splice(i, 1);
       }
     }
@@ -213,6 +217,7 @@ export class LegendComponent implements OnInit, OnChanges {
         this._currentlyActiveLocations[i].Checked = false;
         console.log("hiding: ", this._currentlyActiveLocations[i]);
         this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+        this.hiddenLocationIds.push(this._currentlyActiveLocations[i].ID);
         justHid.push(this._currentlyActiveLocations[i]);
       }
     }
@@ -238,6 +243,7 @@ export class LegendComponent implements OnInit, OnChanges {
         marker.Checked = false;
         marker.IsHidden = false;
         this._currentlyActiveLocations.push(marker);
+        this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID),1);
         nowVisible.push(marker);
       }
       else {

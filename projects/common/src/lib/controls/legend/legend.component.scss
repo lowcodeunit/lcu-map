@@ -46,6 +46,7 @@
 
 ::ng-deep .mat-drawer-inner-container {
   background-color: white;
+  overflow: hidden !important;
 }
 
 .legend-button {

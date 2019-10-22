@@ -131,7 +131,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.scrolled = false;
     this.HiddenLocations = new Array<MapMarker>();
     this.HiddenListVisible = false;
-    this.LegendContentHeight = "92%";
+    this.LegendContentHeight = "93%";
   }
 
   //LIFE CYCLE
@@ -180,6 +180,9 @@ export class LegendComponent implements OnInit, OnChanges {
       if (this._currentlyActiveLocations[i].IsHidden) {
         console.log("hiding: ", this._currentlyActiveLocations[i]);
         this.HiddenLocations.push(this._currentlyActiveLocations[i]);
+        this._currentlyActiveLocations.splice(i, 1);
+      }
+      else if(this.HiddenLocations.includes(this._currentlyActiveLocations[i])){
         this._currentlyActiveLocations.splice(i, 1);
       }
     }
@@ -290,7 +293,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public ToggleTools(): void {
     if (this.Tools === "basic") {
       this.Tools = "closed";
-      this.LegendContentHeight = '92%';
+      this.LegendContentHeight = '93%';
     }
     else if (this.Tools === "closed") {
       this.Tools = "basic";
@@ -433,7 +436,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.IsLegendOpen.emit(false);
       if (this.Tools !== "closed") {
         this.Tools = "closed";
-        this.LegendContentHeight = '92%';
+        this.LegendContentHeight = '93%';
         this.EditMode = false;
       }
       this.LegendOpen = false;

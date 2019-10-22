@@ -643,8 +643,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       if (!this.isDoubleClick) {
 
         this.googlePlacesApiSubscription = this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
-          if (res.result !== undefined && res !== null) {
+          if (res && res.result !== undefined) {
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
+          } else {
+            console.log('the results are either null or undefined')
           }
         });
       }

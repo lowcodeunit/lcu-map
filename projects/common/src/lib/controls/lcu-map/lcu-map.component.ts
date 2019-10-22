@@ -526,7 +526,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy(): void {
-    this.googlePlacesApiSubscription.unsubscribe();
+    if (this.googlePlacesApiSubscription) {
+      this.googlePlacesApiSubscription.unsubscribe();
+    }
     this.TopListsSubscription.unsubscribe();
     this.observerSubscription.unsubscribe();
     if (this.markerInfoSubscription) {
@@ -648,7 +650,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
           }
         });
       }
-    // this timeout is necessary because it is used to determine whether the user has single clicked or double clicked
+      // this timeout is necessary because it is used to determine whether the user has single clicked or double clicked
     }, this.expectedDoubleClickElapsedTime);
   }
 
@@ -692,7 +694,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Run when user clicks a custom location marker from custom location search.
    */
-  public DropdownItemChosen(loc:any): void {
+  public DropdownItemChosen(loc: any): void {
     this._currentMapModel.Latitude = loc.Latitude;
     this._currentMapModel.Longitude = loc.Longitude;
     this.DisplayMarkerInfo(loc);

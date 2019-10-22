@@ -79,8 +79,8 @@ export class MapService {
     const apiKey = `&key=${this.apiKey}`;
     const fields = '&fields=name,international_phone_number,adr_address,url,website,address_component,formatted_address,geometry,photo,type';
 
-    // const fullUrl = `${this.corsProxy}${baseUrl}${placeId}${apiKey}${fields}`;
-    const fullUrl = `${baseUrl}${placeId}${apiKey}${fields}`;
+    const fullUrl = `${this.corsProxy}${baseUrl}${placeId}${apiKey}${fields}`;
+    // const fullUrl = `${baseUrl}${placeId}${apiKey}${fields}`;
 
     return this.http.get(fullUrl);
   }

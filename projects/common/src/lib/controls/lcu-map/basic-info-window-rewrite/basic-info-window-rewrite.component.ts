@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerInfo } from '../../../models/marker-info.model';
@@ -28,7 +28,7 @@ export enum ModalStateType {
   templateUrl: './basic-info-window-rewrite.component.html',
   styleUrls: ['./basic-info-window-rewrite.component.scss']
 })
-export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, AfterViewInit {
+export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
 
   public basicInfoBlocks: string[];
   public chosenIcon: MarkerInfo;
@@ -65,7 +65,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * Angular lifecycle hook that gets called on initialization.
    */
   public ngOnInit(): void {
-    console.log('BASIC INFO COMPONENT - ngOnInit()', this.isEdit);
     this.buildBasicInfoContent(this.marker);
     this.currentState = ModalStateType.BASIC;
     this.marker.Rating = Math.round(Math.random() * 100); // Setting random number until backend is ready
@@ -100,14 +99,14 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * Angular lifecycle hook that gets called after the view has finished initializing.
    */
   public ngAfterViewInit(): void {
-    console.log('BASIC INFO COMPONENT - ngAfterViewInit()');
     this.initProgressCircle();
   }
-/**
- * Angular lifecycle hook that will get called when the marker changes, otherwise data for info blocks
- * will stay the same when user navigates to new location from google search
- */
-  public ngOnChanges():void{
+
+  /**
+   * Angular lifecycle hook that will get called when the marker changes, otherwise data for info blocks
+   * will stay the same when user navigates to new location from google search
+   */
+  public ngOnChanges(): void {
     this.buildBasicInfoContent(this.marker);
   }
 
@@ -128,14 +127,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public buildBasicInfoContent(marker: MapMarker): void {
     const blocks: string[] = [];
 
-    /* TEST DATA
-    marker.Address = '123 Pearl street';
-    marker.Telephone = '+1 800-423-0039';
-    marker.Town = 'Boulder';
-    marker.State = 'Colorado';
-    marker.Country = 'United States of America';
-    */
-
     let addrLine: string = marker.Town ? marker.Town : '';
     addrLine += marker.State ? marker.Town ? ', ' + marker.State : marker.State : '';
 
@@ -145,7 +136,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     blocks.push(marker.Telephone);
 
     this.basicInfoBlocks = blocks.filter(val => val !== undefined && val !== null);
-    console.log("basic info block: ", this.basicInfoBlocks);
   }
 
   /**
@@ -170,7 +160,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * @param percent The percent of total ratings for a given location.
    */
   public initRatingInfo(percent: number): void {
-    console.log('BASIC INFO COMPONENT - initRatingInfo()', percent);
     const offset = this.pCircumference - (percent / 100 * this.pCircumference);
 
     setTimeout(() => {

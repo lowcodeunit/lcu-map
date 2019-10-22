@@ -1167,7 +1167,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     if (marker.LayerID === userLayerID) {
       this.isEdit = true;
     }
-    console.log('LcuMapComponent OnMarkerClicked()', this.isEdit);
     this.changeDetector.detectChanges();
 
     this.locationInfoService.SetSelectedMarker(marker);

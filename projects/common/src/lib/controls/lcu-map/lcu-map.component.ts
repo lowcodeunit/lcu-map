@@ -205,6 +205,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public SelectedMarker: MapMarker;
 
   /**
+   * The reference to the more info window dialog defined upon the window being populated
+   */
+  protected moreInfoWindowDR: any;
+
+  /**
    * Boolean that determines whether or not the search bar should be shown
    */
   public ShowSearchBar: boolean = false;
@@ -1130,6 +1135,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param marker The MapMarker data to pass to the 'More Info' dialog.
    */
   protected openMoreInfoDialog(marker: MapMarker): void {
+    if (this.moreInfoWindowDR) {
+      this.moreInfoWindowDR.close();
+    }
     const dialogRef: any = this.dialog.open(MoreInfoWindowComponent, {
       width: '330px',
       height: '88vh',
@@ -1144,6 +1152,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
         isEdit: this.isEdit
       }
     });
+
+    this.moreInfoWindowDR = dialogRef;
 
     dialogRef.afterClosed().subscribe(
       (data) => {

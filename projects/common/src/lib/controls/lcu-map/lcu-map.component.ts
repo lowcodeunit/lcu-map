@@ -107,7 +107,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * boolean value that determines if the MapMarker already exists and is being edited
    */
-  protected isEdit: boolean;
+  public isEdit: boolean;
 
 
 
@@ -1162,11 +1162,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
     this.SelectedLocation = null;
     this.SelectedMarker = marker;
+    const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+    if (marker.LayerID === userLayerID) {
+      this.isEdit = true;
+    }
     this.changeDetector.detectChanges();
+
     this.locationInfoService.SetSelectedMarker(marker);
     this.mapService.MapMarkerClickedEvent(infoWindow);
-    // console.log('existing marker', marker);
-    //never calls DisplayMarkerInfo which does the check for mobile
   }
 
   /**

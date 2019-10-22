@@ -526,7 +526,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnDestroy(): void {
-    this.googlePlacesApiSubscription.unsubscribe();
+    if (this.googlePlacesApiSubscription) {
+      this.googlePlacesApiSubscription.unsubscribe();
+    }
     this.TopListsSubscription.unsubscribe();
     this.observerSubscription.unsubscribe();
     if (this.markerInfoSubscription) {

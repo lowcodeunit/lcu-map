@@ -1,9 +1,9 @@
 <div>
-  <h1 mat-dialog-title>Create New Map</h1>
+  <div class="title">Create New Map</div>
   <mat-icon (click)="Close()" matTooltip="Close">close</mat-icon>
 </div>
 
-<mat-dialog-content>
+<div class="mat-dialog-content-container">
   <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="NewMapForm" fxLayoutGap="30px">
 
     <mat-form-field appearance="outline">
@@ -13,7 +13,7 @@
     </mat-form-field>
 
   </form>
-</mat-dialog-content>
+</div>
 
-<button mat-raised-button color="primary" [mat-dialog-close]="NewMap" (click)="SetMapData()"
+<button class="save-map-button" mat-raised-button color="primary" [mat-dialog-close]="NewMap" (click)="SetMapData()"
   [disabled]="NewMapForm.invalid">Create</button>

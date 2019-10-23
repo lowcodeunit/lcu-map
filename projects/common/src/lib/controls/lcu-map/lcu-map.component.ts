@@ -569,6 +569,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     return LayerTitles;
   }
 
+  public UpdateVisibleLocations(event: Array<MapMarker>): void {
+    this._visibleLocationsMasterList = event;
+  }
+
   /**
    *
    * @param layer will be added to an array of active layers if it doesnt already exist in the array

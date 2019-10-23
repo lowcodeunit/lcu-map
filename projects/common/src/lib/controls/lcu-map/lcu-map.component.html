@@ -41,7 +41,7 @@
         [currently-active-locations]="_visibleLocationsMasterList"
         [currently-active-layers]="GetSelectedUserLayers()"
         (delete-locations)="DeleteLocations($event)" (display-basic-info)="DisplayMarkerInfo($event)"
-        (display-more-info)="DisplayMoreInfo($event)"
+        (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)">
       </lcu-legend>
     </div>

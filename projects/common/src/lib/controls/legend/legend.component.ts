@@ -112,6 +112,9 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('is-legend-open')
   IsLegendOpen: EventEmitter<boolean>;
 
+  @Output('update-visible-locations')
+  UpdateVisibleLocations: EventEmitter<Array<MapMarker>>;
+
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
   //CONSTRUCTOR
@@ -120,6 +123,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
+    this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
@@ -190,6 +194,8 @@ export class LegendComponent implements OnInit, OnChanges {
         this._currentlyActiveLocations.splice(i, 1);
       }
     }
+    this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
+
   }
 
 
@@ -227,6 +233,7 @@ export class LegendComponent implements OnInit, OnChanges {
     //to avoid error in back end
     if (justHid.length > 0) {
       this.EditLegendLocations.emit(justHid);
+      this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
     }
     this.SetLocationList();
   }
@@ -252,6 +259,7 @@ export class LegendComponent implements OnInit, OnChanges {
     }, this)
     this.HiddenLocations = tempHidden;
     this.EditLegendLocations.emit(nowVisible);
+    this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
     this.SetLocationList();
   }
 

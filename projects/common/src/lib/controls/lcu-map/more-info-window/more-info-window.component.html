@@ -15,8 +15,10 @@
 
         <div *ngIf="marker?.Address" style="margin-top: 0.5em;">{{marker?.Address}}</div>
         <div *ngIf="marker?.Town || marker?.Country || marker?.State">
-          {{marker?.Town}}, {{marker?.State}}
-          {{marker?.Country}}</div>
+          <div> {{marker?.Town}}, {{marker?.State}}</div>
+          <div>{{marker?.Country}}</div>
+          <div>{{marker?.Telephone}}</div>
+        </div>
         <div *ngIf="linkedPhoneNumber" class="link" style="margin-bottom: 0.5em;">{{marker?.Telephone}}</div>
 
         <hr>

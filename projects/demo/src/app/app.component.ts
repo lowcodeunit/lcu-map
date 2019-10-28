@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
         ];
         this.MasterVisLocs = [
             { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789', Instagram: "@vail" },
+            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789', Instagram: "@vail", Country: "USA", Telephone:"303-123-4567", Town:"Boulder", State:"CO", Address:"123 Pearl St 80000" },
             { ID: '43', Title: 'Black Canyon of The Gunnison National Park', Latitude: 41.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
             { ID: '44', Title: 'Belmond La Manoir aux Quat\'Saisons', Latitude: 42.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
             { ID: '45', Title: 'Nice museum', Latitude: 43.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },

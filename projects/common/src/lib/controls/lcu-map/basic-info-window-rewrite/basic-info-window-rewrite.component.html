@@ -58,10 +58,10 @@
 
   <div [hidden]="(currentState === modalStateType.BASIC)" class="add-to-map-content">
       <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="newMarkerForm" fxLayoutGap="30px">
-          <mat-form-field>
-            <input type="text" matInput formControlName="title">
-            <mat-error>Invalid or missing title</mat-error>
-          </mat-form-field>
+          <!-- <mat-form-field> -->
+            <input type="text" matInput formControlName="title" class="edit-title-input">
+            <!-- <mat-error>Invalid or missing title</mat-error> -->
+          <!-- </mat-form-field> -->
 
           <div *ngIf="displayMarkerSet && displayMarkerSet.length" fxLayout="row wrap">
             <div [fxFlex]="25" *ngFor="let icon of displayMarkerSet" class="available-image-container">

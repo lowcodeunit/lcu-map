@@ -63,16 +63,17 @@
   }
 
 }
+//more-info-window styling can be found in the global styles sheet
 
-::ng-deep .mat-dialog-container {
-  padding: 0 !important;
-}
+// .more-info-window .mat-dialog-container {
+//   padding: 0 !important;
+// }
 
-::ng-deep .mat-dialog-content {
-  overflow: visible;
-  display: flex;
-  flex-grow: 1;
-}
+// .more-info-window .mat-dialog-content {
+//   overflow: visible;
+//   display: flex;
+//   flex-grow: 1;
+// }
 
 ::ng-deep .mat-tab-label {
   min-width: 33% !important;

@@ -15,7 +15,10 @@
 
         <div *ngIf="marker?.Address" style="margin-top: 0.5em;">{{marker?.Address}}</div>
         <div *ngIf="marker?.Town || marker?.Country || marker?.State">
-          <div> {{marker?.Town}}, {{marker?.State}}</div>
+          <div *ngIf="marker?.Town && marker?.State"> {{marker?.Town}}, {{marker?.State}}</div>
+          <div *ngIf="marker?.Town && !marker?.State"> {{marker?.Town}}</div>
+          <div *ngIf="!marker?.Town && marker?.State"> {{marker?.State}}</div>
+
           <div>{{marker?.Country}}</div>
           <div>{{marker?.Telephone}}</div>
         </div>

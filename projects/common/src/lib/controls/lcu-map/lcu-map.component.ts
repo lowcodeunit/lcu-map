@@ -1143,6 +1143,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       this.moreInfoWindowDR.close();
     }
     const dialogRef: any = this.dialog.open(MoreInfoWindowComponent, {
+      panelClass: 'more-info-window',
       width: '330px',
       height: '88vh',
       position: { right: '10px', top: '35px', bottom: '35px' },

@@ -24,3 +24,12 @@ body {
     }
   }
 }
+.more-info-window .mat-dialog-container {
+  padding: 0 !important;
+}
+
+.more-info-window .mat-dialog-content {
+  overflow: visible;
+  display: flex;
+  flex-grow: 1;
+}

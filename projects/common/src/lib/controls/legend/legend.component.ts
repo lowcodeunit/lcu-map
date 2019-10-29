@@ -311,7 +311,7 @@ export class LegendComponent implements OnInit, OnChanges {
     }
     else if (this.Tools === "closed") {
       this.Tools = "basic";
-      this.LegendContentHeight = '80%';
+      this.LegendContentHeight = '81%';
 
     }
     else if (this.Tools === "advanced") {

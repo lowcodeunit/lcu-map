@@ -218,6 +218,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public openMoreInfo(): void {
     this.mapService.MoreInfoClickedEvent(this.marker);
     this.infoWindow.close();
+    console.log("MI basic info = ", this.infoWindow);
   }
 
   /**
@@ -248,7 +249,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     this.mapService.InfoWindowClosedEvent();
     this.changeView(this.modalStateType.BASIC);
     this.locationInfoService.SetSelectedMarker(undefined);
-
+    console.log("basic info window = ", this.infoWindow);
     if (this.infoWindow) {
       this.infoWindow.close();
     }

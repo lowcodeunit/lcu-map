@@ -1,31 +1,29 @@
 mat-icon {
     cursor: pointer;
     float: right;
-    margin-right: 5px;
-    margin-top: -45px;
+    margin-right: -15px;
+    margin-top: -50px;
 }
 
 .title{
     // display: inline;
     font-weight: bold;
     font-size:20px;
-    margin-top: 20px;
-    margin-left:25px;
     margin-bottom: 10px;
 }
 
 ::ng-deep .mat-dialog-container{
     overflow: hidden;
-    padding: 0px !important;
+    // padding: 0px !important;
 }
 
 .mat-dialog-content-container {
 padding-left: 0px !important;
   }
 
-.save-map-button{
-    margin-left: 25px !important;
-}
+// .save-map-button{
+//     margin-left: 25px !important;
+// }
 // ::ng-deep .mat-raised-button .mat-button-base{
 // }
 // ::ng-deep .mat-dialog-container{

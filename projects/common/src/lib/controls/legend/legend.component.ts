@@ -154,6 +154,7 @@ export class LegendComponent implements OnInit, OnChanges {
       this.CheckIfHidden();
     }
     if (this.LegendOpen && this.SelectedLocation) {
+      console.log("calling scroll")
       this.scroll(document.querySelector('#Selected'));
     }
     // this.SetLocationList();
@@ -593,8 +594,8 @@ export class LegendComponent implements OnInit, OnChanges {
     // Get element's bounding
     let childBound = child.getBoundingClientRect();
     let parentBound = parent.getBoundingClientRect();
-    // console.log("ChildBounds = ", childBound)
-    // console.log("ParentBounds = ", parentBound)
+    console.log("ChildBounds = ", childBound)
+    console.log("ParentBounds = ", parentBound)
 
     // Check if it's out of the viewport on each side
 

@@ -38,6 +38,13 @@ export class AppComponent implements OnInit {
 
     public MasterVisLocs: Array<MapMarker>;
 
+    public MapViewTypes = [
+        { value: 'roadmap', display: 'Roadmap' },
+        { value: 'hybrid', display: 'Hybrid' },
+        { value: 'satellite', display: 'Satellite' },
+        { value: 'terrain', display: 'Terrain' }
+    ]
+
     public SecMaps: Array<UserMap> = [
         // {
         //     id: '123',

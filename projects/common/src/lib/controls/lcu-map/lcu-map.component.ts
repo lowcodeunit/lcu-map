@@ -180,7 +180,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * The list of choices of location search methods for user to choose
    *
    */
-  // public SearchMethods: Array<string> = ['ambl_on', 'Google'];
   public SearchMethods: Array<string> = [];
 
   @Input ('custom-search-method') 
@@ -230,15 +229,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public CurrentMapViewType: string = 'roadmap';
 
   /**
-   * The array of available map views to be chosen by the user (default is standard)
+   * The array of available map views to be chosen by the user (default is roadmap)
    *
-   * TODO: Make this an @Input that devs can use to customize map type and display names for the types
    */
+  @Input ('map-view-types')
   public MapViewTypes: Array<{}> = [
-    { value: 'roadmap', display: 'Standard' },
-    { value: 'hybrid', display: 'Satellite' },
-    { value: 'terrain', display: 'Topographical' }
-  ]
+    { value: 'roadmap', display: 'Roadmap' },
+    { value: 'hybrid', display: 'Hybrid' },
+    { value: 'satellite', display: 'Satellite' },
+    { value: 'terrain', display: 'Terrain' }
+  ];
 
   /**
    * The public map model converted from the passed IndividualMap input

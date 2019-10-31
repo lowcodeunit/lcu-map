@@ -573,6 +573,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this._visibleLocationsMasterList = event;
   }
 
+  public EmitTopListsClick(event: string):void{
+    // console.log(event);
+    this.TopListsButtonClicked.emit();
+  }
+
   /**
    *
    * @param layer will be added to an array of active layers if it doesnt already exist in the array

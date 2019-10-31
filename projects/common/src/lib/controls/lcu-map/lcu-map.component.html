@@ -42,7 +42,8 @@
         [currently-active-layers]="GetSelectedUserLayers()"
         (delete-locations)="DeleteLocations($event)" (display-basic-info)="DisplayMarkerInfo($event)"
         (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
-        (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)">
+        (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
+        (top-list-clicked)= "EmitTopListsClick($event)">
       </lcu-legend>
     </div>
   </div>

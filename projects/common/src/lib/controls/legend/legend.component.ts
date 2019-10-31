@@ -56,7 +56,9 @@ export class LegendComponent implements OnInit, OnChanges {
   //public LocationsList: Array<LocationListModel> = new Array<LocationListModel>();
 
   public LocationsList: Array<MapMarker> = new Array<MapMarker>();
-
+/**
+ * is the legend open
+ */
   public LegendOpen: boolean;
   /**
    * List of locations that are hidden
@@ -67,33 +69,38 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public HiddenListVisible: boolean;
 
-
-  // protected undefinedCounter: number;
-
-  // public LegendContentMarginTop: string;
-
   /**
    * tracker so if a location is selected and the user scrolls the list, the scroll function doesnt scroll
    * 
    * away from the location that the user scrolled to
    */
   protected scrolled: boolean;
+
+  /**
+   * to determine if the selectedLocation has changed
+   */
   protected PreviousSelectedLocation: MapMarker;
 
 
-
+/**
+ * Used for getting the title of the map to display at top
+ */
   @Input('current-map-model')
   public set CurrentMapModel(value: UserMap) {
     this._currentMapModel = value;
   }
 
-
+/**
+ * all locations within view
+ */
   @Input('currently-active-locations')
   public set CurrentlyActiveLocations(value: Array<MapMarker>) {
     this._currentlyActiveLocations = value;
     // console.log("Active Locations Changed");
   }
-
+/**
+ * if no map is selected the layer title will display at top
+ */
   @Input('currently-active-layers')
   public set CurrentlyActiveLayers(value: Array<string>) {
     this._currentlyActiveLayers = value;
@@ -117,15 +124,19 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('update-visible-locations')
   UpdateVisibleLocations: EventEmitter<Array<MapMarker>>;
 
+  @Output('top-list-clicked')
+  TopListClicked: EventEmitter<any>;
+
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
   //CONSTRUCTOR
 
-  constructor(protected mapService: MapService, public Dialog: MatDialog, protected locationInfoService: LocationInfoService) {
+  constructor(public Dialog: MatDialog, protected locationInfoService: LocationInfoService) {
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
+    this.TopListClicked = new EventEmitter<any>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
@@ -140,7 +151,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.HiddenListVisible = false;
     this.LegendContentHeight = "93%";
     this.hiddenLocationIds = new Array<any>();
-    this.PreviousSelectedLocation = { ID: '69', LayerID: '', Title: '', Latitude: '', Longitude: '', Icon: '' };
+    this.PreviousSelectedLocation = { ID: '', LayerID: '', Title: '', Latitude: '', Longitude: '', Icon: '' };
 
   }
 
@@ -150,21 +161,15 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    //console.log("open: ", this.LegendOpen, " Selected: ", this.SelectedLocation);
     this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
     this.SetLocationList();
-
 
     if (this.LegendOpen && !this.SelectedLocation) {
       // this.SetLocationList();
       this.CheckIfHidden();
     }
     if (this.LegendOpen && this.SelectedLocation) {
-
       if (this.SelectedLocation.ID !== this.PreviousSelectedLocation.ID) {
-        // console.log("prev: ", this.PreviousSelectedLocation)
-        // console.log('cur: ', this.SelectedLocation)
-        // console.log("Changed markers")
         this.PreviousSelectedLocation = this.SelectedLocation;
         this.scrolled = false;
         setTimeout(() => {
@@ -172,10 +177,7 @@ export class LegendComponent implements OnInit, OnChanges {
           this.scroll(document.querySelector('#Selected'));
         }, 500)
       }
-
     }
-    // this.SetLocationList();
-    // console.log("selected location: ", this.SelectedLocation)
   }
 
   /**
@@ -212,7 +214,6 @@ export class LegendComponent implements OnInit, OnChanges {
       }
     }
     this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
-
   }
 
 
@@ -244,9 +245,6 @@ export class LegendComponent implements OnInit, OnChanges {
         justHid.push(this._currentlyActiveLocations[i]);
       }
     }
-    // this._currentlyActiveLocations = temp;
-    // console.log("hid ", this.HiddenLocations);
-
     //to avoid error in back end
     if (justHid.length > 0) {
       this.EditLegendLocations.emit(justHid);
@@ -313,9 +311,11 @@ export class LegendComponent implements OnInit, OnChanges {
 
   /**
    * informs the map service that the TopLists button was clicked
+   * 
+   * TODO change if making lcu
    */
   public TopListsClicked() {
-    this.mapService.LegendTopListsClicked();
+    this.TopListClicked.emit('TopLists Clicked');
   }
 
   /**
@@ -372,19 +372,15 @@ export class LegendComponent implements OnInit, OnChanges {
           if (typeof (marker.Latitude) === 'string') {
             marker.Latitude = parseFloat(marker.Latitude);
           }
-          // this.Pan.emit({ lat: marker.Latitude, lng: marker.Longitude }); // zoom is checked with == in AGM library so value must be different in order to assure zoom change function is run - hence the random number between 0 and 1
           this.DisplayBasicInfo.emit(marker);
           this.SelectedLocation = marker;
           if (this.LegendOpen && this.SelectedLocation) {
             this.scroll(document.querySelector('#Selected'));
           }
-          // console.log("panto marker = ", marker)
         }
         else {
-          // marker.Checked = !marker.Checked;
           this.SelectedLocation = marker;
           this.CheckMarker(marker);
-          // console.log("checked = ", marker.Checked);
         }
       }
     }, this.expectedDoubleClickElapsedTime);
@@ -398,7 +394,6 @@ export class LegendComponent implements OnInit, OnChanges {
    * UpdateVisibleLocations assigns the newly ordered LocationsList to the VisibleLocations in mapService
    */
   public drop(event: CdkDragDrop<string[]>) {
-    //console.log("drop event called");
     moveItemInArray(this.LocationsList, event.previousIndex, event.currentIndex);
     this.giveOrder();
     this.EditLegendLocations.emit(this.LocationsList);
@@ -413,8 +408,6 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public SetLocationList() {
     //set to new so no duplicates present themselves
-    //  console.log("selected location: ", this.SelectedLocation)
-
     this.LocationsList = new Array<MapMarker>();
     this.removeHiddenLocations();
 
@@ -491,7 +484,6 @@ export class LegendComponent implements OnInit, OnChanges {
    * assigns icon Url based on icon name vs the icon lookup
    */
   protected assignIconUrl(locList: Array<MapMarker>) {
-    //let temp: Array<MapMarker> = new Array<MapMarker>();
     for (let i = 0; i < locList.length; i++) {
       if (!locList[i].IconImageObject.url || locList[i].IconImageObject.url === null || locList[i].IconImageObject.url === "") {
         let iconTemp = this.iconList.filter(loc => {
@@ -499,17 +491,14 @@ export class LegendComponent implements OnInit, OnChanges {
         });
         if (iconTemp && iconTemp.length > 0) {
           locList[i].IconImageObject.url = iconTemp[0].IconUrl;
-          // temp.push(locList[i]);
         }
         else {
-          // console.log("Icon url doesn't exist for ", locList[i].Icon )
+          console.log("Icon url doesn't exist for ", locList[i].Icon)
         }
       }
     }
     return locList;
   }
-
-
 
   /**
    * Gives order to the MapMarkers based on how the user orders the legend
@@ -553,12 +542,10 @@ export class LegendComponent implements OnInit, OnChanges {
     list.forEach(function (value) {
       if (value.OrderIndex >= 0) {
         locList.push(value);
-        //console.log("pushing ", value, " to ", locList);
       }
       else {
         undefinedList.push(value);
       }
-      //console.log("Order = ", value.OrderIndex, "Title = ", value.Title);
     });
     if (undefinedList) {
       undefinedList.forEach(function (value) {

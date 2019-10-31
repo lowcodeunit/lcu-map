@@ -6,7 +6,7 @@
     [ngStyle]="{width: matContentWidth, height: matContentHeight}">
     <div class="button-container" fxLayoutAlign="end start">
 
-      <button *ngIf="LegendOpen === false" class="legend-button" fxLayoutAlign="start" mat-icon-button
+      <button *ngIf="LegendOpen === false" id="legend-button-left" class="legend-button" fxLayoutAlign="start" mat-icon-button
         (click)="toggleDrawer();SetLocationList();">
         <mat-icon class="chevron-legend" fxLayoutAlign="start" [inline]="true">chevron_left</mat-icon>
       </button>
@@ -17,30 +17,30 @@
   <mat-sidenav class="legend-sidenav" position="end" #sidenav mode="side">
     <div class="legend-header">
       <div class="legend-buttons" fxLayout="row" fxLayoutAlign="space-between center">
-        <button *ngIf="LegendOpen === true" class="legend-button" mat-icon-button (click)="toggleDrawer()">
+        <button *ngIf="LegendOpen === true" id="legend-button-right"class="legend-button" mat-icon-button (click)="toggleDrawer()">
           <mat-icon class="chevron-legend" [inline]="true">chevron_right</mat-icon>
         </button>
 
         <div class="map-title">{{MapTitle}}</div>
 
-        <button class="legend-button">
+        <button id="legend-vertical-elipse" class="legend-button">
           <mat-icon class="chevron-legend" matTooltip="Options" (click)="ToggleTools()" [inline]="true"
             style="cursor: pointer;">more_vert</mat-icon>
         </button>
       </div>
 
-      <mat-toolbar *ngIf="Tools === 'basic'" fxLayoutAlign="space-between center">
-        <mat-icon matTooltip="Iteneraries">schedule</mat-icon>
-        <mat-icon matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
-        <mat-icon matTooltip="Albums">image</mat-icon>
-        <mat-icon matTooltip="Tools" (click)="ShowMoreTools()" style="cursor: pointer;">build</mat-icon>
+      <mat-toolbar *ngIf="Tools === 'basic'" id="basic-legend-tools" fxLayoutAlign="space-between center">
+        <mat-icon id="legend-tool-iteneraries" matTooltip="Iteneraries">schedule</mat-icon>
+        <mat-icon id="legend-tool-top-lists" matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
+        <mat-icon id="legend-tool-Albums" matTooltip="Albums">image</mat-icon>
+        <mat-icon id="legend-tool-more-tools" matTooltip="Tools" (click)="ShowMoreTools()" style="cursor: pointer;">build</mat-icon>
       </mat-toolbar>
 
-      <mat-toolbar *ngIf="Tools === 'advanced'" fxLayoutAlign="space-between center">
-        <mat-icon matTooltip="Sort">sort_by_alpha</mat-icon>
-        <mat-icon matTooltip="Filter">filter_list</mat-icon>
-        <mat-icon matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
-        <mat-icon matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
+      <mat-toolbar *ngIf="Tools === 'advanced'" id="advanced-legend-tools" fxLayoutAlign="space-between center">
+        <mat-icon id="legend-tool-sort" matTooltip="Sort">sort_by_alpha</mat-icon>
+        <mat-icon id="legend-tool-filter" matTooltip="Filter">filter_list</mat-icon>
+        <mat-icon id="legend-tool-hide" matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
+        <mat-icon id="legend-tool-delete" matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
       </mat-toolbar>
     </div>
 
@@ -79,13 +79,13 @@
         <div *ngIf="EditMode && HiddenLocations.length > 0" class="hidden-container">
           <div class="hidden-header" fxLayout="row" fxLayoutAlign="space-between center">
             <div>Hidden</div>
-            <mat-icon *ngIf="HiddenListVisible === false" (click)="ToggleHiddenListVisibility()"
+            <mat-icon *ngIf="HiddenListVisible === false" id="legend-expand-hidden-list" (click)="ToggleHiddenListVisibility()"
               matTooltip="Expand Hidden Locations" [ngStyle]="{'cursor':  'pointer'}">chevron_right
             </mat-icon>
-            <mat-icon *ngIf="HiddenListVisible === true" (click)="MakeVisible()" matTooltip="Unhide Locations"
+            <mat-icon *ngIf="HiddenListVisible === true" id="legend-make-visible" (click)="MakeVisible()" matTooltip="Unhide Locations"
               [ngStyle]="{'cursor':  'pointer'}">visibility</mat-icon>
 
-            <mat-icon *ngIf="HiddenListVisible === true" (click)="ToggleHiddenListVisibility()"
+            <mat-icon *ngIf="HiddenListVisible === true" id="legend-collapse-hidden-list"(click)="ToggleHiddenListVisibility()"
               matTooltip="Collapse Hidden Locations" [ngStyle]="{'cursor':  'pointer'}">keyboard_arrow_down
             </mat-icon>
           </div>
@@ -93,7 +93,7 @@
             <div class="hidden-locations" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
               *ngFor="let item of HiddenLocations" cdkDrag [ngStyle]="{'cursor':  'pointer'}" (click)="PanTo(item)"
               (dblclick)="ShowMoreInfo(item)">
-              <mat-checkbox [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
+              <mat-checkbox [checked]="item.Checked" id="legend-hidden-list-checkbox-item" (click)=" $event.preventDefault();"></mat-checkbox>
               <div class="icon-title" fxLayout="row" fxLayoutAlign="start center">
                 <img class="icon-image" src={{item.IconImageObject.url}}>
                 <div class="location-title" matTooltip={{item.Title}}>

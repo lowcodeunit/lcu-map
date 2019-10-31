@@ -67,6 +67,7 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public HiddenListVisible: boolean;
 
+
   // protected undefinedCounter: number;
 
   // public LegendContentMarginTop: string;
@@ -77,6 +78,7 @@ export class LegendComponent implements OnInit, OnChanges {
    * away from the location that the user scrolled to
    */
   protected scrolled: boolean;
+  protected PreviousSelectedLocation: MapMarker;
 
 
 
@@ -138,27 +140,41 @@ export class LegendComponent implements OnInit, OnChanges {
     this.HiddenListVisible = false;
     this.LegendContentHeight = "93%";
     this.hiddenLocationIds = new Array<any>();
+    this.PreviousSelectedLocation = { ID: '69', LayerID: '', Title: '', Latitude: '', Longitude: '', Icon: '' };
+
   }
 
   //LIFE CYCLE
 
   ngOnInit() {
-
   }
 
   ngOnChanges() {
     //console.log("open: ", this.LegendOpen, " Selected: ", this.SelectedLocation);
+    this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
+    this.SetLocationList();
+
 
     if (this.LegendOpen && !this.SelectedLocation) {
-      this.SetLocationList();
+      // this.SetLocationList();
       this.CheckIfHidden();
     }
     if (this.LegendOpen && this.SelectedLocation) {
-      console.log("calling scroll")
-      this.scroll(document.querySelector('#Selected'));
+
+      if (this.SelectedLocation.ID !== this.PreviousSelectedLocation.ID) {
+        // console.log("prev: ", this.PreviousSelectedLocation)
+        // console.log('cur: ', this.SelectedLocation)
+        // console.log("Changed markers")
+        this.PreviousSelectedLocation = this.SelectedLocation;
+        this.scrolled = false;
+        setTimeout(() => {
+          //waits for the #Selected element to change to the new element before scrolling process begins
+          this.scroll(document.querySelector('#Selected'));
+        }, 500)
+      }
+
     }
     // this.SetLocationList();
-    this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
     // console.log("selected location: ", this.SelectedLocation)
   }
 
@@ -190,7 +206,7 @@ export class LegendComponent implements OnInit, OnChanges {
         this.hiddenLocationIds.push(this._currentlyActiveLocations[i].ID);
         this._currentlyActiveLocations.splice(i, 1);
       }
-      else if(this.hiddenLocationIds.includes(this._currentlyActiveLocations[i].ID)){
+      else if (this.hiddenLocationIds.includes(this._currentlyActiveLocations[i].ID)) {
         console.log("IsHidden is false but ID is in hiddenLocationIds array")
         this._currentlyActiveLocations.splice(i, 1);
       }
@@ -251,7 +267,7 @@ export class LegendComponent implements OnInit, OnChanges {
         marker.Checked = false;
         marker.IsHidden = false;
         this._currentlyActiveLocations.push(marker);
-        this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID),1);
+        this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID), 1);
         nowVisible.push(marker);
       }
       else {
@@ -572,15 +588,16 @@ export class LegendComponent implements OnInit, OnChanges {
   protected scroll(element: any): void {
     if (element) {
       let parent = document.getElementById("legend-content")
+
       let isOut = this.isOutOfParentElement(element, parent);
-      if (isOut === false) {
+      if (isOut === false) {//if its inview but user scrolls this prevents it from scrolling back up
         this.scrolled = true;
       }
       if (isOut === true && this.scrolled === false) {
-        console.log("scrolled")
+        console.log("Its out were scrolling")
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         setTimeout(() => {
-          //wait for scrolling to finish
+          //waits for scrolling to finish otherwise it wouldn't scroll
           this.scrolled = true;
         }, 500);
       }
@@ -594,8 +611,9 @@ export class LegendComponent implements OnInit, OnChanges {
     // Get element's bounding
     let childBound = child.getBoundingClientRect();
     let parentBound = parent.getBoundingClientRect();
-    console.log("ChildBounds = ", childBound)
-    console.log("ParentBounds = ", parentBound)
+    // console.log("location = ", this.SelectedLocation);
+    // console.log("ChildBounds = ", childBound)
+    // console.log("ParentBounds = ", parentBound)
 
     // Check if it's out of the viewport on each side
 
@@ -603,6 +621,9 @@ export class LegendComponent implements OnInit, OnChanges {
       return true;
     }
 
+    if (childBound.bottom > parentBound.height) {
+      return true;
+    }
     //commented out since we are only concerned with child being out of view above and below parent
     //when checkboxes are present it puts the childs left outside the parents left, even though it's not
     //out of view.
@@ -613,9 +634,7 @@ export class LegendComponent implements OnInit, OnChanges {
     // if(childBound.right > parentBound.right){
     //   return true;
     // }
-    if (childBound.bottom > parentBound.height) {
-      return true;
-    }
+
 
     else {
       return false;

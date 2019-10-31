@@ -3,7 +3,7 @@
     fxLayoutAlign.lt-sm="end center">
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
 
-      <div class="center-buttons mat-icon-divs">
+      <div *ngIf="DisplaySearchOptions" class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
@@ -55,8 +55,8 @@
         type="text" #search [formControl]="SearchControl" class="search-bar-element">
     </div>
     <!-- the custom marker search bar -->
-    <form [hidden]="SearchMethod !== 'ambl_on'" class="search-bar-element">
-      <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for ambl_on locations"
+    <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
+      <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for {{CustomSearchMethod}} locations"
         aria-label="Assignee" [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
       <mat-autocomplete (optionSelected)="LocationOptionSelected($event)" #auto="matAutocomplete"
         [displayWith]="DisplayFn" class="search-bar-element">

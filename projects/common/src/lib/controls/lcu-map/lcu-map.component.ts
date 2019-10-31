@@ -167,6 +167,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public SecondaryChecked: boolean;
 
   /**
+   * determines whether or not to display the search options with search bars
+   */
+  public DisplaySearchOptions: boolean;
+
+  /**
    * The user's chosen search method for the location search (custom or native Google locations)
    */
   public SearchMethod: string;
@@ -174,10 +179,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The list of choices of location search methods for user to choose
    *
-   * Right now - we leave this as 'ambl_on' because specs changed at last minute
-   * Later, we'll add an input to take a custom value
    */
-  public SearchMethods: Array<string> = ['ambl_on', 'Google'];
+  // public SearchMethods: Array<string> = ['ambl_on', 'Google'];
+  public SearchMethods: Array<string> = [];
+
+  @Input ('custom-search-method') 
+  public CustomSearchMethod: string;
+
+  @Input ('display-google-search-method')
+  public DisplayGoogleSearchMethod: boolean = false;
 
   /**
    * Input property that represents the current primary map
@@ -477,7 +487,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.TopListsButtonClicked = new EventEmitter();
     this.observerSubscription = new Subscription;
     this.monitorBreakpoints();
-    this.SearchMethod = 'ambl_on';
     // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
@@ -489,9 +498,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
-    // this._currentMapModel.locationList.forEach(loc => {
-    //   loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
-    // });
+    this.setUpSearchMethods();
     this._visibleLocationsMasterList.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     });
@@ -1008,6 +1015,20 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       Type: results.types,
       IconImageObject: new IconImageObject('./assets/ambl_marker.png', { height: 40, width: 40 })
     }));
+  }
+
+  /**
+   * sets up the search methods (if any) on which to search the map
+   */
+  protected setUpSearchMethods() {
+    if (this.CustomSearchMethod) {this.SearchMethods.push(this.CustomSearchMethod); }
+    if (this.DisplayGoogleSearchMethod) {this.SearchMethods.push('Google'); }
+    if (this.SearchMethods.length === 0) {
+      this.DisplaySearchOptions = false;
+    } else {
+      this.DisplaySearchOptions = true;
+      this.SearchMethod = this.SearchMethods[0];
+    }
   }
 
   /**

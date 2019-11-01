@@ -28,26 +28,6 @@ import { IconImageObject } from '../../models/icon-image-object.model';
 })
 export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
-  // from host above
-  onDocClick(e) {
-    // close layer dropdown when user clicks outside the element:
-    if (!e.target.classList.contains('layer-element')) {
-      this.ShowLayersDropdown = false;
-    }
-    // close search bar element when user clicks outside the element:
-    let isSearchBarElement = false;
-    e.path.forEach(el => {
-      if (el.classList !== undefined) {
-        if (el.classList.contains('search-bar-element')) {
-          isSearchBarElement = true;
-        }
-      }
-    });
-    if (!isSearchBarElement) {
-      this.ShowSearchBar = false;
-    }
-  }
-
   // FIELDS
 
   /**
@@ -948,6 +928,26 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
           map(value => typeof value === 'string' ? value : value.Title),
           map(title => title ? this.filterCustomLocations(title) : this.options.slice()),
         );
+    }
+  }
+
+  // from host above
+  protected onDocClick(e) {
+    // close layer dropdown when user clicks outside the element:
+    if (!e.target.classList.contains('layer-element')) {
+      this.ShowLayersDropdown = false;
+    }
+    // close search bar element when user clicks outside the element:
+    let isSearchBarElement = false;
+    e.path.forEach(el => {
+      if (el.classList !== undefined) {
+        if (el.classList.contains('search-bar-element')) {
+          isSearchBarElement = true;
+        }
+      }
+    });
+    if (!isSearchBarElement) {
+      this.ShowSearchBar = false;
     }
   }
 

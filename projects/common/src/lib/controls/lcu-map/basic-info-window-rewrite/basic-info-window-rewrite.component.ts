@@ -52,7 +52,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   @Input('default-marker')
   public set DefaultMarker(defaultMarker: IconImageObject){
     console.log("setting default marker in biw to",defaultMarker);
-    this.DefaultMarker = defaultMarker;
   }
   @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
     this.progressCircle = elRef.nativeElement;

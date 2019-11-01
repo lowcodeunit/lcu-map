@@ -8,7 +8,6 @@ import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DefaultMarker } from '../../../models/default-marker.model';
 
 
 @Component({
@@ -30,7 +29,7 @@ export class LocationInfoFormComponent implements OnInit {
   @Input() FormView: string;
 
   @Input('default-marker')
-  public DefaultMarker: DefaultMarker;
+  public DefaultMarker: IconImageObject;
 
   /**
    * Output to info-footer
@@ -187,8 +186,8 @@ export class LocationInfoFormComponent implements OnInit {
     this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
     }
     else{
-      this.NewMarker.Icon = this.DefaultMarker.Name;
-      this.NewMarker.IconImageObject = new IconImageObject(this.DefaultMarker.RelativePath,{ width: 24, height: 40 });
+      this.NewMarker.Icon = this.DefaultMarker.name;
+      this.NewMarker.IconImageObject = this.DefaultMarker;
     }
   }
 

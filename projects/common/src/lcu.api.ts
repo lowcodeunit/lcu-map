@@ -7,3 +7,4 @@ export * from './lib/lcu-map.module';
 export * from './lib/models/user-map.model';
 export * from './lib/models/user-layer.model';
 export * from './lib/models/default-marker.model';
+export * from './lib/models/icon-image-object.model';

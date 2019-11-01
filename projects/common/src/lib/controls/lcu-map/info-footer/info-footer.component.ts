@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy, OnChanges, Output, EventEmitter } 
 import { MapMarker } from '../../../models/map-marker.model';
 import { MarkerData } from '../../../models/marker-data.model';
 import { LocationInfoService } from '../../../services/location-info.service';
+import { DefaultMarker } from '../../../models/default-marker.model';
 
 @Component({
   selector: 'lcu-info-footer',
@@ -15,6 +16,9 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
    * Incomming MapMarker with location info
    */
   @Input() MarkerData: MarkerData;
+
+  @Input('default-marker')
+  public DefaultMarker: DefaultMarker;
   
 /**
  * Outgoing boolean to diplay footer

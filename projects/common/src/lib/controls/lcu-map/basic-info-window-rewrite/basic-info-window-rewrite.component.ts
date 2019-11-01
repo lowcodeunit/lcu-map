@@ -8,6 +8,7 @@ import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
 import { MapConversions } from '../../../utils/conversions';
 import { Subscription } from 'rxjs';
+import { DefaultMarker } from '../../../models/default-marker.model';
 
 /**
  * Enum for holding the current state of the 'Basic Info' modal/popover.
@@ -48,6 +49,9 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   @Input() public isEdit: boolean;
   @Input() public mapMarkerSet: MarkerInfo[];
   @Input() public marker: MapMarker;
+
+  @Input('default-marker')
+  public DefaultMarker: DefaultMarker;
 
   @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
     this.progressCircle = elRef.nativeElement;
@@ -93,6 +97,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
         this.infoWindow = infoWindow;
       }
     );
+    
   }
 
   /**
@@ -100,6 +105,9 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    */
   public ngAfterViewInit(): void {
     this.initProgressCircle();
+    if(!this.DefaultMarker){
+      this.DefaultMarker = {Name:"lcu-map-default-marker", RelativePath:"./assets/lcu-map-default-marker.png", Width: 40, Height: 40}
+    }
   }
 
   /**
@@ -234,8 +242,8 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
       this.newMarker.Icon = this.chosenIcon.IconLookup;
       this.newMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.chosenIcon.IconLookup, this.markerSet);
     } else {
-      this.newMarker.Icon = 'ambl_marker';
-      this.newMarker.IconImageObject = new IconImageObject('./assets/ambl_marker.png', { width: 24, height: 40 });
+      this.newMarker.Icon = this.DefaultMarker.Name;
+      this.newMarker.IconImageObject = new IconImageObject(this.DefaultMarker.RelativePath, { width: this.DefaultMarker.Width, height: this.DefaultMarker.Height });
     }
     this.mapService.MapMarkerSavedEvent(this.newMarker);
     this.Close();

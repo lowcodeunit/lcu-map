@@ -209,18 +209,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public CurrentMapViewType: string = 'roadmap';
 
   /**
-   * The array of available map views to be chosen by the user (default is roadmap)
-   *
-   */
-  @Input('map-view-types')
-  public MapViewTypes: Array<{}> = [
-    { value: 'roadmap', display: 'Roadmap' },
-    { value: 'hybrid', display: 'Hybrid' },
-    { value: 'satellite', display: 'Satellite' },
-    { value: 'terrain', display: 'Terrain' }
-  ];
-
-  /**
    * The public map model converted from the passed IndividualMap input
    */
   public CurrentMapModel: UserMap;
@@ -265,22 +253,42 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   public SearchControl: FormControl;
 
-  public CSIR;
+  /**
+   * The array of available map views to be chosen by the user (default is roadmap)
+   *
+   */
+  /* tslint:disable-next-line:no-input-rename */
+  @Input('map-view-types')
+  public MapViewTypes: Array<{}> = [
+    { value: 'roadmap', display: 'Roadmap' },
+    { value: 'hybrid', display: 'Hybrid' },
+    { value: 'satellite', display: 'Satellite' },
+    { value: 'terrain', display: 'Terrain' }
+  ];
+
+  @Input('custom-search-repress-dropdown-character-count')
+  public CustomSearchRepressDropdownCharacterCount: number = 0;
+
   /**
    * the results of the user's custom location query to be displayed
    */
+  /* tslint:disable-next-line:no-input-rename */
   @Input('custom-search-input-results')
   public CustomSearchInputResults: Array<MapMarker>;
 
+  /* tslint:disable-next-line:no-input-rename */
   @Input('repress-search-options-list')
   public RepressSearchOptionsList: boolean = false;
+
+  /* tslint:disable-next-line:no-input-rename */
+  @Input('update-visible-locations-manually')
+  public UpdateVisibleLocationsManually: Array<MapMarker>;
 
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */
   @Input('display-basic-info-window')
   public set DisplayBasicInfoWindow(val: MapMarker) {
-    //console.log("this is being called, val = ", val);
     if (val) {
       this.DisplayMarkerInfo(val);
     }
@@ -292,7 +300,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   @Input('pan-to')
   public set PanTo(value: { lat: number, lng: number, zoom: number }) {
     this._panTo = value;
-    //console.log("_panTo = ", this._panTo);
     if (this._currentMapModel) {
       this._currentMapModel.Latitude = value.lat;
       this._currentMapModel.Longitude = value.lng;
@@ -309,13 +316,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input('visible-locations-master-list')
   public set VisibleLocationsMasterList(value: Array<MapMarker>) {
-    // console.log("VisibleLocationsMasterList = ", value)
     this._visibleLocationsMasterList = value;
     this.setUpCustomMarkerSearch();
     if (this._visibleLocationsMasterList && this._visibleLocationsMasterList.length > 0) {
       this._visibleLocationsMasterList.forEach(loc => {
         loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
-        // console.log('after IconImageObject assigned');
       });
     } else {
       this._visibleLocationsMasterList = new Array<MapMarker>();
@@ -347,6 +352,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
    */
+  /* tslint:disable-next-line:no-input-rename */
   @Input('map-marker-set')
   MapMarkerSet: MarkerInfo[];
 
@@ -383,22 +389,25 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The event emitted when a map is saved (the saved map is emitted)
    */
+  /* tslint:disable-next-line:no-output-rename */
   @Output('map-saved')
   public MapSaved: EventEmitter<UserMap>;
 
   /**
- * The event emitted when the primary map's location list is altered (the new map is emitted)
- */
+   * The event emitted when the primary map's location list is altered (the new map is emitted)
+   */
   // @Output('primary-map-location-list-changed')
   // public PrimaryMapLocationListChanged: EventEmitter<IndividualMap>;
 
   /**
- * The Event that is emitted when a user creates a new location
- */
+   * The Event that is emitted when a user creates a new location
+   */
+  /* tslint:disable-next-line:no-output-rename */
   @Output('add-location')
   public AddLocation: EventEmitter<MapMarker>;
 
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('edit-location')
   public EditLocation: EventEmitter<MapMarker>;
 
@@ -406,39 +415,45 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
    */
+  /* tslint:disable-next-line:no-output-rename */
   @Output('visible-location-list-changed')
   public VisibleLocationListChanged: EventEmitter<MapMarker[]>;
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('search-location-chosen')
   public SearchLocationChosen: EventEmitter<MapMarker>;
 
   /**
    * The event emitted when the legend is closed and the order/locations are saved to local storage
    */
+  /* tslint:disable-next-line:no-output-rename */
   @Output('edited-legend-locations')
   public EditedLegendLocations: EventEmitter<Array<MapMarker>>;
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('layer-checked')
   public LayerChecked: EventEmitter<UserLayer>;
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('layer-unchecked')
   public LayerUnchecked: EventEmitter<UserLayer>;
 
-  @Input('update-visible-locations-manually')
-  public UpdateVisibleLocationsManually: Array<MapMarker>;
-
+  /* tslint:disable-next-line:no-output-rename */
   @Output('map-bounds-change')
   public MapBoundsChange: EventEmitter<Array<number>>;
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('custom-search-change')
   public CustomSearchChange: EventEmitter<string>;
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('locations-to-delete')
   public LocationsToDelete: EventEmitter<Array<MapMarker>>;
 
   /**
    * emits event to parent that the legend's top lists button was clicked
    */
+  /* tslint:disable-next-line:no-output-rename */
   @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
 
@@ -454,9 +469,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     protected ngZone: NgZone,
     protected wrapper: GoogleMapsAPIWrapper
   ) {
-    this.MapSaved = new EventEmitter,
+    this.MapSaved = new EventEmitter(),
       // this.PrimaryMapLocationListChanged = new EventEmitter;
-      this.VisibleLocationListChanged = new EventEmitter;
+      this.VisibleLocationListChanged = new EventEmitter();
     this.SearchLocationChosen = new EventEmitter<MapMarker>();
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
@@ -465,14 +480,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.CustomSearchChange = new EventEmitter<string>();
     this.TopListsButtonClicked = new EventEmitter();
-    this.observerSubscription = new Subscription;
+    this.observerSubscription = new Subscription();
     this.monitorBreakpoints();
     // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
-    this.LegendMargin = "33px";
+    this.LegendMargin = '33px';
     this.DisplayingMoreInfo = false;
     this.nonEssentialKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
   }
@@ -485,7 +500,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    //this.resetMapCheckedState();
+    // this.resetMapCheckedState();
     this.setUpCustomMarkerSearch();
     this.TopListsSubscription = this.mapService.TopListsClicked.subscribe(() => {
       this.TopListsButtonClicked.emit();
@@ -604,7 +619,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
   /**
    * Legend uses this function to take incoming data from child class and sets the according values to allow panning.
-   * @param value
+   * @param value the value passed in
    */
   public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
     if (!value.zoom) {
@@ -621,7 +636,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
   /**
    * Saves the legend order/loactions via event emmiter.
-   * @param val
+   * @param val the value passed in
    */
   public EditLegendLocations(val: Array<MapMarker>): void {
     this.EditedLegendLocations.emit(val);
@@ -649,7 +664,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
           if (res && res.result !== undefined) {
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
           } else {
-            console.log('the results are either null or undefined')
+            console.log('the results are either null or undefined');
           }
         });
       }
@@ -675,8 +690,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   public ActivateSaveMapDialog(map): void {
     const dialogRef = this.dialog.open(SaveMapComponent, {
-      width: "252px",
-      height: "204px",
+      width: '252px',
+      height: '204px',
       data: {
         map,
         // locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
@@ -709,10 +724,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked.
    */
   public LayerClicked(event, layer?: UserLayer): void {
-    //tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
-    //reset and thus those changes are being passed as input to the legend so OnChanges gets called
-    //console.log("layer to toggle: ", layer);
-    let tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
+    // tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
+    // reset and thus those changes are being passed as input to the legend so OnChanges gets called
+    // console.log("layer to toggle: ", layer);
+    const tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
     this.CurrentlyActiveLocations.forEach(loc => {
       tempActiveLocations.push(loc);
     });
@@ -734,7 +749,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       }
     } else { // (if user clicked the primary checkbox)
       if (event.checked === true) { // (if user checked the box)
-        //this.CurrentlyActiveLayers.push(this._currentMapModel);
+        // this.CurrentlyActiveLayers.push(this._currentMapModel);
         this.LayerChecked.emit(this._currentMapModel);
 
         // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
@@ -749,21 +764,21 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
         // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
         //   return loc.LayerID !== this._currentMapModel.ID;
         // });
-        //console.log("User unchecked the primary map");
+        // console.log("User unchecked the primary map");
       }
     }
 
     this.CurrentlyActiveLocations.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet)
     });
-    //console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
-    //console.log("Current Map Model: ", this._currentMapModel);
-    //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+    // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
+    // console.log("Current Map Model: ", this._currentMapModel);
+    // this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
     // this is just for emitting the current list of active locs (currently displayed locations)
     setTimeout(x => {
       // emits the currently visible map markers for use in legend
       this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    }, 0)
+    }, 0);
     this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
 
   }
@@ -783,11 +798,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this.currentBounds.swLat = event.getSouthWest().lat();
     this.currentBounds.swLng = event.getSouthWest().lng();
 
-    let Bounds: Array<number> = [event.getNorthEast().lat(), event.getNorthEast().lng(), event.getSouthWest().lat(), event.getSouthWest().lng()];
+    const Bounds: Array<number> = [
+      event.getNorthEast().lat(),
+      event.getNorthEast().lng(),
+      event.getSouthWest().lat(),
+      event.getSouthWest().lng()
+    ];
 
     this.lastBoundsChangeMillisecond = new Date().getTime();
     setTimeout(() => {
-      let currentTimeInMillis = new Date().getTime();
+      const currentTimeInMillis = new Date().getTime();
       if (currentTimeInMillis - this.lastBoundsChangeMillisecond > 999) {
         this.MapBoundsChange.emit(Bounds);
       }
@@ -797,13 +817,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Emits the current value of the custom search bar each time user types something.
    *
-   * @param e the value of the user-typed text.
+   * @param e the value of the user-typed text
    */
   public CustomSearchInputChange(e) {
     if (!this.nonEssentialKeys.includes(e.code)) {
       this.CustomSearchChange.emit(e.target.value);
       this.setUpCustomMarkerSearch();
-      if (e.target.value.length > 2) { // TODO: change '2' here to an @Input so it can be customized
+      if (e.target.value.length > this.CustomSearchRepressDropdownCharacterCount) {
         this.displayAutocompleteOptions = true;
       } else {
         this.displayAutocompleteOptions = false;

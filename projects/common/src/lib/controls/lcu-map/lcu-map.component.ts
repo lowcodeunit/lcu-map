@@ -24,29 +24,9 @@ import { IconImageObject } from '../../models/icon-image-object.model';
   selector: 'lcu-map',
   templateUrl: './lcu-map.component.html',
   styleUrls: ['./lcu-map.component.scss'],
-  host: { '(document:click)': 'onDocClick($event)' }
+  host: { '(document:click)': 'OnDocClick($event)' }
 })
 export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
-
-  // from host above
-  onDocClick(e) {
-    // close layer dropdown when user clicks outside the element:
-    if (!e.target.classList.contains('layer-element')) {
-      this.ShowLayersDropdown = false;
-    }
-    // close search bar element when user clicks outside the element:
-    let isSearchBarElement = false;
-    e.path.forEach(el => {
-      if (el.classList !== undefined) {
-        if (el.classList.contains('search-bar-element')) {
-          isSearchBarElement = true;
-        }
-      }
-    });
-    if (!isSearchBarElement) {
-      this.ShowSearchBar = false;
-    }
-  }
 
   // FIELDS
 
@@ -182,10 +162,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   public SearchMethods: Array<string> = [];
 
-  @Input ('custom-search-method') 
+  @Input('custom-search-method')
   public CustomSearchMethod: string;
 
-  @Input ('display-google-search-method')
+  @Input('display-google-search-method')
   public DisplayGoogleSearchMethod: boolean = false;
 
   /**
@@ -232,7 +212,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * The array of available map views to be chosen by the user (default is roadmap)
    *
    */
-  @Input ('map-view-types')
+  @Input('map-view-types')
   public MapViewTypes: Array<{}> = [
     { value: 'roadmap', display: 'Roadmap' },
     { value: 'hybrid', display: 'Hybrid' },
@@ -580,7 +560,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     this._visibleLocationsMasterList = event;
   }
 
-  public EmitTopListsClick(event: string):void{
+  public EmitTopListsClick(event: string): void {
     // console.log(event);
     this.TopListsButtonClicked.emit();
   }
@@ -871,6 +851,31 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
+   *
+   * @param e the mouse event run when user clicks anywhere on the map
+   *
+   * closes certain elements based on the target of the mouse event
+   */
+  public OnDocClick(e) {
+    // close layer dropdown when user clicks outside the element:
+    if (!e.target.classList.contains('layer-element')) {
+      this.ShowLayersDropdown = false;
+    }
+    // close search bar element when user clicks outside the element:
+    let isSearchBarElement = false;
+    e.path.forEach(el => {
+      if (el.classList !== undefined) {
+        if (el.classList.contains('search-bar-element')) {
+          isSearchBarElement = true;
+        }
+      }
+    });
+    if (!isSearchBarElement) {
+      this.ShowSearchBar = false;
+    }
+  }
+
+  /**
    * Saves the new MapMarker.
    *
    * @param marker The MapMarker to save.
@@ -1026,8 +1031,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * sets up the search methods (if any) on which to search the map
    */
   protected setUpSearchMethods() {
-    if (this.CustomSearchMethod) {this.SearchMethods.push(this.CustomSearchMethod); }
-    if (this.DisplayGoogleSearchMethod) {this.SearchMethods.push('Google'); }
+    if (this.CustomSearchMethod) { this.SearchMethods.push(this.CustomSearchMethod); }
+    if (this.DisplayGoogleSearchMethod) { this.SearchMethods.push('Google'); }
     if (this.SearchMethods.length === 0) {
       this.DisplaySearchOptions = false;
     } else {

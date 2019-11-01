@@ -209,19 +209,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   public CurrentMapViewType: string = 'roadmap';
 
   /**
-   * The array of available map views to be chosen by the user (default is roadmap)
-   *
-   */
-  /* tslint:disable-next-line:no-input-rename */
-  @Input('map-view-types')
-  public MapViewTypes: Array<{}> = [
-    { value: 'roadmap', display: 'Roadmap' },
-    { value: 'hybrid', display: 'Hybrid' },
-    { value: 'satellite', display: 'Satellite' },
-    { value: 'terrain', display: 'Terrain' }
-  ];
-
-  /**
    * The public map model converted from the passed IndividualMap input
    */
   public CurrentMapModel: UserMap;
@@ -265,6 +252,22 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * The form control for the location search box
    */
   public SearchControl: FormControl;
+
+  /**
+   * The array of available map views to be chosen by the user (default is roadmap)
+   *
+   */
+  /* tslint:disable-next-line:no-input-rename */
+  @Input('map-view-types')
+  public MapViewTypes: Array<{}> = [
+    { value: 'roadmap', display: 'Roadmap' },
+    { value: 'hybrid', display: 'Hybrid' },
+    { value: 'satellite', display: 'Satellite' },
+    { value: 'terrain', display: 'Terrain' }
+  ];
+
+  @Input('custom-search-repress-dropdown-character-count')
+  public CustomSearchRepressDropdownCharacterCount: number = 0;
 
   /**
    * the results of the user's custom location query to be displayed
@@ -814,13 +817,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * Emits the current value of the custom search bar each time user types something.
    *
-   * @param e the value of the user-typed text.
+   * @param e the value of the user-typed text
    */
   public CustomSearchInputChange(e) {
     if (!this.nonEssentialKeys.includes(e.code)) {
       this.CustomSearchChange.emit(e.target.value);
       this.setUpCustomMarkerSearch();
-      if (e.target.value.length > 2) { // TODO: change '2' here to an @Input so it can be customized
+      if (e.target.value.length > this.CustomSearchRepressDropdownCharacterCount) {
         this.displayAutocompleteOptions = true;
       } else {
         this.displayAutocompleteOptions = false;

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy, OnChanges, Output, EventEmitter } 
 import { MapMarker } from '../../../models/map-marker.model';
 import { MarkerData } from '../../../models/marker-data.model';
 import { LocationInfoService } from '../../../services/location-info.service';
-import { DefaultMarker } from '../../../models/default-marker.model';
 import { IconImageObject } from '../../../models/icon-image-object.model';
 
 @Component({

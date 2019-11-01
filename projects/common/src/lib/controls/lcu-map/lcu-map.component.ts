@@ -19,8 +19,6 @@ import { UserLayer } from '../../models/user-layer.model';
 import { UserMap } from '../../models/user-map.model';
 import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
 import { IconImageObject } from '../../models/icon-image-object.model';
-import { DefaultMarker } from '../../models/default-marker.model';
-import { Icon } from '@lcu/common';
 
 @Component({
   selector: 'lcu-map',

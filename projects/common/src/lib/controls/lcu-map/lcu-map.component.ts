@@ -94,7 +94,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
   // PROPERTIES
   //12 for bottom right & 9 for right bottom
-  public ZoomOptions: Object = { position: 9 };
+  public ZoomOptions: object = { position: 9 };
 
   public MinZoom: number = 2;
 
@@ -537,7 +537,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     )
   }
   public ngAfterViewInit():void{
-    console.log("Default Marker in map= ", this.DefaultMarker)
+    // console.log("Default Marker in map= ", this.DefaultMarker)
     if(!this.DefaultMarker){
       this.DefaultMarker = {name:"lcu-map-default-marker" , url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};
     }

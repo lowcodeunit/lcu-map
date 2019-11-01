@@ -28,19 +28,21 @@
             style="cursor: pointer;">more_vert</mat-icon>
         </button>
       </div>
-
+    <!-- TODO in order to make the legend an LCU the tools will also need to be made into an LCU first 
+      so we can allow the user to build functionality behind each icon otherwise the user will be left 
+      with the tools current functionality -->
       <mat-toolbar *ngIf="Tools === 'basic'" id="basic-legend-tools" fxLayoutAlign="space-between center">
-        <mat-icon id="legend-tool-iteneraries" matTooltip="Iteneraries">schedule</mat-icon>
-        <mat-icon id="legend-tool-top-lists" matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
-        <mat-icon id="legend-tool-Albums" matTooltip="Albums">image</mat-icon>
-        <mat-icon id="legend-tool-more-tools" matTooltip="Tools" (click)="ShowMoreTools()" style="cursor: pointer;">build</mat-icon>
+        <mat-icon id="legend-basic-tool-iteneraries" matTooltip="Iteneraries">schedule</mat-icon>
+        <mat-icon id="legend-basic-tool-top-lists" matTooltip="Top Lists" (click)="TopListsClicked()">format_list_numbered</mat-icon>
+        <mat-icon id="legend-basic-tool-albums" matTooltip="Albums">image</mat-icon>
+        <mat-icon id="legend-basic-tool-more-tools" matTooltip="Tools" (click)="ShowMoreTools()" style="cursor: pointer;">build</mat-icon>
       </mat-toolbar>
 
       <mat-toolbar *ngIf="Tools === 'advanced'" id="advanced-legend-tools" fxLayoutAlign="space-between center">
-        <mat-icon id="legend-tool-sort" matTooltip="Sort">sort_by_alpha</mat-icon>
-        <mat-icon id="legend-tool-filter" matTooltip="Filter">filter_list</mat-icon>
-        <mat-icon id="legend-tool-hide" matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
-        <mat-icon id="legend-tool-delete" matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
+        <mat-icon id="legend-advanced-tool-sort" matTooltip="Sort">sort_by_alpha</mat-icon>
+        <mat-icon id="legend-advanced-tool-filter" matTooltip="Filter">filter_list</mat-icon>
+        <mat-icon id="legend-advanced-tool-hide" matTooltip="Hide" (click)="HideLocations()" style="cursor: pointer;">visibility_off</mat-icon>
+        <mat-icon id="legend-advanced-tool-delete" matTooltip="Delete" (click)="DeleteLocationConfirmation()" style="cursor: pointer;">delete</mat-icon>
       </mat-toolbar>
     </div>
 

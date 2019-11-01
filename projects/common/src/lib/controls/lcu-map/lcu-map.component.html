@@ -102,7 +102,7 @@
           [iconUrl]="marker.IconImageObject" (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
           <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
-            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="isEdit" [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [default-marker]="DefaultMarker"[isEdit]="isEdit" [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
           </agm-info-window>
         </agm-marker>
       </div>
@@ -116,7 +116,7 @@
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">
     <lcu-info-footer *ngIf="MarkerData" fxLayout="column" fxLayoutAlign="space-around stretch" [MarkerData]="MarkerData"
-      (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
+     [default-marker]="DefaultMarker" (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
     </lcu-info-footer>
   </div>
 </div>

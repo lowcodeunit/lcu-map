@@ -30,7 +30,7 @@
   </mat-card>
   
 <!-- Calls in the more info window -->
-  <lcu-location-info-form [MarkerData]="MarkerData" [FormView]="FormView" (swipedown)="SwipedDown()"
+  <lcu-location-info-form [MarkerData]="MarkerData" [FormView]="FormView" [default-marker]="DefaultMarker" (swipedown)="SwipedDown()"
     (close-footer)=CloseFooter($event) (new-MapMarker)=SaveNewMapMarker($event)>
   </lcu-location-info-form>
 </div>

@@ -23,7 +23,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { HttpClientModule } from '@angular/common/http';
-import { BasicInfoWindowComponent } from './controls/lcu-map/basic-info-window/basic-info-window.component';
 import { InfoFooterComponent } from './controls/lcu-map/info-footer/info-footer.component';
 import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form/location-info-form.component';
 import { LegendComponent } from './controls/legend/legend.component';
@@ -41,7 +40,6 @@ import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
     LcuMapComponent,
     AddMapMarkerComponent,
     SaveMapComponent,
-    BasicInfoWindowComponent,
     InfoFooterComponent,
     LocationInfoFormComponent,
     LegendComponent,
@@ -83,7 +81,6 @@ import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
   ],
   exports: [
     LcuMapComponent,
-    BasicInfoWindowComponent,
     InfoFooterComponent,
     LocationInfoFormComponent,
     LegendComponent,
@@ -95,7 +92,6 @@ import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
     LcuMapComponent,
     AddMapMarkerComponent,
     SaveMapComponent,
-    BasicInfoWindowComponent,
     InfoFooterComponent,
     LocationInfoFormComponent,
     LegendComponent,

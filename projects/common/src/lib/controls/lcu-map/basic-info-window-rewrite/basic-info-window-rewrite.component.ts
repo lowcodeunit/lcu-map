@@ -51,7 +51,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   @Input() public marker: MapMarker;
 
   @Input('default-marker')
-  public DefaultMarker: DefaultMarker;
+  public DefaultMarker: IconImageObject;
 
   @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
     this.progressCircle = elRef.nativeElement;
@@ -105,8 +105,10 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    */
   public ngAfterViewInit(): void {
     this.initProgressCircle();
+    console.log("Default Marker in biw= ", this.DefaultMarker)
+
     if(!this.DefaultMarker){
-      this.DefaultMarker = {Name:"lcu-map-default-marker", RelativePath:"./assets/lcu-map-default-marker.png", Width: 40, Height: 40}
+      this.DefaultMarker = {name:"lcu-map-default-marker", url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};
     }
   }
 
@@ -242,8 +244,8 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
       this.newMarker.Icon = this.chosenIcon.IconLookup;
       this.newMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.chosenIcon.IconLookup, this.markerSet);
     } else {
-      this.newMarker.Icon = this.DefaultMarker.Name;
-      this.newMarker.IconImageObject = new IconImageObject(this.DefaultMarker.RelativePath, { width: this.DefaultMarker.Width, height: this.DefaultMarker.Height });
+      this.newMarker.Icon = this.DefaultMarker.name;
+      this.newMarker.IconImageObject = this.DefaultMarker;
     }
     this.mapService.MapMarkerSavedEvent(this.newMarker);
     this.Close();

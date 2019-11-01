@@ -20,6 +20,7 @@ import { UserMap } from '../../models/user-map.model';
 import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
 import { IconImageObject } from '../../models/icon-image-object.model';
 import { DefaultMarker } from '../../models/default-marker.model';
+import { Icon } from '@lcu/common';
 
 @Component({
   selector: 'lcu-map',
@@ -301,7 +302,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
  */
 /** tslint:disable-next-line:no-input-rename */
   @Input('default-marker')
-  public DefaultMarker: DefaultMarker;
+  public DefaultMarker: IconImageObject;
 
   /**
    * Setter for the input '_panTo' field - also sets the lat/lng and zoom of the current map model
@@ -538,8 +539,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     )
   }
   public ngAfterViewInit():void{
+    console.log("Default Marker in map= ", this.DefaultMarker)
     if(!this.DefaultMarker){
-      this.DefaultMarker = {Name:"lcu-map-default-marker" , RelativePath:"./assets/lcu-map-default-marker.png", Width: 40, Height: 40}
+      this.DefaultMarker = {name:"lcu-map-default-marker" , url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};
     }
   }
 
@@ -1058,7 +1060,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
         results.address_components[regionIndices.countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
-      IconImageObject: new IconImageObject(this.DefaultMarker.RelativePath, { height: 40, width: 40 })
+      IconImageObject: this.DefaultMarker
     }));
   }
 

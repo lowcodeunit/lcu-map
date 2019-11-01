@@ -3,6 +3,7 @@ import { MapMarker } from '../../../models/map-marker.model';
 import { MarkerData } from '../../../models/marker-data.model';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { DefaultMarker } from '../../../models/default-marker.model';
+import { IconImageObject } from '../../../models/icon-image-object.model';
 
 @Component({
   selector: 'lcu-info-footer',
@@ -18,7 +19,7 @@ export class InfoFooterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() MarkerData: MarkerData;
 
   @Input('default-marker')
-  public DefaultMarker: DefaultMarker;
+  public DefaultMarker: IconImageObject;
   
 /**
  * Outgoing boolean to diplay footer

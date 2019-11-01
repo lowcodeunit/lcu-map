@@ -4,9 +4,11 @@ export class IconImageObject {
         width: number,
         height: number
     };
-    constructor(url: string, scaledSize: any){
+    public name?: string;
+    constructor(url: string, scaledSize: any, name?: string){
         this.url = url;
         this.scaledSize = scaledSize;
+        this.name = name;
     }
 
 }

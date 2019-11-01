@@ -1,4 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter, NgZone, ViewChild, ElementRef, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  NgZone,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  ChangeDetectorRef,
+  OnChanges,
+  AfterViewInit
+} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
@@ -26,7 +39,7 @@ import { IconImageObject } from '../../models/icon-image-object.model';
   styleUrls: ['./lcu-map.component.scss'],
   host: { '(document:click)': 'OnDocClick($event)' }
 })
-export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
+export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
 
   // FIELDS
 
@@ -38,7 +51,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * The place id of the location the user clicked on
    *
-   * This will be replaced by a direct call when AGM team puts out fix that allows user's click event to return place id directly from (mapClick)
+   * This will be replaced by a direct call when AGM team puts out fix that allows user's click event
+   * to return place id directly from (mapClick)
    */
   protected placeId: string;
 
@@ -93,7 +107,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
 
 
   // PROPERTIES
-  //12 for bottom right & 9 for right bottom
+  // 12 for bottom right & 9 for right bottom
   public ZoomOptions: object = { position: 9 };
 
   public MinZoom: number = 2;
@@ -162,12 +176,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   public SearchMethods: Array<string> = [];
 
-  @Input('custom-search-method')
-  public CustomSearchMethod: string;
-
-  @Input('display-google-search-method')
-  public DisplayGoogleSearchMethod: boolean = false;
-
   /**
    * Input property that represents the current primary map
    */
@@ -232,7 +240,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    */
   public LegendMargin: string;
 
-  public DisplayingMoreInfo: Boolean;
+  public DisplayingMoreInfo: boolean;
 
   public prevInfoWindow: AgmInfoWindow;
 
@@ -266,8 +274,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     { value: 'terrain', display: 'Terrain' }
   ];
 
+  /* tslint:disable-next-line:no-input-rename */
   @Input('custom-search-repress-dropdown-character-count')
   public CustomSearchRepressDropdownCharacterCount: number = 0;
+
+  /* tslint:disable-next-line:no-input-rename */
+  @Input('custom-search-method')
+  public CustomSearchMethod: string;
+
+  /* tslint:disable-next-line:no-input-rename */
+  @Input('display-google-search-method')
+  public DisplayGoogleSearchMethod: boolean = false;
 
   /**
    * the results of the user's custom location query to be displayed
@@ -294,11 +311,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-/**
- * The default marker in the instance of alocation not having an icon
- * 
- */
-/** tslint:disable-next-line:no-input-rename */
+  /**
+   * The default marker in the instance of alocation not having an icon
+   *
+   */
+  /** tslint:disable-next-line:no-input-rename */
   @Input('default-marker')
   public DefaultMarker: IconImageObject;
 
@@ -377,7 +394,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     // });
     // this.UpdateCurrentlyActiveLayers(value);
 
-    //this.resetMapCheckedState();
+    // this.resetMapCheckedState();
   }
 
   /**
@@ -501,7 +518,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public ngOnInit(): void {
-    
+
     this.setUpSearchMethods();
     this._visibleLocationsMasterList.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
@@ -534,12 +551,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
         console.log('MapMarkerSaved event!', marker);
         this.SaveNewMarker(marker);
       }
-    )
+    );
   }
-  public ngAfterViewInit():void{
+  public ngAfterViewInit(): void{
     // console.log("Default Marker in map= ", this.DefaultMarker)
-    if(!this.DefaultMarker){
-      this.DefaultMarker = {name:"lcu-map-default-marker" , url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};
+    if (!this.DefaultMarker) {
+      this.DefaultMarker = {
+        name: 'lcu-map-default-marker' ,
+        url: './assets/lcu-map-default-marker.png',
+        scaledSize: {width: 40, height: 40} };
     }
   }
 
@@ -709,7 +729,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       height: '204px',
       data: {
         map,
-        // locationMarkers: this.stripOutsideLocations(this.CurrentlyActiveLocations, this.currentBounds),
         mapMarkerSet: this.MapMarkerSet,
         coordinates: this.currentBounds,
         userLayer: this.UserLayers.find(layer => layer.Shared === false)
@@ -784,7 +803,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.CurrentlyActiveLocations.forEach(loc => {
-      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet)
+      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     });
     // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
     // console.log("Current Map Model: ", this._currentMapModel);
@@ -952,7 +971,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
       this.ShowFooter(true);
     }
-    console.log("displaying marker", marker)
+    console.log('displaying marker', marker);
     this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
 
 
@@ -1173,17 +1192,22 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
    * Takes and array of photos returned from the google api and pulls the photo reference out
    * and builds the url to call so image displays. (currently only pulling one image from loop).
    *
-   * @param photos
+   * @param photos the photos passed in
    */
   protected buildPhotoArray(photos: Array<any>): Array<string> {
-    let width = 100; // the max width of the image to display
+    const width = 100; // the max width of the image to display
     let photoUrls: Array<string>;
-    let apiKey: string = this.mapService.GetMapApiKey();
+    const apiKey: string = this.mapService.GetMapApiKey();
     if (photos) {
       photoUrls = new Array<string>();
       // Just getting the first photo for now but set up to be full loop for future
       for (let i = 0; i < 1; i++) {
-        let photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&photoreference=" + photos[i].photo_reference + "&key=" + apiKey;
+        const photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=' +
+          width +
+          '&photoreference=' +
+          photos[i].photo_reference +
+          '&key=' +
+          apiKey;
         photoUrls.push(photoUrl);
       }
     }
@@ -1191,9 +1215,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   protected shiftCuratedLayerToTop() {
-    let first = "Curated";
+    const first = 'Curated';
     if (this._userLayers && this._userLayers !== undefined) {
-      this._userLayers.sort(function (layer1, layer2) {
+      this._userLayers.sort((layer1, layer2) => {
         return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
       });
     }

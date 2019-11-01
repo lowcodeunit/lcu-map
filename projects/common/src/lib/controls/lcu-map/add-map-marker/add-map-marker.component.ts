@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
-import { DefaultMarker } from '../../../models/default-marker.model';
 
 @Component({
   selector: 'lcu-add-map-marker',
@@ -14,8 +13,7 @@ export class AddMapMarkerComponent implements OnInit {
 
   // FIELDS
 
-  @Input('default-marker')
-  public DefaultMarker: DefaultMarker;
+ 
 
   // PROPERTIES
 
@@ -69,8 +67,8 @@ export class AddMapMarkerComponent implements OnInit {
       this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList);
     }
     else{
-      this.NewMarker.Icon = this.DefaultMarker.Name;
-      this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.DefaultMarker.Name, this.passedData.iconList);
+      // this.NewMarker.Icon = this.DefaultMarker.Name;
+      // this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.DefaultMarker.Name, this.passedData.iconList);
     }
 
     this.NewMarker.ID = '';

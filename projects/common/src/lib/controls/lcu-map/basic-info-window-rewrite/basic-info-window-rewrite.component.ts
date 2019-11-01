@@ -8,7 +8,6 @@ import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
 import { MapConversions } from '../../../utils/conversions';
 import { Subscription } from 'rxjs';
-import { DefaultMarker } from '../../../models/default-marker.model';
 
 /**
  * Enum for holding the current state of the 'Basic Info' modal/popover.
@@ -51,8 +50,10 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   @Input() public marker: MapMarker;
 
   @Input('default-marker')
-  public DefaultMarker: IconImageObject;
-
+  public set DefaultMarker(defaultMarker: IconImageObject){
+    console.log("setting default marker in biw to",defaultMarker);
+    this.DefaultMarker = defaultMarker;
+  }
   @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
     this.progressCircle = elRef.nativeElement;
   }

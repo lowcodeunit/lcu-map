@@ -51,7 +51,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
 
   @Input('default-marker')
   public DefaultMarker: IconImageObject;
-  
+
   @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
     this.progressCircle = elRef.nativeElement;
   }
@@ -104,7 +104,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    */
   public ngAfterViewInit(): void {
     this.initProgressCircle();
-    console.log("Default Marker in biw= ", this.DefaultMarker)
+    //console.log("Default Marker in biw= ", this.DefaultMarker)
 
     if(!this.DefaultMarker){
       this.DefaultMarker = {name:"lcu-map-default-marker", url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};

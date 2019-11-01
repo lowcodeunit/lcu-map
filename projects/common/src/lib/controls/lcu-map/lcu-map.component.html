@@ -102,13 +102,13 @@
           [iconUrl]="marker.IconImageObject" (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
           <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
-            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [default-marker]="DefaultMarker"[isEdit]="isEdit" [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="isEdit" [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
           </agm-info-window>
         </agm-marker>
       </div>
       <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.IconImageObject" [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
-            <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+            <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
         </agm-info-window>
       </agm-marker>
     </agm-map>

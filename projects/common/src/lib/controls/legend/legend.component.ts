@@ -39,7 +39,7 @@ export class LegendComponent implements OnInit, OnChanges {
   public matContentWidth: string;
   public matContentHeight: string;
   public Tools: string;
-  public SelectedLocation: MapMarker;
+  // public SelectedLocation: MapMarker;
   public EditMode: boolean = false;
   public LegendContentHeight: string;
 
@@ -106,6 +106,9 @@ export class LegendComponent implements OnInit, OnChanges {
     this._currentlyActiveLayers = value;
   }
 
+  @Input('selected-location')
+  SelectedLocation: MapMarker;
+
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
 
@@ -162,10 +165,10 @@ export class LegendComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
-    this.SetLocationList();
+    // this.SetLocationList();
 
     if (this.LegendOpen && !this.SelectedLocation) {
-      // this.SetLocationList();
+      this.SetLocationList();
       this.CheckIfHidden();
     }
     if (this.LegendOpen && this.SelectedLocation) {

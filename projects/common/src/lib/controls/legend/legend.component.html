@@ -53,7 +53,7 @@
 
         <div class="location-box" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
           *ngFor="let item of LocationsList" cdkDrag [ngStyle]="{'cursor': EditMode ? 'pointer': 'move'}"
-          (click)="PanTo(item)" (dblclick)="ShowMoreInfo(item)">
+          (click)="MarkerClicked(item)" (dblclick)="ShowMoreInfo(item)">
 
           <mat-checkbox *ngIf="EditMode" [checked]="item.Checked" (click)=" $event.preventDefault();"></mat-checkbox>
           <div *ngIf="item === SelectedLocation  && (item.IsHidden === false || !item.IsHidden)"
@@ -93,7 +93,7 @@
           </div>
           <div *ngIf="HiddenListVisible === true" class="hidden-locations-container">
             <div class="hidden-locations" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
-              *ngFor="let item of HiddenLocations" cdkDrag [ngStyle]="{'cursor':  'pointer'}" (click)="PanTo(item)"
+              *ngFor="let item of HiddenLocations" cdkDrag [ngStyle]="{'cursor':  'pointer'}" (click)="MarkerClicked(item)"
               (dblclick)="ShowMoreInfo(item)">
               <mat-checkbox [checked]="item.Checked" id="legend-hidden-list-checkbox-item" (click)=" $event.preventDefault();"></mat-checkbox>
               <div class="icon-title" fxLayout="row" fxLayoutAlign="start center">

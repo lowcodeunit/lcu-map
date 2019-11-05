@@ -249,6 +249,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public SearchControl: FormControl;
 
   /**
+   * The agmInfoWindow refrenced in the DOM
+   */
+  public amblInfoWindow: AgmInfoWindow;
+  /**
    * The search input box
    */
   @ViewChild('search', { static: false })
@@ -542,8 +546,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.mapService.InfoWindowClosed.subscribe(
       () => {
         this.SelectedMarker = null;
+        // console.log("setting selectedMarker to NULL");
         this.SelectedLocation = null;
-        // console.log("setting selected location & Selected Marker to null")
       }
     );
 
@@ -1278,7 +1282,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.changeDetector.detectChanges();
 
     this.locationInfoService.SetSelectedMarker(marker);
+    // console.log("infoWindow: ", infoWindow);
     this.mapService.MapMarkerClickedEvent(infoWindow);
+
   }
 
   /**
@@ -1289,7 +1295,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param marker The Map Marker that was selected.
    */
   public OnLocationClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    console.log("setting selected marker to null")
+    // console.log("setting selected marker to null")
     this.SelectedMarker = null;
     this.changeDetector.detectChanges();
     this.mapService.MapMarkerClickedEvent(infoWindow);

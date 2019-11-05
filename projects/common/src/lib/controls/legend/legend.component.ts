@@ -1,13 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MapService } from '../../services/map.service';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { MapMarker } from '../../models/map-marker.model';
 import { Constants } from '../../utils/constants/constants';
 import { MatSidenav, MatDialog } from '@angular/material';
 import { UserMap } from '../../models/user-map.model';
 import { DeleteLocationsComponent } from './delete-locations/delete-locations.component';
-import { LocationInfoService } from '../../services/location-info.service';
 
 
 
@@ -20,10 +18,10 @@ import { LocationInfoService } from '../../services/location-info.service';
 export class LegendComponent implements OnInit, OnChanges {
 
   //PROPERTIES
-  protected _currentlyActiveLocations: Array<MapMarker>;
-  protected _currentMapModel: UserMap;
+  // protected _currentlyActiveLocations: Array<MapMarker>;
+  // protected _currentMapModel: UserMap;
   protected _legendLocations: Array<MapMarker>;
-  protected _currentlyActiveLayers: Array<string>;
+  // protected _currentlyActiveLayers: Array<string>;
   /**
   * The MarkerInfo where the icon url can be refrenced
   */
@@ -33,14 +31,38 @@ export class LegendComponent implements OnInit, OnChanges {
   */
   protected expectedDoubleClickElapsedTime: number = 500;
 
+/**
+ * double click to show more info modal
+ */
   protected isDoubleClick: boolean;
-  protected hiddenLocationIds: Array<any>;
 
+  /**
+   * and array with all teh hiddenLocation ids to check against
+   */
+  protected hiddenLocationIds: Array<any>;
+/**
+ * width of the sidenav
+ */
   public matContentWidth: string;
+
+  /**
+   * height of the sidenav
+   */
   public matContentHeight: string;
+
+  /**
+   * track tools view 
+   */
   public Tools: string;
-  // public SelectedLocation: MapMarker;
+
+  /**
+   * editMode for checking unchecking  items
+   */
   public EditMode: boolean = false;
+
+  /**
+   * legend height
+   */
   public LegendContentHeight: string;
 
 
@@ -86,28 +108,24 @@ export class LegendComponent implements OnInit, OnChanges {
  * Used for getting the title of the map to display at top
  */
   @Input('current-map-model')
-  public set CurrentMapModel(value: UserMap) {
-    this._currentMapModel = value;
-  }
+  protected _currentMapModel: UserMap;
 
 /**
  * all locations within view
  */
   @Input('currently-active-locations')
-  public set CurrentlyActiveLocations(value: Array<MapMarker>) {
-    this._currentlyActiveLocations = value;
-    // console.log("Active Locations Changed");
-  }
+  protected _currentlyActiveLocations: Array<MapMarker>
 /**
  * if no map is selected the layer title will display at top
  */
   @Input('currently-active-layers')
-  public set CurrentlyActiveLayers(value: Array<string>) {
-    this._currentlyActiveLayers = value;
-  }
+  protected _currentlyActiveLayers: Array<string>
 
+/**
+ * the location to highlight in the legend
+ */
   @Input('selected-location')
-  SelectedLocation: MapMarker;
+  public SelectedLocation: MapMarker;
 
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
@@ -133,7 +151,6 @@ export class LegendComponent implements OnInit, OnChanges {
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
   //CONSTRUCTOR
-  // protected locationInfoService: LocationInfoService
   constructor(public Dialog: MatDialog ) {
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -164,8 +181,6 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
-    // this.SetLocationList();
 
     if (this.LegendOpen && !this.SelectedLocation) {
       this.SetLocationList();
@@ -182,14 +197,6 @@ export class LegendComponent implements OnInit, OnChanges {
       }
     }
   }
-
-  /**
-   * @param lat The latitude to pan to
-   *
-   * @param long The longitude to pan to
-   *
-   * Calls function on map service that emits event with the given lat/lng
-   */
 
   //API METHODS
 
@@ -226,16 +233,16 @@ export class LegendComponent implements OnInit, OnChanges {
    * @param event Marker to check
    */
   public CheckMarker(event: MapMarker): void {
-    console.log("checking: ", event);
+    // console.log("checking: ", event);
     event.Checked = !event.Checked;
-    console.log("checked = ", event.Checked);
+    // console.log("checked = ", event.Checked);
   }
 
   /**
    * Hides the checked locations in the _currentlyActiveLocations and pushes them to the HiddenLocation Array
    */
   public HideLocations(): void {
-    console.log("locs", this._currentlyActiveLocations);
+    // console.log("locs", this._currentlyActiveLocations);
     // let temp = this._currentlyActiveLocations;
     let justHid = new Array<MapMarker>();
     for (let i = 0; i < this._currentlyActiveLocations.length; i++) {
@@ -355,7 +362,6 @@ export class LegendComponent implements OnInit, OnChanges {
   public ShowMoreInfo(item: MapMarker): void {
     this.isDoubleClick = true;
     this.DisplayMoreInfo.emit(item);
-    this.PanTo(item);
     setTimeout(x => {
       this.isDoubleClick = false;
     }, 500);
@@ -363,9 +369,9 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   /**
-   * pans map to @param marker lat and long
+   * normalizes lat and long and emits marker to map for it to display
    */
-  public PanTo(marker: MapMarker) {
+  public MarkerClicked(marker: MapMarker) {
     setTimeout(x => {
       if (!this.isDoubleClick) {
         if (!this.EditMode) {

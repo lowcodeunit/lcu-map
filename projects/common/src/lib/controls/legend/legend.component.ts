@@ -133,8 +133,8 @@ export class LegendComponent implements OnInit, OnChanges {
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
   //CONSTRUCTOR
-
-  constructor(public Dialog: MatDialog, protected locationInfoService: LocationInfoService) {
+  // protected locationInfoService: LocationInfoService
+  constructor(public Dialog: MatDialog ) {
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -164,7 +164,7 @@ export class LegendComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
+    // this.SelectedLocation = this.locationInfoService.GetSelectedMarker();
     // this.SetLocationList();
 
     if (this.LegendOpen && !this.SelectedLocation) {

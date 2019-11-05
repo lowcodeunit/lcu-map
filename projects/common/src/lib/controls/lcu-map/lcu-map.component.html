@@ -40,7 +40,7 @@
       <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
         [currently-active-locations]="_visibleLocationsMasterList"
         [currently-active-layers]="GetSelectedUserLayers()" [selected-location]="SelectedMarker"
-        (delete-locations)="DeleteLocations($event)" (display-basic-info)="DisplayMarkerInfo($event)"
+        (delete-locations)="DeleteLocations($event)" (display-basic-info)="OnMarkerClicked(amblInfoWindow, $event)"
         (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)= "EmitTopListsClick($event)">

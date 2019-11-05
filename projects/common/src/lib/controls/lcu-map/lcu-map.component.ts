@@ -243,6 +243,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public DisplayingMoreInfo: boolean;
 
   public prevInfoWindow: AgmInfoWindow;
+  /**
+   * The form control for the location search box
+   */
+  public SearchControl: FormControl;
 
   /**
    * The search input box
@@ -256,10 +260,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
-  /**
-   * The form control for the location search box
-   */
-  public SearchControl: FormControl;
+  
 
   /**
    * The array of available map views to be chosen by the user (default is roadmap)
@@ -1288,6 +1289,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param marker The Map Marker that was selected.
    */
   public OnLocationClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
+    console.log("setting selected marker to null")
     this.SelectedMarker = null;
     this.changeDetector.detectChanges();
     this.mapService.MapMarkerClickedEvent(infoWindow);

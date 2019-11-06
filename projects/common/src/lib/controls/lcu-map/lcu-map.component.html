@@ -7,7 +7,7 @@
         <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
-      <div class="center-buttons mat-icon-divs">
+      <div *ngIf="IncludeSaveMapFeature" class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       </div>
 

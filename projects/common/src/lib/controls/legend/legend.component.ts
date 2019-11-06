@@ -1,11 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MarkerInfo } from '../../models/marker-info.model';
 import { MapMarker } from '../../models/map-marker.model';
-import { Constants } from '../../utils/constants/constants';
 import { MatSidenav, MatDialog } from '@angular/material';
 import { UserMap } from '../../models/user-map.model';
 import { DeleteLocationsComponent } from './delete-locations/delete-locations.component';
+import { MarkerInfo } from '../../models/marker-info.model';
 
 
 
@@ -18,14 +17,7 @@ import { DeleteLocationsComponent } from './delete-locations/delete-locations.co
 export class LegendComponent implements OnInit, OnChanges {
 
   //PROPERTIES
-  // protected _currentlyActiveLocations: Array<MapMarker>;
-  // protected _currentMapModel: UserMap;
-  protected _legendLocations: Array<MapMarker>;
-  // protected _currentlyActiveLayers: Array<string>;
-  /**
-  * The MarkerInfo where the icon url can be refrenced
-  */
-  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
+  
   /**
   * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
   */
@@ -103,6 +95,13 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   protected PreviousSelectedLocation: MapMarker;
 
+  /**
+  * The MarkerInfo where the icon url can be refrenced
+  */
+//  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
+  @Input('icon-list')
+  protected iconList: Array<MarkerInfo>;
+
 
 /**
  * Used for getting the title of the map to display at top
@@ -158,7 +157,6 @@ export class LegendComponent implements OnInit, OnChanges {
     this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
     this.TopListClicked = new EventEmitter<any>();
     this._currentlyActiveLocations = new Array<MapMarker>();
-    this._legendLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
     this.matContentWidth = "40px";
@@ -243,7 +241,6 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public HideLocations(): void {
     // console.log("locs", this._currentlyActiveLocations);
-    // let temp = this._currentlyActiveLocations;
     let justHid = new Array<MapMarker>();
     for (let i = 0; i < this._currentlyActiveLocations.length; i++) {
       if (this._currentlyActiveLocations[i].Checked === true) {

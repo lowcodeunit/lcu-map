@@ -32,7 +32,7 @@
       }
 
       .ratings-content {
-        padding: 15px;
+        padding: 10px;
 
         .mat-icon-button {
           height: initial;
@@ -101,3 +101,9 @@
 // ::ng-deep .cdk-overlay-pane {
 //   position: absolute !important; //having this doesnt allow for margin on the right
 // }
+
+.ratings{
+  padding-bottom: 10px;
+  padding-left:5px;
+  padding-right:5px;
+}

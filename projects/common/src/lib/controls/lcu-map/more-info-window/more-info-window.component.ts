@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry } from '@angular/materia
 import { MapMarker } from '../../../models/map-marker.model';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LocationRating } from '../../../models/location-rating-model';
 
 @Component({
   selector: 'lcu-more-info-window',
@@ -16,6 +17,13 @@ export class MoreInfoWindowComponent implements OnInit {
   public rating: string;
   public instagramUrl: string;
   public accolades: Array<string>;
+  public ColorRed: string;
+  public ColorYellow: string;
+  public ColorGreen: string;
+  public AmblRating: LocationRating;
+  public FriendsRating: LocationRating;
+  public SimilarRating: LocationRating;
+  public Ratings: Array<LocationRating>
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public passedData: any,
@@ -26,7 +34,17 @@ export class MoreInfoWindowComponent implements OnInit {
   ) {this.matIconRegistry.addSvgIcon(
     "instagram",
     this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/instagram.svg")
-  ); }
+  ); 
+    this.ColorRed = "#FF0000";
+    this.ColorYellow = '#FFFF00';
+    this.ColorGreen = '#008000';
+    this.AmblRating = new LocationRating('Ambl_on', Math.round(Math.random() * 100), Math.floor(Math.random() * 1000) + 1 );
+    this.FriendsRating = new LocationRating('Friends', Math.round(Math.random() * 100), Math.floor(Math.random() * 100) + 1 );
+    this.SimilarRating = new LocationRating('Similar', Math.round(Math.random() * 100), Math.floor(Math.random() * 50) + 1 );
+    this.Ratings = new Array<LocationRating>();
+
+
+}
 
   public ngOnInit(): void {
     console.log('ngOnInit', this.passedData);
@@ -34,6 +52,7 @@ export class MoreInfoWindowComponent implements OnInit {
     this.instagramUrl = this.locationInfoService.BuildInstagramUrl(this.marker);
     this.linkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
     this.accolades = new Array<string>();
+    this.BuildRatings();
   }
 
   public SelectRating(rating: string): void {
@@ -47,6 +66,27 @@ export class MoreInfoWindowComponent implements OnInit {
     this.locationInfoService.SetHighlightIcon(false);
     this.locationInfoService.SetSelectedMarker(undefined);
     this.dialogRef.close();
+  }
+
+  protected BuildRatings():void{
+    if(!this.marker.Rating){
+      
+      this.Ratings.push(this.AmblRating, this.FriendsRating, this.SimilarRating);
+    }
+    else{
+      this.Ratings = this.marker.Rating;
+    }
+    this.Ratings.forEach(x =>{
+      if(x.rating > 50){
+        x.color = this.ColorGreen;
+      }
+      else if(x.rating<= 50 && x.rating >25){
+        x.color = this.ColorYellow
+      }
+      else{
+        x.color = this.ColorRed
+      }
+    })
   }
 
 }

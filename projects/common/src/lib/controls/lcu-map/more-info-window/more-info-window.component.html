@@ -26,7 +26,7 @@
 
         <hr>
 
-        <div class="links" fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 1.5em">
+        <div class="links" fxLayout="row" fxLayoutAlign="space-between center">
           <a [disabled]="!marker?.Website" class="link" href={{marker?.Website}} target="_blank" mat-icon-button>
             <mat-icon title="Website" style="font-size: 35px">public</mat-icon>
           </a>
@@ -55,6 +55,21 @@
               </mat-icon>
             </a>
           </div>
+
+          <div class="user-ratings-container" fxLayout="row" fxLayoutAlign="center center">
+            <div class="user-rating-content" *ngFor="let rating of Ratings" fxLayout="row"
+              fxLayoutAlign="center center">
+              <div class="ratings" fxLayout="column" fxLayoutAlign="center center">
+                <div id="rating-title">{{ rating.title }}</div>
+                <div id="ambl-on-rating">
+                  <lcu-progress-circle [percentage-color]="rating.color" [percentage]="rating.rating">
+                  </lcu-progress-circle>
+                </div>
+                <div id="ambl-on-total-ratings">{{ rating.totalRatings }}</div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div *ngIf="accolades" class="more-info-accolades">

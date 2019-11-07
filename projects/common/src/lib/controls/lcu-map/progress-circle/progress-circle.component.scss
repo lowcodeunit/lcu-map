@@ -1,0 +1,16 @@
+.content-percent {
+    font-size: 12px;
+    font-weight: bold;
+
+    &:after {
+      content: '%';
+    }
+  }
+
+  .progress-ring {
+    .progress-ring__circle {
+      transition: stroke-dashoffset 1.5s;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+  }

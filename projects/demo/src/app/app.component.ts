@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { IndividualMap } from 'projects/common/src/lcu.api';
 import { MapMarker, UserMap, MarkerInfo } from 'projects/common/src/lcu.api';
 import { UserLayer } from 'projects/common/src/lib/models/user-layer.model';

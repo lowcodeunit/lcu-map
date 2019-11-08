@@ -19,7 +19,9 @@ export const settings = FathymSharedModule.DefaultServiceSettings(environment);
   [FathymSharedModule.forRoot(),
      BrowserModule, 
      BrowserAnimationsModule, 
-     LcuMapModule],
+     LcuMapModule,
+     
+    ],
   providers: [
     {
       provide: LCUServiceSettings,

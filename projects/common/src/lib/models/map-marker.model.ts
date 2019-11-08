@@ -1,4 +1,5 @@
 import { IconImageObject } from './icon-image-object.model';
+import { LocationRating } from './location-rating-model';
 
 export class MapMarker {
 
@@ -128,7 +129,7 @@ export class MapMarker {
      */
     public Checked?: boolean;
 
-    public Rating?: number;
+    public Rating?: Array<LocationRating>;
 
     public IsHidden?: boolean;
 
@@ -162,5 +163,6 @@ export class MapMarker {
         this.Checked = icon.Checked;
         this.IsHidden = icon.IsHidden;
         this.IconImageObject = icon.IconImageObject;
+        this.Rating = icon.Rating;
     }
 }

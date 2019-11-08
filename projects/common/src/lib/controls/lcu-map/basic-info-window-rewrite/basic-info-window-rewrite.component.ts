@@ -52,9 +52,9 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   @Input('default-marker')
   public DefaultMarker: IconImageObject;
 
-  @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
-    this.progressCircle = elRef.nativeElement;
-  }
+  // @ViewChild('progressCircle', { static: false }) set content(elRef: ElementRef) {
+  //   this.progressCircle = elRef.nativeElement;
+  // }
 
   constructor(
     protected infoWindowManager: InfoWindowManager,
@@ -70,7 +70,6 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   public ngOnInit(): void {
     this.buildBasicInfoContent(this.marker);
     this.currentState = ModalStateType.BASIC;
-    this.marker.Rating = Math.round(Math.random() * 100); // Setting random number until backend is ready
     this.markerSet = this.mapMarkerSet.slice(0, -1);
     this.displayMarkerSet = this.truncateArray(this.markerSet, 7);
 
@@ -103,7 +102,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
    * Angular lifecycle hook that gets called after the view has finished initializing.
    */
   public ngAfterViewInit(): void {
-    this.initProgressCircle();
+    // this.initProgressCircle();
     //console.log("Default Marker in biw= ", this.DefaultMarker)
 
     if(!this.DefaultMarker){
@@ -150,18 +149,18 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
   /**
    * Initializes the SVG progress circle to get and set the necessary values for displaying a rating.
    */
-  public initProgressCircle(): void {
-    if (this.progressCircle) {
-      const radius = this.progressCircle.r.baseVal.value;
-      this.pCircumference = radius * 2 * Math.PI;
-      this.progressCircle.style.strokeDasharray = `${this.pCircumference} ${this.pCircumference}`;
-      this.progressCircle.style.strokeDashoffset = `${this.pCircumference}`;
+  // public initProgressCircle(): void {
+  //   if (this.progressCircle) {
+  //     const radius = this.progressCircle.r.baseVal.value;
+  //     this.pCircumference = radius * 2 * Math.PI;
+  //     this.progressCircle.style.strokeDasharray = `${this.pCircumference} ${this.pCircumference}`;
+  //     this.progressCircle.style.strokeDashoffset = `${this.pCircumference}`;
 
-      if (this.marker.Rating) {
-        this.initRatingInfo(this.marker.Rating);
-      }
-    }
-  }
+  //     if (this.marker.Rating) {
+  //       this.initRatingInfo(this.marker.Rating);
+  //     }
+  //   }
+  // }
 
   /**
    * Triggers an CSS animation to offset the progress circle based on the value given.

@@ -499,7 +499,7 @@ export class LegendComponent implements OnInit, OnChanges {
           locList[i].IconImageObject.url = iconTemp[0].IconUrl;
         }
         else {
-          console.log("Icon url doesn't exist for ", locList[i].Icon)
+          // console.log("Icon url doesn't exist for ", locList[i].Icon)
         }
       }
     }

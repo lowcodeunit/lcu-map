@@ -306,6 +306,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Input('update-visible-locations-manually')
   public UpdateVisibleLocationsManually: Array<MapMarker>;
 
+
+  /**
+   * determines whether or not to include the save map feature
+   *
+   * TODO: will likely turn into simply a button and leave the entire implementation of this modal to parent component
+   */
+  /* tslint:disable-next-line:no-input-rename */
+  @Input('include-save-map-feature')
+  public IncludeSaveMapFeature: boolean;
+
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */
@@ -499,6 +509,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     protected ngZone: NgZone,
     protected wrapper: GoogleMapsAPIWrapper
   ) {
+    this.IncludeSaveMapFeature = false;
     this.MapSaved = new EventEmitter(),
       // this.PrimaryMapLocationListChanged = new EventEmitter;
       this.VisibleLocationListChanged = new EventEmitter();

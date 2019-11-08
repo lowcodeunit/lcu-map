@@ -38,9 +38,11 @@ export class MoreInfoWindowComponent implements OnInit {
     this.ColorRed = "#FF0000";
     this.ColorYellow = '#FFFF00';
     this.ColorGreen = '#008000';
-    this.AmblRating = new LocationRating('Ambl_on', Math.round(Math.random() * 100), Math.floor(Math.random() * 1000) + 1 );
-    this.FriendsRating = new LocationRating('Friends', Math.round(Math.random() * 100), Math.floor(Math.random() * 100) + 1 );
-    this.SimilarRating = new LocationRating('Similar', Math.round(Math.random() * 100), Math.floor(Math.random() * 50) + 1 );
+    const ratingMin = 80;
+    const ratingMax = 100;
+    this.AmblRating = new LocationRating('Ambl_on', Math.floor(Math.random() * (ratingMax - ratingMin + 1)) + ratingMin, Math.floor(Math.random() * 1000) + 1 );
+    this.FriendsRating = new LocationRating('Friends', Math.floor(Math.random() * (ratingMax - ratingMin + 1)) + ratingMin, Math.floor(Math.random() * 100) + 1 );
+    this.SimilarRating = new LocationRating('Similar', Math.floor(Math.random() * (ratingMax - ratingMin + 1)) + ratingMin, Math.floor(Math.random() * 50) + 1 );
     this.Ratings = new Array<LocationRating>();
 
 

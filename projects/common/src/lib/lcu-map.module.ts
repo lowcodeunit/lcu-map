@@ -34,7 +34,9 @@ import { SubString } from './utils/pipes/substring.pipe';
 import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
 import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
 import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
-import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/progress-circle.component';
+// import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/progress-circle.component';
+import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +51,7 @@ import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/prog
     CheckBoxSubString,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent,
-    ProgressCircleComponent
+    
   ],
   imports: [
     FathymSharedModule,
@@ -74,7 +76,8 @@ import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/prog
     MatAutocompleteModule,
     DragDropModule,
     MatSidenavModule,
-    MatTabsModule
+    MatTabsModule,
+    LcuProgressCircleModule
   ],
   providers: [
     GoogleMapsAPIWrapper,
@@ -89,7 +92,6 @@ import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/prog
     DeleteLocationsComponent,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent,
-    ProgressCircleComponent
   ],
   entryComponents: [
     LcuMapComponent,
@@ -101,7 +103,7 @@ import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/prog
     DeleteLocationsComponent,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent,
-    ProgressCircleComponent
+    
   ]
 })
 export class LcuMapModule { }

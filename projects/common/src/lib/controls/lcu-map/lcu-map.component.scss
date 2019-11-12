@@ -1,7 +1,7 @@
 $base-toolbar-height: 40px;
 $icon-offset-top-margin: 2px;
 $search-bar-offset-top: 30px;
-$toolbar-background-color: #C6C0CC;
+$toolbar-background-color: #877d96; //rgb(135,125,150)
 $hr-border-height: 2px;
 $toolbar-hover-color: #FF9849;
 
@@ -16,6 +16,7 @@ mat-icon {
     .icon-list {
         // height: 6vh;
         background-color: $toolbar-background-color;
+        opacity: .5;
         height: $base-toolbar-height;
         @media (max-width:600px){
             // height:9vh;

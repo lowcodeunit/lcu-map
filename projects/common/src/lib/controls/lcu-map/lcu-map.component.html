@@ -1,4 +1,9 @@
 <div id="map-section">
+  <!-- <mat-toolbar id='home-page-tool-bar' fxLayout="row" fxLayoutAlign="space-between center">
+    <span id="ambl-span">ambl_on</span>
+  </mat-toolbar>
+  <hr> -->
+
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center"
     fxLayoutAlign.lt-sm="end center">
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
@@ -36,17 +41,18 @@
     </div>
 
     <div class="top-icon-set" fxLayoutAlign="end start">
-        <!-- [selected-location]="SelectedMarker" (pan)="PanningTo($event)" -->
+      <!-- [selected-location]="SelectedMarker" (pan)="PanningTo($event)" -->
       <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
         [currently-active-locations]="_visibleLocationsMasterList" [icon-list]="MapMarkerSet"
         [currently-active-layers]="GetSelectedUserLayers()" [selected-location]="SelectedMarker"
         (delete-locations)="DeleteLocations($event)" (display-basic-info)="OnMarkerClicked(amblInfoWindow, $event)"
         (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
-        (top-list-clicked)= "EmitTopListsClick($event)">
+        (top-list-clicked)="EmitTopListsClick($event)">
       </lcu-legend>
     </div>
   </div>
+  <hr>
 
   <!-- the search bar -->
   <div [hidden]="!ShowSearchBar" id="search-bar" class="search-bar-element">
@@ -57,12 +63,14 @@
     </div>
     <!-- the custom marker search bar -->
     <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
-      <input type="text" (keyup)="CustomSearchInputChange($event)" placeholder="search for {{CustomSearchMethod}} locations"
-        aria-label="Assignee" [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
+      <input type="text" (keyup)="CustomSearchInputChange($event)"
+        placeholder="search for {{CustomSearchMethod}} locations" aria-label="Assignee"
+        [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
       <mat-autocomplete (optionSelected)="LocationOptionSelected($event)" #auto="matAutocomplete"
         [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
-          [value]="location" [ngClass]="{'display-none': !displayAutocompleteOptions || RepressSearchOptionsList, 'search-bar-element': true}">
+          [value]="location"
+          [ngClass]="{'display-none': !displayAutocompleteOptions || RepressSearchOptionsList, 'search-bar-element': true}">
           <span><img class="dropdown-marker-image search-bar-element" [src]="location.IconImageObject.url"></span>
           <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
           <span class="dropdown-marker-location-text search-bar-element">
@@ -98,17 +106,21 @@
       (mapClick)="OnChoseLocation($event)" [usePanning]="true">
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
-        <agm-marker *ngIf="marker.IsHidden === false || !marker.IsHidden" [latitude]="marker.Latitude" [longitude]="marker.Longitude" [title]="marker.Title"
-          [iconUrl]="marker.IconImageObject" (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
+        <agm-marker *ngIf="marker.IsHidden === false || !marker.IsHidden" [latitude]="marker.Latitude"
+          [longitude]="marker.Longitude" [title]="marker.Title" [iconUrl]="marker.IconImageObject"
+          (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
           <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
-            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="isEdit" [marker]="marker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="isEdit" [marker]="marker"
+              [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
           </agm-info-window>
         </agm-marker>
       </div>
-      <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.IconImageObject" [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
+      <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.IconImageObject"
+        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
-            <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker" [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+          <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker"
+            [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
         </agm-info-window>
       </agm-marker>
     </agm-map>
@@ -116,7 +128,7 @@
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">
     <lcu-info-footer *ngIf="MarkerData" fxLayout="column" fxLayoutAlign="space-around stretch" [MarkerData]="MarkerData"
-     [default-marker]="DefaultMarker" (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
+      [default-marker]="DefaultMarker" (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
     </lcu-info-footer>
   </div>
 </div>

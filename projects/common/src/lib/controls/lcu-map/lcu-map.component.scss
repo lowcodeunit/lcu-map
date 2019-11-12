@@ -1,6 +1,9 @@
-$base-toolbar-height: 0px;
-$icon-offset-top-margin: 20px;
+$base-toolbar-height: 40px;
+$icon-offset-top-margin: 2px;
 $search-bar-offset-top: 30px;
+$toolbar-background-color:  #C6C0CC; //#877d96 
+$hr-border-height: 2px;
+$toolbar-hover-color: #FF9849;
 
 mat-icon {
     font-size: 30px;
@@ -9,9 +12,26 @@ mat-icon {
 #map-section {
     // height: 100vh;
     position: relative;
+    #ambl-span{
+        color:white;
+        position: absolute;
+        left: 130px;
+        font-size: 25px;
+        &:hover{
+            color: $toolbar-hover-color;
+            cursor: pointer;
+        }
+    }   
 
+hr {
+    border: 1px solid black;
+    opacity: .2;
+    margin: 0px;
+  }
     .icon-list {
         // height: 6vh;
+        background-color: $toolbar-background-color;
+        // opacity: .5;
         height: $base-toolbar-height;
         @media (max-width:600px){
             // height:9vh;
@@ -38,8 +58,8 @@ mat-icon {
     .bottom-icon-set {
         width: 50%;
         position: absolute;
-        top: $base-toolbar-height;
-        margin-top: $icon-offset-top-margin * 2;
+        // top: $base-toolbar-height;
+        margin-top: $icon-offset-top-margin *2;
         z-index: 1;
         @media(max-width: 600px) {
             position: absolute;
@@ -49,13 +69,17 @@ mat-icon {
         }
         .center-buttons{
             z-index: 1;
+            color: white;
+        }
+        .center-buttons:hover{
+            color: $toolbar-hover-color;
         }
     }
 
     agm-map {
-        height: calc(100vh - #{$base-toolbar-height});
+        height: calc(100vh - (#{$base-toolbar-height} + #{$hr-border-height}));
         @media(max-width:600px){
-            height: calc(100vh - (#{$base-toolbar-height} * 2))
+            height: calc(100vh - (#{$base-toolbar-height} * 2) - #{$hr-border-height})
         }
 
     }
@@ -159,4 +183,9 @@ mat-option {
 .display-none {
     display: none;
 }
+
+
+    
+
+
 

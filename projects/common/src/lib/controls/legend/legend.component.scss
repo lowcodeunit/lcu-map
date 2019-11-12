@@ -113,3 +113,15 @@ mat-checkbox {
   padding-left: 10px;
   padding-right: 10px
 }
+
+.chevron-legend{
+  color: white;
+  &:hover{
+    color:#FF9849;
+  }
+}
+.chevron-legend-open{
+  &:hover{
+    color: #FF9849;
+  }
+}

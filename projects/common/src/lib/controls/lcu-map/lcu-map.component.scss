@@ -1,7 +1,7 @@
 $base-toolbar-height: 40px;
 $icon-offset-top-margin: 2px;
 $search-bar-offset-top: 30px;
-$toolbar-background-color: #877d96; //rgb(135,125,150)
+$toolbar-background-color:  #C6C0CC; //#877d96 
 $hr-border-height: 2px;
 $toolbar-hover-color: #FF9849;
 
@@ -12,11 +12,26 @@ mat-icon {
 #map-section {
     // height: 100vh;
     position: relative;
+    #ambl-span{
+        color:white;
+        position: absolute;
+        left: 130px;
+        font-size: 25px;
+        &:hover{
+            color: $toolbar-hover-color;
+            cursor: pointer;
+        }
+    }   
 
+hr {
+    border: 1px solid black;
+    opacity: .2;
+    margin: 0px;
+  }
     .icon-list {
         // height: 6vh;
         background-color: $toolbar-background-color;
-        opacity: .5;
+        // opacity: .5;
         height: $base-toolbar-height;
         @media (max-width:600px){
             // height:9vh;
@@ -169,29 +184,8 @@ mat-option {
     display: none;
 }
 
-#map-tool-bar{
-    opacity: 50%;
-    background-color: #C6C0CC;
-    // height: 39px !important;
-    
-
-    #ambl-span{
-        padding-left: 100px;
-        color:white;
-       
-    }
-    #ambl-language{
-        color:white;
-    }
-    #ambl-language:hover{
-        color:#FF9849;
-        cursor: pointer;
-    }
 
     
-}
-hr {
-    border: 1px solid 	#BEBEBE;
-    margin: 0px;
-  }
+
+
 

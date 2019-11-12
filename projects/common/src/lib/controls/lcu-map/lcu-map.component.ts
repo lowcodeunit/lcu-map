@@ -528,7 +528,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.EditLocation = new EventEmitter<MapMarker>();
     this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
-    this.LegendMargin = '4px';
+    this.LegendMargin = '6px';
     this.DisplayingMoreInfo = false;
     this.nonEssentialKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
   }
@@ -664,7 +664,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (event) {
       this.LegendMargin = '35px';
     } else {
-      this.LegendMargin = '4px';
+      this.LegendMargin = '6px';
     }
   }
 

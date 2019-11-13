@@ -1,5 +1,5 @@
 $base-toolbar-height: 0px; //40px
-$icon-offset-top-margin: 12px;
+$icon-offset-top-margin: 11px;
 $search-bar-offset-top: 30px;
 $toolbar-background-color:  #877d96; //#877d96 
 // $hr-border-height: 4px;
@@ -11,7 +11,6 @@ mat-icon {
 
 #map-section {
     height: 100vh;
-    top: -4px;
     position: relative;
 
 #map-toolbar{
@@ -21,15 +20,8 @@ mat-icon {
     position: absolute;
     top: 0px;
     z-index: 1;
+    border-bottom: 2px solid black;
 }
-hr {
-    border: 1px solid black;
-    opacity: .3;
-    margin: 0px;
-    position: relative;
-    top: 40px;
-    z-index: 1;
-  }
 
     #ambl-span{
         color:white;
@@ -109,8 +101,8 @@ hr {
 
 mat-icon, .mat-icon-divs {
     cursor: pointer;
-    padding-left: 10%; //75px
-    padding-right: 10%;//75px
+    padding-left: 5%; //75px
+    padding-right: 5%;//75px
     @media(max-width:600px){
         float: left;
     }
@@ -193,6 +185,7 @@ mat-option {
     border-radius: 5px;
     box-shadow: grey 3px 3px 7px;
     top: 25px;
+    color: $toolbar-background-color;
 }
 
 .display-none {

@@ -454,8 +454,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public EditLocation: EventEmitter<MapMarker>;
 
   
-  @Output('update-hidden-curations')
-  public UpdateHiddenCurations: EventEmitter<Array<string>>;
+  @Output('update-excluded-curations')
+  public UpdateExcludedCurations: EventEmitter<Array<string>>;
 
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
@@ -519,7 +519,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       // this.PrimaryMapLocationListChanged = new EventEmitter;
       this.VisibleLocationListChanged = new EventEmitter();
     this.SearchLocationChosen = new EventEmitter<MapMarker>();
-    this.UpdateHiddenCurations = new EventEmitter<Array<string>>();
+    this.UpdateExcludedCurations = new EventEmitter<Array<string>>();
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -612,9 +612,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
 
-  public UpdateHiddenCurationsList(event: Array<string>){
+  public UpdateExcludedCurationsList(event: Array<string>){
     console.log("emitting: ", event);
-    this.UpdateHiddenCurations.emit(event);
+    this.UpdateExcludedCurations.emit(event);
   }
   /**
    *  Returns an array of strings that represent the titles of layers selected.

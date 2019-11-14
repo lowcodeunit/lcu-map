@@ -148,7 +148,7 @@ export class LegendComponent implements OnInit, OnChanges {
   TopListClicked: EventEmitter<any>;
 
   @Output('update-hidden-curations')
-  UpdateHiddenCurations: EventEmitter<Array<string>>;
+  UpdateExcludedCurations: EventEmitter<Array<string>>;
 
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
@@ -159,7 +159,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
     this.TopListClicked = new EventEmitter<any>();
-    this.UpdateHiddenCurations = new EventEmitter<Array<string>>();
+    this.UpdateExcludedCurations = new EventEmitter<Array<string>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
@@ -262,7 +262,7 @@ export class LegendComponent implements OnInit, OnChanges {
     if (justHid.length > 0) {
       this.EditLegendLocations.emit(justHid);
       this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
-      this.UpdateHiddenCurations.emit(locationIdsToHide);
+      this.UpdateExcludedCurations.emit(locationIdsToHide);
     }
     this.SetLocationList();
   }

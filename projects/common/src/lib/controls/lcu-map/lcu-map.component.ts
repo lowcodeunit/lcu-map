@@ -326,6 +326,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
+  
+
   /**
    * The default marker in the instance of alocation not having an icon
    *
@@ -451,6 +453,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('edit-location')
   public EditLocation: EventEmitter<MapMarker>;
 
+  
+  @Output('update-hidden-curations')
+  public UpdateHiddenCurations: EventEmitter<Array<string>>;
 
   /**
    * The event emitted when a layer is clicked - emits list of active secondary locations
@@ -514,6 +519,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       // this.PrimaryMapLocationListChanged = new EventEmitter;
       this.VisibleLocationListChanged = new EventEmitter();
     this.SearchLocationChosen = new EventEmitter<MapMarker>();
+    this.UpdateHiddenCurations = new EventEmitter<Array<string>>();
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
@@ -605,6 +611,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       });
   }
 
+
+  public UpdateHiddenCurationsList(event: Array<string>){
+    console.log("emitting: ", event);
+    this.UpdateHiddenCurations.emit(event);
+  }
   /**
    *  Returns an array of strings that represent the titles of layers selected.
    *  Called by the legend to get the layer titles to be displayed in the legend.

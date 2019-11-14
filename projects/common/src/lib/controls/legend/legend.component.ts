@@ -147,6 +147,9 @@ export class LegendComponent implements OnInit, OnChanges {
   @Output('top-list-clicked')
   TopListClicked: EventEmitter<any>;
 
+  @Output('update-hidden-curations')
+  UpdateHiddenCurations: EventEmitter<Array<string>>;
+
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
   //CONSTRUCTOR
@@ -156,6 +159,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
     this.TopListClicked = new EventEmitter<any>();
+    this.UpdateHiddenCurations = new EventEmitter<Array<string>>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
@@ -241,6 +245,7 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public HideLocations(): void {
     // console.log("locs", this._currentlyActiveLocations);
+    let locationIdsToHide = new Array<string>();
     let justHid = new Array<MapMarker>();
     for (let i = 0; i < this._currentlyActiveLocations.length; i++) {
       if (this._currentlyActiveLocations[i].Checked === true) {
@@ -250,12 +255,14 @@ export class LegendComponent implements OnInit, OnChanges {
         this.HiddenLocations.push(this._currentlyActiveLocations[i]);
         this.hiddenLocationIds.push(this._currentlyActiveLocations[i].ID);
         justHid.push(this._currentlyActiveLocations[i]);
+        locationIdsToHide.push(this._currentlyActiveLocations[i].ID);
       }
     }
     //to avoid error in back end
     if (justHid.length > 0) {
       this.EditLegendLocations.emit(justHid);
       this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
+      this.UpdateHiddenCurations.emit(locationIdsToHide);
     }
     this.SetLocationList();
   }

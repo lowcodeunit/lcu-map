@@ -44,8 +44,9 @@
     <div class="top-icon-set" fxLayoutAlign="end start">
       <!-- [selected-location]="SelectedMarker" (pan)="PanningTo($event)" -->
       <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
-        [currently-active-locations]="_visibleLocationsMasterList" [icon-list]="MapMarkerSet"
+        [visible-locations]="_visibleLocationsMasterList" [icon-list]="MapMarkerSet"
         [currently-active-layers]="GetSelectedUserLayers()" [selected-location]="SelectedMarker"
+        [excluded-locations]="ExcludedLocations"
         (delete-locations)="DeleteLocations($event)" (display-basic-info)="OnMarkerClicked(amblInfoWindow, $event)"
         (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"

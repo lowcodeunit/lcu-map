@@ -428,6 +428,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CurrentlyActiveLocations = this._visibleLocations;
   }
 
+  @Input('excluded-locations')
+  public ExcludedLocations: Array<string>;
+
   /**
    * The event emitted when a map is saved (the saved map is emitted)
    */
@@ -540,7 +543,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public ngOnInit(): void {
-
+    this.CheckForHiddenLocations();
     this.setUpSearchMethods();
     this._visibleLocationsMasterList.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
@@ -634,7 +637,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public UpdateVisibleLocations(event: Array<MapMarker>): void {
-    this._visibleLocationsMasterList = event;
+    // this._visibleLocationsMasterList = event;
+  }
+
+  public CheckForHiddenLocations():void{
+    for (let i = 0; i < this._visibleLocationsMasterList.length; i++) {
+      if (this.ExcludedLocations.includes(this._visibleLocationsMasterList[i].ID)) {
+        console.log("IsHidden is false but ID is in hiddenLocationIds array")
+        this._visibleLocationsMasterList[i].IsHidden = true;
+      }
+    }
+    console.log("locations after checking if hidden: ", this._visibleLocationsMasterList);
   }
 
   public EmitTopListsClick(event: string): void {

@@ -17,24 +17,24 @@ import { MarkerInfo } from '../../models/marker-info.model';
 export class LegendComponent implements OnInit, OnChanges {
 
   //PROPERTIES
-  
+
   /**
   * The maximum amount of time in milliseconds the average person expects between clicks of a double-click
   */
   protected expectedDoubleClickElapsedTime: number = 500;
 
-/**
- * double click to show more info modal
- */
+  /**
+   * double click to show more info modal
+   */
   protected isDoubleClick: boolean;
 
   /**
    * and array with all teh hiddenLocation ids to check against
    */
   protected hiddenLocationIds: Array<any>;
-/**
- * width of the sidenav
- */
+  /**
+   * width of the sidenav
+   */
   public matContentWidth: string;
 
   /**
@@ -70,9 +70,9 @@ export class LegendComponent implements OnInit, OnChanges {
   //public LocationsList: Array<LocationListModel> = new Array<LocationListModel>();
 
   public LocationsList: Array<MapMarker> = new Array<MapMarker>();
-/**
- * is the legend open
- */
+  /**
+   * is the legend open
+   */
   public LegendOpen: boolean;
   /**
    * List of locations that are hidden
@@ -82,6 +82,7 @@ export class LegendComponent implements OnInit, OnChanges {
    * to determine if the hidden list is visible
    */
   public HiddenListVisible: boolean;
+
 
   /**
    * tracker so if a location is selected and the user scrolls the list, the scroll function doesnt scroll
@@ -98,33 +99,36 @@ export class LegendComponent implements OnInit, OnChanges {
   /**
   * The MarkerInfo where the icon url can be refrenced
   */
-//  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
+  //  protected iconList: Array<MarkerInfo> = Constants.DEFAULT_MAP_MARKER_SET;
   @Input('icon-list')
   protected iconList: Array<MarkerInfo>;
 
 
-/**
- * Used for getting the title of the map to display at top
- */
+  /**
+   * Used for getting the title of the map to display at top
+   */
   @Input('current-map-model')
   protected _currentMapModel: UserMap;
 
-/**
- * all locations within view
- */
-  @Input('currently-active-locations')
-  protected _currentlyActiveLocations: Array<MapMarker>
-/**
- * if no map is selected the layer title will display at top
- */
+  /**
+   * all locations within view
+   */
+  @Input('visible-locations')
+  protected VisibleLocations: Array<MapMarker>
+  /**
+   * if no map is selected the layer title will display at top
+   */
   @Input('currently-active-layers')
   protected _currentlyActiveLayers: Array<string>
 
-/**
- * the location to highlight in the legend
- */
+  /**
+   * the location to highlight in the legend
+   */
   @Input('selected-location')
   public SelectedLocation: MapMarker;
+
+  @Input('excluded-locations')
+  public ExcludedLocations: Array<string>;
 
   @Output('display-basic-info')
   DisplayBasicInfo: EventEmitter<MapMarker>;
@@ -153,14 +157,14 @@ export class LegendComponent implements OnInit, OnChanges {
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
   //CONSTRUCTOR
-  constructor(public Dialog: MatDialog ) {
+  constructor(public Dialog: MatDialog) {
     this.DisplayBasicInfo = new EventEmitter<MapMarker>();
     this.EditLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
     this.TopListClicked = new EventEmitter<any>();
     this.UpdateExcludedCurations = new EventEmitter<string>();
-    this._currentlyActiveLocations = new Array<MapMarker>();
+    this.VisibleLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
     this.matContentWidth = "40px";
@@ -185,8 +189,8 @@ export class LegendComponent implements OnInit, OnChanges {
   ngOnChanges() {
 
     if (this.LegendOpen && !this.SelectedLocation) {
-      this.SetLocationList();
       this.CheckIfHidden();
+      this.SetLocationList();
     }
     if (this.LegendOpen && this.SelectedLocation) {
       if (this.SelectedLocation.ID !== this.PreviousSelectedLocation.ID) {
@@ -213,19 +217,20 @@ export class LegendComponent implements OnInit, OnChanges {
    * Checks to see if any locations should be hidden coming from the back-end
    */
   public CheckIfHidden(): void {
-    for (let i = 0; i < this._currentlyActiveLocations.length; i++) {
-      if (this._currentlyActiveLocations[i].IsHidden) {
-        console.log("hiding: ", this._currentlyActiveLocations[i]);
-        this.HiddenLocations.push(this._currentlyActiveLocations[i]);
-        this.hiddenLocationIds.push(this._currentlyActiveLocations[i].ID);
-        this._currentlyActiveLocations.splice(i, 1);
+    for (let i = 0; i < this.VisibleLocations.length; i++) {
+      if (this.VisibleLocations[i].IsHidden) {
+        // console.log("hiding: ", this.VisibleLocations[i]);
+        this.HiddenLocations.push(this.VisibleLocations[i]);
+        this.hiddenLocationIds.push(this.VisibleLocations[i].ID);
+        this.VisibleLocations.splice(i, 1);
       }
-      else if (this.hiddenLocationIds.includes(this._currentlyActiveLocations[i].ID)) {
-        console.log("IsHidden is false but ID is in hiddenLocationIds array")
-        this._currentlyActiveLocations.splice(i, 1);
+      else if (this.ExcludedLocations.includes(this.VisibleLocations[i].ID)) {
+        // console.log("IsHidden is false but ID is in hiddenLocationIds array")
+        this.VisibleLocations[i].IsHidden = true;
+        this.VisibleLocations.splice(i, 1);
       }
     }
-    this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
+    // console.log("hidden locs: ", this.HiddenLocations)
   }
 
 
@@ -245,35 +250,31 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public HideLocations(): void {
     // console.log("locs", this._currentlyActiveLocations);
-    let locationIdsToHide = new Array<string>();
-    let justHid = new Array<MapMarker>();
-    for (let i = 0; i < this._currentlyActiveLocations.length; i++) {
-      if (this._currentlyActiveLocations[i].Checked === true) {
-        this._currentlyActiveLocations[i].IsHidden = true;
-        this._currentlyActiveLocations[i].Checked = false;
-        console.log("hiding: ", this._currentlyActiveLocations[i]);
-        this.HiddenLocations.push(this._currentlyActiveLocations[i]);
-        this.hiddenLocationIds.push(this._currentlyActiveLocations[i].ID);
-        justHid.push(this._currentlyActiveLocations[i]);
-        locationIdsToHide.push(this._currentlyActiveLocations[i].ID);
+    console.log("hideLocations being called")
+    // let locationIdsToHide = new Array<string>();
+    // let justHid = new Array<MapMarker>();
+    for (let i = 0; i < this.VisibleLocations.length; i++) {
+      if (this.VisibleLocations[i].Checked === true) {
+        this.VisibleLocations[i].IsHidden = true;
+        this.VisibleLocations[i].Checked = false;
+        console.log("hiding: ", this.VisibleLocations[i]);
+        this.HiddenLocations.push(this.VisibleLocations[i]);
+        this.hiddenLocationIds.push(this.VisibleLocations[i].ID);
+        this.VisibleLocations.splice(i, 1);
       }
     }
-    //to avoid error in back end
-    let excludedLocationIDs = this.BuildExcludedLocationList(locationIdsToHide);
-    if (justHid.length > 0) {
-      this.EditLegendLocations.emit(justHid);
-      this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
-      this.UpdateExcludedCurations.emit(excludedLocationIDs);
-    }
+    let excludedLocationIDs = this.BuildExcludedLocationList(this.hiddenLocationIds);
+    this.UpdateVisibleLocations.emit(this.VisibleLocations);
+    this.UpdateExcludedCurations.emit(excludedLocationIDs);
     this.SetLocationList();
   }
-  protected BuildExcludedLocationList(locs: Array<string>): string{
+  protected BuildExcludedLocationList(locs: Array<string>): string {
     let excludedLocs = '';
-    locs.forEach(locationID =>{
-      if(locs.indexOf(locationID) < (locs.length -1)){
-      excludedLocs += locationID+', '
+    locs.forEach(locationID => {
+      if (locs.indexOf(locationID) < (locs.length - 1)) {
+        excludedLocs += locationID + ', '
       }
-      else{
+      else {
         excludedLocs += locationID;
       }
     })
@@ -283,6 +284,7 @@ export class LegendComponent implements OnInit, OnChanges {
    * Makes the the markers from the HiddenLocations that are checked visible again.
    */
   public MakeVisible(): void {
+    console.log("make visible being called")
     let tempHidden = new Array<MapMarker>();
     //list of markers to emit to backend 
     let nowVisible = new Array<MapMarker>();
@@ -290,7 +292,7 @@ export class LegendComponent implements OnInit, OnChanges {
       if (marker.Checked === true) {
         marker.Checked = false;
         marker.IsHidden = false;
-        this._currentlyActiveLocations.push(marker);
+        this.VisibleLocations.push(marker);
         this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID), 1);
         nowVisible.push(marker);
       }
@@ -300,7 +302,7 @@ export class LegendComponent implements OnInit, OnChanges {
     }, this)
     this.HiddenLocations = tempHidden;
     this.EditLegendLocations.emit(nowVisible);
-    this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
+    this.UpdateVisibleLocations.emit(this.VisibleLocations);
     this.SetLocationList();
   }
 
@@ -311,7 +313,7 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public DeleteLocationConfirmation(): void {
     let markersToDelete = new Array<MapMarker>();
-    this._currentlyActiveLocations.forEach(function (marker) {
+    this.VisibleLocations.forEach(function (marker) {
       if (marker.Checked === true) {
         markersToDelete.push(marker);
         console.log("pushing marker: ", marker);
@@ -434,10 +436,10 @@ export class LegendComponent implements OnInit, OnChanges {
   public SetLocationList() {
     //set to new so no duplicates present themselves
     this.LocationsList = new Array<MapMarker>();
-    this.removeHiddenLocations();
+    // this.removeHiddenLocations();
 
     let visLoc = new Array<MapMarker>();
-    visLoc = this._currentlyActiveLocations;
+    visLoc = this.VisibleLocations;
 
     //Map Title Logic
 
@@ -453,7 +455,7 @@ export class LegendComponent implements OnInit, OnChanges {
     //end title logic
 
     if (visLoc.length > 0) {
-      this.LocationsList = this.assignIconUrl(visLoc);
+      // this.LocationsList = this.assignIconUrl(visLoc);
       this.LocationsList = visLoc;
       //console.log("List",this.LocationsList);
       this.LocationsList.sort(this.compareObject);
@@ -585,12 +587,12 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   protected removeHiddenLocations(): void {
     let templist = new Array<MapMarker>();
-    this._currentlyActiveLocations.forEach(function (marker) {
+    this.VisibleLocations.forEach(marker => {
       if (marker.IsHidden === false || !marker.IsHidden) {
         templist.push(marker);
       }
     }, this)
-    this._currentlyActiveLocations = templist;
+    this.VisibleLocations = templist;
   }
   /**
    * Called when a user selects a location from the map while the legend is open

@@ -641,13 +641,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public CheckForHiddenLocations():void{
+    console.log("locations before checking if hidden: ", this._visibleLocationsMasterList);
+
     for (let i = 0; i < this._visibleLocationsMasterList.length; i++) {
       if (this.ExcludedLocations.includes(this._visibleLocationsMasterList[i].ID)) {
         console.log("IsHidden is false but ID is in hiddenLocationIds array")
         this._visibleLocationsMasterList[i].IsHidden = true;
       }
     }
-    // console.log("locations after checking if hidden: ", this._visibleLocationsMasterList);
+    console.log("locations after checking if hidden: ", this._visibleLocationsMasterList);
   }
 
   public EmitTopListsClick(event: string): void {

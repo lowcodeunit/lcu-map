@@ -118,7 +118,7 @@
           </agm-info-window>
         </agm-marker>
       </div>
-      <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.IconImageObject"
+      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.IsHidden === false || !SelectedLocation.IsHidden)" [iconUrl]="SelectedLocation.IconImageObject"
         [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
           <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker"

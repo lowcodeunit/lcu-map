@@ -295,7 +295,7 @@ export class LegendComponent implements OnInit, OnChanges {
       if (marker.Checked === true) {
         marker.Checked = false;
         marker.IsHidden = false;
-        this.VisibleLocations.push(marker);
+        // this.VisibleLocations.push(marker);
         console.log('VisibleLocations after making visible', this.VisibleLocations)
         this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID), 1);
       }

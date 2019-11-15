@@ -291,11 +291,12 @@ export class LegendComponent implements OnInit, OnChanges {
     // console.log("make visible being called")
     let tempHidden = new Array<MapMarker>();
     //list of markers to emit to backend 
-    this.HiddenLocations.forEach(function (marker) {
+    this.HiddenLocations.forEach(marker => {
       if (marker.Checked === true) {
         marker.Checked = false;
         marker.IsHidden = false;
         this.VisibleLocations.push(marker);
+        console.log('VisibleLocations after making visible', this.VisibleLocations)
         this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID), 1);
       }
       else {

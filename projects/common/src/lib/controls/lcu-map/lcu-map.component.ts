@@ -543,7 +543,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public ngOnInit(): void {
-    this.CheckForHiddenLocations();
     this.setUpSearchMethods();
     this._visibleLocationsMasterList.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
@@ -589,6 +588,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public ngOnChanges(): void {
+    this.CheckForHiddenLocations();
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
   }
 

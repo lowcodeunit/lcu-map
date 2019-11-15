@@ -227,10 +227,12 @@ export class LegendComponent implements OnInit, OnChanges {
       else if (this.ExcludedLocations.includes(this.VisibleLocations[i].ID)) {
         // console.log("IsHidden is false but ID is in hiddenLocationIds array")
         this.VisibleLocations[i].IsHidden = true;
+        this.HiddenLocations.push(this.VisibleLocations[i]);
+        this.hiddenLocationIds.push(this.VisibleLocations[i].ID);
         this.VisibleLocations.splice(i, 1);
       }
     }
-    // console.log("hidden locs: ", this.HiddenLocations)
+    console.log("hidden locs: ", this.HiddenLocations)
   }
 
 
@@ -253,6 +255,7 @@ export class LegendComponent implements OnInit, OnChanges {
     console.log("hideLocations being called")
     // let locationIdsToHide = new Array<string>();
     // let justHid = new Array<MapMarker>();
+    let indexes = new Array<number>();
     for (let i = 0; i < this.VisibleLocations.length; i++) {
       if (this.VisibleLocations[i].Checked === true) {
         this.VisibleLocations[i].IsHidden = true;
@@ -260,9 +263,12 @@ export class LegendComponent implements OnInit, OnChanges {
         console.log("hiding: ", this.VisibleLocations[i]);
         this.HiddenLocations.push(this.VisibleLocations[i]);
         this.hiddenLocationIds.push(this.VisibleLocations[i].ID);
-        this.VisibleLocations.splice(i, 1);
+        indexes.push(i);
       }
     }
+    indexes.forEach(i =>{
+        this.VisibleLocations.splice(i, 1);
+    })
     let excludedLocationIDs = this.BuildExcludedLocationList(this.hiddenLocationIds);
     this.UpdateVisibleLocations.emit(this.VisibleLocations);
     this.UpdateExcludedCurations.emit(excludedLocationIDs);

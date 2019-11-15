@@ -232,7 +232,7 @@ export class LegendComponent implements OnInit, OnChanges {
         this.VisibleLocations.splice(i, 1);
       }
     }
-    console.log("hidden locs: ", this.HiddenLocations)
+    // console.log("hidden locs: ", this.HiddenLocations)
   }
 
 
@@ -291,22 +291,21 @@ export class LegendComponent implements OnInit, OnChanges {
     console.log("make visible being called")
     let tempHidden = new Array<MapMarker>();
     //list of markers to emit to backend 
-    let nowVisible = new Array<MapMarker>();
     this.HiddenLocations.forEach(function (marker) {
       if (marker.Checked === true) {
         marker.Checked = false;
         marker.IsHidden = false;
         this.VisibleLocations.push(marker);
         this.hiddenLocationIds.splice(this.hiddenLocationIds.indexOf(marker.ID), 1);
-        nowVisible.push(marker);
       }
       else {
         tempHidden.push(marker);
       }
     }, this)
+    let hiddendLocs = this.BuildExcludedLocationList(this.hiddenLocationIds)
     this.HiddenLocations = tempHidden;
-    this.EditLegendLocations.emit(nowVisible);
     this.UpdateVisibleLocations.emit(this.VisibleLocations);
+    this.UpdateExcludedCurations.emit(hiddendLocs)
     this.SetLocationList();
   }
 

@@ -252,7 +252,7 @@ export class LegendComponent implements OnInit, OnChanges {
    */
   public HideLocations(): void {
     // console.log("locs", this._currentlyActiveLocations);
-    console.log("hideLocations being called")
+    // console.log("hideLocations being called")
     // let locationIdsToHide = new Array<string>();
     // let justHid = new Array<MapMarker>();
     // let indexes = new Array<number>();
@@ -288,7 +288,7 @@ export class LegendComponent implements OnInit, OnChanges {
    * Makes the the markers from the HiddenLocations that are checked visible again.
    */
   public MakeVisible(): void {
-    console.log("make visible being called")
+    // console.log("make visible being called")
     let tempHidden = new Array<MapMarker>();
     //list of markers to emit to backend 
     this.HiddenLocations.forEach(function (marker) {

@@ -647,7 +647,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this._visibleLocationsMasterList[i].IsHidden = true;
       }
     }
-    console.log("locations after checking if hidden: ", this._visibleLocationsMasterList);
+    // console.log("locations after checking if hidden: ", this._visibleLocationsMasterList);
   }
 
   public EmitTopListsClick(event: string): void {

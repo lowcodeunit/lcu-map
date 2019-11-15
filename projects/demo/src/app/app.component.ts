@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
 
     public VisibleLocations: Array<MapMarker>;
 
+    public ExcludedLocations = ['42'];
+
     /**
      * The map configuration to pass in to the map instance
      */

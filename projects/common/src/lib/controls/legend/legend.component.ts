@@ -148,7 +148,7 @@ export class LegendComponent implements OnInit, OnChanges {
   TopListClicked: EventEmitter<any>;
 
   @Output('update-hidden-curations')
-  UpdateExcludedCurations: EventEmitter<Array<string>>;
+  UpdateExcludedCurations: EventEmitter<string>;
 
   @ViewChild('sidenav', { static: false }) public drawer: MatSidenav;
 
@@ -159,7 +159,7 @@ export class LegendComponent implements OnInit, OnChanges {
     this.DeleteLegendLocations = new EventEmitter<Array<MapMarker>>();
     this.UpdateVisibleLocations = new EventEmitter<Array<MapMarker>>();
     this.TopListClicked = new EventEmitter<any>();
-    this.UpdateExcludedCurations = new EventEmitter<Array<string>>();
+    this.UpdateExcludedCurations = new EventEmitter<string>();
     this._currentlyActiveLocations = new Array<MapMarker>();
     this._currentlyActiveLayers = new Array<string>();
     this.LegendOpen = false;
@@ -259,14 +259,26 @@ export class LegendComponent implements OnInit, OnChanges {
       }
     }
     //to avoid error in back end
+    let excludedLocationIDs = this.BuildExcludedLocationList(locationIdsToHide);
     if (justHid.length > 0) {
       this.EditLegendLocations.emit(justHid);
       this.UpdateVisibleLocations.emit(this._currentlyActiveLocations);
-      this.UpdateExcludedCurations.emit(locationIdsToHide);
+      this.UpdateExcludedCurations.emit(excludedLocationIDs);
     }
     this.SetLocationList();
   }
-
+  protected BuildExcludedLocationList(locs: Array<string>): string{
+    let excludedLocs = '';
+    locs.forEach(locationID =>{
+      if(locs.indexOf(locationID) < (locs.length -1)){
+      excludedLocs += locationID+', '
+      }
+      else{
+        excludedLocs += locationID;
+      }
+    })
+    return excludedLocs;
+  }
   /**
    * Makes the the markers from the HiddenLocations that are checked visible again.
    */

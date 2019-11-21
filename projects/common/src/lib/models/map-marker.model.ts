@@ -1,5 +1,6 @@
 import { IconImageObject } from './icon-image-object.model';
 import { LocationRating } from './location-rating-model';
+import { Accolade } from './accolade.model';
 
 export class MapMarker {
 
@@ -133,6 +134,8 @@ export class MapMarker {
 
     public IsHidden?: boolean;
 
+    public Accolades?: Array<Accolade>;
+
     /**
      *
      * @param icon The object containing data for a single point (a map marker) on a map (<agm-map>)
@@ -164,5 +167,6 @@ export class MapMarker {
         this.IsHidden = icon.IsHidden;
         this.IconImageObject = icon.IconImageObject;
         this.Rating = icon.Rating;
+        this.Accolades = icon.Accolades;
     }
 }

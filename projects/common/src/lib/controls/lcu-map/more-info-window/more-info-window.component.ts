@@ -4,6 +4,7 @@ import { MapMarker } from '../../../models/map-marker.model';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LocationRating } from '../../../models/location-rating-model';
+import { Accolade } from '../../../models/accolade.model';
 
 @Component({
   selector: 'lcu-more-info-window',
@@ -16,7 +17,7 @@ export class MoreInfoWindowComponent implements OnInit {
   public linkedPhoneNumber: string;
   public rating: string;
   public instagramUrl: string;
-  public accolades: Array<string>;
+  public accolades: Array<Accolade>;
   public ColorRed: string;
   public ColorYellow: string;
   public ColorGreen: string;
@@ -53,7 +54,7 @@ export class MoreInfoWindowComponent implements OnInit {
     this.marker = this.passedData.marker;
     this.instagramUrl = this.locationInfoService.BuildInstagramUrl(this.marker);
     this.linkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
-    this.accolades = new Array<string>();
+    this.accolades = this.marker.Accolades;
     this.BuildRatings();
   }
 

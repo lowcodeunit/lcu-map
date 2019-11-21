@@ -72,9 +72,9 @@
 
         </div>
 
-        <div *ngIf="accolades" class="more-info-accolades">
+        <div *ngIf="FormattedAccolades" class="more-info-accolades">
           <div class="accolades-title" fxLayoutAlign="center center">Accolades</div>
-          <div class="accolades-section" fxLayout="column" fxLayoutAlign="start" *ngFor="let award of accolades">
+          <div class="accolades-section" fxLayout="column" fxLayoutAlign="start" *ngFor="let award of FormattedAccolades">
             <div>{{award}}</div>
           </div>
 

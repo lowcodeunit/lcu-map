@@ -75,9 +75,7 @@
         <div *ngIf="accolades" class="more-info-accolades">
           <div class="accolades-title" fxLayoutAlign="center center">Accolades</div>
           <div class="accolades-section" fxLayout="column" fxLayoutAlign="start" *ngFor="let award of accolades">
-            <div>{{award.Title}}</div>
-            <div>{{award.Rank}}</div>
-            <div>{{award.Year}}</div>
+            <div>{{award}}</div>
           </div>
 
         </div>

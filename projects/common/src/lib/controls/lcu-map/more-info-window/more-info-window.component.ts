@@ -17,7 +17,7 @@ export class MoreInfoWindowComponent implements OnInit {
   public linkedPhoneNumber: string;
   public rating: string;
   public instagramUrl: string;
-  public accolades: Array<Accolade>;
+  public FormattedAccolades: Array<string>;
   public ColorRed: string;
   public ColorYellow: string;
   public ColorGreen: string;
@@ -54,7 +54,7 @@ export class MoreInfoWindowComponent implements OnInit {
     this.marker = this.passedData.marker;
     this.instagramUrl = this.locationInfoService.BuildInstagramUrl(this.marker);
     this.linkedPhoneNumber = this.locationInfoService.GetPhoneNumberUrl();
-    this.accolades = this.marker.Accolades;
+    this.formatAccolades();
     this.BuildRatings();
   }
 
@@ -89,6 +89,27 @@ export class MoreInfoWindowComponent implements OnInit {
       else{
         x.color = this.ColorRed
       }
+    })
+  }
+
+  protected formatAccolades(): void{
+    
+    this.marker.Accolades.forEach(acc =>{
+      let temp: string;
+
+      if(acc.Title ==="Michelin"){
+        temp = acc.Title+': '+acc.Rank+' stars';
+        if(acc.Year){
+          temp+=' ('+acc.Year+')';
+        }
+      }
+      else{
+        temp = acc.Title+': '+acc.Rank;
+        if(acc.Year){
+          temp+=' ('+acc.Year+')';
+        }
+      }
+      this.FormattedAccolades.push(temp);
     })
   }
 

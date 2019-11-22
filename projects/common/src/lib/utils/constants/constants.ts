@@ -1,6 +1,5 @@
 import { MarkerInfo } from '../../models/marker-info.model';
 import { IconImageObject } from '../../models/icon-image-object.model';
-// import { IndividualMap } from '../../models/individual-map.model';
 
 export class Constants {
 

@@ -94,6 +94,7 @@ export class MoreInfoWindowComponent implements OnInit {
 
   protected formatAccolades(): void{
     this.FormattedAccolades = new Array<string>();
+    if(this.marker.Accolades){
     this.marker.Accolades.forEach(acc =>{
       let temp: string;
 
@@ -112,5 +113,5 @@ export class MoreInfoWindowComponent implements OnInit {
       this.FormattedAccolades.push(temp);
     })
   }
-
+  }
 }

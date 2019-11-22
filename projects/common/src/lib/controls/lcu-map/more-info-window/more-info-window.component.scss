@@ -109,14 +109,13 @@
 }
 #ambl-on-total-ratings{
   position: absolute;
-    bottom: 95px;
+    bottom: 60px;
 }
 .content-percent {
   font-size: 12px;
   font-weight: bold;
   position: absolute;
-  bottom: 115px;
-  // padding-left: 33%;
+  bottom: 85px;
 
   &:after {
     content: '%';

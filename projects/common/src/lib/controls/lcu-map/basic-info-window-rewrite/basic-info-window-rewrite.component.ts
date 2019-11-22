@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2, ViewChild, ElementRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, Renderer2, OnChanges } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerInfo } from '../../../models/marker-info.model';

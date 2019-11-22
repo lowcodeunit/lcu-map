@@ -34,7 +34,6 @@ import { SubString } from './utils/pipes/substring.pipe';
 import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
 import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
 import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
-// import { ProgressCircleComponent } from './controls/lcu-map/progress-circle/progress-circle.component';
 import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common';
 
 

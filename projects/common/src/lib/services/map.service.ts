@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { MapMarker } from '../models/map-marker.model';
 import { AgmInfoWindow } from '@agm/core';
-// import { IndividualMap } from '../models/individual-map.model';
 
 @Injectable({
   providedIn: 'root'

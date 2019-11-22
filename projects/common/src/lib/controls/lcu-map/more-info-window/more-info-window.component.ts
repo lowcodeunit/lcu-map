@@ -4,7 +4,6 @@ import { MapMarker } from '../../../models/map-marker.model';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LocationRating } from '../../../models/location-rating-model';
-import { Accolade } from '../../../models/accolade.model';
 
 @Component({
   selector: 'lcu-more-info-window',

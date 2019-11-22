@@ -65,6 +65,9 @@
                   <lcu-progress-circle [percentage-color]="rating.color" [percentage]="rating.rating">
                   </lcu-progress-circle>
                 </div>
+                <div class="content-percent" fxLayout="row" fxLayoutAlign="center center">
+                    {{ rating.rating }}
+                </div>
                 <div id="ambl-on-total-ratings">{{ rating.totalRatings }}</div>
               </div>
             </div>

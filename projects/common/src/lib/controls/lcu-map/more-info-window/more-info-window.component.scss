@@ -107,3 +107,18 @@
   padding-left:5px;
   padding-right:5px;
 }
+#ambl-on-total-ratings{
+  position: absolute;
+    bottom: 95px;
+}
+.content-percent {
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  bottom: 115px;
+  // padding-left: 33%;
+
+  &:after {
+    content: '%';
+  }
+}

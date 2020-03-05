@@ -6,7 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MarkerData } from '../../../models/marker-data.model';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { IconImageObject } from '../../../models/icon-image-object.model';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
 

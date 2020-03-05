@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
-import { FathymSharedModule } from '@lcu/common';
+import { FathymSharedModule, MaterialModule } from '@lcu/common';
 import { AgmCoreModule, InfoWindowManager, MarkerManager } from '@agm/core';
 import { LcuMapComponent } from './controls/lcu-map/lcu-map.component';
-import { MatIconModule,
-         MatSelectModule,
-         MatDialogModule,
-         MatButtonModule,
-         MatInputModule,
-         MatFormFieldModule,
-         MatMenuModule,
-         MatCheckboxModule,
-         MatRadioModule,
-         MatDividerModule,
-         MatTooltipModule,
-         MatExpansionModule,
-         MatAutocompleteModule,
-         MatCardModule,
-         MatToolbarModule } from '@angular/material';
+// import { MatIconModule } from '@angular/material/icon';
+// import { MatDialogModule } from '@angular/material/dialog';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { MatMenuModule } from '@angular/material/menu';
+// import { MatCheckboxModule } from '@angular/material/checkbox';
+// import { MatRadioModule } from '@angular/material/radio';
+// import { MatDividerModule } from '@angular/material/divider';
+// import { MatTooltipModule } from '@angular/material/tooltip';
+// import { MatExpansionModule } from '@angular/material/expansion';
+// import { MatSelectModule } from '@angular/material/select';
+// import { MatAutocompleteModule } from '@angular/material/autocomplete';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatToolbarModule } from '@angular/material/toolbar';
 import { AddMapMarkerComponent } from './controls/lcu-map/add-map-marker/add-map-marker.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SaveMapComponent } from './controls/lcu-map/save-map/save-map.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -27,8 +27,8 @@ import { InfoFooterComponent } from './controls/lcu-map/info-footer/info-footer.
 import { LocationInfoFormComponent } from './controls/lcu-map/location-info-form/location-info-form.component';
 import { LegendComponent } from './controls/legend/legend.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatTabsModule} from '@angular/material/tabs';
+// import {MatSidenavModule} from '@angular/material/sidenav';
+// import {MatTabsModule} from '@angular/material/tabs';
 import { DeleteLocationsComponent } from './controls/legend/delete-locations/delete-locations.component'
 import { SubString } from './utils/pipes/substring.pipe';
 import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-window-rewrite/basic-info-window-rewrite.component';
@@ -54,28 +54,13 @@ import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common
   ],
   imports: [
     FathymSharedModule,
+    MaterialModule,
     FlexLayoutModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', libraries: ['places'] }),
-    MatIconModule,
-    MatSelectModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
+    FormsModule,
     ReactiveFormsModule,
-    MatMenuModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatToolbarModule,
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', libraries: ['places'] }),
     HttpClientModule,
-    MatExpansionModule,
-    MatCardModule,
-    MatAutocompleteModule,
     DragDropModule,
-    MatSidenavModule,
-    MatTabsModule,
     LcuProgressCircleModule
   ],
   providers: [
@@ -102,7 +87,6 @@ import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common
     DeleteLocationsComponent,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent,
-    
   ]
 })
 export class LcuMapModule { }

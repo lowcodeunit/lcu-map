@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
 import { MapMarker } from '../../../models/map-marker.model';
 import { LocationInfoService } from '../../../services/location-info.service';
 import { DomSanitizer } from '@angular/platform-browser';

@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { FathymSharedModule, LCUServiceSettings } from '@lcu/common';
+import { FathymSharedModule, MaterialModule, LCUServiceSettings } from '@lcu/common';
 import { LcuMapModule } from 'projects/common/src/lcu.api';
 
 export const settings = FathymSharedModule.DefaultServiceSettings(environment);
@@ -16,11 +16,12 @@ export const settings = FathymSharedModule.DefaultServiceSettings(environment);
     AppComponent
   ],
   imports: 
-  [FathymSharedModule.forRoot(),
+  [
+    FathymSharedModule,
      BrowserModule, 
      BrowserAnimationsModule, 
      LcuMapModule,
-     
+     MaterialModule
     ],
   providers: [
     {

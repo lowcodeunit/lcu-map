@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MapMarker } from '../../models/map-marker.model';
-import { MatSidenav, MatDialog } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MatDialog } from '@angular/material/dialog';
 import { UserMap } from '../../models/user-map.model';
 import { DeleteLocationsComponent } from './delete-locations/delete-locations.component';
 import { MarkerInfo } from '../../models/marker-info.model';

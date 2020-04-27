@@ -12,7 +12,7 @@ import {
   OnChanges,
   AfterViewInit
 } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager } from '@agm/core';

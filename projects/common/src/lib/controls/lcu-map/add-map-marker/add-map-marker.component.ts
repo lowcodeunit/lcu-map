@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
-import * as uuid from 'uuid';
 
 @Component({
   selector: 'lcu-add-map-marker',
@@ -13,6 +13,8 @@ import * as uuid from 'uuid';
 export class AddMapMarkerComponent implements OnInit {
 
   // FIELDS
+
+ 
 
   // PROPERTIES
 
@@ -43,14 +45,12 @@ export class AddMapMarkerComponent implements OnInit {
       icon: new FormControl('', { validators: [Validators.required] })
     });
 
-    this.NewMarker = {
-      id: '',
-      map_id: '0',
-      title: '',
-      iconName: null,
-      lat: 0,
-      lng: 0
-    }
+    this.NewMarker.ID = '';
+    this.NewMarker.LayerID = '0';
+    this.NewMarker.Title = '';
+    this.NewMarker.Icon = '';
+    this.NewMarker.Latitude = 0;
+    this.NewMarker.Longitude = 0;
 
     this.IconList = this.passedData.iconList;
   }
@@ -61,13 +61,22 @@ export class AddMapMarkerComponent implements OnInit {
    * Converts data from the form to an icon to be placed on the map
    */
   public SetMarkerData(): void {
-    this.NewMarker.id = uuid.v4();
-    this.NewMarker.title = this.NewMarkerForm.value.title;
-    this.NewMarker.iconName = this.NewMarkerForm.value.icon.iconName;
-    this.NewMarker.lat = this.passedData.lat;
-    this.NewMarker.lng = this.passedData.lng;
-    this.NewMarker.map_id = this.passedData.primary_map_id,
-    this.NewMarker.iconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.iconLookup, this.passedData.iconList);
+
+    console.log("Marker icon: ", this.NewMarkerForm.value.icon.Icon)
+    if(this.NewMarkerForm.value.icon.Icon){
+      this.NewMarker.Icon = this.NewMarkerForm.value.icon.Icon;
+      this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList);
+    }
+    else{
+      // this.NewMarker.Icon = this.DefaultMarker.Name;
+      // this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.DefaultMarker.Name, this.passedData.iconList);
+    }
+
+    this.NewMarker.ID = '';
+    this.NewMarker.Title = this.NewMarkerForm.value.Title;
+    this.NewMarker.Latitude = this.passedData.Latitude;
+    this.NewMarker.Longitude = this.passedData.Longitude;
+    this.NewMarker.LayerID = this.passedData.primary_map_id;
   }
   
   /**

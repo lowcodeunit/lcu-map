@@ -3,25 +3,25 @@ export class MarkerInfo {
     /**
      * The lookup for the icon that will be referenced by the iconName in the MapMarker model
      */
-    iconLookup: string;
+    public IconLookup: string;
 
     /**
      * The official name to display in any list of names
      */
-    iconName: string;
+    public Icon: string;
 
     /**
      * The path that points to the image to be displayed
      */
-    iconUrl: string;
+    public IconUrl: string;
 
     /**
      * 
-     * @param icon The object containing lookup (iconLookup), display (iconName), and path (iconUrl) data for an icon
+     * @param Icon The object containing lookup (IconLookup), display (Icon), and path (IconUrl) data for an icon
      */
     constructor(icon) {
-        this.iconLookup = icon.iconLookup;
-        this.iconName = icon.iconName;
-        this.iconUrl = icon.iconUrl;
+        this.IconLookup = icon.IconLookup;
+        this.Icon = icon.Icon;
+        this.IconUrl = icon.IconUrl;
     }
 }

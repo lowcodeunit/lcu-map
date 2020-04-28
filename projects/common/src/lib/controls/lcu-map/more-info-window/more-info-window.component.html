@@ -1,0 +1,111 @@
+<div fxLayout="column" class="more-info-container">
+
+  <div class="more-info-header" fxLayout="row">
+    <div class="more-info-title" matTooltip={{marker?.Title}}>
+      {{ marker?.Title }}
+    </div>
+    <mat-icon (click)="Close()" matTooltip="Close" matTooltipPosition="right">
+      close
+    </mat-icon>
+  </div>
+
+  <div class="more-info-content">
+    <mat-tab-group mat-stretch-tabs>
+      <mat-tab label="General">
+
+        <div *ngIf="marker?.Address" style="margin-top: 0.5em;">{{marker?.Address}}</div>
+        <div *ngIf="marker?.Town || marker?.Country || marker?.State">
+          <div *ngIf="marker?.Town && marker?.State"> {{marker?.Town}}, {{marker?.State}}</div>
+          <div *ngIf="marker?.Town && !marker?.State"> {{marker?.Town}}</div>
+          <div *ngIf="!marker?.Town && marker?.State"> {{marker?.State}}</div>
+
+          <div>{{marker?.Country}}</div>
+          <div>{{marker?.Telephone}}</div>
+        </div>
+        <!-- <div *ngIf="linkedPhoneNumber" class="link" style="margin-bottom: 0.5em;">{{marker?.Telephone}}</div> -->
+
+        <hr>
+
+        <div class="links" fxLayout="row" fxLayoutAlign="space-between center">
+          <a [disabled]="!marker?.Website" class="link" href={{marker?.Website}} target="_blank" mat-icon-button>
+            <mat-icon title="Website" style="font-size: 35px">public</mat-icon>
+          </a>
+          <a [disabled]="!instagramUrl" class="link" href={{instagramUrl}} target="_blank" mat-icon-button>
+            <mat-icon title="Instagram" svgIcon="instagram" style="width: 30px; height:30px"></mat-icon>
+          </a>
+          <a [disabled]="!marker?.Reservations" href={{marker?.Reservations}} target="_blank" mat-icon-button>
+            <mat-icon title="Reservations" style="font-size: 33px">book_mark</mat-icon>
+          </a>
+          <a class="link" target="_blank" mat-icon-button>
+            <mat-icon title="Directions" style="font-size: 33px">directions</mat-icon>
+          </a>
+        </div>
+
+        <div class="more-info-ratings">
+          <div class="ratings-title" fxLayoutAlign="center center">Ratings</div>
+          <div class="ratings-content" fxLayout="row" fxLayoutAlign="center center">
+            <a class="link" mat-icon-button (click)="SelectRating('positive')">
+              <mat-icon matTooltip="Vote Up" [ngClass]="{'selected-positive': rating === 'positive'}">
+                thumb_up
+              </mat-icon>
+            </a>
+            <a class="link" mat-icon-button (click)="SelectRating('negative')">
+              <mat-icon matTooltip="Vote Down" [ngClass]="{'selected-negative': rating === 'negative'}">
+                thumb_down
+              </mat-icon>
+            </a>
+          </div>
+
+          <div class="user-ratings-container" fxLayout="row" fxLayoutAlign="center center">
+            <div class="user-rating-content" *ngFor="let rating of Ratings" fxLayout="row"
+              fxLayoutAlign="center center">
+              <div class="ratings" fxLayout="column" fxLayoutAlign="center center">
+                <div id="rating-title">{{ rating.title }}</div>
+                <div id="ambl-on-rating">
+                  <lcu-progress-circle [percentage-color]="rating.color" [percentage]="rating.rating">
+                  </lcu-progress-circle>
+                </div>
+                <div class="content-percent" fxLayout="row" fxLayoutAlign="center center">
+                    {{ rating.rating }}
+                </div>
+                <div id="ambl-on-total-ratings">{{ rating.totalRatings }}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div *ngIf="FormattedAccolades" class="more-info-accolades">
+          <div class="accolades-title" fxLayoutAlign="center center">Accolades</div>
+          <div class="accolades-section" fxLayout="column" fxLayoutAlign="start" *ngFor="let award of FormattedAccolades">
+            <div>{{award}}</div>
+          </div>
+
+        </div>
+
+      </mat-tab>
+
+
+      <mat-tab label="Content">
+        <p style="margin-top: 0.5em; margin-bottom:0em; color:grey">Notes</p>
+        <p *ngIf="marker?.Notes" style="margin-top: 0em; margin-bottom: 0em">{{marker?.Notes}}</p>
+
+        <p style="margin-top: 1.5em; margin-bottom:0em; color:grey">Photos</p>
+        <div *ngIf="marker?.Photos" class="info-photo-container" style="margin-bottom: 0.5em;">
+
+          <img *ngFor="let photo of marker?.Photos" src="{{photo}}" style="width: 6.5em" />
+        </div>
+
+        <p style="margin-top: 1.5em; margin-bottom:0em; color:grey">Links</p>
+
+      </mat-tab>
+
+
+      <mat-tab label="Travel">
+        <p style="margin-top: 1.5em">Country: USA</p>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+
+</div>

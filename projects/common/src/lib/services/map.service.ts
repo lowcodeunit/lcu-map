@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IndividualMap } from '../models/individual-map.model';
+import { EventEmitter } from '@angular/core';
+import { MapMarker } from '../models/map-marker.model';
+import { AgmInfoWindow } from '@agm/core';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +22,26 @@ export class MapService {
   protected apiKey: string = 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU';
 
   // PROPERTIES
-/**
- * The current Layers that are selected to display
- */
-  protected CurrentlyActiveLayers: Array<IndividualMap>;
+  public InfoWindowClosed: EventEmitter<any>;
+  public MapMarkerClicked: EventEmitter<AgmInfoWindow>;
+  public MapMarkerSaved: EventEmitter<MapMarker>;
+  public MoreInfoClicked: EventEmitter<MapMarker>;
+  public TopListsClicked: EventEmitter<any>;
+
+  /**
+   * The current Layers that are selected to display
+   */
+  // protected CurrentlyActiveLayers: Array<IndividualMap>;
 
   // CONSTRUCTORS
 
-  constructor(protected http: HttpClient) { }
+  constructor(protected http: HttpClient) {
+    this.InfoWindowClosed = new EventEmitter<any>();
+    this.MapMarkerClicked = new EventEmitter<AgmInfoWindow>();
+    this.MapMarkerSaved = new EventEmitter<MapMarker>();
+    this.MoreInfoClicked = new EventEmitter<MapMarker>();
+    this.TopListsClicked = new EventEmitter<any>();
+  }
 
   // LIFE CYCLE
 
@@ -36,7 +50,7 @@ export class MapService {
   /**
    *
    * @param lat Latitude
-   * 
+   *
    * @param lng Longitude
    *
    * Gets surrounding POIs within 5 meters of the passed latitude and longitude
@@ -62,29 +76,52 @@ export class MapService {
     const baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json?';
     const placeId = `placeid=${pID}`;
     const apiKey = `&key=${this.apiKey}`;
-    const fields = '&fields=name,formatted_phone_number,adr_address,url,website,address_component,formatted_address,geometry,photo,type';
+    const fields = '&fields=name,international_phone_number,adr_address,url,website,address_component,formatted_address,geometry,photo,type';
 
     const fullUrl = `${this.corsProxy}${baseUrl}${placeId}${apiKey}${fields}`;
+    // const fullUrl = `${baseUrl}${placeId}${apiKey}${fields}`;
 
     return this.http.get(fullUrl);
   }
 
-
-/**
- * 
- * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
- */
-  public SetCurrentlyActiveLayers(layers: Array<IndividualMap>): void{
-    this.CurrentlyActiveLayers = layers;
-  }
-/**
- * Allows access to the CurrentlyActiveLayers form outside of the service
- */
-  public GetCurrentlyActiveLayers(): Array<IndividualMap>{
-    return this.CurrentlyActiveLayers;
+  /**
+   * emits event that the legend's top list button was clicked
+   */
+  public LegendTopListsClicked() {
+    this.TopListsClicked.emit('TopListsButtonClicked');
   }
 
-  public GetMapApiKey(): string{
+  public MapMarkerClickedEvent(infoWindow: AgmInfoWindow): void {
+    this.MapMarkerClicked.emit(infoWindow);
+  }
+
+  public MoreInfoClickedEvent(selectedMarker: MapMarker): void {
+    this.MoreInfoClicked.emit(selectedMarker);
+  }
+
+  public InfoWindowClosedEvent(): void {
+    this.InfoWindowClosed.emit();
+  }
+
+  public MapMarkerSavedEvent(marker: MapMarker): void {
+    this.MapMarkerSaved.emit(marker);
+  }
+
+  /**
+   *
+   * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
+   */
+  // public SetCurrentlyActiveLayers(layers: Array<IndividualMap>): void{
+  //   this.CurrentlyActiveLayers = layers;
+  // }
+  /**
+   * Allows access to the CurrentlyActiveLayers form outside of the service
+   */
+  // public GetCurrentlyActiveLayers(): Array<IndividualMap>{
+  //   return this.CurrentlyActiveLayers;
+  // }
+
+  public GetMapApiKey(): string {
     return this.apiKey;
   }
   // HELPERS

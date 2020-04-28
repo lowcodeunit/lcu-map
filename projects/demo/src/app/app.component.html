@@ -1,11 +1,25 @@
 <lcu-map 
 (primary-map-location-list-changed)="PrimMapChanged($event)" 
 [map-model]="MapConfig" 
-[secondary-maps]="SecMaps" 
 [map-marker-set]="IconSet" 
-(visible-location-list-changed)="ListChanged($event)" 
+(visible-location-list-changed)="ListChanged($event)"
+(search-location-chosen)="SearchLocationChosen($event)" 
 [pan-to]="RandomPan" 
-(map-saved)="MapSaved($event)"></lcu-map>
+[visible-locations-master-list]="MasterVisLocs"
+[user-layers]="UserLayers"
+[map-view-types]="MapViewTypes"
+[custom-search-repress-dropdown-character-count]="2"
+[custom-search-method]="'custom_search_value'"
+[display-google-search-method]="true"
+[repress-search-options-list]="false"
+[selected-user-layers]="SelectedUserLayers"
+(layer-checked)="LayerChecked($event)"
+(layer-unchecked)="LayerUnchecked($event)"
+(custom-search-change)="CustomSearchChanged($event)"
+[custom-search-input-results]="TestLocationSearchResults"
+(top-lists-button-clicked)="TopListButtonClicked()"
+(map-saved)="MapSaved($event)"
+[excluded-locations]="ExcludedLocations"></lcu-map>
 
 <!-- <button (click)="GoToRandomLoc()">0 / 0</button>
 <button (click)="GoToRandomMap()">random map</button>

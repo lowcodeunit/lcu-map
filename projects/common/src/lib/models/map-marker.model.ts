@@ -1,160 +1,172 @@
-import { PhotoInfo } from './photo-info.model';
+import { IconImageObject } from './icon-image-object.model';
+import { LocationRating } from './location-rating-model';
+import { Accolade } from './accolade.model';
 
 export class MapMarker {
 
     /**
      * The unique id of the individual map marker
      */
-    id: string;
+    public ID: any;
 
-    /**
-     * The map id which associates an individual marker with a single map
-     */
-    map_id: string;
+    public LayerID: string;
 
     /**
      * The title of the marker which will show upon mouseover
      */
-    title: string;
+    public Title: string;
 
     /**
-     * The icon name that should match the iconLookup in the MarkerInfo model
+     * The icon name that should match the IconLookup in the MarkerInfo model
      */
-    iconName: string;
+    public Icon: string;
 
     /**
      * The latitude of the map marker
      */
-    lat: number | string;
+    public Latitude: number | string;
 
     /**
      * The longitude of the map marker
      */
-    lng: number | string;
+    public Longitude: number | string;
 
     /**
      * Optional phone number for a place
      */
-    phoneNumber?: string;
-    
+    public Telephone?: string;
+
     /**
      * Optional link to instagram account
      */
-    instagram?: string;
+    public Instagram?: string;
 
     /**
      * Optional town associated with with location
      */
-    town?: string;
+    public Town?: string;
 
     /**
      * Optional state associated with location
      */
-    state?: string;
+    public State?: string;
 
     /**
      * Optional country associated with location
      */
-    country?: string;
+    public Country?: string;
+
     /**
      * Optional link to website
      */
-    website?: string;
+    public Website?: string;
+
     /**
      * The url to the icon
      */
-    iconUrl?: string;
+    public IconUrl?: string;
 
     /**
      * The order in which the locations are saved
      */
-    orderIndex?: number;
+    public OrderIndex?: number;
 
     /**
      * The street address for the location
      */
-    address?: string;
+    public Address?: string;
 
     /**
      * the link to book reservations for that location
      */
-    reservations?: string;
+    public Reservations?: string;
 
     /**
      * The link to the menu for the location
      */
-    menu?: string;
-
-    /**
-     * The star rating for that location
-     */
-    starRating?: number;
+    public Menu?: string;
 
     /**
      * The awards for that location
      */
-    awards?: string;
+    public Awards?: string;
 
     /**
      * A link to media pertaining to the location
      */
-    media?: string;
+    public Media?: string;
 
     /**
      * A link to photos pertaining to the location
      */
-    photos?: Array<string>;
+    public Photos?: Array<string>;
 
     /**
      * General info on the location
      */
-    generalInfo?: string;
+    public GeneralInfo?: string;
 
     /**
      * notes on the location
      */
-    notes?: string;
-/**
- * the type of the location 
- */
-    type?: Array<string>; 
+    public Notes?: string;
 
+    /**
+     * the type of the location
+     */
+    public Type?: Array<string>;
 
     /**
      * The object representing all the necessary data to display an icon on the map
-     * 
+     *
      * It is not passed in with the markers, but will be populated by the map service
      */
-    iconImageObject?: {};
+    public IconImageObject?: IconImageObject;
+
+    public GoogleLocationName?: string;
 
     /**
-     * 
+     * A boolean for toggling a location checkmark in the legend
+     */
+    public Checked?: boolean;
+
+    public Rating?: Array<LocationRating>;
+
+    public IsHidden?: boolean;
+
+    public Accolades?: Array<Accolade>;
+
+    /**
+     *
      * @param icon The object containing data for a single point (a map marker) on a map (<agm-map>)
      */
     constructor(icon: MapMarker) {
-        this.title = icon.title;
-        this.iconName = icon.iconName;
-        this.lat = icon.lat;
-        this.lng = icon.lng;
-        this.phoneNumber = icon.phoneNumber;
-        this.instagram = icon.instagram;
-        this.town = icon.town;
-        this.state = icon.state;
-        this.country = icon.country;
-        this.website = icon.website;
-        this.iconUrl = icon.iconUrl;
-        this.orderIndex = icon.orderIndex;
-        this.address = icon.address;
-        this.reservations = icon.reservations;
-        this.menu = icon.menu;
-        this.starRating = icon.starRating;
-        this.awards = icon.awards;
-        this.media = icon.media;
-        this.generalInfo = icon.generalInfo;
-        this.photos = icon.photos;
-        this.notes = icon.notes;
-        this.type = icon.type;
+        this.Title = icon.Title;
+        this.Icon = icon.Icon;
+        this.Latitude = icon.Latitude;
+        this.Longitude = icon.Longitude;
+        this.Telephone = icon.Telephone;
+        this.Instagram = icon.Instagram;
+        this.Town = icon.Town;
+        this.State = icon.State;
+        this.Country = icon.Country;
+        this.Website = icon.Website;
+        this.IconUrl = icon.IconUrl;
+        this.OrderIndex = icon.OrderIndex;
+        this.Address = icon.Address;
+        this.Reservations = icon.Reservations;
+        this.Menu = icon.Menu;
+        this.Awards = icon.Awards;
+        this.Media = icon.Media;
+        this.GeneralInfo = icon.GeneralInfo;
+        this.Photos = icon.Photos;
+        this.Notes = icon.Notes;
+        this.Type = icon.Type;
+        this.GoogleLocationName = icon.GoogleLocationName;
+        this.Checked = icon.Checked;
+        this.IsHidden = icon.IsHidden;
+        this.IconImageObject = icon.IconImageObject;
+        this.Rating = icon.Rating;
+        this.Accolades = icon.Accolades;
     }
-
-    
 }

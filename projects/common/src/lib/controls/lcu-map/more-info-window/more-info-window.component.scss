@@ -1,0 +1,123 @@
+.more-info-container {
+  font-family: 'Roboto', 'Arial', 'sans-serif';
+  font-weight: 300;
+
+  mat-icon {
+    cursor: pointer;
+  }
+
+  hr {
+    border: 1px solid #A4BAB3;
+  }
+
+  .more-info-header {
+    background-color: #4A918E;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+
+    .more-info-title {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .more-info-content {
+    .more-info-ratings {
+      .ratings-title {
+        background-color: #A4BAB3;
+        padding: 5px 10px;
+      }
+
+      .ratings-content {
+        padding: 10px;
+
+        .mat-icon-button {
+          height: initial;
+        }
+
+        .selected-positive {
+          color: #00B050;
+          font-size: 2em;
+        }
+
+        .selected-negative {
+          color: #FF0000;
+          font-size: 2em;
+        }
+      }
+    }
+
+    .more-info-accolades {
+      .accolades-title {
+        background-color: #A4BAB3;
+        padding: 5px 10px;
+      }
+
+      .accolades-content {
+        margin-top: 10px;
+      }
+    }
+  }
+
+}
+//more-info-window styling can be found in the global styles sheet
+
+// .more-info-window .mat-dialog-container {
+//   padding: 0 !important;
+// }
+
+// .more-info-window .mat-dialog-content {
+//   overflow: visible;
+//   display: flex;
+//   flex-grow: 1;
+// }
+
+::ng-deep .mat-tab-label {
+  min-width: 33% !important;
+  background-color: #A4BAB3;
+  color: black;
+  padding: 0;
+}
+
+::ng-deep .mat-ink-bar {
+  background-color: #4A918E !important;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+  padding: 10px;
+
+  .mat-tab-body-content {
+    overflow: hidden !important;
+  }
+}
+
+::ng-deep mat-tab-group {
+  width: 100%;
+}
+
+// ::ng-deep .cdk-overlay-pane {
+//   position: absolute !important; //having this doesnt allow for margin on the right
+// }
+
+.ratings{
+  padding-bottom: 10px;
+  padding-left:5px;
+  padding-right:5px;
+}
+#ambl-on-total-ratings{
+  position: relative;
+    bottom: 55px;
+}
+.content-percent {
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+    bottom: 60px;
+
+  &:after {
+    content: '%';
+  }
+}

@@ -11,6 +11,8 @@ export class LocationInfoService {
   protected phoneNumberUrl: string;
 
   protected isHighlighted: boolean;
+
+  protected selectedMarker: MapMarker;
   //CONSTRUCTORS
   constructor(private mapService: MapService) {
     this.isHighlighted = false;
@@ -18,8 +20,11 @@ export class LocationInfoService {
   //LIFE CYCLE
   //API METHODS
   public SetPhoneNumberUrl(marker: MapMarker): void{
-    if(marker.phoneNumber){
-      this.phoneNumberUrl = 'tel:'+ marker.phoneNumber;
+    if(marker.Telephone){
+      this.phoneNumberUrl = 'tel:'+ marker.Telephone;
+    }
+    else{
+      this.phoneNumberUrl = undefined;
     }
   }
 
@@ -28,8 +33,9 @@ export class LocationInfoService {
   }
 
   public BuildInstagramUrl(marker: MapMarker): string{
-    if(marker.instagram){
-      let tempInsta = marker.instagram.slice(1);
+    if(marker.Instagram){
+      console.log("insta ", marker.Instagram)
+      let tempInsta = marker.Instagram.slice(1);
       return "https://www.instagram.com/"+tempInsta+"/";
     }
   }
@@ -45,8 +51,8 @@ export class LocationInfoService {
 
   public GetType(marker: MapMarker): string{
     let type: string;
-    if(marker.type){
-      let tempType = marker.type[0];
+    if(marker.Type){
+      let tempType = marker.Type[0];
       if(tempType.includes("_")){
         tempType = tempType.replace("_"," ");
       }
@@ -56,7 +62,13 @@ export class LocationInfoService {
     }
     return type;
   } 
-
+  
+  public GetSelectedMarker(): MapMarker{
+    return this.selectedMarker;
+  }
+  public SetSelectedMarker(marker: MapMarker):void{
+    this.selectedMarker = marker;
+  }
   
 
   //HELPERS

@@ -1,26 +1,24 @@
 <div id="map-section">
+
+    <mat-toolbar id='map-toolbar' fxLayout="row" fxLayoutAlign="space-between center">
+      </mat-toolbar>
+      <!-- <hr> -->
+
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center"
     fxLayoutAlign.lt-sm="end center">
-    <!-- <div class="top-icon-set" fxLayoutAlign="end start">
-      <lcu-legend class="legend" [current-map-model]="_currentMapModel"
-        [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
-        [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
-        (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
-      </lcu-legend>
-    </div> -->
-    <!-- fxLayoutAlign.lt-sm="start center" -->
+
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
 
-      <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
+      <div *ngIf="DisplaySearchOptions" class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
-      <div class="center-buttons mat-icon-divs">
+      <div *ngIf="IncludeSaveMapFeature" class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
       </div>
 
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
+        <mat-icon class="center-buttons layer-element" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
         </mat-icon>
         <!-- the menu for the map layers button -->
         <div id="layer-menu" *ngIf="ShowLayersDropdown">
@@ -29,51 +27,72 @@
               {{view.display}}</mat-radio-button>
           </mat-radio-group>
           <mat-divider></mat-divider>
-          <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
+          <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
             matTooltip="The markers on your main map... Add markers to this map to be saved."
             matTooltipPosition="before">
-            {{_currentMapModel.title}} (Primary)</mat-checkbox>
+            {{_currentMapModel.Title}} (Primary)</mat-checkbox> -->
           <mat-divider></mat-divider>
-          <mat-checkbox id="map_id_{{map.id}}" (click)="$event.stopPropagation()" [checked]="SecondaryChecked"
-            (change)="LayerClicked($event, map)" *ngFor="let map of SecondaryMaps">{{ map.title }}
-          </mat-checkbox>
+          <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
+            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox>
         </div>
+      </div>
+      <div class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons" matTooltip="Share">share</mat-icon>
       </div>
     </div>
 
     <div class="top-icon-set" fxLayoutAlign="end start">
-      <lcu-legend class="legend" [current-map-model]="_currentMapModel"
-        [currently-active-locations]="CurrentlyActiveLocations" [get-legend-locations]="_savedLegendLocations"
-        [currently-active-layers]="CurrentlyActiveLayers" (pan)="PanningTo($event)"
-        (display-basic-info)="DisplayMarkerInfo($event)" (save-legend-locations)="SaveLegendLocations($event)">
+      <!-- [selected-location]="SelectedMarker" (pan)="PanningTo($event)" -->
+      <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
+        [visible-locations]="_visibleLocationsMasterList" [icon-list]="MapMarkerSet"
+        [currently-active-layers]="GetSelectedUserLayers()" [selected-location]="SelectedMarker"
+        [excluded-locations]="ExcludedLocations"
+        (delete-locations)="DeleteLocations($event)" (display-basic-info)="OnMarkerClicked(amblInfoWindow, $event)"
+        (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
+        (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
+        (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
       </lcu-legend>
     </div>
   </div>
+  <!-- <hr> -->
 
   <!-- the search bar -->
-  <div [hidden]="!ShowSearchBar" id="search-bar">
+  <div [hidden]="!ShowSearchBar" id="search-bar" class="search-bar-element">
     <!-- the native Google API for POI location search -->
-    <div [hidden]="SearchMethod !== 'Google Locations'">
-      <input placeholder="search for Google location" autocorrect="off" autocapitalize="off" spellcheck="off"
-        type="text" #search [formControl]="SearchControl">
+    <div [hidden]="SearchMethod !== 'Google'" class="search-bar-element">
+      <input placeholder="search for Google locations" autocorrect="off" autocapitalize="off" spellcheck="off"
+        type="text" #search [formControl]="SearchControl" class="search-bar-element">
     </div>
     <!-- the custom marker search bar -->
-    <form [hidden]="SearchMethod !== 'Custom Markers'">
-      <input type="text" placeholder="search for custom location" aria-label="Assignee"
-        [formControl]="CustomLocationControl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="DisplayFn">
+    <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
+      <input type="text" (keyup)="CustomSearchInputChange($event)"
+        placeholder="search for {{CustomSearchMethod}} locations" aria-label="Assignee"
+        [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
+      <mat-autocomplete (optionSelected)="LocationOptionSelected($event)" #auto="matAutocomplete"
+        [displayWith]="DisplayFn" class="search-bar-element">
         <mat-option (click)="DropdownItemChosen(location)" *ngFor="let location of FilteredLocations | async"
-          [value]="location">
-          <span><img class="dropdown-marker-image" src="{{location.iconImageObject.url}}"></span>
-          <span class="dropdown-marker-title-text">{{ location.title }}</span>&nbsp;
-          <span class="dropdown-marker-location-text">{{ location.town }}, {{ location.country }}</span>
+          [value]="location"
+          [ngClass]="{'display-none': !displayAutocompleteOptions || RepressSearchOptionsList, 'search-bar-element': true}">
+          <span><img class="dropdown-marker-image search-bar-element" [src]="location.IconImageObject.url"></span>
+          <span class="dropdown-marker-title-text search-bar-element">{{ location.Title }}</span>&nbsp;
+          <span class="dropdown-marker-location-text search-bar-element">
+            <span
+              *ngIf="location.Address && location.Address !== undefined && location.Address !== ''">{{ location.Address }},
+            </span>
+            <span *ngIf="location.Town && location.Town !== undefined && location.Town !== ''">{{ location.Town }},
+            </span>
+            <span *ngIf="location.State && location.State !== undefined && location.State !== ''">{{ location.State }},
+            </span>
+            <span
+              *ngIf="location.Country && location.Country !== undefined && location.Country !== ''">{{ location.Country }}</span>
+          </span>
         </mat-option>
       </mat-autocomplete>
     </form>
     <!-- the radio buttons for search type (custom markers vs Google POI locations) -->
-    <div class="search-method-radio-group">
-      <mat-radio-group [(ngModel)]="SearchMethod">
-        <mat-radio-button *ngFor="let method of SearchMethods" [value]="method">
+    <div class="search-method-radio-group search-bar-element">
+      <mat-radio-group [(ngModel)]="SearchMethod" class="search-bar-element">
+        <mat-radio-button *ngFor="let method of SearchMethods" [value]="method" class="search-bar-element">
           {{method}}
         </mat-radio-button>
       </mat-radio-group>
@@ -82,24 +101,36 @@
 
   <!-- the map -->
   <div class="agm-map-container">
-  <agm-map class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)" [mapTypeId]="CurrentMapViewType"
-  (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.origin.lat" [zoomControl]="true" [zoomControlOptions]="ZoomOptions"
-    [longitude]="_currentMapModel.origin.lng" [title]="_currentMapModel.title" [zoom]="_currentMapModel.zoom"
-    (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
-    <div id="markers" *ngFor="let marker of CurrentlyActiveLocations">
-      <agm-marker [latitude]="marker.lat" [longitude]="marker.lng" [title]="marker.title"
-        [iconUrl]="marker.iconImageObject" (markerClick)="DisplayMarkerInfo(marker)">
-      </agm-marker>
-    </div>
-    <agm-marker *ngIf="IconIsHighlighted" id="highlighted-marker" [iconUrl]="'./assets/ambl_glow.PNG'" [opacity]=".5" [latitude]="_currentMapModel.origin.lat" [longitude]="_currentMapModel.origin.lng" >
+    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+      [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.Latitude"
+      [zoomControl]="true" [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude"
+      [title]="_currentMapModel.Title" [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)"
+      (mapClick)="OnChoseLocation($event)" [usePanning]="true">
+      <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
+      <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
+        <agm-marker *ngIf="marker.IsHidden === false || !marker.IsHidden" [latitude]="marker.Latitude"
+          [longitude]="marker.Longitude" [title]="marker.Title" [iconUrl]="marker.IconImageObject"
+          (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
-    </agm-marker>
-  </agm-map>
-</div>
+          <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
+            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="isEdit" [marker]="marker"
+              [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+          </agm-info-window>
+        </agm-marker>
+      </div>
+      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.IsHidden === false || !SelectedLocation.IsHidden)" [iconUrl]="SelectedLocation.IconImageObject"
+        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
+        <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
+          <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker"
+            [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">
     <lcu-info-footer *ngIf="MarkerData" fxLayout="column" fxLayoutAlign="space-around stretch" [MarkerData]="MarkerData"
-      (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
+      [default-marker]="DefaultMarker" (show-footer)=ShowFooter($event) (new-map-marker)=SetNewMapMarker($event)>
     </lcu-info-footer>
   </div>
 </div>

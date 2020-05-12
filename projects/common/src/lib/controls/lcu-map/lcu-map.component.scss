@@ -1,4 +1,4 @@
-$base-toolbar-height: 40px; //40px
+$base-toolbar-height: 0px; //40px
 $icon-offset-top-margin: 11px;
 $search-bar-offset-top: 30px;
 $toolbar-background-color:  #877d96; //#877d96 
@@ -10,11 +10,11 @@ mat-icon {
 }
 
 #map-section {
-    height: calc(100% - 40px);
+    height: 100vh;
     position: relative;
 
 #map-toolbar{
-    height: $base-toolbar-height;
+    height: 40px;
     opacity: .5;
     background-color: $toolbar-background-color;
     position: absolute;
@@ -23,8 +23,8 @@ mat-icon {
     border-bottom: 2px solid black;
     @media (max-width:600px){
         // height:9vh;
-        height: $base-toolbar-height * 2;
-        
+        height: 80px;
+        // left: 0px;
     }
 }
 
@@ -41,7 +41,6 @@ mat-icon {
 
 
     .icon-list {
-        // height: 6vh;
         // background-color: $toolbar-background-color;
         // opacity: .5;
         height: $base-toolbar-height;
@@ -71,13 +70,13 @@ mat-icon {
         width: 50%;
         position: absolute;
         // top: $base-toolbar-height;
-        // margin-top: $icon-offset-top-margin *2;
+        margin-top: $icon-offset-top-margin *2;
         z-index: 1;
         @media(max-width: 600px) {
             position: absolute;
             top: $base-toolbar-height;
             left: 80;
-            // margin-top: $icon-offset-top-margin * 2;
+            margin-top: 40px;
         }
         .center-buttons{
             z-index: 1;

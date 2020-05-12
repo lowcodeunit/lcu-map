@@ -10,7 +10,7 @@ mat-icon {
 }
 
 #map-section {
-    height: calc(100% - $base-toolbar-height);
+    height: calc(100% - 40px);
     position: relative;
 
 #map-toolbar{

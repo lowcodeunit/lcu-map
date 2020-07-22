@@ -1,0 +1,92 @@
+/* ---------------------- fonts ---------------------- */
+
+$font_family: 'Montserrat', sans-serif;
+
+@mixin montserrat_medium_italic {
+	font-family: $font_family;
+    font-weight: 500;
+    font-style: italic;
+}
+
+@mixin montserrat_semibold {
+	font-family: $font_family;
+	font-weight: 500;
+}
+
+@mixin montserrat_bold {
+	font-family: $font_family;
+	font-weight: 700;
+}
+
+/* ---------------------- colors ---------------------- */
+
+$primary_dark: #877d96;
+$primary_medium: #cfcbd5;
+$primary_light: #f3f2f5;
+$accent_dark: #FF9849;
+$accent_medium: #f7df29;
+$accent_light: #fcf5e5;
+
+/* ---------- primary ---------- */
+@mixin primary_dark_font_color {
+    color: $primary_dark;
+}
+
+@mixin primary_medium_font_color {
+    color: $primary_medium;
+}
+
+@mixin primary_light_font_color {
+    color: $primary_light;
+}
+
+@mixin primary_dark_background_color {
+    background-color: $primary_dark;
+}
+
+@mixin primary_medium_background_color {
+    background-color: $primary_medium;
+}
+
+@mixin primary_light_background_color {
+    background-color: $primary_light;
+}
+
+/* ---------- accent ---------- */
+@mixin accent_dark_font_color {
+    color: $accent_dark;
+}
+
+@mixin accent_medium_font_color {
+    color: $accent_medium;
+}
+
+@mixin accent_light_font_color {
+    color: $accent_light;
+}
+
+@mixin accent_dark_background_color {
+    background-color: $accent_dark;
+}
+
+@mixin accent_medium_background_color {
+    background-color: $accent_medium;
+}
+
+@mixin accent_light_background_color {
+    background-color: $accent_light;
+}
+
+/* -------------------- misc styles --------------------*/
+
+$default_border_radius: 2px;
+
+/* ---------- shadows ---------- */
+@mixin ambl_box_shadow_bottom_right {
+    box-shadow: grey 1px 1px 3px;
+}
+
+/* ---------- border radius ---------- */
+@mixin ambl_border_radius {
+    border-radius: $default_border_radius;
+}

@@ -1,3 +1,5 @@
+@import '../../../../assets/styles/ambl_on-styles';
+
 $base-toolbar-height: 0px; //40px
 $icon-offset-top-margin: 11px;
 $search-bar-offset-top: 30px;
@@ -186,11 +188,28 @@ mat-option {
     position: absolute;
     z-index: 1;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 0px;
     box-shadow: grey 3px 3px 7px;
-    top: 25px;
+    top: 35px;
     color: $toolbar-background-color;
+  
 }
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color: $toolbar-background-color;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
+    background-color: $toolbar-background-color;
+}
+
+::ng-deep .layer-radio-button .mat-radio-label-content{
+    // font-family: $font-family !important;
+    @include montserrat_bold;
+
+}
+
+
 
 .display-none {
     display: none;

@@ -119,7 +119,7 @@ export class LocationInfoFormComponent implements OnInit {
     } else {
       //  console.log("blank marker");
       this.NewMarker.ID = '';
-      this.NewMarker.LayerID = '0';
+      // this.NewMarker.LayerID = '0';
       this.NewMarker.Title = '';
       this.NewMarker.Icon = '';
       this.NewMarker.Latitude = 0;
@@ -179,7 +179,7 @@ export class LocationInfoFormComponent implements OnInit {
     if (!this.IsEdit) {
       this.NewMarker.ID = '';
     }
-    this.NewMarker.LayerID = this.MarkerData.primaryMapId;
+    // this.NewMarker.LayerID = this.MarkerData.primaryMapId;
     this.NewMarker.Title = this.NewMarkerForm.value.title;
     if(this.ChosenIcon){
     this.NewMarker.Icon = this.ChosenIcon.IconLookup;

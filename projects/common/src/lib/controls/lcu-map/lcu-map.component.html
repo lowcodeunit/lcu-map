@@ -18,22 +18,23 @@
       </div>
 
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons layer-element" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
+        <mat-icon class="center-buttons layer-element material-icons-outlined" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
         </mat-icon>
         <!-- the menu for the map layers button -->
         <div id="layer-menu" *ngIf="ShowLayersDropdown">
           <mat-radio-group [(ngModel)]="CurrentMapViewType">
-            <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
+            <mat-radio-button class="layer-radio-button"(click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
               {{view.display}}</mat-radio-button>
           </mat-radio-group>
-          <mat-divider></mat-divider>
+          <!-- CURATED and USERS LAYERS HERE -->
+          <!-- <mat-divider></mat-divider> -->
           <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
             matTooltip="The markers on your main map... Add markers to this map to be saved."
             matTooltipPosition="before">
             {{_currentMapModel.Title}} (Primary)</mat-checkbox> -->
-          <mat-divider></mat-divider>
-          <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
-            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox>
+          <!-- <mat-divider></mat-divider> -->
+          <!-- <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
+            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox> -->
         </div>
       </div>
       <div class="center-buttons mat-icon-divs">
@@ -43,7 +44,7 @@
 
     <div class="top-icon-set" fxLayoutAlign="end start">
       <!-- [selected-location]="SelectedMarker" (pan)="PanningTo($event)" -->
-      <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
+      <!-- <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
         [visible-locations]="_visibleLocationsMasterList" [icon-list]="MapMarkerSet"
         [currently-active-layers]="GetSelectedUserLayers()" [selected-location]="SelectedMarker"
         [excluded-locations]="ExcludedLocations"
@@ -51,7 +52,7 @@
         (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
-      </lcu-legend>
+      </lcu-legend> -->
     </div>
   </div>
   <!-- <hr> -->

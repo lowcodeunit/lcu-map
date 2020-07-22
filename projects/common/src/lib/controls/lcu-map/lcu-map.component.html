@@ -1,8 +1,8 @@
 <div id="map-section">
 
-    <mat-toolbar id='map-toolbar' fxLayout="row" fxLayoutAlign="space-between center">
-      </mat-toolbar>
-      <!-- <hr> -->
+  <mat-toolbar id='map-toolbar' fxLayout="row" fxLayoutAlign="space-between center">
+  </mat-toolbar>
+  <!-- <hr> -->
 
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center"
     fxLayoutAlign.lt-sm="end center">
@@ -53,6 +53,10 @@
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
       </lcu-legend> -->
+      <span class="map-journey-title">{{ DisplayedJourney.Title }}</span>
+    </div>
+    <div class="map-journey-display">
+      <lcu-map-journey [journey]="DisplayedJourney"></lcu-map-journey>
     </div>
   </div>
   <!-- <hr> -->
@@ -119,8 +123,9 @@
           </agm-info-window>
         </agm-marker>
       </div>
-      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.IsHidden === false || !SelectedLocation.IsHidden)" [iconUrl]="SelectedLocation.IconImageObject"
-        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
+      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.IsHidden === false || !SelectedLocation.IsHidden)"
+        [iconUrl]="SelectedLocation.IconImageObject" [latitude]="SelectedLocation.Latitude"
+        [longitude]="SelectedLocation.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
           <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker"
             [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>

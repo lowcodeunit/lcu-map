@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
         { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', Address: '123 Sup Street',   Country: 'USA', State: 'Colorado', Town: 'Hillbilly Town' }
     ]
 
+    public TestJourney = this.getJourney();
+
     public VisibleLocations: Array<MapMarker>;
 
     public ExcludedLocations = ['42'];
@@ -234,4 +236,220 @@ export class AppComponent implements OnInit {
     public LayerUnchecked(layer) {
         console.log('layer UNchecked: ', layer)
     }
+
+    protected getJourney() {
+        return {
+          ActivityGroups: [
+            {
+              Activities: [
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 0,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 1,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 2,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+              ],
+              'Checked': false,
+              'Created': null,
+              'CreatedDateTime': "2020-05-22T19:19:26.6176234+00:00",
+              'Editable': false,
+              'GroupType': "day",
+              'ID': "6920fc60-d8a4-421a-8b2d-45ab88289d0b",
+              'Lookup': "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|Day_1",
+              'Modified': null,
+              'Order': 0,
+              'PartitionKey': "ActivityGroup|D",
+              'Title': "Day 1"
+            },
+            {
+              Activities: [
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 0,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 1,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 2,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+              ],
+              'Checked': false,
+              'Created': null,
+              'CreatedDateTime': "2020-05-22T19:19:26.6176234+00:00",
+              'Editable': false,
+              'GroupType': "day",
+              'ID': "6920fc60-d8a4-421a-8b2d-45ab88289d0b",
+              'Lookup': "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|Day_1",
+              'Modified': null,
+              'Order': 0,
+              'PartitionKey': "ActivityGroup|D",
+              'Title': "Day 2"
+            },
+            {
+              Activities: [
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 0,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 1,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+                {
+                  Checked: false,
+                  Created: null,
+                  CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
+                  Editable: false,
+                  Favorited: false,
+                  ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+                  LocationID: "00000000-0000-0000-0000-000000000000",
+                  Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
+                  Modified: null,
+                  Notes: "",
+                  Order: 2,
+                  PartitionKey: "Activity|G",
+                  Title: "Good morning",
+                  TransportIcon: "",
+                  WidgetIcon: "hotel"
+                },
+              ],
+              'Checked': false,
+              'Created': null,
+              'CreatedDateTime': "2020-05-22T19:19:26.6176234+00:00",
+              'Editable': false,
+              'GroupType': "day",
+              'ID': "6920fc60-d8a4-421a-8b2d-45ab88289d0b",
+              'Lookup': "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|Day_1",
+              'Modified': null,
+              'Order': 0,
+              'PartitionKey': "ActivityGroup|D",
+              'Title': "Day 3"
+            }
+          ],
+          'Created': null,
+          'CreatedDateTime': "2020-05-22T19:19:22.7154057+00:00",
+          'Editable': true,
+          'ID': "f72ee2da-d2ef-488c-90ea-6eeed1dd15b5",
+          'Lookup': "c722f5e2-c090-4395-8046-7f924df54383|Sitting_Inside_All_Day",
+          'Modified': null,
+          'PartitionKey': "Itinerary|N",
+          'Shared': false,
+          'SharedByUserID': "00000000-0000-0000-0000-000000000000",
+          'SharedByUsername': "",
+          'Title': "Sitting Inside All Day"
+        }
+      }
 }

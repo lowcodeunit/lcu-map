@@ -1,0 +1,22 @@
+<div class="map-journey-menu" fxLayout="row" fxLayoutAlign="space-around center">
+  <mat-icon>chevron_left</mat-icon>
+  <mat-icon>query_builder</mat-icon>
+  <mat-icon>crop_original</mat-icon>
+  <mat-icon>format_list_numbered</mat-icon>
+  <mat-icon>delete_outline</mat-icon>
+  <mat-icon>chevron_right</mat-icon>
+</div>
+<mat-accordion [togglePosition]="'before'">
+  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey.ActivityGroups" (opened)="activityGroup.PanelOpenState = true"
+    (closed)="activityGroup.PanelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
+        <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
+        <p>{{ activityGroup.Title }}</p>
+        <mat-checkbox></mat-checkbox>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngFor="let activity of activityGroup.Activities"><span>{{ activity.Title }}</span></div>
+  </mat-expansion-panel>
+</mat-accordion>

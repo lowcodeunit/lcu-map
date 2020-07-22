@@ -58,7 +58,7 @@ mat-icon {
     }
 
     .top-icon-set{
-        width: 10%;
+        width: 270px;
         position: absolute;
         right: 0;
         top: 0;
@@ -219,4 +219,21 @@ mat-option {
     
 
 
+.map-journey-title {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    margin-left: 0%;
+    margin-right: 0%;
+}
 
+.map-journey-display {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: white;
+    z-index: 1;
+    width: 270px;
+}

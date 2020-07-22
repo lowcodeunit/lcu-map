@@ -16,8 +16,8 @@ export class AppComponent implements OnInit {
     // PROPERTIES
 
     public TestLocationSearchResults: any = [
-        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Country: 'USA', Icon: 'museum', LayerID: '789', Address: '321 Heyo Str', State: 'Colorado' },
-        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', Address: '123 Sup Street', LayerID: '789', Country: 'USA', State: 'Colorado', Town: 'Hillbilly Town' }
+        { ID: '41', Title: 'Nice museumzz', Latitude: 40.069757, Longitude: -105.298199, Country: 'USA', Icon: 'museum',  Address: '321 Heyo Str', State: 'Colorado' },
+        { ID: '42', Title: 'Good hotelzz', Latitude: 40.048757, Longitude: -105.278199, Icon: 'hotel', Address: '123 Sup Street',   Country: 'USA', State: 'Colorado', Town: 'Hillbilly Town' }
     ]
 
     public TestJourney = this.getJourney();
@@ -42,10 +42,10 @@ export class AppComponent implements OnInit {
     public MasterVisLocs: Array<MapMarker>;
 
     public MapViewTypes = [
-        { value: 'roadmap', display: 'Roadmap' },
-        { value: 'hybrid', display: 'Hybrid' },
-        { value: 'satellite', display: 'Satellite' },
-        { value: 'terrain', display: 'Terrain' }
+        { value: 'roadmap', display: 'Standard' },
+        { value: 'hybrid', display: 'Satellite' },
+        // { value: 'satellite', display: 'Satellite' },
+        { value: 'terrain', display: 'Topographical' }
     ]
 
     public SecMaps: Array<UserMap> = [
@@ -117,27 +117,27 @@ export class AppComponent implements OnInit {
             { IconLookup: 'ambl_marker', Icon: 'ambl_marker', IconUrl: './assets/ambl_marker.png' }
         ];
         this.MasterVisLocs = [
-            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', LayerID: '789', Instagram: "@vail", Country: "USA", Telephone:"303-123-4567", Town:"Boulder", State:"CO", Address:"123 Pearl St 80000" },
-            { ID: '43', Title: 'Black Canyon of The Gunnison National Park', Latitude: 41.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789', State: "CO" },
-            { ID: '44', Title: 'Belmond La Manoir aux Quat\'Saisons', Latitude: 42.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789', Town:"Boulder" },
-            { ID: '45', Title: 'Nice museum', Latitude: 43.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '46', Title: 'Nice museum', Latitude: 44.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '47', Title: 'Nice museum', Latitude: 45.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '48', Title: 'Nice museum', Latitude: 46.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '49', Title: 'Nice museum', Latitude: 47.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '40', Title: 'Nice museum', Latitude: 48.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '51', Title: 'Nice museum', Latitude: 49.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '61', Title: 'Nice museum', Latitude: 50.049757, Longitude: -105.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '71', Title: 'Nice museum', Latitude: 40.049757, Longitude: -101.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '81', Title: 'Nice museum', Latitude: 40.049757, Longitude: -102.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '91', Title: 'Nice museum', Latitude: 40.049757, Longitude: -103.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '11', Title: 'Nice museum', Latitude: 40.049757, Longitude: -104.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '21', Title: 'Nice museum', Latitude: 40.049757, Longitude: -106.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '31', Title: 'Nice museum', Latitude: 40.049757, Longitude: -107.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '415', Title: 'Nice museum', Latitude: 40.049757, Longitude: -108.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '416', Title: 'Nice museum', Latitude: 40.049757, Longitude: -109.298199, Icon: 'museum', LayerID: '789' },
-            { ID: '417', Title: 'Nice museum', Latitude: 40.049757, Longitude: -110.298199, Icon: 'museum', LayerID: '789' },
+            { ID: '41', Title: 'Nice museum', Latitude: 40.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '42', Title: 'Best Hotel In Boulder Area That I Could Find', Latitude: 40.028757, Longitude: -105.278199, Icon: 'hotel', Instagram: "@vail", Country: "USA", Telephone:"303-123-4567", Town:"Boulder", State:"CO", Address:"123 Pearl St 80000" },
+            { ID: '43', Title: 'Black Canyon of The Gunnison National Park', Latitude: 41.049757, Longitude: -105.298199, Icon: 'museum',   State: "CO" },
+            { ID: '44', Title: 'Belmond La Manoir aux Quat\'Saisons', Latitude: 42.049757, Longitude: -105.298199, Icon: 'museum',   Town:"Boulder" },
+            { ID: '45', Title: 'Nice museum', Latitude: 43.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '46', Title: 'Nice museum', Latitude: 44.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '47', Title: 'Nice museum', Latitude: 45.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '48', Title: 'Nice museum', Latitude: 46.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '49', Title: 'Nice museum', Latitude: 47.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '40', Title: 'Nice museum', Latitude: 48.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '51', Title: 'Nice museum', Latitude: 49.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '61', Title: 'Nice museum', Latitude: 50.049757, Longitude: -105.298199, Icon: 'museum',   },
+            { ID: '71', Title: 'Nice museum', Latitude: 40.049757, Longitude: -101.298199, Icon: 'museum',   },
+            { ID: '81', Title: 'Nice museum', Latitude: 40.049757, Longitude: -102.298199, Icon: 'museum',   },
+            { ID: '91', Title: 'Nice museum', Latitude: 40.049757, Longitude: -103.298199, Icon: 'museum',   },
+            { ID: '11', Title: 'Nice museum', Latitude: 40.049757, Longitude: -104.298199, Icon: 'museum',   },
+            { ID: '21', Title: 'Nice museum', Latitude: 40.049757, Longitude: -106.298199, Icon: 'museum',   },
+            { ID: '31', Title: 'Nice museum', Latitude: 40.049757, Longitude: -107.298199, Icon: 'museum',   },
+            { ID: '415', Title: 'Nice museum', Latitude: 40.049757, Longitude: -108.298199, Icon: 'museum',   },
+            { ID: '416', Title: 'Nice museum', Latitude: 40.049757, Longitude: -109.298199, Icon: 'museum'},
+            { ID: '417', Title: 'Nice museum', Latitude: 40.049757, Longitude: -110.298199, Icon: 'museum'},
 
         ];
         this.UserLayers = [{ID: 123, Title: 'User', Shared: false, Deletable: false},

@@ -9,7 +9,7 @@ export class MapMarker {
      */
     public ID: any;
 
-    public LayerID: string;
+    // public LayerID: string;
 
     /**
      * The title of the marker which will show upon mouseover

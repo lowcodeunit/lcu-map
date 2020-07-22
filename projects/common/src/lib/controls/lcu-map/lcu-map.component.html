@@ -18,22 +18,23 @@
       </div>
 
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons layer-element" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
+        <mat-icon class="center-buttons layer-element material-icons-outlined" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
         </mat-icon>
         <!-- the menu for the map layers button -->
         <div id="layer-menu" *ngIf="ShowLayersDropdown">
           <mat-radio-group [(ngModel)]="CurrentMapViewType">
-            <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
+            <mat-radio-button class="layer-radio-button"(click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
               {{view.display}}</mat-radio-button>
           </mat-radio-group>
-          <mat-divider></mat-divider>
+          <!-- CURATED and USERS LAYERS HERE -->
+          <!-- <mat-divider></mat-divider> -->
           <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
             matTooltip="The markers on your main map... Add markers to this map to be saved."
             matTooltipPosition="before">
             {{_currentMapModel.Title}} (Primary)</mat-checkbox> -->
-          <mat-divider></mat-divider>
-          <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
-            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox>
+          <!-- <mat-divider></mat-divider> -->
+          <!-- <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
+            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox> -->
         </div>
       </div>
       <div class="center-buttons mat-icon-divs">

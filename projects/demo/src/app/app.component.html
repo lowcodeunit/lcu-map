@@ -1,3 +1,9 @@
+<!-- [user-layers]="UserLayers"
+    [selected-user-layers]="SelectedUserLayers"
+
+    (layer-checked)="LayerChecked($event)"
+(layer-unchecked)="LayerUnchecked($event)"
+ -->
 <lcu-map 
 (primary-map-location-list-changed)="PrimMapChanged($event)" 
 [map-model]="MapConfig" 
@@ -6,15 +12,12 @@
 (search-location-chosen)="SearchLocationChosen($event)" 
 [pan-to]="RandomPan" 
 [visible-locations-master-list]="MasterVisLocs"
-[user-layers]="UserLayers"
 [map-view-types]="MapViewTypes"
 [custom-search-repress-dropdown-character-count]="2"
 [custom-search-method]="'custom_search_value'"
 [display-google-search-method]="true"
 [repress-search-options-list]="false"
-[selected-user-layers]="SelectedUserLayers"
-(layer-checked)="LayerChecked($event)"
-(layer-unchecked)="LayerUnchecked($event)"
+
 (custom-search-change)="CustomSearchChanged($event)"
 [custom-search-input-results]="TestLocationSearchResults"
 (top-lists-button-clicked)="TopListButtonClicked()"

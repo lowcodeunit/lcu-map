@@ -28,7 +28,7 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import { map, startWith } from 'rxjs/operators';
 import { LocationInfoService } from '../../services/location-info.service';
-import { UserLayer } from '../../models/user-layer.model';
+// import { UserLayer } from '../../models/user-layer.model';
 import { UserMap } from '../../models/user-map.model';
 import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
 import { IconImageObject } from '../../models/icon-image-object.model';
@@ -281,10 +281,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /* tslint:disable-next-line:no-input-rename */
   @Input('map-view-types')
   public MapViewTypes: Array<{}> = [
-    { value: 'roadmap', display: 'Roadmap' },
-    { value: 'hybrid', display: 'Hybrid' },
-    { value: 'satellite', display: 'Satellite' },
-    { value: 'terrain', display: 'Terrain' }
+    { value: 'roadmap', display: 'Standard' },
+    { value: 'hybrid', display: 'Satellite' },
+    { value: 'terrain', display: 'Topographical' }
   ];
 
   /* tslint:disable-next-line:no-input-rename */
@@ -381,23 +380,23 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._visibleLocationsMasterList;
   }
 
-  public _userLayers;
-  @Input('user-layers')
-  public set UserLayers(value: Array<UserLayer>) {
-    this._userLayers = value;
-  }
-  public get UserLayers() {
-    return this._userLayers;
-  }
+  // public _userLayers;
+  // @Input('user-layers')
+  // public set UserLayers(value: Array<UserLayer>) {
+  //   this._userLayers = value;
+  // }
+  // public get UserLayers() {
+  //   return this._userLayers;
+  // }
 
-  public _selectedUserLayers;
-  @Input('selected-user-layers')
-  public set SelectedUserLayers(value: Array<any>) {
-    this._selectedUserLayers = value;
-  }
-  public get SelectedUserLayers() {
-    return this._selectedUserLayers;
-  }
+  // public _selectedUserLayers;
+  // @Input('selected-user-layers')
+  // public set SelectedUserLayers(value: Array<any>) {
+  //   this._selectedUserLayers = value;
+  // }
+  // public get SelectedUserLayers() {
+  //   return this._selectedUserLayers;
+  // }
 
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
@@ -487,12 +486,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public EditedLegendLocations: EventEmitter<Array<MapMarker>>;
 
   /* tslint:disable-next-line:no-output-rename */
-  @Output('layer-checked')
-  public LayerChecked: EventEmitter<UserLayer>;
+  // @Output('layer-checked')
+  // public LayerChecked: EventEmitter<UserLayer>;
 
   /* tslint:disable-next-line:no-output-rename */
-  @Output('layer-unchecked')
-  public LayerUnchecked: EventEmitter<UserLayer>;
+  // @Output('layer-unchecked')
+  // public LayerUnchecked: EventEmitter<UserLayer>;
 
   /* tslint:disable-next-line:no-output-rename */
   @Output('map-bounds-change')
@@ -534,8 +533,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
-    this.LayerChecked = new EventEmitter<UserLayer>();
-    this.LayerUnchecked = new EventEmitter<UserLayer>();
+    // this.LayerChecked = new EventEmitter<UserLayer>();
+    // this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.CustomSearchChange = new EventEmitter<string>();
     this.TopListsButtonClicked = new EventEmitter();
     this.observerSubscription = new Subscription();
@@ -631,18 +630,18 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    *  Returns an array of strings that represent the titles of layers selected.
    *  Called by the legend to get the layer titles to be displayed in the legend.
    */
-  public GetSelectedUserLayers(): Array<string> {
-    const LayerTitles = new Array<string>();
-    if (this._userLayers) {
-      this._userLayers.forEach(function (layer) {
-        if (this._selectedUserLayers.includes(layer.ID)) {
-          LayerTitles.push(layer.Title);
-        }
-      }, this);
-    }
+  // public GetSelectedUserLayers(): Array<string> {
+  //   const LayerTitles = new Array<string>();
+  //   if (this._userLayers) {
+  //     this._userLayers.forEach(function (layer) {
+  //       if (this._selectedUserLayers.includes(layer.ID)) {
+  //         LayerTitles.push(layer.Title);
+  //       }
+  //     }, this);
+  //   }
 
-    return LayerTitles;
-  }
+  //   return LayerTitles;
+  // }
 
   public UpdateVisibleLocations(event: Array<MapMarker>): void {
     // this._visibleLocationsMasterList = event;
@@ -781,7 +780,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         map,
         mapMarkerSet: this.MapMarkerSet,
         coordinates: this.currentBounds,
-        userLayer: this.UserLayers.find(layer => layer.Shared === false)
+        // userLayer: this.UserLayers.find(layer => layer.Shared === false)
       }
     });
     dialogRef.afterClosed().subscribe((res: any) => {
@@ -807,65 +806,65 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    *
    * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked.
    */
-  public LayerClicked(event, layer?: UserLayer): void {
-    // tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
-    // reset and thus those changes are being passed as input to the legend so OnChanges gets called
-    // console.log("layer to toggle: ", layer);
-    const tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
-    this.CurrentlyActiveLocations.forEach(loc => {
-      tempActiveLocations.push(loc);
-    });
-    if (layer) { // (if user clicked a secondary checkbox)
-      if (event.checked === true) { // (if user checked the box)
-        // this.UpdateCurrentlyActiveLayers(layer);
-        this.LayerChecked.emit(layer);
-        // this.CurrentlyActiveLayers.push(layer);
-        // layer.locationList.forEach(loc => {
-        //   tempActiveLocations.push(loc);
-        // });
-        this.CurrentlyActiveLocations = tempActiveLocations;
-      } else { // (if user un-checked the box)
-        this.LayerUnchecked.emit(layer);
-        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
-        // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-        //   return loc.LayerID !== layer.ID;
-        // });
-      }
-    } else { // (if user clicked the primary checkbox)
-      if (event.checked === true) { // (if user checked the box)
-        // this.CurrentlyActiveLayers.push(this._currentMapModel);
-        this.LayerChecked.emit(this._currentMapModel);
+  // public LayerClicked(event, layer?: UserLayer): void {
+  //   // tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
+  //   // reset and thus those changes are being passed as input to the legend so OnChanges gets called
+  //   // console.log("layer to toggle: ", layer);
+  //   const tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
+  //   this.CurrentlyActiveLocations.forEach(loc => {
+  //     tempActiveLocations.push(loc);
+  //   });
+  //   if (layer) { // (if user clicked a secondary checkbox)
+  //     if (event.checked === true) { // (if user checked the box)
+  //       // this.UpdateCurrentlyActiveLayers(layer);
+  //       this.LayerChecked.emit(layer);
+  //       // this.CurrentlyActiveLayers.push(layer);
+  //       // layer.locationList.forEach(loc => {
+  //       //   tempActiveLocations.push(loc);
+  //       // });
+  //       this.CurrentlyActiveLocations = tempActiveLocations;
+  //     } else { // (if user un-checked the box)
+  //       this.LayerUnchecked.emit(layer);
+  //       // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
+  //       // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+  //       //   return loc.LayerID !== layer.ID;
+  //       // });
+  //     }
+  //   } else { // (if user clicked the primary checkbox)
+  //     if (event.checked === true) { // (if user checked the box)
+  //       // this.CurrentlyActiveLayers.push(this._currentMapModel);
+  //       this.LayerChecked.emit(this._currentMapModel);
 
-        // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
+  //       // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
 
-        // this._currentMapModel.locationList.forEach(loc => {
-        //   tempActiveLocations.push(loc);
-        // });
-        // this.CurrentlyActiveLocations = tempActiveLocations;
-      } else { // (if user un-checked the box)
-        this.LayerUnchecked.emit(this._currentMapModel);
-        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
-        // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-        //   return loc.LayerID !== this._currentMapModel.ID;
-        // });
-        // console.log("User unchecked the primary map");
-      }
-    }
+  //       // this._currentMapModel.locationList.forEach(loc => {
+  //       //   tempActiveLocations.push(loc);
+  //       // });
+  //       // this.CurrentlyActiveLocations = tempActiveLocations;
+  //     } else { // (if user un-checked the box)
+  //       this.LayerUnchecked.emit(this._currentMapModel);
+  //       // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
+  //       // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+  //       //   return loc.LayerID !== this._currentMapModel.ID;
+  //       // });
+  //       // console.log("User unchecked the primary map");
+  //     }
+  //   }
 
-    this.CurrentlyActiveLocations.forEach(loc => {
-      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
-    });
-    // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
-    // console.log("Current Map Model: ", this._currentMapModel);
-    // this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
-    // this is just for emitting the current list of active locs (currently displayed locations)
-    setTimeout(x => {
-      // emits the currently visible map markers for use in legend
-      this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    }, 0);
-    this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+  //   this.CurrentlyActiveLocations.forEach(loc => {
+  //     loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
+  //   });
+  //   // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
+  //   // console.log("Current Map Model: ", this._currentMapModel);
+  //   // this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+  //   // this is just for emitting the current list of active locs (currently displayed locations)
+  //   setTimeout(x => {
+  //     // emits the currently visible map markers for use in legend
+  //     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+  //   }, 0);
+  //   this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
 
-  }
+  // }
 
   /**
    * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes.
@@ -1011,11 +1010,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.SelectedLocation = marker;
     this.changeDetector.detectChanges();
     this.isEdit = false;
-    const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+    // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
 
-    if (marker.LayerID === userLayerID) {
-      this.isEdit = true;
-    }
+    // if (marker.LayerID === userLayerID) {
+    //   this.isEdit = true;
+    // }
 
     if (this.IsMobile) {
       this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
@@ -1109,9 +1108,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
     // Maybe TODO: Make the call to the API and then put the time out here,
     // only displaying the marker if it's a single click... for performance improvement
+    // LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
+
     this.DisplayMarkerInfo(new MapMarker({
       ID: '',
-      LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
       Title: results.name,
       GoogleLocationName: results.name,
       Icon: results.icon,
@@ -1264,14 +1264,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return photoUrls;
   }
 
-  protected shiftCuratedLayerToTop() {
-    const first = 'Curated';
-    if (this._userLayers && this._userLayers !== undefined) {
-      this._userLayers.sort((layer1, layer2) => {
-        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
-      });
-    }
-  }
+  // protected shiftCuratedLayerToTop() {
+  //   const first = 'Curated';
+  //   if (this._userLayers && this._userLayers !== undefined) {
+  //     this._userLayers.sort((layer1, layer2) => {
+  //       return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
+  //     });
+  //   }
+  // }
 
   /**
    * Opens the 'More Info' dialog when the button is pressed in the 'Basic Info' info window.
@@ -1293,7 +1293,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       data: {
         marker,
         markerSet: this.MapMarkerSet,
-        layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
+        // layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
         isEdit: this.isEdit
       }
     });
@@ -1320,10 +1320,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.SelectedLocation = null;
     this.SelectedMarker = marker;
     this.isEdit = false;
-    const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
-    if (marker.LayerID === userLayerID) {
-      this.isEdit = true;
-    }
+    // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+    // if (marker.LayerID === userLayerID) {
+    //   this.isEdit = true;
+    // }
     this.changeDetector.detectChanges();
 
     this.locationInfoService.SetSelectedMarker(marker);

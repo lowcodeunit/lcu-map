@@ -35,6 +35,7 @@ import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-w
 import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
 import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
 import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common';
+import { MapJourneyComponent } from './controls/map-journey/map-journey.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common
     CheckBoxSubString,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent,
+    MapJourneyComponent,
     
   ],
   imports: [

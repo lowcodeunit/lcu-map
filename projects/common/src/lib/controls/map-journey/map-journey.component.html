@@ -1,0 +1,10 @@
+<mat-accordion>
+  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey.ActivityGroups">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ activityGroup.Title }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngFor="let activity of activityGroup.Activities"><span>{{ activity.Title }}</span></div>
+  </mat-expansion-panel>
+</mat-accordion>

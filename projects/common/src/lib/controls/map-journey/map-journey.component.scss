@@ -1,3 +1,23 @@
+@import '../../../../assets/styles/ambl_on-styles';
+
+.map-journey-menu {
+    height: 40px;
+    background-color: $primary_dark;
+
+    mat-icon {
+        color: white;
+    }
+}
+
+.group-expanded-indicator {
+    transform: scale(2);
+    margin-left: 5px;
+}
+
+.mat-expansion-panel-header {
+    padding: 0;
+}
+
 .mat-expansion-panel-spacing {
     margin: 0;
 }

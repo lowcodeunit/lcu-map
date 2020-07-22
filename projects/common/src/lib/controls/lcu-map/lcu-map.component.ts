@@ -98,6 +98,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected observerSubscription: Subscription;
 
+  protected _displayedJourney: any;
+
   /**
    * boolean value that determines if the MapMarker already exists and is being edited
    */
@@ -264,7 +266,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
-  
+  @Input('displayed-journey')
+  public set DisplayedJourney(journey) {
+    this._displayedJourney = journey;
+  }
+  public get DisplayedJourney() {
+    return this._displayedJourney;
+  }
 
   /**
    * The array of available map views to be chosen by the user (default is roadmap)

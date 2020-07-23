@@ -8,8 +8,8 @@
     fxLayoutAlign.lt-sm="end center">
 
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
-
-      <div *ngIf="DisplaySearchOptions" class="center-buttons mat-icon-divs">
+<!-- *ngIf="DisplaySearchOptions" -->
+      <div  class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
@@ -68,11 +68,11 @@
   <div [hidden]="!ShowSearchBar" id="search-bar" class="search-bar-element">
     <!-- the native Google API for POI location search -->
     <div [hidden]="SearchMethod !== 'Google'" class="search-bar-element">
-      <input placeholder="search for Google locations" autocorrect="off" autocapitalize="off" spellcheck="off"
+      <input placeholder="Search" autocorrect="off" autocapitalize="off" spellcheck="off"
         type="text" #search [formControl]="SearchControl" class="search-bar-element">
     </div>
     <!-- the custom marker search bar -->
-    <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
+    <!-- <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
       <input type="text" (keyup)="CustomSearchInputChange($event)"
         placeholder="search for {{CustomSearchMethod}} locations" aria-label="Assignee"
         [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
@@ -96,15 +96,15 @@
           </span>
         </mat-option>
       </mat-autocomplete>
-    </form>
+    </form> -->
     <!-- the radio buttons for search type (custom markers vs Google POI locations) -->
-    <div class="search-method-radio-group search-bar-element">
+    <!-- <div class="search-method-radio-group search-bar-element">
       <mat-radio-group [(ngModel)]="SearchMethod" class="search-bar-element">
         <mat-radio-button *ngFor="let method of SearchMethods" [value]="method" class="search-bar-element">
           {{method}}
         </mat-radio-button>
       </mat-radio-group>
-    </div>
+    </div> -->
   </div> <!-- END search bar section -->
 
   <!-- the map -->

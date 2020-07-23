@@ -32,12 +32,26 @@ export class MapJourneyComponent implements OnInit {
 
   public OnAGCheckChange(event, ag) {
     ag.Checked = event.checked;
-    this.JourneyChanged.emit({ message: 'activity group checked/unchecked', journey: { ...this.Journey } });
+    this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey);
   }
 
   public OnActivityCheckChange(event, activity) {
     activity.Checked = event.checked;
-    this.JourneyChanged.emit({ message: 'activity checked/unchecked', journey: { ...this.Journey } });
+    this.normalizeAndEmitJourney('activity checked/unchecked', this.Journey);
+  }
+
+  /**
+   *
+   * @param message the message to include as to what change was made to trigger the emit
+   * @param journey the changed journey
+   *
+   * removes anything added to the journey that is specific to this map-journey component and emits a message and the changed journey
+   */
+  protected normalizeAndEmitJourney(message: string, journey: any) {
+    journey.ActivityGroups.forEach(ag => {
+      delete ag.PanelOpenState;
+    });
+    this.JourneyChanged.emit({message, journey});
   }
 
 }

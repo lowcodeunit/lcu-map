@@ -24,7 +24,7 @@
       </span>
       <span class="activity-display-title">{{ activity.Title }}</span>
       <div>
-        <span>{{ activity.Favorited }}</span>
+        <span class="star" (click)="onFavoritedClick(activity)" [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity)"></mat-checkbox>
       </div>
     </div>

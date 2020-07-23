@@ -80,6 +80,7 @@ export class MapJourneyComponent implements OnInit {
         ag.Activities.forEach(act => {
           if (this.AmblOnLocationArray.find(loc => loc.ID === act.LocationID)) {
             act.locationData = this.AmblOnLocationArray.find(loc => loc.ID === act.LocationID);
+            if (act.locationData.Country === 'United States') {act.locationData.Country = 'USA';}
           }
         });
       });

@@ -21,14 +21,16 @@ p, span, a, div, button {
 
 .mat-expansion-panel {
     background-color: $accent_light;
+    border-radius: 0;
 }
 
 .mat-expansion-panel-header {
     padding: 0;
     margin-right: -5px;
-    height: 42px !important;
+    height: 35px !important;
     background-color: $accent_light;
     color: $primary_dark;
+    border-radius: 0 !important;
 }
 
 ::ng-deep .mat-expansion-panel-body {
@@ -47,6 +49,8 @@ p, span, a, div, button {
 
 .activity-display {
     padding: 0px 10px;
+    height: 35px;
+    box-shadow: 0px 0px 1px black;
 }
 
 .activity-display-title {
@@ -54,6 +58,14 @@ p, span, a, div, button {
 }
 .activity-display-location {
     width: 65%;
+    line-height: 12px;
+}
+.activity-location-title {
+    font-size: 9pt;
+}
+.activity-location-address {
+    font-size: 6pt;
+    font-weight: 100;
 }
 .star {
     background: url('../../../../assets/star_sprites.png') 0 0;

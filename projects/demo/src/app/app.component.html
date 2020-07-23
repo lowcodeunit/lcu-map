@@ -17,12 +17,15 @@
 [custom-search-method]="'custom_search_value'"
 [display-google-search-method]="true"
 [repress-search-options-list]="false"
-
 (custom-search-change)="CustomSearchChanged($event)"
 [custom-search-input-results]="TestLocationSearchResults"
 (top-lists-button-clicked)="TopListButtonClicked()"
 (map-saved)="MapSaved($event)"
+
 [displayed-journey]="TestJourney"
+(journey-changed)="onJourneyChange($event)"
+[ambl-on-location-array]="TestAmblLocationArray"
+
 [excluded-locations]="ExcludedLocations"></lcu-map>
 
 <!-- <button (click)="GoToRandomLoc()">0 / 0</button>

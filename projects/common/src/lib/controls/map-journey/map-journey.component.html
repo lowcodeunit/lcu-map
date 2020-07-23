@@ -7,16 +7,37 @@
   <mat-icon>chevron_right</mat-icon>
 </div>
 <mat-accordion [togglePosition]="'before'">
-  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey.ActivityGroups" (opened)="activityGroup.PanelOpenState = true"
-    (closed)="activityGroup.PanelOpenState = false">
+  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey.ActivityGroups"
+    (opened)="activityGroup.PanelOpenState = true" (closed)="activityGroup.PanelOpenState = false">
     <mat-expansion-panel-header>
       <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
         <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
-        <p>{{ activityGroup.Title }}</p>
-        <mat-checkbox></mat-checkbox>
+        <div>{{ activityGroup.Title | uppercase }}</div>
+        <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
+          (click)="$event.stopPropagation();">
+        </mat-checkbox>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div *ngFor="let activity of activityGroup.Activities"><span>{{ activity.Title }}</span></div>
+    <div *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
+      class="activity-display">
+      <span>
+        <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
+      </span>
+      <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
+      <div *ngIf="activity.locationData" class="activity-display-location">
+        <span class="activity-location-title">{{ activity.locationData.Title }}</span>
+        <br />
+        <span class="activity-location-address">
+          <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
+            {{ activity.locationData.Country }}</span>
+        </span>
+      </div>
+      <div>
+        <span class="star" (click)="onFavoritedClick(activity)"
+          [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
+        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity)"></mat-checkbox>
+      </div>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>

@@ -99,6 +99,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected observerSubscription: Subscription;
 
   protected _displayedJourney: any;
+  protected _amblOnLocationArray: any;
 
   /**
    * boolean value that determines if the MapMarker already exists and is being edited
@@ -274,6 +275,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._displayedJourney;
   }
 
+  @Input('ambl-on-location-array')
+  public set AmblOnLocationArray(arr) {
+    this._amblOnLocationArray = arr;
+  }
+  public get AmblOnLocationArray() {
+    return this._amblOnLocationArray;
+  }
+
   /**
    * The array of available map views to be chosen by the user (default is roadmap)
    *
@@ -444,6 +453,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /* tslint:disable-next-line:no-output-rename */
   @Output('map-saved')
   public MapSaved: EventEmitter<UserMap>;
+
+  @Output('journey-changed')
+  public JourneyChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  public onJourneyChanged(event) {
+    this.JourneyChanged.emit(event);
+  }
 
   /**
    * The event emitted when the primary map's location list is altered (the new map is emitted)

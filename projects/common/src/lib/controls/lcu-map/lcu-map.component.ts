@@ -557,7 +557,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public ngOnInit(): void {
-    this.setUpSearchMethods();
+    // this.setUpSearchMethods();
+    this.SearchMethod = "Google"
     this._visibleLocationsMasterList.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     });
@@ -1141,16 +1142,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * sets up the search methods (if any) on which to search the map
    */
-  protected setUpSearchMethods() {
-    if (this.CustomSearchMethod) { this.SearchMethods.push(this.CustomSearchMethod); }
-    if (this.DisplayGoogleSearchMethod) { this.SearchMethods.push('Google'); }
-    if (this.SearchMethods.length === 0) {
-      this.DisplaySearchOptions = false;
-    } else {
-      this.DisplaySearchOptions = true;
-      this.SearchMethod = this.SearchMethods[0];
-    }
-  }
+  // protected setUpSearchMethods() {
+  //   if (this.CustomSearchMethod) { this.SearchMethods.push(this.CustomSearchMethod); }
+  //   if (this.DisplayGoogleSearchMethod) { this.SearchMethods.push('Google'); }
+  //   if (this.SearchMethods.length === 0) {
+  //     this.DisplaySearchOptions = false;
+  //   } else {
+  //     this.DisplaySearchOptions = true;
+  //     this.SearchMethod = this.SearchMethods[0];
+  //   }
+  // }
 
   /**
    *

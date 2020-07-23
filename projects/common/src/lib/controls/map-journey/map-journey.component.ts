@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class MapJourneyComponent implements OnInit {
 
   protected _journey: any;
+  protected _amblOnLocationArray: any;
 
   @Input('journey')
   public set Journey(journey: any) { // TODO : bring in ItineraryModel and change this
@@ -15,15 +16,24 @@ export class MapJourneyComponent implements OnInit {
       ag.PanelOpenState = false;
     });
     this._journey = journey;
-    console.log('JOURNEY: ', this._journey);
+    this.addLocationData();
   }
   public get Journey(): any {
     return this._journey;
   }
 
+  @Input('ambl-on-location-array')
+  public set AmblOnLocationArray(arr) {
+    this._amblOnLocationArray = arr;
+    this.addLocationData();
+  }
+  public get AmblOnLocationArray() {
+    return this._amblOnLocationArray;
+  }
+
   /* tslint:disable-next-line:no-output-rename */
   @Output('journey-changed')
-  public JourneyChanged: EventEmitter<{message: string, journey: any}> = new EventEmitter(); // TODO : bring in ItineraryModel and change this
+  public JourneyChanged: EventEmitter<{ message: string, journey: any }> = new EventEmitter(); // TODO : bring in ItineraryModel and change this
 
   constructor() { }
 
@@ -56,9 +66,24 @@ export class MapJourneyComponent implements OnInit {
     const journeyToSend = JSON.parse(JSON.stringify(journey));
     journeyToSend.ActivityGroups.forEach(ag => {
       delete ag.PanelOpenState;
-      // DELETE ADDED PROPERTIES HERE
+      // DELETE ADDED GROUP PROPERTIES HERE
+      ag.Activities.forEach(act => {
+        delete act.locationData;
+      });
     });
-    this.JourneyChanged.emit({message, journey: journeyToSend});
+    this.JourneyChanged.emit({ message, journey: journeyToSend });
+  }
+
+  protected addLocationData() {
+    if (this.Journey && this.AmblOnLocationArray) {
+      this.Journey.ActivityGroups.forEach(ag => {
+        ag.Activities.forEach(act => {
+          if (this.AmblOnLocationArray.find(loc => loc.ID === act.LocationID)) {
+            act.locationData = this.AmblOnLocationArray.find(loc => loc.ID === act.LocationID);
+          }
+        });
+      });
+    }
   }
 
 }

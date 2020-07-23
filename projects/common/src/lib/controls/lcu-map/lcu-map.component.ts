@@ -99,6 +99,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected observerSubscription: Subscription;
 
   protected _displayedJourney: any;
+  protected _amblOnLocationArray: any;
 
   /**
    * boolean value that determines if the MapMarker already exists and is being edited
@@ -272,6 +273,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
   public get DisplayedJourney() {
     return this._displayedJourney;
+  }
+
+  @Input('ambl-on-location-array')
+  public set AmblOnLocationArray(arr) {
+    this._amblOnLocationArray = arr;
+  }
+  public get AmblOnLocationArray() {
+    return this._amblOnLocationArray;
   }
 
   /**

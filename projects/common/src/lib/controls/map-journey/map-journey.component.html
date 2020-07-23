@@ -22,7 +22,8 @@
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
-      <span class="activity-display-title">{{ activity.Title }}</span>
+      <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
+      <span *ngIf="activity.locationData" class="activity-display-location">{{ activity.locationData?.Title }}</span>
       <div>
         <span class="star" (click)="onFavoritedClick(activity)" [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity)"></mat-checkbox>

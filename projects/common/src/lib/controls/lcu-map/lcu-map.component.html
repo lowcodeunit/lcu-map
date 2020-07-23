@@ -56,7 +56,10 @@
       <span class="map-journey-title">{{ DisplayedJourney.Title | uppercase }}</span>
     </div>
     <div class="map-journey-display">
-      <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"></lcu-map-journey>
+      <lcu-map-journey 
+        [journey]="DisplayedJourney" 
+        (journey-changed)="onJourneyChanged($event)"
+        [ambl-on-location-array]="AmblOnLocationArray"></lcu-map-journey>
     </div>
   </div>
   <!-- <hr> -->

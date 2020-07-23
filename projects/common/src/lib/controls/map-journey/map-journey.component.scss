@@ -1,5 +1,9 @@
 @import '../../../../assets/styles/ambl_on-styles';
 
+p, span, a, div, button {
+    @include montserrat_bold;
+}
+
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
@@ -12,12 +16,38 @@
 .group-expanded-indicator {
     transform: scale(2);
     margin-left: 5px;
+    color: $primary_dark;
+}
+
+.mat-expansion-panel {
+    background-color: $accent_light;
 }
 
 .mat-expansion-panel-header {
     padding: 0;
+    height: 42px !important;
+    background-color: $accent_light;
+    color: $primary_dark;
+}
+
+::ng-deep .mat-expansion-panel-body {
+    background-color: $primary_dark;
+    padding: 0 !important;
+    color: white;
+}
+
+.mat-checkbox-background {
+    background-color: white;
 }
 
 .mat-expansion-panel-spacing {
     margin: 0;
+}
+
+.activity-display {
+    padding: 0px 10px;
+}
+
+.activity-display-title {
+    width: 65%;
 }

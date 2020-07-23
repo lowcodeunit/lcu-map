@@ -445,6 +445,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('map-saved')
   public MapSaved: EventEmitter<UserMap>;
 
+  @Output('journey-changed')
+  public JourneyChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  public onJourneyChanged(event) {
+    this.JourneyChanged.emit(event);
+  }
+
   /**
    * The event emitted when the primary map's location list is altered (the new map is emitted)
    */

@@ -227,6 +227,8 @@ mat-option {
     top: 10px;
     margin-left: 0%;
     margin-right: 0%;
+    @include montserrat_bold;
+    color: white;
 }
 
 .map-journey-display {

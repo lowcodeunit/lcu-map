@@ -53,10 +53,10 @@
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
       </lcu-legend> -->
-      <span class="map-journey-title">{{ DisplayedJourney.Title }}</span>
+      <span class="map-journey-title">{{ DisplayedJourney.Title | uppercase }}</span>
     </div>
     <div class="map-journey-display">
-      <lcu-map-journey [journey]="DisplayedJourney"></lcu-map-journey>
+      <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"></lcu-map-journey>
     </div>
   </div>
   <!-- <hr> -->

@@ -39,10 +39,19 @@ p, span, a, div, button {
     color: white;
 }
 
-.mat-checkbox-background {
+::ng-deep.mat-checkbox-background {
+    background-color: white;
+    border: 1.5px solid $primary_dark;
+}
+::ng-deep.mat-checkbox-ripple {
+    display: none;
+}
+::ng-deep.mat-checkbox-checkmark {
     background-color: white;
 }
-
+::ng-deep.mat-checkbox-checkmark-path {
+    stroke: $primary_dark !important;
+}
 .mat-expansion-panel-spacing {
     margin: 0;
 }

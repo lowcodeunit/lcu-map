@@ -32,6 +32,11 @@ import { LocationInfoService } from '../../services/location-info.service';
 import { UserMap } from '../../models/user-map.model';
 import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
 import { IconImageObject } from '../../models/icon-image-object.model';
+// import { ItineraryGenerator } from '../../utils/generators/itinerary.generator';
+import { ItineraryModel } from '../../models/itinerary.model';
+import { ActivityModel } from '../../models/activity.model';
+import { ActivityGroupModel } from '../../models/activity-group.model';
+
 
 @Component({
   selector: 'lcu-map',
@@ -217,6 +222,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ShowSearchBar: boolean = false;
 
   /**
+   * Whether or not to show the add menu
+   */
+  public ShowNewOptions: boolean;
+
+/**
+ * The array of options that are displayed when the + icon is selected
+ */
+  public NewOptions: Array<any>;
+
+  /**
    * The map type (standard, satellite, topographical) - default is standard ('roadmap')
    */
   public CurrentMapViewType: string = 'roadmap';
@@ -281,6 +296,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       });
     });
   }
+
   public get DisplayedJourney() {
     return this._displayedJourney;
   }
@@ -468,7 +484,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public JourneyChanged: EventEmitter<any> = new EventEmitter<any>();
 
   public onJourneyChanged(event) {
-    console.log('ON JORUNEY CHANGE: ', event)
     this.JourneyChanged.emit(event);
   }
 
@@ -574,6 +589,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.LegendMargin = '3px';
     this.DisplayingMoreInfo = false;
     this.nonEssentialKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
+    this.ShowNewOptions = false;
+    this.NewOptions = [{
+      display: 'New Day',
+      action: 'day'
+    },
+    {
+      display: 'New Options',
+      action: 'extras'
+    },
+    {
+      display: 'Copy Journey',
+      action: 'copy'
+    },]
   }
 
   public ngOnInit(): void {
@@ -602,7 +630,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.SelectedMarker = null;
         // console.log("setting selectedMarker to NULL");
         this.SelectedLocation = null;
-        this.BelongsToJourney = false;
       }
     );
 
@@ -971,6 +998,89 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.locationInfoService.SetSelectedMarker(undefined);
     }
   }
+/**
+ * Toggles the add menu 
+ */
+  public ShowAddMenu(){
+    this.ShowNewOptions = !this.ShowNewOptions;
+  }
+
+  public NewOptionClicked(action: any) {
+    let newGroup;
+    this.ShowNewOptions = false;
+    let dayCount = 0;
+    if (this._displayedJourney.ActivityGroups !== null) {
+      dayCount = this._displayedJourney.ActivityGroups.filter(gr => gr.GroupType === 'day').length;
+    } else {
+      this._displayedJourney.ActivityGroups = [];
+    }
+    if (action === 'day') {
+      newGroup = this.getFullDayActivityGroup(dayCount);
+      this._displayedJourney.ActivityGroups.push(newGroup);
+      this.assignOrder();
+      this.updateItinerary();
+    } else if (action === 'extras') {
+      newGroup = this.getExtrasActivityGroup();
+      newGroup.Title = this.getValidOptionsTitle();
+      this._displayedJourney.ActivityGroups.push(newGroup);
+      this.assignOrder();
+      this.updateItinerary();
+    } else if (action === 'copy') { // if copying shared itinerary...
+      if (this._displayedJourney.Shared) {
+        const itinToCopy = this._displayedJourney;
+        itinToCopy.ID = null;
+
+        itinToCopy.ActivityGroups.forEach(activityGroup => {
+          activityGroup.ID = null;
+          activityGroup.Activities.forEach(activity => {
+            activity.ID = null;
+          });
+        });
+
+        const usernameToAdd: string = itinToCopy.SharedByUsername === '' ? 'user' : itinToCopy.SharedByUsername;
+        itinToCopy.ActivityGroups.forEach((group: ActivityGroupModel) => {
+          group.Activities.forEach((activity: ActivityModel) => {
+            if (activity.Notes !== '') {
+              activity.Notes = usernameToAdd + `: ${activity.Notes}`;
+            }
+          });
+        });
+        this.JourneyChanged.emit( 
+          {
+            message: 'Journey being copied',
+            journey: this._displayedJourney
+          });
+        // this.usersCtxt.AddItinerary(itinToCopy);
+         
+
+      } else { // if copying one's own created itinerary...
+        console.log('copying one\'s own itinerary...');
+
+        this.JourneyChanged.emit({message: "new journey", journey: new ItineraryModel({
+          ID: null,
+          Title: `${this._displayedJourney.Title} (copy)`,
+          ActivityGroups: this._displayedJourney.ActivityGroups,
+          CreatedDateTime: undefined,
+          Editable: undefined,
+          Shared: undefined,
+          SharedByUserID: undefined,
+          SharedByUsername: undefined
+        })});
+        // this.State.Loading = true;
+      }
+
+    }
+    // scroll all the way to the right:
+    // const el = this.AmblActivityGroupList.nativeElement;
+    // setTimeout(() => {
+    //   el.scrollTo({ left: (el.scrollLeft + 264 + el.scrollWidth), behavior: 'smooth' });
+    //   this.setScrollerToCurrentPosition();
+    // }, 0);
+  }
+
+  public onActivityLocationClicked(activityLocation: any) {
+    console.log('activity location clicked: ', activityLocation);
+  }
 
   /**
    * @param event
@@ -1056,11 +1166,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.zoomInToPoint(marker);
   }
 
-  public onActivityLocationClicked(activityLocation: any) {
-    console.log('activity location clicked: ', activityLocation);
-  }
-
-
   /**
    * Attaches a click listener to the map that returns an object that includes the place id.
    * The place id is then assigned to the placeId field for use in the (mapClick) event.
@@ -1073,6 +1178,114 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
     });
+  }
+/**
+ * Assigns order to the activity groups
+ */
+  protected assignOrder() {
+    this._displayedJourney.ActivityGroups.forEach((group, idx) => {
+      group.Order = idx;
+    });
+  }
+
+  protected updateItinerary() {
+    this._displayedJourney.ActivityGroups.forEach((group: any) => {
+      if (group.Activities.length === 0) {
+        if (group.GroupType === 'day') {
+          group.Activities.push(this.getNewActivity('Good Morning'));
+        } else if (group.GroupType === 'extras') {
+          group.Activities.push(this.getNewActivity('New Location'));
+        }
+      }
+    });
+    // updates an itinerary, does not save a new one
+    console.log('the itinerary being changed: ', this._displayedJourney);
+    // this.itineraryService.UpdateCurrentItinerary(this.DisplayedItinerary);
+    this.JourneyChanged.emit( {message: "journey changed", journey: this._displayedJourney});
+
+    // temporarily comment this out... we will use a save button to save aggregated changes
+    // until the new state system is implemented, thereby improving the speed of saving
+    // this.State.Loading = true;
+    // this.usersCtxt.EditItinerary(this.DisplayedItinerary);
+  }
+
+
+  protected getBasicDayActivityGroup(dayCount?: number) {
+    return new ActivityGroupModel({
+        Title: `Day ${dayCount + 1}`,
+        CreatedDateTime: new Date(),
+        GroupType: 'day',
+        Checked: false,
+        ID: null,
+        Activities: [
+            this.getNewActivity('Beginning of day', 'hotel'),
+            this.getNewActivity('End of day', 'hotel')
+        ]
+    });
+}
+
+protected getNewActivity(title?: string, widgetIcon?: string) {
+  return new ActivityModel({
+      Title: `${title ? title : 'New Location'}`,
+      ID: null,
+      LocationID: null,
+      Notes: '',
+      TransportIcon: '',
+      WidgetIcon: `${widgetIcon ? widgetIcon : 'location_on'}`,
+      Favorited: false,
+      Checked: false
+  });
+}
+protected getFullDayActivityGroup(dayCount: number = 0) {
+  return new ActivityGroupModel({
+      Title: `Day ${dayCount + 1}`,
+      CreatedDateTime: new Date(),
+      GroupType: 'day',
+      Checked: false,
+      ID: null,
+      Activities: [
+          this.getNewActivity('Good morning', 'hotel'),
+          this.getNewActivity('Breakfast', 'restaurant'),
+          this.getNewActivity('Lunch', 'restaurant'),
+          this.getNewActivity('Dinner', 'restaurant'),
+          this.getNewActivity('Good night', 'hotel')
+      ]
+  });
+}
+
+protected getExtrasActivityGroup() {
+  const object: {Title: string,
+      GroupType: string,
+      Checked: boolean,
+      ID: any,
+      Activities: any} = { Title: 'Options',
+                                     GroupType: 'extras',
+                                     Checked: false,
+                                     ID: null,
+                                     Activities: [this.getNewActivity()] };
+  return  object;
+}
+
+  protected getValidOptionsTitle() {
+    const validTitle = 'Options';
+    let optionsNumToAssign = 1;
+    let strNum = '';
+    const optionsNumbers: Array<number> = [];
+    this._displayedJourney.ActivityGroups.forEach(group => {
+      if (group.Title.includes('Options (')) {
+        const str = group.Title.substring(9);
+        strNum = '';
+        /*tslint:disable-next-line*/
+        for (let idx = 0; idx < str.length; idx++) {
+          if (!isNaN(Number(str[idx]))) { // if index is a number, add it to the string number
+            strNum += str[idx];
+          }
+          optionsNumbers.push(Number(strNum)); // push number to array
+        }
+        optionsNumToAssign = Math.max(...optionsNumbers) + 1; // add one to the highest number in array and assign to be new title's number
+      }
+    });
+    return `${validTitle} (${optionsNumToAssign})`;
   }
 
   /**
@@ -1351,11 +1564,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    this.BelongsToJourney = true;
     this.SelectedLocation = null;
     this.SelectedMarker = marker;
-    console.log('marker: ', marker);
-    console.log('selectedMarker: ', this.SelectedMarker)
     this.isEdit = false;
     // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
     // if (marker.LayerID === userLayerID) {

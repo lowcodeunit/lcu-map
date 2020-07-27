@@ -130,6 +130,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public MarkerData: MarkerData;
 
+  public BelongsToJourney: boolean = false;
+
   /**
    * subscribes to map service to find out when legend's top lists button was clicked
    */
@@ -267,9 +269,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
+  public ActivityLocationList: Array<any> = [];
   @Input('displayed-journey')
   public set DisplayedJourney(journey) {
     this._displayedJourney = journey;
+    console.log(this._displayedJourney)
+    this._displayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        act.LocationObject = {scaledSize: {height: 30, width: 30}, url: `./assets/${act.WidgetIcon}.png`};
+        this.ActivityLocationList.push(act);
+      });
+    });
   }
   public get DisplayedJourney() {
     return this._displayedJourney;
@@ -458,6 +468,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public JourneyChanged: EventEmitter<any> = new EventEmitter<any>();
 
   public onJourneyChanged(event) {
+    console.log('ON JORUNEY CHANGE: ', event)
     this.JourneyChanged.emit(event);
   }
 
@@ -591,6 +602,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.SelectedMarker = null;
         // console.log("setting selectedMarker to NULL");
         this.SelectedLocation = null;
+        this.BelongsToJourney = false;
       }
     );
 
@@ -1044,6 +1056,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.zoomInToPoint(marker);
   }
 
+  public onActivityLocationClicked(activityLocation: any) {
+    console.log('activity location clicked: ', activityLocation);
+  }
+
+
   /**
    * Attaches a click listener to the map that returns an object that includes the place id.
    * The place id is then assigned to the placeId field for use in the (mapClick) event.
@@ -1334,8 +1351,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
+    this.BelongsToJourney = true;
     this.SelectedLocation = null;
     this.SelectedMarker = marker;
+    console.log('marker: ', marker);
+    console.log('selectedMarker: ', this.SelectedMarker)
     this.isEdit = false;
     // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
     // if (marker.LayerID === userLayerID) {

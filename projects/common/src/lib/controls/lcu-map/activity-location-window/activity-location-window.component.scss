@@ -1,0 +1,103 @@
+@import '../../../../../assets/styles/ambl_on-styles';
+
+$info-window-height: 170px;
+
+::ng-deep .gm-style .gm-style-iw-c {
+  border-radius: 0 !important;
+  padding: 0 !important;
+  width: 250px;
+
+  .gm-style-iw-d {
+    overflow: hidden !important;
+    max-height: $info-window-height !important;
+    height: $info-window-height !important;
+  }
+
+  button.gm-ui-hover-effect {
+    display: none !important;
+  }
+}
+
+::ng-deep.gm-style-iw {
+  max-height: $info-window-height !important;
+  height: $info-window-height !important;
+}
+
+.location-info-container {
+  background-color: $primary_dark;
+  @include montserrat_bold;
+  color: white;
+  border-radius: 2px;
+  height: $info-window-height;
+
+  .container-top {
+    padding: 8px 12px;
+
+    .location-star-info {
+      
+      mat-icon {
+        font-size: 14pt;
+      }
+    }
+
+    .location-data-name-address {
+      width: 50%;
+
+      .location-data-name {
+        display: block;
+        font-size: 8pt;
+      }
+      .location-data-address-line1 {
+        display: block;
+        font-size: 6pt;
+      }
+      .location-data-address-line2 {
+        display: block;
+        font-size: 6pt;
+      }
+    }
+  }
+
+  .container-bottom {
+
+    .location-media-buttons-section {
+      padding: 0 12px;
+
+      a {
+        text-decoration: none;
+        color: white;
+      }
+    }
+
+    .notes-section {
+      width: 100%;
+  
+      textarea {
+        width: 90%;
+        border-radius: 2px;
+      }
+    }
+
+    .add-button-section {
+      width: 64%;
+      height: 100px;
+      position: relative;
+
+      mat-icon {
+        font-size: 30pt;
+        color: $primary_dark;
+        position: absolute;
+        right: 50%;
+        bottom: 50%;
+
+      }
+    }
+  }
+
+  
+}
+
+.inverse-color-scheme {
+  color: $primary_dark !important;
+  background-color: white !important;
+}

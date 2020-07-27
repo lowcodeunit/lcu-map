@@ -20,7 +20,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
-      class="activity-display">
+      class="activity-display" (click)="onActivityClickToNavigate(activity)">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>

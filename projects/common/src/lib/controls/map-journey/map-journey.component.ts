@@ -35,6 +35,9 @@ export class MapJourneyComponent implements OnInit {
   @Output('journey-changed')
   public JourneyChanged: EventEmitter<{ message: string, journey: any }> = new EventEmitter(); // TODO : bring in ItineraryModel and change this
 
+  @Output('activity-location-clicked')
+  public ActivityLocationClicked: EventEmitter<any> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
@@ -55,6 +58,10 @@ export class MapJourneyComponent implements OnInit {
     this.normalizeAndEmitJourney('activity favorited / unfavorited', this.Journey);
   }
 
+  public onActivityClickToNavigate(activity) {
+    this.ActivityLocationClicked.emit(activity);
+  }
+
   /**
    *
    * @param message the message to include as to what change was made to trigger the emit
@@ -65,9 +72,10 @@ export class MapJourneyComponent implements OnInit {
   protected normalizeAndEmitJourney(message: string, journey: any) {
     const journeyToSend = JSON.parse(JSON.stringify(journey));
     journeyToSend.ActivityGroups.forEach(ag => {
-      delete ag.PanelOpenState;
       // DELETE ADDED GROUP PROPERTIES HERE
+      delete ag.PanelOpenState;
       ag.Activities.forEach(act => {
+        // DELETE ADDED ACTIVITY PROPERTIES HERE
         delete act.locationData;
       });
     });

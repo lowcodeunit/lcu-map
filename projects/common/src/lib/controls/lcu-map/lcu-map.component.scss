@@ -216,6 +216,28 @@ mat-option {
     color: $toolbar-background-color;
   
 }
+.new-options-menu {
+    z-index: 1;
+    position: absolute;
+    background-color: white;
+    color: $primary_dark;
+    padding: 0;
+    box-shadow: -1px 2px 1px rgba(0,0,0,0.2);
+    /* center */
+    left: 0;
+    right: 120px;
+    width: 150px;
+    margin: auto;
+    mat-list-item { 
+        cursor: pointer;
+        height: 30px;
+        color: $primary_dark;
+        @include montserrat_bold;
+        &:hover {
+            background-color: $primary_light;
+        }
+    }
+}
 
 ::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
     border-color: $toolbar-background-color;

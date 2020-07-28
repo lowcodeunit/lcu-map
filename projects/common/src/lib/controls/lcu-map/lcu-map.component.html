@@ -13,8 +13,15 @@
         <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
-      <div *ngIf="IncludeSaveMapFeature" class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
+      <div  class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons" (click)="ShowAddMenu()">add</mat-icon>
+        <mat-list *ngIf="ShowNewOptions" class="new-options-menu">
+          <mat-list-item 
+            *ngFor="let option of NewOptions" 
+            (click)="NewOptionClicked(option.action)">
+            {{option.display}}
+          </mat-list-item>
+        </mat-list>
       </div>
 
       <div class="center-buttons mat-icon-divs">

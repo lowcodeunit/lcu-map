@@ -204,7 +204,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * The current Google location selected to display in legend as highlighted
    */
-  public SelectedLocation: MapMarker;
+  public SelectedLocation: ActivityModel;
 
   /**
    * The current user map marker selected to display Basic info popover
@@ -284,7 +284,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
-  public ActivityLocationList: Array<any> = [];
+  public ActivityLocationList: Array<ActivityModel> = [];
   @Input('displayed-journey')
   public set DisplayedJourney(journey) {
     this._displayedJourney = journey;
@@ -360,12 +360,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */
-  @Input('display-basic-info-window')
-  public set DisplayBasicInfoWindow(val: MapMarker) {
-    if (val) {
-      this.DisplayMarkerInfo(val);
-    }
-  }
+  // @Input('display-basic-info-window')
+  // public set DisplayBasicInfoWindow(val: MapMarker) {
+  //   if (val) {
+  //     this.DisplayMarkerInfo(val);
+  //   }
+  // }
 
 
 
@@ -855,7 +855,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public DropdownItemChosen(loc: any): void {
     this._currentMapModel.Latitude = loc.Latitude;
     this._currentMapModel.Longitude = loc.Longitude;
-    this.DisplayMarkerInfo(loc);
+    // this.DisplayMarkerInfo(loc);
   }
 
   /**
@@ -1139,40 +1139,42 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
-  DisplayMoreInfo(marker: MapMarker): void {
+  public DisplayMoreInfo(marker: MapMarker): void {
     this.openMoreInfoDialog(marker);
   }
+
+ 
 
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent.
    *
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
-  public DisplayMarkerInfo(marker: MapMarker): void {
+  // public DisplayMarkerInfo(marker: MapMarker): void {
 
-    this.SearchControl.setValue('');
-    this.displayAutocompleteOptions = false;
-    this.ShowSearchBar = false;
-    this.locationInfoService.SetSelectedMarker(marker);
-    this.SelectedLocation = marker;
-    this.changeDetector.detectChanges();
-    this.isEdit = false;
-    // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+  //   this.SearchControl.setValue('');
+  //   this.displayAutocompleteOptions = false;
+  //   this.ShowSearchBar = false;
+  //   this.locationInfoService.SetSelectedMarker(marker);
+  //   this.SelectedLocation = marker;
+  //   this.changeDetector.detectChanges();
+  //   this.isEdit = false;
+  //   // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
 
-    // if (marker.LayerID === userLayerID) {
-    //   this.isEdit = true;
-    // }
+  //   // if (marker.LayerID === userLayerID) {
+  //   //   this.isEdit = true;
+  //   // }
 
-    if (this.IsMobile) {
-      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
-      this.ShowFooter(true);
-    }
-    console.log('displaying marker', marker);
-    this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+  //   if (this.IsMobile) {
+  //     this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
+  //     this.ShowFooter(true);
+  //   }
+  //   console.log('displaying marker', marker);
+  //   this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+  //   this.mapService.MapMarkerClickedEvent(this.amblInfoWindow);
 
-
-    this.zoomInToPoint(marker);
-  }
+  //   // this.zoomInToPoint(marker);
+  // }
 
   /**
    * Attaches a click listener to the map that returns an object that includes the place id.
@@ -1365,29 +1367,31 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
     const regionIndices = this.getLocationRegionIndices(results);
 
+    let tempActivity = this.getNewActivity(results.name);
+    tempActivity.locationData = new MapMarker({
+        ID: '',
+        Title: results.name,
+        GoogleLocationName: results.name,
+        Icon: results.icon,
+        Latitude: this.normalizeLatitudeAndLongitude(results, true),
+        Longitude: this.normalizeLatitudeAndLongitude(results, false),
+        Telephone: results.international_phone_number,
+        Website: results.website,
+        Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
+          results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
+        State: results.address_components[regionIndices.stateIndex] ?
+          results.address_components[regionIndices.stateIndex].long_name : '',
+        Country: results.address_components[regionIndices.countryIndex] ?
+          results.address_components[regionIndices.countryIndex].long_name : '',
+        Photos: this.buildPhotoArray(results.photos),
+        Type: results.types,
+        IconImageObject: this.DefaultMarker
+      });
+    this.ShowSearchedLocation(tempActivity);
+
     // Maybe TODO: Make the call to the API and then put the time out here,
     // only displaying the marker if it's a single click... for performance improvement
     // LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
-
-    this.DisplayMarkerInfo(new MapMarker({
-      ID: '',
-      Title: results.name,
-      GoogleLocationName: results.name,
-      Icon: results.icon,
-      Latitude: this.normalizeLatitudeAndLongitude(results, true),
-      Longitude: this.normalizeLatitudeAndLongitude(results, false),
-      Telephone: results.international_phone_number,
-      Website: results.website,
-      Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
-        results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
-      State: results.address_components[regionIndices.stateIndex] ?
-        results.address_components[regionIndices.stateIndex].long_name : '',
-      Country: results.address_components[regionIndices.countryIndex] ?
-        results.address_components[regionIndices.countryIndex].long_name : '',
-      Photos: this.buildPhotoArray(results.photos),
-      Type: results.types,
-      IconImageObject: this.DefaultMarker
-    }));
   }
 
   /**
@@ -1566,6 +1570,25 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }
       }
     );
+  }
+/**
+ * Called when the user selects a location from the google search
+ * @param searchedLocation 
+ */
+  public ShowSearchedLocation(searchedLocation: ActivityModel){
+    this.SearchControl.setValue('');
+    this.displayAutocompleteOptions = false;
+    this.ShowSearchBar = false;
+    this.BelongsToJourney = false;
+    this.SelectedLocation = searchedLocation;    
+    this.SelectedMarker = searchedLocation.locationData;
+    this.changeDetector.detectChanges();
+
+    this.locationInfoService.SetSelectedMarker(searchedLocation.locationData);
+
+    this.mapService.MapMarkerClickedEvent(this.amblInfoWindow);
+
+    this.zoomInToPoint(searchedLocation.locationData);
   }
 
   /**

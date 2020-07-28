@@ -1,3 +1,5 @@
+import { MapMarker } from './map-marker.model';
+
 export class ActivityModel {
     public ID?: any;
     public Title: string;
@@ -10,6 +12,7 @@ export class ActivityModel {
     public Checked: boolean;
     public Editable?: boolean;
     public Order?: any;
+    public locationData?: MapMarker;
 
     constructor(activity: ActivityModel) {
         this.ID = activity.ID;
@@ -23,5 +26,6 @@ export class ActivityModel {
         this.Checked = activity.Checked;
         this.Editable = activity.Editable;
         this.Order = activity.Order;
+        this.locationData = activity.locationData;
     }
 }

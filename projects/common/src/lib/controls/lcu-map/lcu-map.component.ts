@@ -226,9 +226,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public ShowNewOptions: boolean;
 
-/**
- * The array of options that are displayed when the + icon is selected
- */
+  /**
+   * The array of options that are displayed when the + icon is selected
+   */
   public NewOptions: Array<any>;
 
   /**
@@ -288,10 +288,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Input('displayed-journey')
   public set DisplayedJourney(journey) {
     this._displayedJourney = journey;
-    console.log(this._displayedJourney)
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
-        act.LocationObject = {scaledSize: {height: 30, width: 30}, url: `./assets/${act.WidgetIcon}.png`};
+        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
         this.ActivityLocationList.push(act);
       });
     });
@@ -368,7 +367,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   //   }
   // }
 
-  
+
 
   /**
    * The default marker in the instance of alocation not having an icon
@@ -463,6 +462,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._currentMapModel;
   }
 
+  public addIconClicked(event) {
+    console.log('add icon clicked for: ', event);
+  }
+
   protected _visibleLocations;
   @Input('show-visible-locations')
   public set VisibleLocations(value: Array<any>) {
@@ -505,7 +508,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('edit-location')
   public EditLocation: EventEmitter<MapMarker>;
 
-  
+
   @Output('update-excluded-curations')
   public UpdateExcludedCurations: EventEmitter<string>;
 
@@ -641,13 +644,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       }
     );
   }
-  public ngAfterViewInit(): void{
+  public ngAfterViewInit(): void {
     // console.log("Default Marker in map= ", this.DefaultMarker)
     if (!this.DefaultMarker) {
       this.DefaultMarker = {
-        name: 'lcu-map-default-marker' ,
+        name: 'lcu-map-default-marker',
         url: './assets/lcu-map-default-marker.png',
-        scaledSize: {width: 40, height: 40} };
+        scaledSize: { width: 40, height: 40 }
+      };
     }
   }
 
@@ -679,7 +683,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
 
-  public UpdateExcludedCurationsList(event: string){
+  public UpdateExcludedCurationsList(event: string) {
     console.log("emitting: ", event);
     this.UpdateExcludedCurations.emit(event);
   }
@@ -704,7 +708,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // this._visibleLocationsMasterList = event;
   }
 
-  public CheckForHiddenLocations():void{
+  public CheckForHiddenLocations(): void {
     // console.log("locations before checking if hidden: ", this._visibleLocationsMasterList);
 
     for (let i = 0; i < this._visibleLocationsMasterList.length; i++) {
@@ -999,10 +1003,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.locationInfoService.SetSelectedMarker(undefined);
     }
   }
-/**
- * Toggles the add menu 
- */
-  public ShowAddMenu(){
+  /**
+   * Toggles the add menu 
+   */
+  public ShowAddMenu() {
     this.ShowNewOptions = !this.ShowNewOptions;
   }
 
@@ -1046,27 +1050,29 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
             }
           });
         });
-        this.JourneyChanged.emit( 
+        this.JourneyChanged.emit(
           {
             message: 'Journey being copied',
             journey: this._displayedJourney
           });
         // this.usersCtxt.AddItinerary(itinToCopy);
-         
+
 
       } else { // if copying one's own created itinerary...
         console.log('copying one\'s own itinerary...');
 
-        this.JourneyChanged.emit({message: "new journey", journey: new ItineraryModel({
-          ID: null,
-          Title: `${this._displayedJourney.Title} (copy)`,
-          ActivityGroups: this._displayedJourney.ActivityGroups,
-          CreatedDateTime: undefined,
-          Editable: undefined,
-          Shared: undefined,
-          SharedByUserID: undefined,
-          SharedByUsername: undefined
-        })});
+        this.JourneyChanged.emit({
+          message: "new journey", journey: new ItineraryModel({
+            ID: null,
+            Title: `${this._displayedJourney.Title} (copy)`,
+            ActivityGroups: this._displayedJourney.ActivityGroups,
+            CreatedDateTime: undefined,
+            Editable: undefined,
+            Shared: undefined,
+            SharedByUserID: undefined,
+            SharedByUsername: undefined
+          })
+        });
         // this.State.Loading = true;
       }
 
@@ -1080,7 +1086,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public onActivityLocationClicked(activityLocation: any) {
-    console.log('activity location clicked: ', activityLocation);
+    this.BelongsToJourney = true;
+    this.SelectedLocation = null;
+    this.SelectedMarker = activityLocation;
+    this.changeDetector.detectChanges();
+    this.locationInfoService.SetSelectedMarker(activityLocation);
+    this.mapService.MapMarkerClickedEvent(this.GoogleInfoWindowRef);
   }
 
   /**
@@ -1182,9 +1193,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.placeId = loc.placeId;
     });
   }
-/**
- * Assigns order to the activity groups
- */
+  /**
+   * Assigns order to the activity groups
+   */
   protected assignOrder() {
     this._displayedJourney.ActivityGroups.forEach((group, idx) => {
       group.Order = idx;
@@ -1204,7 +1215,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // updates an itinerary, does not save a new one
     console.log('the itinerary being changed: ', this._displayedJourney);
     // this.itineraryService.UpdateCurrentItinerary(this.DisplayedItinerary);
-    this.JourneyChanged.emit( {message: "journey changed", journey: this._displayedJourney});
+    this.JourneyChanged.emit({ message: "journey changed", journey: this._displayedJourney });
 
     // temporarily comment this out... we will use a save button to save aggregated changes
     // until the new state system is implemented, thereby improving the speed of saving
@@ -1215,20 +1226,20 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   protected getBasicDayActivityGroup(dayCount?: number) {
     return new ActivityGroupModel({
-        Title: `Day ${dayCount + 1}`,
-        CreatedDateTime: new Date(),
-        GroupType: 'day',
-        Checked: false,
-        ID: null,
-        Activities: [
-            this.getNewActivity('Beginning of day', 'hotel'),
-            this.getNewActivity('End of day', 'hotel')
-        ]
+      Title: `Day ${dayCount + 1}`,
+      CreatedDateTime: new Date(),
+      GroupType: 'day',
+      Checked: false,
+      ID: null,
+      Activities: [
+        this.getNewActivity('Beginning of day', 'hotel'),
+        this.getNewActivity('End of day', 'hotel')
+      ]
     });
-}
+  }
 
-protected getNewActivity(title?: string, widgetIcon?: string) {
-  return new ActivityModel({
+  protected getNewActivity(title?: string, widgetIcon?: string) {
+    return new ActivityModel({
       Title: `${title ? title : 'New Location'}`,
       ID: null,
       LocationID: null,
@@ -1237,37 +1248,41 @@ protected getNewActivity(title?: string, widgetIcon?: string) {
       WidgetIcon: `${widgetIcon ? widgetIcon : 'location_on'}`,
       Favorited: false,
       Checked: false
-  });
-}
-protected getFullDayActivityGroup(dayCount: number = 0) {
-  return new ActivityGroupModel({
+    });
+  }
+  protected getFullDayActivityGroup(dayCount: number = 0) {
+    return new ActivityGroupModel({
       Title: `Day ${dayCount + 1}`,
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
       ID: null,
       Activities: [
-          this.getNewActivity('Good morning', 'hotel'),
-          this.getNewActivity('Breakfast', 'restaurant'),
-          this.getNewActivity('Lunch', 'restaurant'),
-          this.getNewActivity('Dinner', 'restaurant'),
-          this.getNewActivity('Good night', 'hotel')
+        this.getNewActivity('Good morning', 'hotel'),
+        this.getNewActivity('Breakfast', 'restaurant'),
+        this.getNewActivity('Lunch', 'restaurant'),
+        this.getNewActivity('Dinner', 'restaurant'),
+        this.getNewActivity('Good night', 'hotel')
       ]
-  });
-}
+    });
+  }
 
-protected getExtrasActivityGroup() {
-  const object: {Title: string,
+  protected getExtrasActivityGroup() {
+    const object: {
+      Title: string,
       GroupType: string,
       Checked: boolean,
       ID: any,
-      Activities: any} = { Title: 'Options',
-                                     GroupType: 'extras',
-                                     Checked: false,
-                                     ID: null,
-                                     Activities: [this.getNewActivity()] };
-  return  object;
-}
+      Activities: any
+    } = {
+      Title: 'Options',
+      GroupType: 'extras',
+      Checked: false,
+      ID: null,
+      Activities: [this.getNewActivity()]
+    };
+    return object;
+  }
 
   protected getValidOptionsTitle() {
     const validTitle = 'Options';
@@ -1374,7 +1389,7 @@ protected getExtrasActivityGroup() {
           results.address_components[regionIndices.countryIndex].long_name : '',
         Photos: this.buildPhotoArray(results.photos),
         Type: results.types,
-        IconImageObject: this.DefaultMarker
+        IconImageObject: {scaledSize: {width: 30, height: 30}, url: './assets/ambl_marker.png'}
       });
     this.ShowSearchedLocation(tempActivity);
 

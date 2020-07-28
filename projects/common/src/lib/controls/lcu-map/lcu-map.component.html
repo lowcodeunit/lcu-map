@@ -132,7 +132,7 @@
             <lcu-activity-location-window 
                 *ngIf="SelectedMarker?.ID === marker.ID" 
                 [marker]="marker"
-                [belongs-to-journey]="BelongsToJourney">
+                [belongs-to-journey]="true">
             </lcu-activity-location-window>
             <!-- replace this with new component -->
             <!-- on click of actloc, call same method (OnMarkerClicked) from ts file and somehow pass in #amblInfoWindow and actLoc info-->
@@ -146,7 +146,8 @@
         
             <lcu-activity-location-window
             [marker]="SelectedLocation"
-            [belongs-to-journey]="BelongsToJourney">
+            [belongs-to-journey]="false"
+            (add-icon-clicked)="addIconClicked(SelectedLocation)">
               
             </lcu-activity-location-window>
         </agm-info-window>

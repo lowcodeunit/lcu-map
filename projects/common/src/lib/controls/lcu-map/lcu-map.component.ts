@@ -865,8 +865,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
  * @param event 
  */
   public addIconClicked(event) {
-    this._displayedJourney.ActivityGroups[this._displayedJourney.ActivityGroups.length - 1].Activities.push(event);
-    this.JourneyChanged.emit({message: "add activity", journey: this._displayedJourney}) 
+    this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney}) 
   }
 
   /**

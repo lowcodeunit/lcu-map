@@ -81,7 +81,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
     this.mapMarkerClickedSubscription.unsubscribe();
   }
 
-  public addIconClicked(e) {
+  public addIconClicked() {
     this.AddIconClicked.emit();
   }
 

@@ -17,7 +17,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
   public _belongsToJourney: boolean = false;
   public mapMarkerClickedSubscription: Subscription;
 
-  @Input() public marker: any;
+  @Input() public marker: ActivityModel;
 
   @Input('belongs-to-journey')
   public set BelongsToJourney(val: boolean) {
@@ -92,6 +92,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { ActivityModel } from '../../../models/activity.model';
 @Pipe({ name: 'RemoveDashes' })
 export class RemoveDashesPipe implements PipeTransform {
   transform(value: any, args?: any): any {

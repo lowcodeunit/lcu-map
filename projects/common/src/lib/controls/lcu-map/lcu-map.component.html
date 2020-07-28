@@ -139,12 +139,16 @@
           </agm-info-window>
         </agm-marker>
       </div>
-      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.IsHidden === false || !SelectedLocation.IsHidden)"
-        [iconUrl]="SelectedLocation.IconImageObject" [latitude]="SelectedLocation.Latitude"
-        [longitude]="SelectedLocation.Longitude">
+      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.locationData.IsHidden === false || !SelectedLocation.locationData.IsHidden)"
+        [iconUrl]="SelectedLocation.locationData.IconImageObject" [latitude]="SelectedLocation.locationData.Latitude"
+        [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
-          <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker"
-            [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+        
+            <lcu-activity-location-window
+            [marker]="SelectedLocation"
+            [belongs-to-journey]="BelongsToJourney">
+              
+            </lcu-activity-location-window>
         </agm-info-window>
       </agm-marker>
     </agm-map>

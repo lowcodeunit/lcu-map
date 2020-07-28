@@ -462,9 +462,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._currentMapModel;
   }
 
-  public addIconClicked(event) {
-    console.log('add icon clicked for: ', event);
-  }
+  
 
   protected _visibleLocations;
   @Input('show-visible-locations')
@@ -754,38 +752,38 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.LocationsToDelete.emit(event);
   }
 
-  public ToggleLegendMargin(event) {
-    if (event) {
-      this.LegendMargin = '35px';
-    } else {
-      this.LegendMargin = '3px';
-    }
-  }
+  // public ToggleLegendMargin(event) {
+  //   if (event) {
+  //     this.LegendMargin = '35px';
+  //   } else {
+  //     this.LegendMargin = '3px';
+  //   }
+  // }
 
   /**
    * Legend uses this function to take incoming data from child class and sets the according values to allow panning.
    * @param value the value passed in
    */
-  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
-    if (!value.zoom) {
-      value.zoom = this._currentMapModel.Zoom;
-    }
-    this._panTo = value;
+  // public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
+  //   if (!value.zoom) {
+  //     value.zoom = this._currentMapModel.Zoom;
+  //   }
+  //   this._panTo = value;
 
-    if (this._currentMapModel) {
-      this._currentMapModel.Latitude = value.lat;
-      this._currentMapModel.Longitude = value.lng;
-      this._currentMapModel.Zoom = value.zoom;
-    }
-  }
+  //   if (this._currentMapModel) {
+  //     this._currentMapModel.Latitude = value.lat;
+  //     this._currentMapModel.Longitude = value.lng;
+  //     this._currentMapModel.Zoom = value.zoom;
+  //   }
+  // }
 
   /**
    * Saves the legend order/loactions via event emmiter.
    * @param val the value passed in
    */
-  public EditLegendLocations(val: Array<MapMarker>): void {
-    this.EditedLegendLocations.emit(val);
-  }
+  // public EditLegendLocations(val: Array<MapMarker>): void {
+  //   this.EditedLegendLocations.emit(val);
+  // }
 
   /**
    * Toggles the location search bar hidden / shown.
@@ -833,25 +831,25 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * Activates the dialog for user to enter name of map which will then be 'saved'.
    */
-  public ActivateSaveMapDialog(map): void {
-    const dialogRef = this.dialog.open(SaveMapComponent, {
-      width: '252px',
-      height: '204px',
-      data: {
-        map,
-        mapMarkerSet: this.MapMarkerSet,
-        coordinates: this.currentBounds,
-        // userLayer: this.UserLayers.find(layer => layer.Shared === false)
-      }
-    });
-    dialogRef.afterClosed().subscribe((res: any) => {
-      if (res) {
-        if (res) {
-          this.MapSaved.emit(res);
-        }
-      }
-    });
-  }
+  // public ActivateSaveMapDialog(map): void {
+  //   const dialogRef = this.dialog.open(SaveMapComponent, {
+  //     width: '252px',
+  //     height: '204px',
+  //     data: {
+  //       map,
+  //       mapMarkerSet: this.MapMarkerSet,
+  //       coordinates: this.currentBounds,
+  //       // userLayer: this.UserLayers.find(layer => layer.Shared === false)
+  //     }
+  //   });
+  //   dialogRef.afterClosed().subscribe((res: any) => {
+  //     if (res) {
+  //       if (res) {
+  //         this.MapSaved.emit(res);
+  //       }
+  //     }
+  //   });
+  // }
 
   /**
    * Run when user clicks a custom location marker from custom location search.
@@ -860,6 +858,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this._currentMapModel.Latitude = loc.Latitude;
     this._currentMapModel.Longitude = loc.Longitude;
     // this.DisplayMarkerInfo(loc);
+  }
+/**
+ * called when the user has selected a new location to add to their journey and adds activity
+ * to the last activity group
+ * @param event 
+ */
+  public addIconClicked(event) {
+    this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney}) 
   }
 
   /**

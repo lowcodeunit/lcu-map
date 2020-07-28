@@ -462,6 +462,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._currentMapModel;
   }
 
+  public addIconClicked(event) {
+    console.log('add icon clicked for: ', event);
+  }
+
   protected _visibleLocations;
   @Input('show-visible-locations')
   public set VisibleLocations(value: Array<any>) {

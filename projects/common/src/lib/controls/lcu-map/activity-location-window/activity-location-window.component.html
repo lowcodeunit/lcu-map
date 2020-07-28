@@ -24,7 +24,7 @@
       <textarea placeholder="Notes" rows="6"></textarea>
     </div>
     <div *ngIf="!BelongsToJourney" class="add-button-section">
-      <mat-icon>add_circle_outline</mat-icon>
+      <mat-icon (click)="addIconClicked()">add_circle_outline</mat-icon>
     </div>
   </div>
 

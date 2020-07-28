@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { MapService } from '../../../services/map.service';
 import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { LocationInfoService } from '../../../services/location-info.service';
@@ -29,6 +29,10 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
   @Input('default-marker')
   public DefaultMarker: IconImageObject;
+
+  @Output('add-icon-clicked')
+  public AddIconClicked: EventEmitter<any> = new EventEmitter();
+
 
   constructor(
     protected infoWindowManager: InfoWindowManager,
@@ -75,6 +79,10 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.marker = null;
     this.mapMarkerClickedSubscription.unsubscribe();
+  }
+
+  public addIconClicked(e) {
+    this.AddIconClicked.emit();
   }
 
   /**

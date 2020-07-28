@@ -82,6 +82,7 @@ $info-window-height: 170px;
       width: 64%;
       height: 100px;
       position: relative;
+     
 
       mat-icon {
         font-size: 30pt;
@@ -89,7 +90,7 @@ $info-window-height: 170px;
         position: absolute;
         right: 50%;
         bottom: 50%;
-
+        cursor: pointer;
       }
     }
   }

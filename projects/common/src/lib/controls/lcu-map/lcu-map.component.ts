@@ -287,6 +287,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ActivityLocationList: Array<ActivityModel> = [];
   @Input('displayed-journey')
   public set DisplayedJourney(journey) {
+    if (!journey) { return; }
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {

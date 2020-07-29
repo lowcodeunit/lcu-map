@@ -12,6 +12,7 @@ export class MapJourneyComponent implements OnInit {
 
   @Input('journey')
   public set Journey(journey: any) { // TODO : bring in ItineraryModel and change this
+    if (!journey) { return; }
     journey.ActivityGroups.forEach(ag => {
       ag.PanelOpenState = false;
     });

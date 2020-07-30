@@ -285,8 +285,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public GoogleInfoWindowRef: AgmInfoWindow;
 
   public ActivityLocationList: Array<ActivityModel> = [];
+
   @Input('displayed-journey')
-  public set DisplayedJourney(journey) {
+  public set DisplayedJourney(journey: any) {
+    console.log("journey upon entry: ", journey);
     if (!journey) { return; }
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {

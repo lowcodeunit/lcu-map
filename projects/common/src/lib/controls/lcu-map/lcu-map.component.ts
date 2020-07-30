@@ -287,22 +287,23 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ActivityLocationList: Array<ActivityModel> = [];
 
   @Input('displayed-journey')
-  public set DisplayedJourney(journey: any) {
-    console.log("journey upon entry: ", journey);
-    if (!journey) { return; }
-    this._displayedJourney = journey;
-    this._displayedJourney.ActivityGroups.forEach(ag => {
-      ag.Activities.forEach(act => {
-        // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
-        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
-        this.ActivityLocationList.push(act);
-      });
-    });
-  }
+  public DisplayedJourney: any;
+  // public set DisplayedJourney(journey: any) {
+  //   console.log("journey upon entry: ", journey);
+  //   if (!journey) { return; }
+  //   this._displayedJourney = journey;
+  //   this._displayedJourney.ActivityGroups.forEach(ag => {
+  //     ag.Activities.forEach(act => {
+  //       // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
+  //       act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
+  //       this.ActivityLocationList.push(act);
+  //     });
+  //   });
+  // }
 
-  public get DisplayedJourney() {
-    return this._displayedJourney;
-  }
+  // public get DisplayedJourney() {
+  //   return this._displayedJourney;
+  // }
 
   @Input('ambl-on-location-array')
   public set AmblOnLocationArray(arr) {
@@ -620,6 +621,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.resetMapCheckedState();
     this.setUpCustomMarkerSearch();
+    this.assignIcons();
     this.TopListsSubscription = this.mapService.TopListsClicked.subscribe(() => {
       this.TopListsButtonClicked.emit();
     });
@@ -671,6 +673,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.markerInfoSubscription) {
       this.markerInfoSubscription.unsubscribe();
     }
+  }
+
+  protected assignIcons(){
+    console.log("journey upon entry: ", this.DisplayedJourney);
+      if (!this.DisplayedJourney) { return; }
+      this._displayedJourney = this.DisplayedJourney;
+      this._displayedJourney.ActivityGroups.forEach(ag => {
+        ag.Activities.forEach(act => {
+          act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
+          this.ActivityLocationList.push(act);
+        });
+      });
+    
   }
 
   /**

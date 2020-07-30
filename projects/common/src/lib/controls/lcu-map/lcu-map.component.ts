@@ -288,7 +288,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
-    console.log("journey upon entry: ", journey);
+    // console.log("journey upon entry: ", journey);
     if (!journey) { return; }
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {
@@ -794,6 +794,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public ShowLocationSearchBarClicked(): void {
     this.ShowSearchBar = this.ShowSearchBar === true ? false : true;
+    if(this.ShowNewOptions === true){
+      this.ShowNewOptions = false;
+    }
   }
 
   /**
@@ -1022,6 +1025,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public ShowAddMenu() {
     this.ShowNewOptions = !this.ShowNewOptions;
+  }
+
+  public ShowLayers(){
+    this.ShowLayersDropdown = !this.ShowLayersDropdown;
+    if (this.ShowNewOptions === true){
+      this.ShowNewOptions = false;
+    }
   }
 
   public NewOptionClicked(action: any) {

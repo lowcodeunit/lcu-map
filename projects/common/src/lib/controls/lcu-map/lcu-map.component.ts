@@ -541,8 +541,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   // public LayerUnchecked: EventEmitter<UserLayer>;
 
   /* tslint:disable-next-line:no-output-rename */
-  @Output('map-bounds-change')
-  public MapBoundsChange: EventEmitter<Array<number>>;
+  // @Output('map-bounds-change')
+  // public MapBoundsChange: EventEmitter<Array<number>>;
 
   /* tslint:disable-next-line:no-output-rename */
   @Output('custom-search-change')
@@ -589,7 +589,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
-    this.MapBoundsChange = new EventEmitter<Array<number>>();
+    // this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = '3px';
     this.DisplayingMoreInfo = false;
@@ -865,10 +865,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 /**
  * called when the user has selected a new location to add to their journey and adds activity
- * to the last activity group
+ * to the last activity group and give it an order
  * @param event 
  */
-  public addIconClicked(event) {
+  public addIconClicked(event: ActivityModel) {
+    event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length -1].Activities.length;
+    // console.log("temp order: ", event)
+    // console.log(this.DisplayedJourney)
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney}) 
   }
@@ -943,31 +946,31 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    *
    * @param event The event sent every time the boundary of the map changes.
    */
-  public BoundsChange(event): void {
-    this.ShowLayersDropdown = false;
-    if (!event) {
-      return;
-    }
-    this.currentBounds.neLat = event.getNorthEast().lat();
-    this.currentBounds.neLng = event.getNorthEast().lng();
-    this.currentBounds.swLat = event.getSouthWest().lat();
-    this.currentBounds.swLng = event.getSouthWest().lng();
+  // public BoundsChange(event): void {
+  //   this.ShowLayersDropdown = false;
+  //   if (!event) {
+  //     return;
+  //   }
+  //   this.currentBounds.neLat = event.getNorthEast().lat();
+  //   this.currentBounds.neLng = event.getNorthEast().lng();
+  //   this.currentBounds.swLat = event.getSouthWest().lat();
+  //   this.currentBounds.swLng = event.getSouthWest().lng();
 
-    const Bounds: Array<number> = [
-      event.getNorthEast().lat(),
-      event.getNorthEast().lng(),
-      event.getSouthWest().lat(),
-      event.getSouthWest().lng()
-    ];
+  //   const Bounds: Array<number> = [
+  //     event.getNorthEast().lat(),
+  //     event.getNorthEast().lng(),
+  //     event.getSouthWest().lat(),
+  //     event.getSouthWest().lng()
+  //   ];
 
-    this.lastBoundsChangeMillisecond = new Date().getTime();
-    setTimeout(() => {
-      const currentTimeInMillis = new Date().getTime();
-      if (currentTimeInMillis - this.lastBoundsChangeMillisecond > 999) {
-        this.MapBoundsChange.emit(Bounds);
-      }
-    }, 1000);
-  }
+  //   this.lastBoundsChangeMillisecond = new Date().getTime();
+  //   setTimeout(() => {
+  //     const currentTimeInMillis = new Date().getTime();
+  //     if (currentTimeInMillis - this.lastBoundsChangeMillisecond > 999) {
+  //       this.MapBoundsChange.emit(Bounds);
+  //     }
+  //   }, 1000);
+  // }
 
   /**
    * Emits the current value of the custom search bar each time user types something.

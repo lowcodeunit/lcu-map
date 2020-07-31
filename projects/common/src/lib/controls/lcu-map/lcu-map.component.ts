@@ -492,6 +492,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit(event);
   }
 
+  @Output('legend-top-icon-clicked')
+  public LegendIconClicked: EventEmitter<string> = new EventEmitter();
+
   /**
    * The event emitted when the primary map's location list is altered (the new map is emitted)
    */
@@ -1165,6 +1168,21 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     } else {
       this.EditLocation.emit(marker);
     }
+  }
+
+  public OnUserChoseIcon(event, location) {
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        if (act.ID === location.ID) {
+          act.WidgetIcon = event;
+        }
+      });
+    });
+    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney}) ;
+  }
+
+  public LegendTopIconClicked(event) {
+    this.LegendIconClicked.emit(event);
   }
 
   public DisplayMoreInfo(marker: MapMarker): void {

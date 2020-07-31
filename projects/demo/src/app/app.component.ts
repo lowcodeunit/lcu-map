@@ -202,6 +202,10 @@ export class AppComponent implements OnInit {
     console.log(map); // this can be a call to save the primary map because the location list has changed
   }
 
+  public LegendIconClicked(event) {
+    // console.log('legend icon in app: ', event)
+  }
+
   public GoToRandomMap() {
     // this.MapConfig = {
     //     ID: '2',
@@ -463,7 +467,7 @@ export class AppComponent implements OnInit {
               CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
               Editable: false,
               Favorited: false,
-              ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+              ID: "5c69801b-1f97-5e55-9b01-2c7c72cdfc9a",
               LocationID: "00000000-0000-0000-0000-000000000000",
               Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
               Modified: null,
@@ -480,7 +484,7 @@ export class AppComponent implements OnInit {
               CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
               Editable: false,
               Favorited: false,
-              ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+              ID: "5c69801b-1f97-4e55-9b51-2c7c72cdfc9a",
               LocationID: "00000000-0000-0000-0000-000000000000",
               Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
               Modified: null,
@@ -497,7 +501,7 @@ export class AppComponent implements OnInit {
               CreatedDateTime: "2020-05-22T19:19:26.8388337+00:00",
               Editable: false,
               Favorited: false,
-              ID: "5c69801b-1f97-4e55-9b01-2c7c72cdfc9a",
+              ID: "5c69801b-1f97-4e55-9b01-2c7c75cdfc9a",
               LocationID: "00000000-0000-0000-0000-000000000000",
               Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
               Modified: null,

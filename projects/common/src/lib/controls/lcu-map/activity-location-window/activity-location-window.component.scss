@@ -30,6 +30,14 @@ $info-window-height: 170px;
   border-radius: 2px;
   height: $info-window-height;
 
+  .widget-icon-set {
+    padding: 8px 0;
+    
+    mat-icon {
+      width: 22px;
+    }
+  }
+
   .container-top {
     padding: 8px 12px;
 

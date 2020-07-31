@@ -39,6 +39,9 @@ export class MapJourneyComponent implements OnInit {
   @Output('activity-location-clicked')
   public ActivityLocationClicked: EventEmitter<any> = new EventEmitter();
 
+  @Output('legend-top-icon-clicked')
+  public LegendTopIconClickedEvent: EventEmitter<string> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
@@ -61,6 +64,10 @@ export class MapJourneyComponent implements OnInit {
 
   public onActivityClickToNavigate(activity) {
     this.ActivityLocationClicked.emit(activity);
+  }
+
+  public LegendTopIconClicked(icon: string) {
+    this.LegendTopIconClickedEvent.emit(icon);
   }
 
   /**

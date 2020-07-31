@@ -16,6 +16,20 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
   public infoWindow: AgmInfoWindow;
   public _belongsToJourney: boolean = false;
   public mapMarkerClickedSubscription: Subscription;
+  public IconSelection: Array<string> = [
+    'location_on',
+    'hotel',
+    'restaurant',
+    'local_cafe',
+    'local_bar',
+    'local_see',
+    'palette',
+    'music_note',
+    'terrain',
+    'beach_access',
+    'golf_course'
+  ];
+  public IsSelectingIcon: boolean = false;
 
   @Input() public marker: ActivityModel;
 
@@ -32,6 +46,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
   @Output('add-icon-clicked')
   public AddIconClicked: EventEmitter<any> = new EventEmitter();
+
+  @Output('user-chose-icon')
+  public UserChoseIcon: EventEmitter<any> = new EventEmitter();
 
 
   constructor(
@@ -83,6 +100,15 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
   public addIconClicked() {
     this.AddIconClicked.emit();
+  }
+
+  public ShowWidgetIconSelection() {
+    this.IsSelectingIcon = true;
+  }
+
+  public OnChoseIcon(icon: string) {
+    this.IsSelectingIcon = false;
+    this.UserChoseIcon.emit(icon);
   }
 
   /**

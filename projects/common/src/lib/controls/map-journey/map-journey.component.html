@@ -34,9 +34,9 @@
         </span>
       </div>
       <div>
-        <span class="star" (click)="onFavoritedClick(activity)"
+        <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
           [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
-        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity)"></mat-checkbox>
+        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);" (click)="$event.stopPropagation();"></mat-checkbox>
       </div>
     </div>
   </mat-expansion-panel>

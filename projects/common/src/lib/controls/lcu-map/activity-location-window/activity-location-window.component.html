@@ -1,8 +1,8 @@
 <div fxLayout="column" class="location-info-container" [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">
 
-  <div fxLayout="row" fxLayoutAlign="space-between center" class="container-top">
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="container-top" *ngIf="!IsSelectingIcon">
     <div class="activity-widget-icon">
-      <mat-icon>{{ marker?.WidgetIcon }}</mat-icon>
+      <mat-icon (click)="ShowWidgetIconSelection()">{{ marker?.WidgetIcon }}</mat-icon>
     </div>
     <div class="location-data-name-address">
       <span class="location-data-name">{{ marker?.locationData?.Title }}</span>
@@ -13,6 +13,10 @@
       <mat-icon>star_border</mat-icon>
       <mat-icon class="material-icons material-icons-outlined">info_outline</mat-icon>
     </div>
+  </div>
+
+  <div *ngIf="IsSelectingIcon" class="widget-icon-set">
+    <mat-icon *ngFor="let icon of IconSelection" (click)="OnChoseIcon(icon)">{{ icon }}</mat-icon>
   </div>
 
   <div fxLayout="row" class="container-bottom">

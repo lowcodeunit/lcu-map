@@ -1167,6 +1167,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
+  public OnUserChoseIcon(event, location) {
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        if (act.ID === location.ID) {
+          act.WidgetIcon = event;
+        }
+      });
+    });
+    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney}) ;
+  }
+
   public DisplayMoreInfo(marker: MapMarker): void {
     this.openMoreInfoDialog(marker);
   }

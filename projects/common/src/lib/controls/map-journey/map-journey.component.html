@@ -1,9 +1,9 @@
 <div class="map-journey-menu" fxLayout="row" fxLayoutAlign="space-around center">
   <mat-icon>chevron_left</mat-icon>
-  <mat-icon>query_builder</mat-icon>
-  <mat-icon>crop_original</mat-icon>
-  <mat-icon>format_list_numbered</mat-icon>
-  <mat-icon>delete_outline</mat-icon>
+  <mat-icon (click)="LegendTopIconClicked('journeys')">query_builder</mat-icon>
+  <mat-icon (click)="LegendTopIconClicked('albums')">crop_original</mat-icon>
+  <mat-icon (click)="LegendTopIconClicked('lists')">format_list_numbered</mat-icon>
+  <mat-icon (click)="LegendTopIconClicked('delete')">delete_outline</mat-icon>
   <mat-icon>chevron_right</mat-icon>
 </div>
 <mat-accordion [togglePosition]="'before'">

@@ -202,6 +202,10 @@ export class AppComponent implements OnInit {
     console.log(map); // this can be a call to save the primary map because the location list has changed
   }
 
+  public LegendIconClicked(event) {
+    // console.log('legend icon in app: ', event)
+  }
+
   public GoToRandomMap() {
     // this.MapConfig = {
     //     ID: '2',

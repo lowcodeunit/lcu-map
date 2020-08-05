@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'lcu-map-journey',
@@ -9,6 +10,8 @@ export class MapJourneyComponent implements OnInit {
 
   protected _journey: any;
   protected _amblOnLocationArray: any;
+
+  public PanToLocation: {lat: number, lng: number, zoom: number};
 
   @Input('journey')
   public set Journey(journey: any) { // TODO : bring in ItineraryModel and change this
@@ -42,7 +45,7 @@ export class MapJourneyComponent implements OnInit {
   @Output('legend-top-icon-clicked')
   public LegendTopIconClickedEvent: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  constructor(protected mapService: MapService) { }
 
   ngOnInit() {
   }
@@ -100,6 +103,13 @@ export class MapJourneyComponent implements OnInit {
           }
         });
       });
+      const firstActivityData = this.Journey.ActivityGroups[0].Activities[0].locationData;
+      this.PanToLocation = {
+        lat: firstActivityData.Latitude,
+        lng: firstActivityData.Longitude,
+        zoom: 6
+      };
+      this.mapService.ForcePan(this.PanToLocation);
     }
   }
 

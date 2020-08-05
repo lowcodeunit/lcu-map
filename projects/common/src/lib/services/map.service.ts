@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter } from '@angular/core';
 import { MapMarker } from '../models/map-marker.model';
 import { AgmInfoWindow } from '@agm/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +22,15 @@ export class MapService {
    */
   protected apiKey: string = 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU';
 
+  protected panToLocation: any;
+
   // PROPERTIES
   public InfoWindowClosed: EventEmitter<any>;
   public MapMarkerClicked: EventEmitter<AgmInfoWindow>;
   public MapMarkerSaved: EventEmitter<MapMarker>;
   public MoreInfoClicked: EventEmitter<MapMarker>;
   public TopListsClicked: EventEmitter<any>;
+  public ForcePanToListener: Subject<any>;
 
   /**
    * The current Layers that are selected to display
@@ -41,6 +45,7 @@ export class MapService {
     this.MapMarkerSaved = new EventEmitter<MapMarker>();
     this.MoreInfoClicked = new EventEmitter<MapMarker>();
     this.TopListsClicked = new EventEmitter<any>();
+    this.ForcePanToListener = new Subject<any>();
   }
 
   // LIFE CYCLE
@@ -107,6 +112,10 @@ export class MapService {
     this.MapMarkerSaved.emit(marker);
   }
 
+  public GetForcePanToEvent() {
+    return this.ForcePanToListener;
+  }
+
   /**
    *
    * @param layers Sets CurrentlyActiveLayers to the incomming array of IndividualMaps
@@ -124,6 +133,12 @@ export class MapService {
   public GetMapApiKey(): string {
     return this.apiKey;
   }
+
+  public ForcePan(locationInfo: {lat: any, lng: any, zoom: number}) {
+    this.panToLocation = locationInfo;
+    this.ForcePanToListener.next({ ...this.panToLocation });
+  }
+
   // HELPERS
 
 }

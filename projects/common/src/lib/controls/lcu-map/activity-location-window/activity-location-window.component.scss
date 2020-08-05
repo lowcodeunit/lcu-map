@@ -30,6 +30,14 @@ $info-window-height: 170px;
   border-radius: 2px;
   height: $info-window-height;
 
+  .widget-icon-set {
+    padding: 8px 0;
+    
+    mat-icon {
+      width: 22px;
+    }
+  }
+
   .container-top {
     padding: 8px 12px;
 
@@ -46,6 +54,9 @@ $info-window-height: 170px;
       .location-data-name {
         display: block;
         font-size: 8pt;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .location-data-address-line1 {
         display: block;
@@ -82,6 +93,7 @@ $info-window-height: 170px;
       width: 64%;
       height: 100px;
       position: relative;
+     
 
       mat-icon {
         font-size: 30pt;
@@ -89,7 +101,7 @@ $info-window-height: 170px;
         position: absolute;
         right: 50%;
         bottom: 50%;
-
+        cursor: pointer;
       }
     }
   }

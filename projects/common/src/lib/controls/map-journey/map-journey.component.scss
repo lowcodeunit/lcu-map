@@ -10,6 +10,7 @@ p, span, a, div, button {
 
     mat-icon {
         color: white;
+        cursor: pointer;
     }
 }
 
@@ -69,6 +70,9 @@ p, span, a, div, button {
 .activity-display-location {
     width: 65%;
     line-height: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .activity-location-title {
     font-size: 9pt;

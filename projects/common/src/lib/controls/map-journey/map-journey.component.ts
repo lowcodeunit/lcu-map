@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'lcu-map-journey',
@@ -10,8 +11,11 @@ export class MapJourneyComponent implements OnInit {
   protected _journey: any;
   protected _amblOnLocationArray: any;
 
+  public PanToLocation: {lat: number, lng: number, zoom: number};
+
   @Input('journey')
   public set Journey(journey: any) { // TODO : bring in ItineraryModel and change this
+    if (!journey) { return; }
     journey.ActivityGroups.forEach(ag => {
       ag.PanelOpenState = false;
     });
@@ -38,7 +42,10 @@ export class MapJourneyComponent implements OnInit {
   @Output('activity-location-clicked')
   public ActivityLocationClicked: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  @Output('legend-top-icon-clicked')
+  public LegendTopIconClickedEvent: EventEmitter<string> = new EventEmitter();
+
+  constructor(protected mapService: MapService) { }
 
   ngOnInit() {
   }
@@ -60,6 +67,10 @@ export class MapJourneyComponent implements OnInit {
 
   public onActivityClickToNavigate(activity) {
     this.ActivityLocationClicked.emit(activity);
+  }
+
+  public LegendTopIconClicked(icon: string) {
+    this.LegendTopIconClickedEvent.emit(icon);
   }
 
   /**
@@ -92,6 +103,13 @@ export class MapJourneyComponent implements OnInit {
           }
         });
       });
+      const firstActivityData = this.Journey.ActivityGroups[0].Activities[0].locationData;
+      this.PanToLocation = {
+        lat: firstActivityData.Latitude,
+        lng: firstActivityData.Longitude,
+        zoom: 6
+      };
+      this.mapService.ForcePan(this.PanToLocation);
     }
   }
 

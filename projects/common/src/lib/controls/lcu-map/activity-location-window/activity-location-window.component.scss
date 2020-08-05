@@ -54,6 +54,9 @@ $info-window-height: 170px;
       .location-data-name {
         display: block;
         font-size: 8pt;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .location-data-address-line1 {
         display: block;

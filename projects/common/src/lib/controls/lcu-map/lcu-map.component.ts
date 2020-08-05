@@ -105,14 +105,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   protected _displayedJourney: any;
   protected _amblOnLocationArray: any;
+  protected forcePanToSubscription: Subscription;
 
   /**
    * boolean value that determines if the MapMarker already exists and is being edited
    */
   public isEdit: boolean;
-
-
-
 
   // PROPERTIES
   // 12 for bottom right & 9 for right bottom
@@ -390,7 +388,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this._currentMapModel) {
       this._currentMapModel.Latitude = value.lat;
       this._currentMapModel.Longitude = value.lng;
-      this._currentMapModel.zoom = value.zoom;
+      this._currentMapModel.Zoom = value.zoom;
     }
   }
 
@@ -574,6 +572,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     protected ngZone: NgZone,
     protected wrapper: GoogleMapsAPIWrapper
   ) {
+    this.forcePanToSubscription = this.mapService.GetForcePanToEvent().subscribe(locInfo => {
+      this.PanTo = locInfo;
+    });
     this.IncludeSaveMapFeature = false;
     this.MapSaved = new EventEmitter(),
       // this.PrimaryMapLocationListChanged = new EventEmitter;
@@ -674,6 +675,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.markerInfoSubscription) {
       this.markerInfoSubscription.unsubscribe();
     }
+    this.forcePanToSubscription.unsubscribe();
   }
 
   /**

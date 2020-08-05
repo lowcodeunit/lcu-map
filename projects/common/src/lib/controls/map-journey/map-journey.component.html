@@ -7,7 +7,7 @@
   <mat-icon>chevron_right</mat-icon>
 </div>
 <mat-accordion [togglePosition]="'before'">
-  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups"
+  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; let isFirst = first" [expanded]="isFirst"
     (opened)="activityGroup.PanelOpenState = true" (closed)="activityGroup.PanelOpenState = false">
     <mat-expansion-panel-header>
       <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">

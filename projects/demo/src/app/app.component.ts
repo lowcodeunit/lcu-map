@@ -255,7 +255,7 @@ export class AppComponent implements OnInit {
         Country: "United States",
         Created: null,
         Deletable: false,
-        GoogleLocationName: "Jardigrams",
+        GoogleLocationName: "Jardigrams Jardigrams Wabbajack Wabbajack",
         ID: "012ff50f-55eb-433f-bddb-e81dc56ef502",
         Icon: "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
         Instagram: "",
@@ -268,7 +268,7 @@ export class AppComponent implements OnInit {
         PartitionKey: "40-105",
         State: "Colorado",
         Telephone: "",
-        Title: "Jardagrams",
+        Title: "Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack",
         Town: "Brighton",
         Website: "http://www.yardagrams.com/",
         ZipCode: "80602"

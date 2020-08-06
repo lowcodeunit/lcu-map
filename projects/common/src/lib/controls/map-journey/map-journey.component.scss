@@ -62,6 +62,7 @@ p, span, a, div, button {
     height: 35px;
     box-shadow: 0px 0px 1px black;
     cursor: pointer;
+    display: flex !important;
 }
 
 .activity-display-title {

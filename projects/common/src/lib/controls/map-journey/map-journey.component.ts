@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from '../../services/map.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'lcu-map-journey',
@@ -11,7 +13,8 @@ export class MapJourneyComponent implements OnInit {
   protected _journey: any;
   protected _amblOnLocationArray: any;
 
-  public PanToLocation: {lat: number, lng: number, zoom: number};
+  public DropListArray: Array<string> = [];
+  public PanToLocation: { lat: number, lng: number, zoom: number };
 
   @Input('journey')
   public set Journey(journey: any) { // TODO : bring in ItineraryModel and change this
@@ -21,6 +24,8 @@ export class MapJourneyComponent implements OnInit {
     });
     this._journey = journey;
     this.addLocationData();
+    this.assignDropListData();
+    console.log(this.DropListArray)
   }
   public get Journey(): any {
     return this._journey;
@@ -73,6 +78,25 @@ export class MapJourneyComponent implements OnInit {
     this.LegendTopIconClickedEvent.emit(icon);
   }
 
+  public DropGroup(event: CdkDragDrop<string[]>) {
+    // console.log('DROP GROUP EVENT: ');
+    // console.log(event);
+    moveItemInArray(this.Journey.ActivityGroups, event.previousIndex, event.currentIndex);
+  }
+
+  public DropActivity(event: CdkDragDrop<string[]>) {
+    // console.log('DROP ACTIVITY EVENT: ');
+    // console.log(event);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+  }
+
   /**
    *
    * @param message the message to include as to what change was made to trigger the emit
@@ -93,13 +117,19 @@ export class MapJourneyComponent implements OnInit {
     this.JourneyChanged.emit({ message, journey: journeyToSend });
   }
 
+  protected assignDropListData() {
+    this.Journey.ActivityGroups.forEach(ag => {
+      this.DropListArray.push(ag.Title);
+    });
+  }
+
   protected addLocationData() {
     if (this.Journey && this.AmblOnLocationArray) {
       this.Journey.ActivityGroups.forEach(ag => {
         ag.Activities.forEach(act => {
           if (this.AmblOnLocationArray.find(loc => loc.ID === act.LocationID)) {
             act.locationData = this.AmblOnLocationArray.find(loc => loc.ID === act.LocationID);
-            if (act.locationData.Country === 'United States') {act.locationData.Country = 'USA';}
+            if (act.locationData.Country === 'United States') { act.locationData.Country = 'USA'; }
           }
         });
       });

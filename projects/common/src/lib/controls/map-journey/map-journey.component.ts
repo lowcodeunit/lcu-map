@@ -57,17 +57,17 @@ export class MapJourneyComponent implements OnInit {
 
   public OnAGCheckChange(event, ag) {
     ag.Checked = event.checked;
-    this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey);
+    this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey, {group: ag});
   }
 
   public OnActivityCheckChange(event, activity) {
     activity.Checked = event.checked;
-    this.normalizeAndEmitJourney('activity checked/unchecked', this.Journey);
+    this.normalizeAndEmitJourney('activity checked/unchecked', this.Journey, {activity});
   }
 
   public onFavoritedClick(activity) {
     activity.Favorited = !activity.Favorited;
-    this.normalizeAndEmitJourney('activity favorited / unfavorited', this.Journey);
+    this.normalizeAndEmitJourney('activity favorited / unfavorited', this.Journey, {activity});
   }
 
   public onActivityClickToNavigate(activity) {
@@ -127,6 +127,7 @@ export class MapJourneyComponent implements OnInit {
   }
 
   protected assignDropListData() {
+    this.DropListArray = [];
     this.Journey.ActivityGroups.forEach(ag => {
       this.DropListArray.push(ag.Title);
     });

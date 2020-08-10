@@ -29,7 +29,7 @@
 
     <!-- JOURNEY ACTIVITIES -->
     <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
-      class="activity-display" (click)="onActivityClickToNavigate(activity)">
+      class="activity-display" (click)="onActivityClickToNavigate(activity)" [ngClass]="{'active-activity': ClickedActivityId === activity.ID}">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
@@ -48,6 +48,11 @@
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();"></mat-checkbox>
       </div>
+      <!-- <div *cdkDragPreview>
+        <div>
+          Preview goes here, if it's even possible
+        </div>
+      </div> -->
     </div>
 
   </mat-expansion-panel>

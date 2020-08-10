@@ -48,11 +48,35 @@
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();"></mat-checkbox>
       </div>
-      <!-- <div *cdkDragPreview>
-        <div>
-          Preview goes here, if it's even possible
+
+
+      <!-- DRAG PREVIEW BEGIN -->
+      <div *cdkDragPreview>
+        <div class="activity-display-drag-preview" fxLayout="row" fxLayoutAlign="space-between center">
+          <span>
+            <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
+          </span>
+          <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
+          <div *ngIf="activity.locationData" class="activity-display-location">
+            <span class="activity-location-title">{{ activity.locationData.Title }}</span>
+            <br />
+            <span class="activity-location-address">
+              <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
+                {{ activity.locationData.Country }}</span>
+            </span>
+          </div>
+          <div>
+            <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
+              [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
+            <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
+              (click)="$event.stopPropagation();"></mat-checkbox>
+          </div>
         </div>
-      </div> -->
+      </div>
+      <!-- DRAG PREVIEW END -->
+
+
+
     </div>
 
   </mat-expansion-panel>

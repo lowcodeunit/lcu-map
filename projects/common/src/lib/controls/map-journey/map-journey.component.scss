@@ -110,3 +110,18 @@ p, span, a, div, button {
 .star-favorited {
     background-position-x: -15px !important;
 }
+
+.active-activity {
+    background-color: $primary_medium;
+}
+
+.activity-display-drag-preview {
+    padding: 0px 10px;
+    height: 35px;
+    box-shadow: 0px 0px 1px black;
+    cursor: pointer;
+    display: flex !important;
+    background-color: $primary_dark;
+    color: white;
+    width: 270px;
+}

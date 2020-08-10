@@ -13,6 +13,7 @@ export class MapJourneyComponent implements OnInit {
   protected _journey: any;
   protected _amblOnLocationArray: any;
 
+  public ClickedActivityId: string;
   public DropListArray: Array<string> = [];
   public PanToLocation: { lat: number, lng: number, zoom: number };
 
@@ -57,21 +58,26 @@ export class MapJourneyComponent implements OnInit {
 
   public OnAGCheckChange(event, ag) {
     ag.Checked = event.checked;
-    this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey, {group: ag});
+    this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey, { group: ag });
   }
 
   public OnActivityCheckChange(event, activity) {
     activity.Checked = event.checked;
-    this.normalizeAndEmitJourney('activity checked/unchecked', this.Journey, {activity});
+    this.normalizeAndEmitJourney('activity checked/unchecked', this.Journey, { activity });
   }
 
   public onFavoritedClick(activity) {
     activity.Favorited = !activity.Favorited;
-    this.normalizeAndEmitJourney('activity favorited / unfavorited', this.Journey, {activity});
+    this.normalizeAndEmitJourney('activity favorited / unfavorited', this.Journey, { activity });
   }
 
   public onActivityClickToNavigate(activity) {
     this.ActivityLocationClicked.emit(activity);
+    if (activity.locationData) {
+      this.ClickedActivityId = activity.ID;
+    } else {
+      this.ClickedActivityId = null;
+    }
   }
 
   public LegendTopIconClicked(icon: string) {
@@ -103,7 +109,7 @@ export class MapJourneyComponent implements OnInit {
     // console.log('Journy after moving items: ', this.Journey);
     this.reOrderGroupsAndActivities();
     // console.log(this.Journey);
-    this.normalizeAndEmitJourney('moved activity', this.Journey, {movedActivity: 'the moved activity', newGroup: 'the new group'});
+    this.normalizeAndEmitJourney('moved activity', this.Journey, { movedActivity: 'the moved activity', newGroup: 'the new group' });
   }
 
   /**

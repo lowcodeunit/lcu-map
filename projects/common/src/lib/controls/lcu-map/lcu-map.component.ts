@@ -679,14 +679,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public NotesSaved(event, marker) {
+    let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
         if (act.ID === marker.ID) {
           act.Notes = event;
+          activity = act;
         }
       });
     });
-    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney}) ;
+    this.JourneyChanged.emit({message: 'notes saved', journey: this.DisplayedJourney, additional: {activity}}) ;
   }
 
   /**
@@ -1184,14 +1186,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public OnUserChoseIcon(event, location) {
+    let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
         if (act.ID === location.ID) {
           act.WidgetIcon = event;
+          activity = act;
         }
       });
     });
-    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney}) ;
+    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney, additional: {activity}}) ;
   }
 
   public LegendTopIconClicked(event) {

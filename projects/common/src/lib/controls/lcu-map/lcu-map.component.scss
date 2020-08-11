@@ -276,6 +276,10 @@ mat-option {
     margin-right: 0%;
     @include montserrat_bold;
     color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
 }
 
 .map-journey-display {

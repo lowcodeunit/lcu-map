@@ -50,6 +50,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
   @Output('user-chose-icon')
   public UserChoseIcon: EventEmitter<any> = new EventEmitter();
 
+  @Output('notes-saved')
+  public NotesSaved: EventEmitter<any> = new EventEmitter();
+
 
   constructor(
     protected infoWindowManager: InfoWindowManager,
@@ -96,6 +99,10 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.marker = null;
     this.mapMarkerClickedSubscription.unsubscribe();
+  }
+
+  public SaveNotes(notesText) {
+    this.NotesSaved.emit(notesText.value);
   }
 
   public addIconClicked() {

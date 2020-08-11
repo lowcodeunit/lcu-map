@@ -560,9 +560,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
 
-  @Output('map-activity-notes-saved')
-  public MapActivityNotesSaved: EventEmitter<any> = new EventEmitter();
-
   constructor(
     protected breakpointObserver: BreakpointObserver,
     protected changeDetector: ChangeDetectorRef,
@@ -682,7 +679,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public NotesSaved(event, marker) {
-    this.MapActivityNotesSaved.emit({notes: event, markerId: marker.ID});
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        if (act.ID === marker.ID) {
+          act.Notes = event;
+        }
+      });
+    });
+    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney}) ;
   }
 
   /**

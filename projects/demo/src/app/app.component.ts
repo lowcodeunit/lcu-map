@@ -155,6 +155,11 @@ export class AppComponent implements OnInit {
     // console.log('sending in this as test result list: ', this.TestLocationSearchResults)
   }
 
+  public MapActivityNotesSaved(event) {
+    // console.log('notes in app component: ', event.notes);
+    // console.log('marker id: ', event.markerId);
+  }
+
   /**
    *
    * @param map The function run when the map is successfully saved

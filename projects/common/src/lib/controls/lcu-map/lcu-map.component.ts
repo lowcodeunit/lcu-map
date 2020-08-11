@@ -560,6 +560,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
 
+  @Output('map-activity-notes-saved')
+  public MapActivityNotesSaved: EventEmitter<any> = new EventEmitter();
+
   constructor(
     protected breakpointObserver: BreakpointObserver,
     protected changeDetector: ChangeDetectorRef,
@@ -676,6 +679,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.markerInfoSubscription.unsubscribe();
     }
     this.forcePanToSubscription.unsubscribe();
+  }
+
+  public NotesSaved(event, marker) {
+    this.MapActivityNotesSaved.emit({notes: event, markerId: marker.ID});
   }
 
   /**

@@ -12,6 +12,9 @@ p, span, a, div, button {
         color: white;
         cursor: pointer;
     }
+    .disabled-icon{
+        color: $primary_medium;
+    }
 }
 
 .group-expanded-indicator {

@@ -62,7 +62,7 @@
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
       </lcu-legend> -->
-      <span class="map-journey-title">{{ DisplayedJourney?.Title | uppercase }}</span>
+      <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}">{{ DisplayedJourney?.Title | uppercase }}</span>
     </div>
     <div class="map-journey-display">
       <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
@@ -134,7 +134,8 @@
                 *ngIf="SelectedMarker?.ID === marker.ID" 
                 [marker]="marker"
                 [belongs-to-journey]="true"
-                (user-chose-icon)="OnUserChoseIcon($event, marker)">
+                (user-chose-icon)="OnUserChoseIcon($event, marker)"
+                (notes-saved)="NotesSaved($event, marker)">
             </lcu-activity-location-window>
             <!-- replace this with new component -->
             <!-- on click of actloc, call same method (OnMarkerClicked) from ts file and somehow pass in #amblInfoWindow and actLoc info-->

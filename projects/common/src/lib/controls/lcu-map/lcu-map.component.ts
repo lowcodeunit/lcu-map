@@ -178,6 +178,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public SearchMethod: string;
 
+  public EditingJourneyTitle: boolean = false;
+
   /**
    * The list of choices of location search methods for user to choose
    *
@@ -1052,6 +1054,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.ShowNewOptions === true){
       this.ShowNewOptions = false;
     }
+  }
+
+  public EditJourneyTitle() {
+    this.EditingJourneyTitle = true;
+  }
+
+  public DoneEditingJourneyTitle(newTitle) {
+    this.DisplayedJourney.Title = newTitle.value;
+    this.EditingJourneyTitle = false;
+    this.JourneyChanged.emit({message: 'journey title changed', journey: this.DisplayedJourney});
   }
 
   public NewOptionClicked(action: any) {

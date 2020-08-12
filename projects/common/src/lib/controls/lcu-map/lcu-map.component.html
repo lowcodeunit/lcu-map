@@ -62,9 +62,11 @@
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
       </lcu-legend> -->
+      <mat-icon class="open-journey-title-chevron" (click)="ShowJourneyLegend = false" *ngIf="ShowJourneyLegend">chevron_right</mat-icon>
       <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}">{{ DisplayedJourney?.Title | uppercase }}</span>
+      <mat-icon class="close-journey-title-chevron" (click)="ShowJourneyLegend = true" *ngIf="!ShowJourneyLegend">chevron_left</mat-icon>
     </div>
-    <div class="map-journey-display">
+    <div class="map-journey-display" *ngIf="ShowJourneyLegend">
       <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
         [ambl-on-location-array]="AmblOnLocationArray" (activity-location-clicked)="onActivityLocationClicked($event)"
         (legend-top-icon-clicked)="LegendTopIconClicked($event)">

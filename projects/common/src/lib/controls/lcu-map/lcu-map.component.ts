@@ -178,6 +178,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public SearchMethod: string;
 
+  public EditingJourneyTitle: boolean = false;
+
   /**
    * The list of choices of location search methods for user to choose
    *
@@ -1057,6 +1059,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
+  public EditJourneyTitle() {
+    this.EditingJourneyTitle = true;
+  }
+
+  public DoneEditingJourneyTitle(newTitle) {
+    this.DisplayedJourney.Title = newTitle.value;
+    this.EditingJourneyTitle = false;
+    this.JourneyChanged.emit({message: 'journey title changed', journey: this.DisplayedJourney});
+  }
+
   public NewOptionClicked(action: any) {
     let newGroup;
     this.ShowNewOptions = false;
@@ -1452,7 +1464,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
           results.address_components[regionIndices.countryIndex].long_name : '',
         Photos: this.buildPhotoArray(results.photos),
         Type: results.types,
-        IconImageObject: {scaledSize: {width: 30, height: 30}, url: './assets/location_on.png'}
+        IconImageObject: {scaledSize: {width: 30, height: 30}, url: './assets/ambl_marker.png'}
       });
     this.ShowSearchedLocation(tempActivity);
 

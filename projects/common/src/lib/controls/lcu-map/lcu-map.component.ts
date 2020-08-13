@@ -1046,7 +1046,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
   /**
-   * Toggles the add menu 
+   * Toggles the add menu
    */
   public ShowAddMenu() {
     this.ShowNewOptions = !this.ShowNewOptions;

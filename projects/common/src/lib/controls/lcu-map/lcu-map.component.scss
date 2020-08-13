@@ -293,6 +293,7 @@ mat-option {
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 5px;
+    cursor: pointer;
 }
 
 .map-journey-display {
@@ -302,4 +303,21 @@ mat-option {
     background-color: white;
     z-index: 1;
     width: 270px;
+}
+
+.map-journey-title-edit-input {
+    width: 95%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    @include montserrat_bold;
+    color: $primary_dark;
+    padding: 0 5px;
+    background-color: white;
+    border: none;
+    font-size: 12pt;
 }

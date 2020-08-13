@@ -140,6 +140,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public TopListsSubscription: Subscription;
 
+  public CurrentZoom: number = 9;
+  public CurrentLongitude: number = 0;
+  public CurrentLatitude: number = 0;
+
   /**
    * Is true when screen size is small or xs, false otherwise
    */
@@ -300,6 +304,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.ActivityLocationList.push(act);
       });
     });
+    this.assignDefaultMapConfiguration();
   }
 
   public get DisplayedJourney() {
@@ -309,9 +314,20 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Input('ambl-on-location-array')
   public set AmblOnLocationArray(arr) {
     this._amblOnLocationArray = arr;
+    this.assignDefaultMapConfiguration();
   }
   public get AmblOnLocationArray() {
     return this._amblOnLocationArray;
+  }
+
+  protected assignDefaultMapConfiguration() {
+    if (this.AmblOnLocationArray && this.DisplayedJourney) {
+      const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
+      const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
+      this.CurrentZoom = 10;
+      this.CurrentLongitude = firstLocation.Longitude;
+      this.CurrentLatitude = firstLocation.Latitude;
+    }
   }
 
   /**
@@ -388,12 +404,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   @Input('pan-to')
   public set PanTo(value: { lat: number, lng: number, zoom: number }) {
-    this._panTo = value;
-    if (this._currentMapModel) {
-      this._currentMapModel.Latitude = value.lat;
-      this._currentMapModel.Longitude = value.lng;
-      this._currentMapModel.Zoom = value.zoom;
-    }
+    // this._panTo = value;
+    // if (this.CurrentLatitude) {
+    //   setTimeout(() => {
+    //     this.CurrentLatitude = value.lat;
+    //     this.CurrentLongitude = value.lng;
+    //     this.CurrentZoom = value.zoom;
+    //   }, 2000);
+    // }
   }
 
   /**
@@ -496,6 +514,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @Output('journey-copied')
   public JourneyCopied: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output('journey-shared')
+  public JourneyShared: EventEmitter<any> = new EventEmitter<any>();
 
   @Output('legend-top-icon-clicked')
   public LegendIconClicked: EventEmitter<string> = new EventEmitter();
@@ -887,8 +908,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * Run when user clicks a custom location marker from custom location search.
    */
   public DropdownItemChosen(loc: any): void {
-    this._currentMapModel.Latitude = loc.Latitude;
-    this._currentMapModel.Longitude = loc.Longitude;
+    this.CurrentLatitude = loc.Latitude;
+    this.CurrentLongitude = loc.Longitude;
     // this.DisplayMarkerInfo(loc);
   }
 /**
@@ -1046,7 +1067,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
   /**
-   * Toggles the add menu 
+   * Toggles the add menu
    */
   public ShowAddMenu() {
     this.ShowNewOptions = !this.ShowNewOptions;
@@ -1057,6 +1078,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.ShowNewOptions === true){
       this.ShowNewOptions = false;
     }
+  }
+/**
+ * called when the share icon in the toolbar is clicked
+ */
+  public ShareClicked(){
+    console.log("Want to share ", this.DisplayedJourney);
+    this.JourneyShared.emit(this.DisplayedJourney);
   }
 
   public EditJourneyTitle() {
@@ -1575,9 +1603,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param value
    */
   protected zoomInToPoint(value): void {
-    this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
-    this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
+    this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    this.CurrentZoom = 12;
   }
 
   /**

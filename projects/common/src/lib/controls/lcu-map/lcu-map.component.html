@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" matTooltip="Share">share</mat-icon>
+        <mat-icon class="center-buttons" matTooltip="Share" (click)="ShareClicked()">share</mat-icon>
       </div>
     </div>
 
@@ -125,9 +125,9 @@
   <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
     <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
-      [mapTypeId]="CurrentMapViewType" #map [latitude]="_currentMapModel.Latitude" [zoomControl]="true"
-      [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude" [title]="_currentMapModel.Title"
-      [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
+      [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
+      [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'"
+      [zoom]="CurrentZoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
       [usePanning]="true">
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <div id="markers" *ngFor="let marker of ActivityLocationList">

@@ -6,11 +6,9 @@
  -->
 <lcu-map 
 (primary-map-location-list-changed)="PrimMapChanged($event)" 
-[map-model]="MapConfig" 
 [map-marker-set]="IconSet" 
 (visible-location-list-changed)="ListChanged($event)"
 (search-location-chosen)="SearchLocationChosen($event)" 
-[pan-to]="RandomPan" 
 [visible-locations-master-list]="MasterVisLocs"
 [map-view-types]="MapViewTypes"
 [custom-search-repress-dropdown-character-count]="2"

@@ -50,6 +50,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
   @Output('user-chose-icon')
   public UserChoseIcon: EventEmitter<any> = new EventEmitter();
 
+  @Output('notes-saved')
+  public NotesSaved: EventEmitter<any> = new EventEmitter();
+
 
   constructor(
     protected infoWindowManager: InfoWindowManager,
@@ -98,8 +101,13 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
     this.mapMarkerClickedSubscription.unsubscribe();
   }
 
+  public SaveNotes(notesText) {
+    this.NotesSaved.emit(notesText.value);
+  }
+
   public addIconClicked() {
     this.AddIconClicked.emit();
+    this.BelongsToJourney = true;
   }
 
   public ShowWidgetIconSelection() {

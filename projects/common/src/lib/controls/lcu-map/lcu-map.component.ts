@@ -219,6 +219,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public ShowSearchBar: boolean = false;
 
+  public ShowJourneyLegend: boolean = true;
+
   /**
    * Whether or not to show the add menu
    */
@@ -291,8 +293,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
-        // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
-        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
+        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
+        // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
         this.ActivityLocationList.push(act);
       });
     });
@@ -490,6 +492,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit(event);
   }
 
+  @Output('journey-copied')
+  public JourneyCopied: EventEmitter<any> = new EventEmitter<any>();
+
   @Output('legend-top-icon-clicked')
   public LegendIconClicked: EventEmitter<string> = new EventEmitter();
 
@@ -676,6 +681,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.markerInfoSubscription.unsubscribe();
     }
     this.forcePanToSubscription.unsubscribe();
+  }
+
+  public NotesSaved(event, marker) {
+    let activity;
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        if (act.ID === marker.ID) {
+          act.Notes = event;
+          activity = act;
+        }
+      });
+    });
+    this.JourneyChanged.emit({message: 'notes saved', journey: this.DisplayedJourney, additional: {activity}}) ;
   }
 
   /**
@@ -1079,9 +1097,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
             }
           });
         });
-        this.JourneyChanged.emit(
+        this.JourneyCopied.emit(
           {
-            message: 'Journey being copied',
             journey: this._displayedJourney
           });
         // this.usersCtxt.AddItinerary(itinToCopy);
@@ -1090,8 +1107,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       } else { // if copying one's own created itinerary...
         console.log('copying one\'s own itinerary...');
 
-        this.JourneyChanged.emit({
-          message: "new journey", journey: new ItineraryModel({
+        this.JourneyCopied.emit({
+          journey: new ItineraryModel({
             ID: null,
             Title: `${this._displayedJourney.Title} (copy)`,
             ActivityGroups: this._displayedJourney.ActivityGroups,
@@ -1173,14 +1190,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public OnUserChoseIcon(event, location) {
+    let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
         if (act.ID === location.ID) {
           act.WidgetIcon = event;
+          activity = act;
         }
       });
     });
-    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney}) ;
+    this.JourneyChanged.emit({message: 'activity icon changed', journey: this.DisplayedJourney, additional: {activity}}) ;
   }
 
   public LegendTopIconClicked(event) {

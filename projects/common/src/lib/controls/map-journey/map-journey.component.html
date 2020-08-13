@@ -1,14 +1,21 @@
+<!-- TOP ICON SECTION -->
 <div class="map-journey-menu" fxLayout="row" fxLayoutAlign="space-around center">
-  <mat-icon>chevron_left</mat-icon>
+  <!-- <mat-icon>chevron_left</mat-icon> -->
   <mat-icon (click)="LegendTopIconClicked('journeys')">query_builder</mat-icon>
-  <mat-icon (click)="LegendTopIconClicked('albums')">crop_original</mat-icon>
-  <mat-icon (click)="LegendTopIconClicked('lists')">format_list_numbered</mat-icon>
+  <mat-icon (click)="LegendTopIconClicked('albums')" class="disabled-icon">crop_original</mat-icon>
+  <mat-icon (click)="LegendTopIconClicked('lists')" class="disabled-icon">format_list_numbered</mat-icon>
   <mat-icon (click)="LegendTopIconClicked('delete')">delete_outline</mat-icon>
-  <mat-icon>chevron_right</mat-icon>
+  <!-- <mat-icon>chevron_right</mat-icon> -->
 </div>
-<mat-accordion [togglePosition]="'before'">
-  <mat-expansion-panel hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; let isFirst = first" [expanded]="isFirst"
-    (opened)="activityGroup.PanelOpenState = true" (closed)="activityGroup.PanelOpenState = false">
+
+<!-- MAIN ACCORDION SECTION -->
+<mat-accordion [togglePosition]="'before'" [multi]="true" cdkDropList (cdkDropListDropped)="DropGroup($event)">
+
+  <!-- JOURNEY ACTIVITY GROUPS -->
+  <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; let isFirst = first"
+    [expanded]="isFirst" (opened)="activityGroup.PanelOpenState = true" (closed)="activityGroup.PanelOpenState = false"
+    cdkDropList id="{{activityGroup.Title}}" [cdkDropListData]="activityGroup.Activities"
+    [cdkDropListConnectedTo]="DropListArray" (cdkDropListDropped)="DropActivity($event)">
     <mat-expansion-panel-header>
       <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
@@ -19,8 +26,27 @@
         </mat-checkbox>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
-      class="activity-display" (click)="onActivityClickToNavigate(activity)">
+
+    <!-- GROUP DRAG PREVIEW -->
+    <div *cdkDragPreview>
+      <div class="group-drag-preview">
+        <mat-expansion-panel-header>
+          <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
+            <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
+            <div>{{ activityGroup.Title | uppercase }}</div>
+            <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
+              (click)="$event.stopPropagation();">
+            </mat-checkbox>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      </div>
+    </div>
+    <!-- END GROUP DRAG PREVIEW -->
+
+    <!-- JOURNEY ACTIVITIES -->
+    <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
+      class="activity-display" (click)="onActivityClickToNavigate(activity)" [ngClass]="{'active-activity': ClickedActivityId === activity.ID}">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
@@ -36,8 +62,40 @@
       <div>
         <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
           [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
-        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);" (click)="$event.stopPropagation();"></mat-checkbox>
+        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
+          (click)="$event.stopPropagation();"></mat-checkbox>
       </div>
+
+
+      <!-- ACTIVITY DRAG PREVIEW BEGIN -->
+      <div *cdkDragPreview>
+        <div class="activity-display-drag-preview" fxLayout="row" fxLayoutAlign="space-between center">
+          <span>
+            <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
+          </span>
+          <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
+          <div *ngIf="activity.locationData" class="activity-display-location">
+            <span class="activity-location-title">{{ activity.locationData.Title }}</span>
+            <br />
+            <span class="activity-location-address">
+              <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
+                {{ activity.locationData.Country }}</span>
+            </span>
+          </div>
+          <div>
+            <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
+              [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
+            <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
+              (click)="$event.stopPropagation();"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <!-- ACTIVITY DRAG PREVIEW END -->
+
+
+
     </div>
+
   </mat-expansion-panel>
+
 </mat-accordion>

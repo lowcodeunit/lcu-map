@@ -10,8 +10,8 @@
       <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.State }}, {{ marker?.locationData?.Country }}</span>
     </div>
     <div class="location-star-info">
-      <mat-icon>star_border</mat-icon>
-      <mat-icon class="material-icons material-icons-outlined">info_outline</mat-icon>
+      <mat-icon *ngIf="BelongsToJourney">star_border</mat-icon>
+      <mat-icon *ngIf="BelongsToJourney" class="material-icons material-icons-outlined">info_outline</mat-icon>
     </div>
   </div>
 
@@ -21,11 +21,11 @@
 
   <div fxLayout="row" class="container-bottom">
     <div fxLayout="column" fxLayoutAlign="center center" class="location-media-buttons-section">
-      <mat-icon><a href="tel:{{marker?.locationData?.Telephone | RemoveDashes}}" [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">phone</a></mat-icon>
-      <mat-icon><a target="_blank" [href]="marker?.locationData?.Website" [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">language</a></mat-icon>
+      <mat-icon matTooltip="tel:{{marker?.locationData?.Telephone | RemoveDashes}}"><a href="tel:{{marker?.locationData?.Telephone | RemoveDashes}}"  [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">phone</a></mat-icon>
+      <mat-icon [matTooltip]="marker?.locationData?.Website"><a target="_blank" [href]="marker?.locationData?.Website" [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">language</a></mat-icon>
     </div>
     <div *ngIf="BelongsToJourney" class="notes-section">
-      <textarea placeholder="Notes" rows="6"></textarea>
+      <textarea #notesText placeholder="Notes" rows="6" (blur)="SaveNotes(notesText)" value="{{marker?.Notes}}"></textarea>
     </div>
     <div *ngIf="!BelongsToJourney" class="add-button-section" >
       <mat-icon (click)="addIconClicked()" matTooltip="Add to Journey">add_circle_outline</mat-icon>

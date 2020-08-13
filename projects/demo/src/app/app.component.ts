@@ -155,6 +155,11 @@ export class AppComponent implements OnInit {
     // console.log('sending in this as test result list: ', this.TestLocationSearchResults)
   }
 
+  public MapActivityNotesSaved(event) {
+    // console.log('notes in app component: ', event.notes);
+    // console.log('marker id: ', event.markerId);
+  }
+
   /**
    *
    * @param map The function run when the map is successfully saved
@@ -339,7 +344,7 @@ export class AppComponent implements OnInit {
               LocationID: "012ff50f-55eb-433f-bddb-e81dc56ef502",
               Lookup: "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|6920fc60-d8a4-421a-8b2d-45ab88289d0b|Good_morning|00000000-0000-0000-0000-000000000000|0",
               Modified: null,
-              Notes: "",
+              Notes: "some notes",
               Order: 0,
               PartitionKey: "Activity|G",
               Title: "Good morningz",
@@ -536,7 +541,7 @@ export class AppComponent implements OnInit {
       'Shared': false,
       'SharedByUserID': "00000000-0000-0000-0000-000000000000",
       'SharedByUsername': "",
-      'Title': "Sitting Inside All Day"
+      'Title': "Sitting Inside All Day And Doing Nothing But Coming Up With Long Titles"
     }
   }
 }

@@ -497,6 +497,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('journey-copied')
   public JourneyCopied: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output('journey-shared')
+  public JourneyShared: EventEmitter<any> = new EventEmitter<any>();
+
   @Output('legend-top-icon-clicked')
   public LegendIconClicked: EventEmitter<string> = new EventEmitter();
 
@@ -1057,6 +1060,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.ShowNewOptions === true){
       this.ShowNewOptions = false;
     }
+  }
+/**
+ * called when the share icon in the toolbar is clicked
+ */
+  public ShareClicked(){
+    console.log("Want to share ", this.DisplayedJourney);
+    this.JourneyShared.emit(this.DisplayedJourney);
   }
 
   public EditJourneyTitle() {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ActivityGroupModel } from '@lcu-ide/dynamic-map-common/lib/models/activity-group.model';
 
 
 @Component({
@@ -16,6 +17,17 @@ export class MapJourneyComponent implements OnInit {
   public ClickedActivityId: string;
   public DropListArray: Array<string> = [];
   public PanToLocation: { lat: number, lng: number, zoom: number };
+  public DisplayedActivityGroups: Array<ActivityGroupModel>;
+
+  @Input('clicked-activity')
+  public set ClickedActivity(activity: any){
+    if(activity){
+      this.ClickedActivityId = activity.ID;
+    }
+    else{
+      this.ClickedActivityId = null;
+    }
+  }
 
   @Input('journey')
   public set Journey(journey: any) { // TODO : bring in ItineraryModel and change this
@@ -51,9 +63,17 @@ export class MapJourneyComponent implements OnInit {
   @Output('legend-top-icon-clicked')
   public LegendTopIconClickedEvent: EventEmitter<string> = new EventEmitter();
 
-  constructor(protected mapService: MapService) { }
+  @Output('activity-groups-changed')
+  public ActivityGroupsChanged: EventEmitter<any> = new EventEmitter();
+
+  constructor(protected mapService: MapService) { 
+    this.DisplayedActivityGroups = new Array<ActivityGroupModel>();
+  }
 
   ngOnInit() {
+    // console.log(this.Journey)
+    // this.addFirstActivityGroup();
+
   }
 
   public OnAGCheckChange(event, ag) {
@@ -82,6 +102,27 @@ export class MapJourneyComponent implements OnInit {
 
   public LegendTopIconClicked(icon: string) {
     this.LegendTopIconClickedEvent.emit(icon);
+  }
+
+  public PanelOpened(activityGroup: any){
+    // console.log("opened: ", activityGroup);
+    this.DisplayedActivityGroups.push(activityGroup);
+    // console.log("adding: ", activityGroup);
+    // console.log("displayed ag: ", this.DisplayedActivityGroups);
+    this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+  }
+
+  public PanelClosed(activityGroup: any){
+    // console.log("closed: ", activityGroup);
+    this.DisplayedActivityGroups.forEach(ag => {
+      if(ag.ID === activityGroup.ID){
+       this.DisplayedActivityGroups.splice(this.DisplayedActivityGroups.indexOf(ag), 1)
+      }
+    });
+    // console.log("after splice: ", this.DisplayedActivityGroups);
+    this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+
+
   }
 
   public DropGroup(event: CdkDragDrop<string[]>) {

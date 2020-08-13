@@ -391,7 +391,7 @@ export class AppComponent implements OnInit {
           'CreatedDateTime': "2020-05-22T19:19:26.6176234+00:00",
           'Editable': false,
           'GroupType': "day",
-          'ID': "6920fc60-d8a4-421a-8b2d-45ab88289d0b",
+          'ID': "6920fc60-d8a4-421a-8b2d-45ab88289d0z",
           'Lookup': "c722f5e2-c090-4395-8046-7f924df54383|f72ee2da-d2ef-488c-90ea-6eeed1dd15b5|Day_1",
           'Modified': null,
           'Order': 0,

@@ -492,6 +492,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit(event);
   }
 
+  @Output('journey-copied')
+  public JourneyCopied: EventEmitter<any> = new EventEmitter<any>();
+
   @Output('legend-top-icon-clicked')
   public LegendIconClicked: EventEmitter<string> = new EventEmitter();
 
@@ -1094,9 +1097,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
             }
           });
         });
-        this.JourneyChanged.emit(
+        this.JourneyCopied.emit(
           {
-            message: 'Journey being copied',
             journey: this._displayedJourney
           });
         // this.usersCtxt.AddItinerary(itinToCopy);
@@ -1105,8 +1107,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       } else { // if copying one's own created itinerary...
         console.log('copying one\'s own itinerary...');
 
-        this.JourneyChanged.emit({
-          message: "new journey", journey: new ItineraryModel({
+        this.JourneyCopied.emit({
+          journey: new ItineraryModel({
             ID: null,
             Title: `${this._displayedJourney.Title} (copy)`,
             ActivityGroups: this._displayedJourney.ActivityGroups,

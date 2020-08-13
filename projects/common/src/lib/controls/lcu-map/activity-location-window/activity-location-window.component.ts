@@ -107,6 +107,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
   public addIconClicked() {
     this.AddIconClicked.emit();
+    this.BelongsToJourney = true;
   }
 
   public ShowWidgetIconSelection() {

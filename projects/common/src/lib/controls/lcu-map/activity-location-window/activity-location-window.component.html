@@ -10,8 +10,8 @@
       <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.State }}, {{ marker?.locationData?.Country }}</span>
     </div>
     <div class="location-star-info">
-      <mat-icon>star_border</mat-icon>
-      <mat-icon class="material-icons material-icons-outlined">info_outline</mat-icon>
+      <mat-icon *ngIf="BelongsToJourney">star_border</mat-icon>
+      <mat-icon *ngIf="BelongsToJourney" class="material-icons material-icons-outlined">info_outline</mat-icon>
     </div>
   </div>
 

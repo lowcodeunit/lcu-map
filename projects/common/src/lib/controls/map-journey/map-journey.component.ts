@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ActivityGroupModel } from '@lcu-ide/dynamic-map-common/lib/models/activity-group.model';
+import { ActivityGroupModel } from '../../models/activity-group.model';
 
 
 @Component({

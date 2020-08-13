@@ -71,9 +71,9 @@
         chevron_left</mat-icon>
     </div>
     <div class="map-journey-display" *ngIf="ShowJourneyLegend">
-      <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
+      <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)" [clicked-activity]="SelectedMarker"
         [ambl-on-location-array]="AmblOnLocationArray" (activity-location-clicked)="onActivityLocationClicked($event)"
-        (legend-top-icon-clicked)="LegendTopIconClicked($event)">
+        (legend-top-icon-clicked)="LegendTopIconClicked($event)" (activity-groups-changed)="ActivityGroupsChanged($event)">
       </lcu-map-journey>
     </div>
   </div>

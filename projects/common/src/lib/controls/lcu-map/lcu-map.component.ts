@@ -300,7 +300,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       ag.Activities.forEach(act => {
         act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
         // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
-        // this.ActivityLocationList.push(act);
+        this.ActivityLocationList.push(act);
       });
     });
     this.assignDefaultMapConfiguration();

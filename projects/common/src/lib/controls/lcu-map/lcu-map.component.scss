@@ -79,7 +79,7 @@ mat-icon {
         width: 50%;
         position: absolute;
         // top: $base-toolbar-height;
-        margin-top: $icon-offset-top-margin *2;
+        margin-top: $icon-offset-top-margin * 4;
         z-index: 1;
         @media(max-width: 600px) {
             position: absolute;

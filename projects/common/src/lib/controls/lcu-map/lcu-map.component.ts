@@ -13,7 +13,6 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
@@ -706,6 +705,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.forcePanToSubscription.unsubscribe();
   }
 
+  public ActivityGroupsChanged(event: Array<ActivityGroupModel>){
+    this.ActivityLocationList = new Array<ActivityModel>();
+    // console.log("ags to display = ", event);
+    event.forEach((ag: ActivityGroupModel) =>{
+      ag.Activities.forEach(act =>{
+        this.ActivityLocationList.push(act);
+      })
+    })
+    // console.log("activities to display: ", this.ActivityLocationList);
+  }
+
   public NotesSaved(event, marker) {
     let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
@@ -851,6 +861,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public OnChoseLocation(event): void {
     this.SelectedLocation = null;
+    this.SelectedMarker = null;
+    this.locationInfoService.SetSelectedMarker(null);
     this.changeDetector.detectChanges();
 
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
@@ -861,6 +873,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
           } else {
             console.log('the results are either null or undefined');
+
           }
         });
       }

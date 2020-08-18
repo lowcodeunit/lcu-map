@@ -147,10 +147,11 @@ export class MapJourneyComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
-    // console.log('Journy after moving items: ', this.Journey);
     this.reOrderGroupsAndActivities();
-    // console.log(this.Journey);
-    this.normalizeAndEmitJourney('moved activity', this.Journey, { movedActivity: 'the moved activity', newGroup: 'the new group' });
+    const newGroupTitle = event.container.id;
+    const newGroupIndex = this.Journey.ActivityGroups.findIndex(j => j.Title === newGroupTitle);
+    const movedActivity = this.Journey.ActivityGroups[newGroupIndex].Activities[event.currentIndex];
+    this.normalizeAndEmitJourney('moved activity', this.Journey, { movedActivity });
   }
 
   /**

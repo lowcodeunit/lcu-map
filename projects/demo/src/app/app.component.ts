@@ -160,6 +160,12 @@ export class AppComponent implements OnInit {
     // console.log('marker id: ', event.markerId);
   }
 
+  public OpenPanels: Array<number> = [0];
+
+  public OnPanelOpenStateChanged(event) {
+    this.OpenPanels = event;
+  }
+
   /**
    *
    * @param map The function run when the map is successfully saved

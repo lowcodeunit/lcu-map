@@ -11,8 +11,9 @@ import { ActivityGroupModel } from '../../models/activity-group.model';
 })
 export class MapJourneyComponent implements OnInit {
 
-  protected _journey: any;
   protected _amblOnLocationArray: any;
+  protected _journey: any;
+  protected _openPanels: Array<number> = [0];
 
   public ClickedActivityId: string;
   public DropListArray: Array<string> = [];
@@ -51,6 +52,18 @@ export class MapJourneyComponent implements OnInit {
   }
   public get AmblOnLocationArray() {
     return this._amblOnLocationArray;
+  }
+
+  @Input('open-panel-indexes')
+  public set OpenPanels(arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      this._openPanels = arr;
+    } else {
+      this._openPanels = [0];
+    }
+  }
+  public get OpenPanels() {
+    return this._openPanels;
   }
 
   /* tslint:disable-next-line:no-output-rename */

@@ -97,7 +97,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected googlePlacesApiSubscription: Subscription;
 
-  protected _openPanels: Array<number> = [0];
+  protected _openPanels: Array<number> = [];
 
   /**
    * Subscription for the break point observer(determines the screen size the app is running on)
@@ -484,8 +484,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public set OpenPanels(arr) {
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = arr;
-    } else {
-      this._openPanels = [0];
     }
   }
   public get OpenPanels() {
@@ -600,6 +598,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /* tslint:disable-next-line:no-output-rename */
   @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
+
+  @Output('current-panel-open-state')
+  public CurrentPanelOpenState: EventEmitter<Array<number>> = new EventEmitter();
 
   constructor(
     protected breakpointObserver: BreakpointObserver,
@@ -1330,6 +1331,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this._displayedJourney.ActivityGroups.forEach((group, idx) => {
       group.Order = idx;
     });
+  }
+
+  protected OnPanelOpenStateChanged(event) {
+    this.CurrentPanelOpenState.emit(event);
   }
 
   protected updateItinerary() {

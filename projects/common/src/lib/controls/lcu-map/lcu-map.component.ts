@@ -1200,6 +1200,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public onActivityLocationClicked(activityLocation: any) {
+    this.CurrentLatitude = activityLocation.locationData.Latitude;
+    this.CurrentLongitude = activityLocation.locationData.Longitude;
     this.BelongsToJourney = true;
     this.SelectedLocation = null;
     this.SelectedMarker = activityLocation;

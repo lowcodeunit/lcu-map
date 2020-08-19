@@ -304,11 +304,7 @@ mat-option {
     z-index: 1;
     width: 270px;
     max-height: 85%;
-    overflow-y: scroll;
-
-    &:-webkit-scrollbar {
-        display: none;
-    }
+    overflow-y: auto;
 }
 
 .map-journey-title-edit-input {

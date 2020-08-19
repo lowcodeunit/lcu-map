@@ -97,6 +97,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected googlePlacesApiSubscription: Subscription;
 
+  protected _openPanels: Array<number> = [0];
+
   /**
    * Subscription for the break point observer(determines the screen size the app is running on)
    */
@@ -476,6 +478,18 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // this.UpdateCurrentlyActiveLayers(value);
 
     // this.resetMapCheckedState();
+  }
+
+  @Input('open-panel-indexes')
+  public set OpenPanels(arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      this._openPanels = arr;
+    } else {
+      this._openPanels = [0];
+    }
+  }
+  public get OpenPanels() {
+    return this._openPanels;
   }
 
   /**

@@ -682,7 +682,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       () => {
         this.BelongsToJourney = false;
         this.SelectedMarker = null;
-        console.log("setting selectedMarker to NULL");
+        // console.log("setting selectedMarker to NULL");
         this.locationInfoService.SetSelectedMarker(null);
         this.SelectedLocation = null;
         

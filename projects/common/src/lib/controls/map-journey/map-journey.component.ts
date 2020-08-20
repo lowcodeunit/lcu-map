@@ -118,8 +118,11 @@ export class MapJourneyComponent implements OnInit {
   }
 
   public PanelOpened(activityGroup: any, idx: number) {
-    this.DisplayedActivityGroups.push(activityGroup);
-    this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+    if(!this.DisplayedActivityGroups.includes(activityGroup)){
+      this.DisplayedActivityGroups.push(activityGroup);
+      this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+    }
+    
     if (!this.OpenPanels.includes(idx)) {
       this.OpenPanels.push(idx);
     }

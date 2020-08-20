@@ -393,7 +393,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
 
   /**
-   * The default marker in the instance of alocation not having an icon
+   * The default marker in the instance of a location not having an icon
    *
    */
   /** tslint:disable-next-line:no-input-rename */
@@ -697,7 +697,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (!this.DefaultMarker) {
       this.DefaultMarker = {
         name: 'lcu-map-default-marker',
-        url: './assets/lcu-map-default-marker.png',
+        url: './assets/location_on.png',
         scaledSize: { width: 40, height: 40 }
       };
     }

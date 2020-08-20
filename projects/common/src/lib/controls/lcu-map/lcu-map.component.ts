@@ -295,7 +295,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
-    console.log("journey upon entry: ", journey);
+    // console.log("journey upon entry: ", journey);
     this.ActivityLocationList = new Array<ActivityModel>();
 
     if (!journey) { return; }
@@ -710,7 +710,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ngOnChanges(): void {
     // this.CheckForHiddenLocations();
     // this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    console.log("activity location list = " , this.ActivityLocationList);
+    // console.log("activity location list = " , this.ActivityLocationList);
   }
 
   public ngOnDestroy(): void {

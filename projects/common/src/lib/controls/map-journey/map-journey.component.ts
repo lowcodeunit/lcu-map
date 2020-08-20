@@ -11,8 +11,9 @@ import { ActivityGroupModel } from '../../models/activity-group.model';
 })
 export class MapJourneyComponent implements OnInit {
 
-  protected _journey: any;
   protected _amblOnLocationArray: any;
+  protected _journey: any;
+  protected _openPanels: Array<number> = [0];
 
   public ClickedActivityId: string;
   public DropListArray: Array<string> = [];
@@ -20,11 +21,11 @@ export class MapJourneyComponent implements OnInit {
   public DisplayedActivityGroups: Array<ActivityGroupModel>;
 
   @Input('clicked-activity')
-  public set ClickedActivity(activity: any){
-    if(activity){
+  public set ClickedActivity(activity: any) {
+    if (activity) {
       this.ClickedActivityId = activity.ID;
     }
-    else{
+    else {
       this.ClickedActivityId = null;
     }
   }
@@ -38,7 +39,6 @@ export class MapJourneyComponent implements OnInit {
     this._journey = journey;
     this.addLocationData();
     this.assignDropListData();
-    console.log(this.DropListArray)
   }
   public get Journey(): any {
     return this._journey;
@@ -51,6 +51,18 @@ export class MapJourneyComponent implements OnInit {
   }
   public get AmblOnLocationArray() {
     return this._amblOnLocationArray;
+  }
+
+  @Input('open-panel-indexes')
+  public set OpenPanels(arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      this._openPanels = [...new Set(arr)];
+    } else {
+      this._openPanels = [0];
+    }
+  }
+  public get OpenPanels() {
+    return this._openPanels;
   }
 
   /* tslint:disable-next-line:no-output-rename */
@@ -66,14 +78,15 @@ export class MapJourneyComponent implements OnInit {
   @Output('activity-groups-changed')
   public ActivityGroupsChanged: EventEmitter<any> = new EventEmitter();
 
-  constructor(protected mapService: MapService) { 
+  @Output('current-panel-open-state')
+  public CurrentPanelOpenState: EventEmitter<Array<number>> = new EventEmitter();
+
+  constructor(protected mapService: MapService) {
     this.DisplayedActivityGroups = new Array<ActivityGroupModel>();
   }
 
   ngOnInit() {
-    // console.log(this.Journey)
-    // this.addFirstActivityGroup();
-
+    
   }
 
   public OnAGCheckChange(event, ag) {
@@ -104,25 +117,24 @@ export class MapJourneyComponent implements OnInit {
     this.LegendTopIconClickedEvent.emit(icon);
   }
 
-  public PanelOpened(activityGroup: any){
-    // console.log("opened: ", activityGroup);
+  public PanelOpened(activityGroup: any, idx: number) {
     this.DisplayedActivityGroups.push(activityGroup);
-    // console.log("adding: ", activityGroup);
-    // console.log("displayed ag: ", this.DisplayedActivityGroups);
     this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+    if (!this.OpenPanels.includes(idx)) {
+      this.OpenPanels.push(idx);
+    }
+    this.emitPanelOpenState();
   }
 
-  public PanelClosed(activityGroup: any){
-    // console.log("closed: ", activityGroup);
+  public PanelClosed(activityGroup: any, idx: number) {
     this.DisplayedActivityGroups.forEach(ag => {
-      if(ag.ID === activityGroup.ID){
-       this.DisplayedActivityGroups.splice(this.DisplayedActivityGroups.indexOf(ag), 1)
+      if (ag.ID === activityGroup.ID) {
+        this.DisplayedActivityGroups.splice(this.DisplayedActivityGroups.indexOf(ag), 1);
       }
     });
-    // console.log("after splice: ", this.DisplayedActivityGroups);
     this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
-
-
+    this.OpenPanels.splice(this.OpenPanels.indexOf(idx), 1);
+    this.emitPanelOpenState();
   }
 
   public DropGroup(event: CdkDragDrop<string[]>) {
@@ -147,10 +159,11 @@ export class MapJourneyComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
-    // console.log('Journy after moving items: ', this.Journey);
     this.reOrderGroupsAndActivities();
-    // console.log(this.Journey);
-    this.normalizeAndEmitJourney('moved activity', this.Journey, { movedActivity: 'the moved activity', newGroup: 'the new group' });
+    const newGroupTitle = event.container.id;
+    const newGroupIndex = this.Journey.ActivityGroups.findIndex(j => j.Title === newGroupTitle);
+    const movedActivity = this.Journey.ActivityGroups[newGroupIndex].Activities[event.currentIndex];
+    this.normalizeAndEmitJourney('moved activity', this.Journey, { movedActivity });
   }
 
   /**
@@ -171,6 +184,10 @@ export class MapJourneyComponent implements OnInit {
       });
     });
     this.JourneyChanged.emit({ message, journey: journeyToSend, additional });
+  }
+
+  protected emitPanelOpenState() {
+    this.CurrentPanelOpenState.emit(this.OpenPanels);
   }
 
   protected assignDropListData() {

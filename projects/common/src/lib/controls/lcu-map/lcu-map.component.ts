@@ -97,6 +97,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected googlePlacesApiSubscription: Subscription;
 
+  protected _openPanels: Array<number> = [];
+
   /**
    * Subscription for the break point observer(determines the screen size the app is running on)
    */
@@ -300,7 +302,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       ag.Activities.forEach(act => {
         act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
         // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
-        // this.ActivityLocationList.push(act);
+        this.ActivityLocationList.push(act);
       });
     });
     this.assignDefaultMapConfiguration();
@@ -478,6 +480,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // this.resetMapCheckedState();
   }
 
+  @Input('open-panel-indexes')
+  public set OpenPanels(arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      this._openPanels = arr;
+    }
+  }
+  public get OpenPanels() {
+    return this._openPanels;
+  }
+
   /**
    * The getter for the current map model
    */
@@ -586,6 +598,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /* tslint:disable-next-line:no-output-rename */
   @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
+
+  @Output('current-panel-open-state')
+  public CurrentPanelOpenState: EventEmitter<Array<number>> = new EventEmitter();
 
   constructor(
     protected breakpointObserver: BreakpointObserver,
@@ -1185,6 +1200,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public onActivityLocationClicked(activityLocation: any) {
+    this.CurrentLatitude = activityLocation.locationData.Latitude;
+    this.CurrentLongitude = activityLocation.locationData.Longitude;
     this.BelongsToJourney = true;
     this.SelectedLocation = null;
     this.SelectedMarker = activityLocation;
@@ -1316,6 +1333,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this._displayedJourney.ActivityGroups.forEach((group, idx) => {
       group.Order = idx;
     });
+  }
+
+  public OnPanelOpenStateChanged(event) {
+    this.CurrentPanelOpenState.emit(event);
   }
 
   protected updateItinerary() {

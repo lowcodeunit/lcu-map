@@ -683,6 +683,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         console.log("setting selectedMarker to NULL");
         this.locationInfoService.SetSelectedMarker(null);
         this.SelectedLocation = null;
+        
       }
     );
 
@@ -954,6 +955,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney});
     // this.locationInfoService.SetSelectedMarker(null);
     // this.SelectedMarker = null;
+    this.SelectedLocation = null;
   }
 
   /**

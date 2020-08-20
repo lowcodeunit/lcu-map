@@ -148,8 +148,8 @@
         </agm-marker>
       </div>
     </ng-container>
-      <!-- <agm-marker
-        *ngIf="SelectedLocation && (SelectedLocation.locationData.IsHidden === false || !SelectedLocation.locationData.IsHidden)"
+      <agm-marker
+        *ngIf="SelectedLocation"
         [iconUrl]="SelectedLocation.locationData.IconImageObject" [latitude]="SelectedLocation.locationData.Latitude"
         [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
@@ -159,7 +159,7 @@
 
           </lcu-activity-location-window>
         </agm-info-window>
-      </agm-marker> -->
+      </agm-marker>
     </agm-map>
     <div style="position: absolute;">{{SelectedLocation}}</div>
   </div>

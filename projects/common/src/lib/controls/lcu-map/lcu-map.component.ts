@@ -708,6 +708,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ngOnChanges(): void {
     this.CheckForHiddenLocations();
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    console.log("activity location list = " , this.ActivityLocationList);
   }
 
   public ngOnDestroy(): void {

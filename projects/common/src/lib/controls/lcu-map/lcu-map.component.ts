@@ -298,6 +298,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // console.log("journey upon entry: ", journey);
     if (!journey) { return; }
     this._displayedJourney = journey;
+    this.ActivityLocationList = new Array<ActivityModel>();
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
         act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };

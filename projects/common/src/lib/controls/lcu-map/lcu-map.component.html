@@ -150,7 +150,8 @@
     </ng-container>
       <agm-marker
         *ngIf="SelectedLocation"
-        [iconUrl]="SelectedLocation.locationData.IconImageObject" [latitude]="SelectedLocation.locationData.Latitude"
+        [iconUrl]="SelectedLocation.locationData.IconImageObject" 
+        [latitude]="SelectedLocation.locationData.Latitude"
         [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
 

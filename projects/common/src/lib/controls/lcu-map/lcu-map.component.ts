@@ -951,11 +951,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length -1].Activities.length;
     // console.log("temp order: ", event)
     // console.log(this.DisplayedJourney)
-    this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    // this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney});
     // this.locationInfoService.SetSelectedMarker(null);
     // this.SelectedMarker = null;
-    this.SelectedLocation = null;
+    // this.SelectedLocation = null;
   }
 
   /**

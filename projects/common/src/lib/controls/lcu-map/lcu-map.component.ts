@@ -300,7 +300,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
     if (!journey) { return; }
     this._displayedJourney = journey;
-    console.log("pushing to loc list 303")
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
         act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
@@ -728,9 +727,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   public ActivityGroupsChanged(event: Array<ActivityGroupModel>){
     this.ActivityLocationList = new Array<ActivityModel>();
-    // console.log("ags to display = ", event);
     event.forEach((ag: ActivityGroupModel) =>{
-      console.log("pushing to loc list 733")
       ag.Activities.forEach(act =>{
         this.ActivityLocationList.push(act);
       })
@@ -954,15 +951,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
  */
   public addIconClicked(event: ActivityModel) {
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length -1].Activities.length;
-    // console.log("temp order: ", event)
-    // console.log(this.DisplayedJourney)
-    // let temp = this.DisplayedJourney;
-    // console.log("temp: ", temp);
-    // temp.ActivityGroups[temp.ActivityGroups.length - 1].Activities.push(event);
-    this.JourneyChanged.emit({message: "add activity", journey: event});
-    // this.locationInfoService.SetSelectedMarker(null);
-    // this.SelectedMarker = null;
-    // this.SelectedLocation = null;
+    this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney});
   }
 
   /**

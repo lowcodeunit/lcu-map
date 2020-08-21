@@ -118,8 +118,17 @@ export class MapJourneyComponent implements OnInit {
   }
 
   public PanelOpened(activityGroup: any, idx: number) {
-    this.DisplayedActivityGroups.push(activityGroup);
-    this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+    let duplicate = false;
+    this.DisplayedActivityGroups.forEach(ag =>{
+      if(ag.ID === activityGroup.ID){
+        duplicate = true;
+      }
+    })
+    if(!duplicate){
+      this.DisplayedActivityGroups.push(activityGroup);
+      this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
+    }
+    
     if (!this.OpenPanels.includes(idx)) {
       this.OpenPanels.push(idx);
     }

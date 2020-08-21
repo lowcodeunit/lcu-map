@@ -303,6 +303,8 @@ mat-option {
     background-color: white;
     z-index: 1;
     width: 270px;
+    max-height: 85%;
+    overflow-y: auto;
 }
 
 .map-journey-title-edit-input {

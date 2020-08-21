@@ -296,6 +296,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
     // console.log("journey upon entry: ", journey);
+    this.ActivityLocationList = new Array<ActivityModel>();
+
     if (!journey) { return; }
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {
@@ -393,7 +395,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
 
   /**
-   * The default marker in the instance of alocation not having an icon
+   * The default marker in the instance of a location not having an icon
    *
    */
   /** tslint:disable-next-line:no-input-rename */
@@ -681,7 +683,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.BelongsToJourney = false;
         this.SelectedMarker = null;
         // console.log("setting selectedMarker to NULL");
+        this.locationInfoService.SetSelectedMarker(null);
         this.SelectedLocation = null;
+        
       }
     );
 
@@ -697,15 +701,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (!this.DefaultMarker) {
       this.DefaultMarker = {
         name: 'lcu-map-default-marker',
-        url: './assets/lcu-map-default-marker.png',
+        url: './assets/location_on.png',
         scaledSize: { width: 40, height: 40 }
       };
     }
   }
 
   public ngOnChanges(): void {
-    this.CheckForHiddenLocations();
-    this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // this.CheckForHiddenLocations();
+    // this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // console.log("activity location list = " , this.ActivityLocationList);
   }
 
   public ngOnDestroy(): void {
@@ -722,7 +727,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   public ActivityGroupsChanged(event: Array<ActivityGroupModel>){
     this.ActivityLocationList = new Array<ActivityModel>();
-    // console.log("ags to display = ", event);
     event.forEach((ag: ActivityGroupModel) =>{
       ag.Activities.forEach(act =>{
         this.ActivityLocationList.push(act);
@@ -947,10 +951,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
  */
   public addIconClicked(event: ActivityModel) {
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length -1].Activities.length;
-    // console.log("temp order: ", event)
-    // console.log(this.DisplayedJourney)
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
-    this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney}) 
+    this.JourneyChanged.emit({message: "add activity", journey: this.DisplayedJourney});
   }
 
   /**
@@ -1200,6 +1202,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public onActivityLocationClicked(activityLocation: any) {
+    this.CurrentLatitude = activityLocation.locationData.Latitude;
+    this.CurrentLongitude = activityLocation.locationData.Longitude;
     this.BelongsToJourney = true;
     this.SelectedLocation = null;
     this.SelectedMarker = activityLocation;

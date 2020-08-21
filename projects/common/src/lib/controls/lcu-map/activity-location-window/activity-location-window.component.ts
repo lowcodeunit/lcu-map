@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { MapService } from '../../../services/map.service';
 import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { LocationInfoService } from '../../../services/location-info.service';
@@ -13,8 +13,10 @@ import { Subscription } from 'rxjs';
 })
 export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
+  protected isCurrentInputFocused: boolean = false;
+  protected _belongsToJourney: boolean = false;
+
   public infoWindow: AgmInfoWindow;
-  public _belongsToJourney: boolean = false;
   public mapMarkerClickedSubscription: Subscription;
   public IconSelection: Array<string> = [
     'location_on',
@@ -30,6 +32,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
     'golf_course'
   ];
   public IsSelectingIcon: boolean = false;
+
+  @ViewChild('noteText', { static: false })
+  public NotesInput: ElementRef;
 
   @Input() public marker: ActivityModel;
 
@@ -90,7 +95,13 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
    * will stay the same when user navigates to new location from google search
    */
   public ngOnChanges(): void {
-    
+    if (this.isCurrentInputFocused) {
+      this.NotesInput.nativeElement.SetFocused();
+    }
+  }
+
+  public SetFocused() {
+    this.isCurrentInputFocused = true;
   }
 
   /**
@@ -103,6 +114,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
   public SaveNotes(notesText) {
     this.NotesSaved.emit(notesText.value);
+    this.isCurrentInputFocused = false;
   }
 
   public addIconClicked() {

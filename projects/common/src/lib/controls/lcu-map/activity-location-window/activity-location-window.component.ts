@@ -94,7 +94,8 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
    * Angular lifecycle hook that will get called when the marker changes, otherwise data for info blocks
    * will stay the same when user navigates to new location from google search
    */
-  public ngOnChanges(): void {
+  public ngOnChanges(event): void {
+    console.log('ngOnChanges', event)
     if (this.isCurrentInputFocused) {
       this.NotesInput.nativeElement.SetFocused();
     }

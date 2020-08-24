@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
 import { MapService } from '../../../services/map.service';
 import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { LocationInfoService } from '../../../services/location-info.service';
@@ -11,10 +11,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './activity-location-window.component.html',
   styleUrls: ['./activity-location-window.component.scss']
 })
-export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
+export class ActivityLocationWindowComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+
+  protected _belongsToJourney: boolean = false;
 
   public infoWindow: AgmInfoWindow;
-  public _belongsToJourney: boolean = false;
   public mapMarkerClickedSubscription: Subscription;
   public IconSelection: Array<string> = [
     'location_on',
@@ -30,6 +31,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
     'golf_course'
   ];
   public IsSelectingIcon: boolean = false;
+
+  @ViewChild('notesText', { static: false })
+  public NotesInput: ElementRef;
 
   @Input() public marker: ActivityModel;
 
@@ -65,9 +69,6 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
    * Angular lifecycle hook that gets called on initialization.
    */
   public ngOnInit(): void {
-    console.log('MARKER: ', this.marker)
-    console.log(this.marker)
-
     this.mapMarkerClickedSubscription = this.mapService.MapMarkerClicked.subscribe(
       (infoWindow: AgmInfoWindow) => {
         this.infoWindow = infoWindow;
@@ -89,8 +90,16 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
    * Angular lifecycle hook that will get called when the marker changes, otherwise data for info blocks
    * will stay the same when user navigates to new location from google search
    */
-  public ngOnChanges(): void {
-    
+  public ngOnChanges(event): void {
+    if (this.locationInfoService.getHighlightedNotesLocationId()) {
+      setTimeout(() => {
+        this.NotesInput.nativeElement.focus();
+      }, 100);
+    }
+  }
+
+  public SetFocused() {
+    this.locationInfoService.setHighlightedNotesLocationId(this.marker.ID);
   }
 
   /**
@@ -103,6 +112,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy {
 
   public SaveNotes(notesText) {
     this.NotesSaved.emit(notesText.value);
+    this.locationInfoService.setHighlightedNotesLocationId(null);
   }
 
   public addIconClicked() {

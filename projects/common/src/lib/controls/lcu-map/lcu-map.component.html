@@ -125,12 +125,12 @@
 
   <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
-    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+    <!-- <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
       [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
       [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'"
       [zoom]="CurrentZoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
       [usePanning]="true">
-      <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
+    
       <ng-container *ngIf="ActivityLocationList.length > 0">
       <div id="markers" *ngFor="let marker of ActivityLocationList">
         <agm-marker *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"
@@ -142,9 +142,7 @@
               [belongs-to-journey]="true" (user-chose-icon)="OnUserChoseIcon($event, marker)"
               (notes-saved)="NotesSaved($event, marker)">
             </lcu-activity-location-window>
-            <!-- replace this with new component -->
-            <!-- on click of actloc, call same method (OnMarkerClicked) from ts file and somehow pass in #amblInfoWindow and actLoc info-->
-          </agm-info-window>
+            </agm-info-window>
         </agm-marker>
       </div>
     </ng-container>
@@ -161,7 +159,7 @@
           </lcu-activity-location-window>
         </agm-info-window>
       </agm-marker>
-    </agm-map>
+    </agm-map> -->
   </div>
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">

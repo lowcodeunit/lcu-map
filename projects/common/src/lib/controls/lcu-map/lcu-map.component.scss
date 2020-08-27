@@ -296,13 +296,13 @@ mat-option {
     cursor: pointer;
 }
 
-.map-journey-display {
+.map-journey-display-container {
     position: absolute;
     right: 0;
     top: 40px;
     z-index: 1;
     width: 270px;
-    max-height: calc(100% - 150px);
+    max-height: calc(100% - 165px);
     overflow-y: scroll;
 }
 
@@ -321,4 +321,21 @@ mat-option {
     background-color: white;
     border: none;
     font-size: 12pt;
+}
+
+.more-below-indicator {
+    z-index: 200;
+    position: fixed;
+    right: 19px;
+    width: 251px;
+    background-color: white;
+    color: $primary_dark;
+    text-align: center;
+    height: 20px;
+    cursor: text;
+
+    mat-icon {
+        font-size: 17pt;
+        cursor: text;
+    }
 }

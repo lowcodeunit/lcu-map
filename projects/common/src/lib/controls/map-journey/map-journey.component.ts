@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ActivityGroupModel } from '../../models/activity-group.model';
@@ -64,8 +64,16 @@ export class MapJourneyComponent implements OnInit {
   public get OpenPanels() {
     return this._openPanels;
   }
+/**
+ * Determines whether or not to display the up arrow on the menu
+ */
+  @Input('show-up-indicator')
+  public ShowUpIndicator: boolean;
 
   /* tslint:disable-next-line:no-output-rename */
+  @Output('accordion-bounds-change')
+  public AccordionBoundsChange: EventEmitter<any> = new EventEmitter();
+
   @Output('journey-changed')
   public JourneyChanged: EventEmitter<{ message: string, journey: any, additional?: any }> = new EventEmitter(); // TODO : bring in ItineraryModel and change this
 
@@ -81,13 +89,26 @@ export class MapJourneyComponent implements OnInit {
   @Output('current-panel-open-state')
   public CurrentPanelOpenState: EventEmitter<Array<number>> = new EventEmitter();
 
-  constructor(protected mapService: MapService) {
+  @ViewChild('matAccordionChild')
+  public MatAccordion: ElementRef;
+
+  constructor(protected mapService: MapService,
+    protected changeDetector: ChangeDetectorRef) {
     this.DisplayedActivityGroups = new Array<ActivityGroupModel>();
+    this.ShowUpIndicator = false;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     
   }
+  
+  public ngDoCheck(){
+    if(this.MatAccordion){
+      let accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
+      this.AccordionBoundsChange.emit(accordionBounds)
+    }
+  }
+
 
   public OnAGCheckChange(event, ag) {
     ag.Checked = event.checked;

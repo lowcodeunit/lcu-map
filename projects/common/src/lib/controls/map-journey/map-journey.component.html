@@ -9,10 +9,10 @@
 </div>
 
 <!-- MAIN ACCORDION SECTION -->
-<div class="more-indicator more-above-indicator">
+<div [hidden]="!ShowUpIndicator" class="more-indicator more-above-indicator">
   <mat-icon>expand_less</mat-icon>
 </div>
-<mat-accordion [togglePosition]="'before'" [multi]="true" cdkDropList (cdkDropListDropped)="DropGroup($event)">
+<mat-accordion #matAccordionChild [togglePosition]="'before'" [multi]="true" cdkDropList (cdkDropListDropped)="DropGroup($event)" >
 
   <!-- JOURNEY ACTIVITY GROUPS -->
   <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; index as idx"

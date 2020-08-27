@@ -72,16 +72,19 @@
     </div>
     <div class="map-journey-display-container" #mapJourneyDisplayContainer>
       <div class="map-journey-display" *ngIf="ShowJourneyLegend" #mapJourneyDisplay>
-        <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
+        <lcu-map-journey  [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
           [clicked-activity]="SelectedMarker" [ambl-on-location-array]="AmblOnLocationArray"
           (activity-location-clicked)="onActivityLocationClicked($event)"
           (legend-top-icon-clicked)="LegendTopIconClicked($event)"
           (activity-groups-changed)="ActivityGroupsChanged($event)"
-          (current-panel-open-state)="OnPanelOpenStateChanged($event)" [open-panel-indexes]="OpenPanels">
+          (current-panel-open-state)="OnPanelOpenStateChanged($event)" 
+          [open-panel-indexes]="OpenPanels"
+          (accordion-bounds-change)="CalcBounds($event)"
+          [show-up-indicator]="ShowUpIndicator">
         </lcu-map-journey>
       </div>
     </div>
-    <div *ngIf="ShowDownIndicator" class="more-indicator more-below-indicator" [ngStyle]="{'top.px': DownIndicatorOffset ? DownIndicatorOffset : 0}">
+    <div [hidden]="!ShowDownIndicator" class="more-indicator more-below-indicator" [ngStyle]="{'top.px': DownIndicatorOffset ? DownIndicatorOffset : 0}">
       <mat-icon>expand_more</mat-icon>
     </div>
   </div>

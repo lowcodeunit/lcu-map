@@ -708,7 +708,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     );
   }
   public ngAfterViewInit(): void {
-    this.setIndicators();
+    // this.setIndicators();
     // console.log("Default Marker in map= ", this.DefaultMarker)
     if (!this.DefaultMarker) {
       this.DefaultMarker = {
@@ -722,33 +722,53 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.changeDetector.detectChanges();
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('scroll', () => {
       this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
-      this.setIndicators();
+      // this.setIndicators();
     });
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('click', () => {
       setTimeout(() => {
         this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
-        this.setIndicators();
+        // this.setIndicators();
       }, 220);
     });
   }
 
-  protected setIndicators() {
-    const display = this.MapJourneyDisplay.nativeElement;
-    console.log('OFFSET HEIGHT: ', display.offsetHeight);
-    console.log('SCROLL HEIGHT: ', display.scrollHeight);
-    console.log('OFSSET TOP   : ', display.offsetTop);
-    console.log('NATIVE ELEMEN: ', this.MapJourneyDisplay);
-    console.log('CHILD        : ', display.childNodes.item(0).getBoundingClientRect());
+  // protected setIndicators() {
+    // const display = this.MapJourneyDisplayContainer.nativeElement;
+    // let child = document.getElementById("lcuMapJourney").getBoundingClientRect();
+    // let parent = display.getBoundingClientRect();
     
-    const container = this.MapJourneyDisplayContainer.nativeElement;
-    if (container.offsetHeight < container.scrollHeight) {
-      this.ShowUpIndicator = true;
-      this.ShowDownIndicator = true;
-    } else {
-      this.ShowUpIndicator = false;
-      this.ShowDownIndicator = false;
-    }
-  }
+    
+    // console.log('OFFSET HEIGHT: ', display.offsetHeight);
+    // console.log('SCROLL HEIGHT: ', display.scrollHeight);
+    // console.log('OFSSET TOP   : ', display.offsetTop);
+    // console.log('NATIVE ELEMEN: ', this.MapJourneyDisplay);
+    // console.log('Parent        : ', display.childNodes.item(0).getBoundingClientRect());
+    // console.log("Parent: ", parent)
+    // console.log("child = ", child)
+
+    // if(child.top < 40){
+    //   console.log("Top arrow should show")
+    // }
+    // else{
+    //   console.log("Top arrow should NOT show")
+    // }
+
+    // if(child.bottom > parent.bottom){
+    //   console.log("bottom arrow should show")
+    // }
+    // else{
+    //   console.log("Bottm arrow should NOT show")
+    // }
+    
+    // const container = this.MapJourneyDisplayContainer.nativeElement;
+    // if (container.offsetHeight < container.scrollHeight) {
+    //   this.ShowUpIndicator = true;
+    //   this.ShowDownIndicator = true;
+    // } else {
+    //   this.ShowUpIndicator = false;
+    //   this.ShowDownIndicator = false;
+    // }
+  // }
   public ngOnChanges(): void {
     // this.CheckForHiddenLocations();
     // this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
@@ -775,6 +795,34 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       })
     })
     // console.log("activities to display: ", this.ActivityLocationList);
+  }
+
+  public CalcBounds(childBounds: any){
+    if(this.MapJourneyDisplayContainer){
+    let parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
+    // console.log("Parent Bounds: ", parentBounds);
+    // console.log("Child Bounds: ", childBounds);
+    
+    if(childBounds.top-60 < parentBounds.top){//"Top arrow should show"
+        setTimeout(() => {
+          this.ShowUpIndicator = true;
+        }, 0);
+    }
+    else{//"Top arrow should NOT show"
+        setTimeout(() => {
+          this.ShowUpIndicator = false;
+        }, 0);        
+    }
+
+    if(childBounds.bottom+4.16 > parentBounds.bottom){
+      // console.log("Bottom arrow should show")
+      this.ShowDownIndicator = true;
+    }
+    else{
+      // console.log("Bottom arrow should NOT show")
+      this.ShowDownIndicator = false;
+    }
+  }
   }
 
   public NotesSaved(event, marker) {

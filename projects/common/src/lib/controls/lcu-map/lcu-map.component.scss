@@ -300,11 +300,10 @@ mat-option {
     position: absolute;
     right: 0;
     top: 40px;
-    background-color: white;
     z-index: 1;
     width: 270px;
-    max-height: 85%;
-    overflow-y: auto;
+    max-height: calc(100% - 150px);
+    overflow-y: scroll;
 }
 
 .map-journey-title-edit-input {

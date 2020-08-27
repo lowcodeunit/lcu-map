@@ -9,13 +9,18 @@
 </div>
 
 <!-- MAIN ACCORDION SECTION -->
+<!-- <div class="more-indicator more-above-indicator">
+  <mat-icon>expand_less</mat-icon>
+</div> -->
 <mat-accordion [togglePosition]="'before'" [multi]="true" cdkDropList (cdkDropListDropped)="DropGroup($event)">
 
   <!-- JOURNEY ACTIVITY GROUPS -->
   <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; index as idx"
-    [expanded]="OpenPanels.includes(idx)" (opened)="activityGroup.PanelOpenState = true; PanelOpened(activityGroup, idx)" (closed)="activityGroup.PanelOpenState = false; PanelClosed(activityGroup, idx)"
-    cdkDropList id="{{activityGroup.Title}}" [cdkDropListData]="activityGroup.Activities"
-    [cdkDropListConnectedTo]="DropListArray" (cdkDropListDropped)="DropActivity($event)">
+    [expanded]="OpenPanels.includes(idx)"
+    (opened)="activityGroup.PanelOpenState = true; PanelOpened(activityGroup, idx)"
+    (closed)="activityGroup.PanelOpenState = false; PanelClosed(activityGroup, idx)" cdkDropList
+    id="{{activityGroup.Title}}" [cdkDropListData]="activityGroup.Activities" [cdkDropListConnectedTo]="DropListArray"
+    (cdkDropListDropped)="DropActivity($event)">
     <mat-expansion-panel-header>
       <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
@@ -46,7 +51,8 @@
 
     <!-- JOURNEY ACTIVITIES -->
     <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
-      class="activity-display" (click)="onActivityClickToNavigate(activity)" [ngClass]="{'active-activity': ClickedActivityId === activity.ID}">
+      class="activity-display" (click)="onActivityClickToNavigate(activity)"
+      [ngClass]="{'active-activity': ClickedActivityId === activity.ID}">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
@@ -60,7 +66,7 @@
         </span>
       </div>
       <div>
-        <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
+        <span *ngIf="OpenPanels.includes(idx)" class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
           [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();"></mat-checkbox>

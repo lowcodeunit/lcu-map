@@ -510,6 +510,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._currentMapModel;
   }
 
+  public CheckBounds: boolean;
 
 
   protected _visibleLocations;
@@ -654,6 +655,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.DisplayingMoreInfo = false;
     this.nonEssentialKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
     this.ShowNewOptions = false;
+    this.CheckBounds = false;
     this.NewOptions = [{
       display: 'New Day',
       action: 'day'
@@ -723,6 +725,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('scroll', () => {
       this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
       // this.setIndicators();
+      console.log("Scrolling");
+      //Check the bounds 
+      this.CheckBounds = true;
     });
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('click', () => {
       setTimeout(() => {
@@ -798,10 +803,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public CalcBounds(childBounds: any){
+    this.CheckBounds = false;
     if(this.MapJourneyDisplayContainer){
     let parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
-    // console.log("Parent Bounds: ", parentBounds);
-    // console.log("Child Bounds: ", childBounds);
+    console.log("Parent Bounds: ", parentBounds);
+    console.log("Child Bounds: ", childBounds);
     
     if(childBounds.top-60 < parentBounds.top){//"Top arrow should show"
         setTimeout(() => {
@@ -814,12 +820,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }, 0);        
     }
 
-    if(childBounds.bottom+4.16 > parentBounds.bottom){
-      // console.log("Bottom arrow should show")
+    if(childBounds.bottom+4 > parentBounds.bottom){
+      console.log("Bottom arrow should show")
       this.ShowDownIndicator = true;
     }
     else{
-      // console.log("Bottom arrow should NOT show")
+      console.log("Bottom arrow should NOT show")
       this.ShowDownIndicator = false;
     }
   }

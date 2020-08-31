@@ -1733,6 +1733,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return regionIndices;
   }
 
+  /**
+   * Assigns the lat/lng and zoom for the first activity on a journey
+   */
   protected assignDefaultMapConfiguration() {
     if (this.AmblOnLocationArray && this.DisplayedJourney) {
       const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];

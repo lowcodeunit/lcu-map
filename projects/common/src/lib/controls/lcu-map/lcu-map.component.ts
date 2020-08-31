@@ -97,6 +97,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected googlePlacesApiSubscription: Subscription;
 
+  /**
+   * The open panels represented by their indexes
+   */
   protected _openPanels: Array<number> = [];
 
   /**
@@ -104,13 +107,37 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected observerSubscription: Subscription;
 
+  /**
+   * The displayed journey
+   */
   protected _displayedJourney: any;
+
+  /** The list of locations needed to populate the locations on individual activities */
   protected _amblOnLocationArray: any;
+
+  /**
+   * Subscription to service that determines where the map should first open up to when accessed via a journey
+   */
   protected forcePanToSubscription: Subscription;
 
+  /**
+   * Boolean that determines whether to show the indicator at the top of the legend
+   */
   public ShowUpIndicator: boolean = false;
+
+  /**
+   * Boolean that determines whether to show the indicator at the bottom of the legend
+   */
   public ShowDownIndicator: boolean = false;
+
+  /**
+   * The height of the legend container
+   */
   public LegendContainerHeight: number = 0;
+
+  /**
+   * Determines where to place the indicator at the bottom of the legend (its 'top' value)
+   */
   public DownIndicatorOffset: number = 0;
 
   /**
@@ -139,6 +166,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public MarkerData: MarkerData;
 
+  /**
+   * Determines whether or not the current info box belongs to the journey or not (determines its display layout)
+   */
   public BelongsToJourney: boolean = false;
 
   /**
@@ -146,8 +176,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public TopListsSubscription: Subscription;
 
+  /**
+   * The zoom level that determines the zoom level of the map - can be changed
+   */
   public CurrentZoom: number = 9;
+
+  /**
+   * The value that determines the longitude of the map - can be changed
+   */
   public CurrentLongitude: number = 0;
+
+  /**
+   * Thevalue that determines the latitude of the map - can be changed
+   */
   public CurrentLatitude: number = 0;
 
   /**
@@ -188,6 +229,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public SearchMethod: string;
 
+  /**
+   * Boolean that indicates whether or not the user is currently editing a journey's title
+   */
   public EditingJourneyTitle: boolean = false;
 
   /**
@@ -231,6 +275,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public ShowSearchBar: boolean = false;
 
+  /**
+   * Boolean that determines whether or not to show the map legend
+   */
   public ShowJourneyLegend: boolean = true;
 
   /**
@@ -332,16 +379,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
   public get AmblOnLocationArray() {
     return this._amblOnLocationArray;
-  }
-
-  protected assignDefaultMapConfiguration() {
-    if (this.AmblOnLocationArray && this.DisplayedJourney) {
-      const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
-      const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
-      this.CurrentZoom = 10;
-      this.CurrentLongitude = firstLocation.Longitude;
-      this.CurrentLatitude = firstLocation.Latitude;
-    }
   }
 
   /**
@@ -733,41 +770,41 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   // protected setIndicators() {
-    // const display = this.MapJourneyDisplayContainer.nativeElement;
-    // let child = document.getElementById("lcuMapJourney").getBoundingClientRect();
-    // let parent = display.getBoundingClientRect();
-    
-    
-    // console.log('OFFSET HEIGHT: ', display.offsetHeight);
-    // console.log('SCROLL HEIGHT: ', display.scrollHeight);
-    // console.log('OFSSET TOP   : ', display.offsetTop);
-    // console.log('NATIVE ELEMEN: ', this.MapJourneyDisplay);
-    // console.log('Parent        : ', display.childNodes.item(0).getBoundingClientRect());
-    // console.log("Parent: ", parent)
-    // console.log("child = ", child)
+  // const display = this.MapJourneyDisplayContainer.nativeElement;
+  // let child = document.getElementById("lcuMapJourney").getBoundingClientRect();
+  // let parent = display.getBoundingClientRect();
 
-    // if(child.top < 40){
-    //   console.log("Top arrow should show")
-    // }
-    // else{
-    //   console.log("Top arrow should NOT show")
-    // }
 
-    // if(child.bottom > parent.bottom){
-    //   console.log("bottom arrow should show")
-    // }
-    // else{
-    //   console.log("Bottm arrow should NOT show")
-    // }
-    
-    // const container = this.MapJourneyDisplayContainer.nativeElement;
-    // if (container.offsetHeight < container.scrollHeight) {
-    //   this.ShowUpIndicator = true;
-    //   this.ShowDownIndicator = true;
-    // } else {
-    //   this.ShowUpIndicator = false;
-    //   this.ShowDownIndicator = false;
-    // }
+  // console.log('OFFSET HEIGHT: ', display.offsetHeight);
+  // console.log('SCROLL HEIGHT: ', display.scrollHeight);
+  // console.log('OFSSET TOP   : ', display.offsetTop);
+  // console.log('NATIVE ELEMEN: ', this.MapJourneyDisplay);
+  // console.log('Parent        : ', display.childNodes.item(0).getBoundingClientRect());
+  // console.log("Parent: ", parent)
+  // console.log("child = ", child)
+
+  // if(child.top < 40){
+  //   console.log("Top arrow should show")
+  // }
+  // else{
+  //   console.log("Top arrow should NOT show")
+  // }
+
+  // if(child.bottom > parent.bottom){
+  //   console.log("bottom arrow should show")
+  // }
+  // else{
+  //   console.log("Bottm arrow should NOT show")
+  // }
+
+  // const container = this.MapJourneyDisplayContainer.nativeElement;
+  // if (container.offsetHeight < container.scrollHeight) {
+  //   this.ShowUpIndicator = true;
+  //   this.ShowDownIndicator = true;
+  // } else {
+  //   this.ShowUpIndicator = false;
+  //   this.ShowDownIndicator = false;
+  // }
   // }
   public ngOnChanges(): void {
     // this.CheckForHiddenLocations();
@@ -797,32 +834,32 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // console.log("activities to display: ", this.ActivityLocationList);
   }
 
-  public CalcBounds(childBounds: any){
-    if(this.MapJourneyDisplayContainer){
-    let parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
-    // console.log("Parent Bounds: ", parentBounds);
-    // console.log("Child Bounds: ", childBounds);
-    
-    if(childBounds.top-60 < parentBounds.top){//"Top arrow should show"
+  public CalcBounds(childBounds: any) {
+    if (this.MapJourneyDisplayContainer) {
+      let parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
+      // console.log("Parent Bounds: ", parentBounds);
+      // console.log("Child Bounds: ", childBounds);
+
+      if (childBounds.top - 60 < parentBounds.top) {//"Top arrow should show"
         setTimeout(() => {
           this.ShowUpIndicator = true;
         }, 0);
-    }
-    else{//"Top arrow should NOT show"
+      }
+      else {//"Top arrow should NOT show"
         setTimeout(() => {
           this.ShowUpIndicator = false;
-        }, 0);        
-    }
+        }, 0);
+      }
 
-    if(childBounds.bottom+4.16 > parentBounds.bottom){
-      // console.log("Bottom arrow should show")
-      this.ShowDownIndicator = true;
+      if (childBounds.bottom + 4.16 > parentBounds.bottom) {
+        // console.log("Bottom arrow should show")
+        this.ShowDownIndicator = true;
+      }
+      else {
+        // console.log("Bottom arrow should NOT show")
+        this.ShowDownIndicator = false;
+      }
     }
-    else{
-      // console.log("Bottom arrow should NOT show")
-      this.ShowDownIndicator = false;
-    }
-  }
   }
 
   public NotesSaved(event, marker) {
@@ -1640,6 +1677,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   //     this.SearchMethod = this.SearchMethods[0];
   //   }
   // }
+
+  /**
+   * Assigns the default zoom, latitude, and longitude of the map the user is currently viewing
+   */
+  protected assignDefaultMapConfiguration() {
+    if (this.AmblOnLocationArray && this.DisplayedJourney) {
+      const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
+      const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
+      this.CurrentZoom = 10;
+      this.CurrentLongitude = firstLocation.Longitude;
+      this.CurrentLatitude = firstLocation.Latitude;
+    }
+  }
 
   /**
    *

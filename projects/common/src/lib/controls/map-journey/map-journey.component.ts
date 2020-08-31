@@ -70,6 +70,9 @@ export class MapJourneyComponent implements OnInit {
   @Input('show-up-indicator')
   public ShowUpIndicator: boolean;
 
+  @Input('scroll-event')
+  public ScrollEvent: boolean;
+
   /* tslint:disable-next-line:no-output-rename */
   @Output('accordion-bounds-change')
   public AccordionBoundsChange: EventEmitter<any> = new EventEmitter();
@@ -102,13 +105,35 @@ export class MapJourneyComponent implements OnInit {
     
   }
   
-  public ngDoCheck(){
-    if(this.MatAccordion){
-      let accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
-      this.AccordionBoundsChange.emit(accordionBounds)
+  public ngAfterViewInit(){
+    // if(this.MatAccordion){
+    //   let accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
+    //   this.AccordionBoundsChange.emit(accordionBounds);
+    // }
+    // this.MatAccordion.nativeElement.addEventListener('scroll', () => {
+    //   this.CheckBounds()
+    // });
+    this.CheckBounds();
+  }
+
+  public ngOnChanges(){
+    if(this.ScrollEvent){
+      this.CheckBounds();
     }
   }
 
+  public CheckBounds(){
+
+    if(this.MatAccordion){
+      setTimeout(() => {
+        
+      let accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
+      this.AccordionBoundsChange.emit(accordionBounds);
+      // console.log("bound change called, child bounds = ", accordionBounds);
+
+    }, 350);
+    }
+  }
 
   public OnAGCheckChange(event, ag) {
     ag.Checked = event.checked;
@@ -153,6 +178,8 @@ export class MapJourneyComponent implements OnInit {
     if (!this.OpenPanels.includes(idx)) {
       this.OpenPanels.push(idx);
     }
+    this.CheckBounds();
+
     this.emitPanelOpenState();
   }
 
@@ -164,7 +191,9 @@ export class MapJourneyComponent implements OnInit {
     });
     this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
     this.OpenPanels.splice(this.OpenPanels.indexOf(idx), 1);
+    this.CheckBounds();
     this.emitPanelOpenState();
+   
   }
 
   public DropGroup(event: CdkDragDrop<string[]>) {

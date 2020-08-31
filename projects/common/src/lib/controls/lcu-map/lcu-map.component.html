@@ -80,7 +80,8 @@
           (current-panel-open-state)="OnPanelOpenStateChanged($event)" 
           [open-panel-indexes]="OpenPanels"
           (accordion-bounds-change)="CalcBounds($event)"
-          [show-up-indicator]="ShowUpIndicator">
+          [show-up-indicator]="ShowUpIndicator"
+          [scroll-event]="CheckBounds">
         </lcu-map-journey>
       </div>
     </div>

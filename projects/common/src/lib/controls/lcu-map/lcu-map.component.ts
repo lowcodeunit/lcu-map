@@ -808,8 +808,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     let parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
     console.log("Parent Bounds: ", parentBounds);
     console.log("Child Bounds: ", childBounds);
+    let childsTop = Math.round(childBounds.top);
+    let childsBottom = Math.round(childBounds.bottom);
+    let parentsTop = Math.round(parentBounds.top);
+    let parentsBottom = Math.round(parentBounds.bottom);
+
+    console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
+    console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
+
     
-    if(childBounds.top-60 < parentBounds.top){//"Top arrow should show"
+    if(childsTop-60 < parentsTop){//"Top arrow should show"
         setTimeout(() => {
           this.ShowUpIndicator = true;
         }, 0);
@@ -820,7 +828,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }, 0);        
     }
 
-    if(childBounds.bottom+4 > parentBounds.bottom){
+    if(childsBottom+4 > parentsBottom){
       console.log("Bottom arrow should show")
       this.ShowDownIndicator = true;
     }

@@ -725,8 +725,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('scroll', () => {
       this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
       // this.setIndicators();
-      console.log("Scrolling");
-      //Check the bounds 
+      // console.log("Scrolling");
+      // Check the bounds 
       this.CheckBounds = true;
     });
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('click', () => {
@@ -806,15 +806,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CheckBounds = false;
     if(this.MapJourneyDisplayContainer){
     let parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
-    console.log("Parent Bounds: ", parentBounds);
-    console.log("Child Bounds: ", childBounds);
+    // console.log("Parent Bounds: ", parentBounds);
+    // console.log("Child Bounds: ", childBounds);
     let childsTop = Math.round(childBounds.top);
     let childsBottom = Math.round(childBounds.bottom);
     let parentsTop = Math.round(parentBounds.top);
     let parentsBottom = Math.round(parentBounds.bottom);
 
-    console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
-    console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
+    // console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
+    // console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
 
     
     if(childsTop-60 < parentsTop){//"Top arrow should show"
@@ -829,11 +829,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
 
     if(childsBottom+4 > parentsBottom){
-      console.log("Bottom arrow should show")
+      // console.log("Bottom arrow should show")
       this.ShowDownIndicator = true;
     }
     else{
-      console.log("Bottom arrow should NOT show")
+      // console.log("Bottom arrow should NOT show")
       this.ShowDownIndicator = false;
     }
   }

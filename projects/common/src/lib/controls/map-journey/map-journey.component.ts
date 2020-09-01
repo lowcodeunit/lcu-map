@@ -1,4 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+  OnChanges
+} from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ActivityGroupModel } from '../../models/activity-group.model';
@@ -9,10 +20,13 @@ import { ActivityGroupModel } from '../../models/activity-group.model';
   templateUrl: './map-journey.component.html',
   styleUrls: ['./map-journey.component.scss']
 })
-export class MapJourneyComponent implements OnInit {
+export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
 
+  /* tslint:disable-next-line */
   protected _amblOnLocationArray: any;
+  /* tslint:disable-next-line */
   protected _journey: any;
+  /* tslint:disable-next-line */
   protected _openPanels: Array<number> = [0];
 
   public ClickedActivityId: string;
@@ -24,8 +38,7 @@ export class MapJourneyComponent implements OnInit {
   public set ClickedActivity(activity: any) {
     if (activity) {
       this.ClickedActivityId = activity.ID;
-    }
-    else {
+    } else {
       this.ClickedActivityId = null;
     }
   }
@@ -64,12 +77,15 @@ export class MapJourneyComponent implements OnInit {
   public get OpenPanels() {
     return this._openPanels;
   }
-/**
- * Determines whether or not to display the up arrow on the menu
- */
+
+  /**
+   * Determines whether or not to display the up arrow on the menu
+   */
+  /* tslint:disable-next-line:no-input-rename */
   @Input('show-up-indicator')
   public ShowUpIndicator: boolean;
 
+  /* tslint:disable-next-line:no-input-rename */
   @Input('scroll-event')
   public ScrollEvent: boolean;
 
@@ -77,35 +93,41 @@ export class MapJourneyComponent implements OnInit {
   @Output('accordion-bounds-change')
   public AccordionBoundsChange: EventEmitter<any> = new EventEmitter();
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('journey-changed')
-  public JourneyChanged: EventEmitter<{ message: string, journey: any, additional?: any }> = new EventEmitter(); // TODO : bring in ItineraryModel and change this
+  public JourneyChanged: EventEmitter<{ message: string, journey: any, additional?: any }> = new EventEmitter();
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('activity-location-clicked')
   public ActivityLocationClicked: EventEmitter<any> = new EventEmitter();
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('legend-top-icon-clicked')
   public LegendTopIconClickedEvent: EventEmitter<string> = new EventEmitter();
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('activity-groups-changed')
   public ActivityGroupsChanged: EventEmitter<any> = new EventEmitter();
 
+  /* tslint:disable-next-line:no-output-rename */
   @Output('current-panel-open-state')
   public CurrentPanelOpenState: EventEmitter<Array<number>> = new EventEmitter();
 
   @ViewChild('matAccordionChild')
   public MatAccordion: ElementRef;
 
-  constructor(protected mapService: MapService,
+  constructor(
+    protected mapService: MapService,
     protected changeDetector: ChangeDetectorRef) {
     this.DisplayedActivityGroups = new Array<ActivityGroupModel>();
     this.ShowUpIndicator = false;
   }
 
   public ngOnInit() {
-    
+
   }
-  
-  public ngAfterViewInit(){
+
+  public ngAfterViewInit() {
     // if(this.MatAccordion){
     //   let accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
     //   this.AccordionBoundsChange.emit(accordionBounds);
@@ -116,22 +138,22 @@ export class MapJourneyComponent implements OnInit {
     this.CheckBounds();
   }
 
-  public ngOnChanges(){
-    if(this.ScrollEvent){
+  public ngOnChanges() {
+    if (this.ScrollEvent) {
       this.CheckBounds();
     }
   }
 
-  public CheckBounds(){
+  public CheckBounds() {
 
-    if(this.MatAccordion){
+    if (this.MatAccordion) {
       setTimeout(() => {
-        
-      let accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
-      this.AccordionBoundsChange.emit(accordionBounds);
-      // console.log("bound change called, child bounds = ", accordionBounds);
 
-    }, 350);
+        const accordionBounds = this.MatAccordion.nativeElement.getBoundingClientRect();
+        this.AccordionBoundsChange.emit(accordionBounds);
+        // console.log("bound change called, child bounds = ", accordionBounds);
+
+      }, 350);
     }
   }
 
@@ -159,22 +181,35 @@ export class MapJourneyComponent implements OnInit {
     }
   }
 
+  /**
+   *
+   * @param icon the icon that was clicked
+   *
+   * Runs when a user clicks one of the top icons above the map legend
+   */
   public LegendTopIconClicked(icon: string) {
     this.LegendTopIconClickedEvent.emit(icon);
   }
 
+  /**
+   *
+   * @param activityGroup the group whose panel was opened
+   * @param idx the index of the group whose panel was opened
+   *
+   * Runs when a user clicks the tile to open a panel
+   */
   public PanelOpened(activityGroup: any, idx: number) {
     let duplicate = false;
-    this.DisplayedActivityGroups.forEach(ag =>{
-      if(ag.ID === activityGroup.ID){
+    this.DisplayedActivityGroups.forEach(ag => {
+      if (ag.ID === activityGroup.ID) {
         duplicate = true;
       }
-    })
-    if(!duplicate){
+    });
+    if (!duplicate) {
       this.DisplayedActivityGroups.push(activityGroup);
       this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
     }
-    
+
     if (!this.OpenPanels.includes(idx)) {
       this.OpenPanels.push(idx);
     }
@@ -183,6 +218,13 @@ export class MapJourneyComponent implements OnInit {
     this.emitPanelOpenState();
   }
 
+  /**
+   *
+   * @param activityGroup the group whose panel was closed
+   * @param idx the index of the group whose panel was closed
+   *
+   * Runs when a user clicks the tile to close a panel
+   */
   public PanelClosed(activityGroup: any, idx: number) {
     this.DisplayedActivityGroups.forEach(ag => {
       if (ag.ID === activityGroup.ID) {
@@ -193,9 +235,15 @@ export class MapJourneyComponent implements OnInit {
     this.OpenPanels.splice(this.OpenPanels.indexOf(idx), 1);
     this.CheckBounds();
     this.emitPanelOpenState();
-   
+
   }
 
+  /**
+   *
+   * @param event the drag and drop event
+   *
+   * Runs after a user drops a group into a new position
+   */
   public DropGroup(event: CdkDragDrop<string[]>) {
     // console.log('DROP GROUP EVENT: ');
     // console.log(event);
@@ -207,6 +255,12 @@ export class MapJourneyComponent implements OnInit {
     this.normalizeAndEmitJourney('moved group', this.Journey);
   }
 
+  /**
+   *
+   * @param event the drag and drop event
+   *
+   * Runs after a user drops an activity into a new position
+   */
   public DropActivity(event: CdkDragDrop<string[]>) {
     // console.log('DROP ACTIVITY EVENT: ');
     // console.log(event);
@@ -245,6 +299,9 @@ export class MapJourneyComponent implements OnInit {
     this.JourneyChanged.emit({ message, journey: journeyToSend, additional });
   }
 
+  /**
+   * Emits the current state of which panels are open
+   */
   protected emitPanelOpenState() {
     this.CurrentPanelOpenState.emit(this.OpenPanels);
   }
@@ -276,6 +333,9 @@ export class MapJourneyComponent implements OnInit {
     }
   }
 
+  /**
+   * Assigns the new order of all activities and activity groups
+   */
   protected reOrderGroupsAndActivities() {
     this.Journey.ActivityGroups.forEach((ag, gIdx) => {
       ag.Activities.forEach((act, aIdx) => {
@@ -285,6 +345,9 @@ export class MapJourneyComponent implements OnInit {
     });
   }
 
+  /**
+   * Edits the titles of the days starting at 1 whenever the order is changed
+   */
   protected reCalibrateDays() {
     let dayCounter = 1;
     this.Journey.ActivityGroups.forEach(ag => {

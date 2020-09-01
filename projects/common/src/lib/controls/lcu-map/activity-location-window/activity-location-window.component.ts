@@ -72,6 +72,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
   @Output('notes-saved')
   public NotesSaved: EventEmitter<any> = new EventEmitter();
 
+  @Output('favorited-changed')
+  public FavoritedChanged: EventEmitter<boolean> = new EventEmitter();
+
 
   constructor(
     protected infoWindowManager: InfoWindowManager,
@@ -89,6 +92,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
         this.infoWindow = infoWindow;
       }
     );
+
   }
 
   /**
@@ -153,6 +157,11 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
   public OnChoseIcon(icon: string) {
     this.IsSelectingIcon = false;
     this.UserChoseIcon.emit(icon);
+  }
+
+  public ToggleFavorited(){
+    this.marker.Favorited = !this.marker.Favorited;
+    this.FavoritedChanged.emit(this.marker.Favorited);
   }
 
   /**

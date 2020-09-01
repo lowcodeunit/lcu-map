@@ -902,6 +902,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit({ message: 'notes saved', journey: this.DisplayedJourney, additional: { activity } });
   }
 
+  public ToggleFavorited(event: boolean, marker: ActivityModel){
+    let activity;
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach((act: ActivityModel) => {
+        if (act.ID === marker.ID) {
+          act.Favorited = event;
+          activity = act;
+        }
+      });
+    });
+    this.JourneyChanged.emit({ message: 'activity favorited changed', journey: this.DisplayedJourney, additional: { activity } });
+  }
+
   /**
    * Breakpoints for screen sizes
    */

@@ -77,6 +77,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected expectedDoubleClickElapsedTime: number = 500;
 
+  protected _visibleLocations;
+
   /**
    * The NE and SW lat/lng set of the current map
    */
@@ -135,6 +137,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public LegendContainerHeight: number = 0;
 
+  public CheckBounds: boolean;
+
   /**
    * Determines where to place the indicator at the bottom of the legend (its 'top' value)
    */
@@ -149,6 +153,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   // 12 for bottom right & 9 for right bottom
   public ZoomOptions: object = { position: 9 };
 
+  /**
+   * The minimum zoom level (so map can't show too far out)
+   */
   public MinZoom: number = 2;
 
   /**
@@ -300,6 +307,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public CurrentMapModel: UserMap;
 
+  /**
+   * The list of locations that the user should be able to see on the map (may be able to remove this if it's not being used)
+   */
   public _visibleLocationsMasterList: Array<MapMarker>;
 
   /**
@@ -331,6 +341,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * The agmInfoWindow refrenced in the DOM
    */
   public amblInfoWindow: AgmInfoWindow;
+
+  public ActivityLocationList: Array<ActivityModel> = [];
+
   /**
    * The search input box
    */
@@ -348,8 +361,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @ViewChild('mapJourneyDisplay')
   public MapJourneyDisplay: ElementRef;
-
-  public ActivityLocationList: Array<ActivityModel> = [];
 
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
@@ -530,6 +541,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // this.resetMapCheckedState();
   }
 
+  /**
+   * The getter for the current map model
+   */
+  public get MapModel(): UserMap {
+    return this._currentMapModel;
+  }
+
   @Input('open-panel-indexes')
   public set OpenPanels(arr) {
     if (Array.isArray(arr) && arr.length > 0) {
@@ -540,17 +558,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._openPanels;
   }
 
-  /**
-   * The getter for the current map model
-   */
-  public get MapModel(): UserMap {
-    return this._currentMapModel;
-  }
-
-  public CheckBounds: boolean;
-
-
-  protected _visibleLocations;
   @Input('show-visible-locations')
   public set VisibleLocations(value: Array<any>) {
     this._visibleLocations = value;
@@ -569,10 +576,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @Output('journey-changed')
   public JourneyChanged: EventEmitter<any> = new EventEmitter<any>();
-
-  public onJourneyChanged(event) {
-    this.JourneyChanged.emit(event);
-  }
 
   @Output('journey-copied')
   public JourneyCopied: EventEmitter<any> = new EventEmitter<any>();
@@ -829,6 +832,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.forcePanToSubscription.unsubscribe();
   }
 
+  /**
+   *
+   * @param event the array of activity groups
+   *
+   * Event that gets emitted when an activity group changes
+   */
   public ActivityGroupsChanged(event: Array<ActivityGroupModel>) {
     this.ActivityLocationList = new Array<ActivityModel>();
     event.forEach((ag: ActivityGroupModel) => {
@@ -876,6 +885,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
+  /**
+   *
+   * @param event the notes to save
+   * @param marker the activity of the notes that changed
+   *
+   * Runs when the user saves notes from the map
+   */
   public NotesSaved(event, marker) {
     let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
@@ -922,6 +938,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   //   return LayerTitles;
   // }
 
+  /**
+   *
+   * @param event the array of map markers
+   *
+   * Updates the visible locations
+   */
   public UpdateVisibleLocations(event: Array<MapMarker>): void {
     // this._visibleLocationsMasterList = event;
   }
@@ -1092,7 +1114,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public addIconClicked(event: ActivityModel) {
     // console.log("Adding event: ", event)
-    event.locationData.IconImageObject = {scaledSize: {width: 30, height: 30}, url: "./assets/location_on.png"};
+    event.locationData.IconImageObject = { scaledSize: { width: 30, height: 30 }, url: "./assets/location_on.png" };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({ message: "add activity", journey: this.DisplayedJourney });
@@ -1246,6 +1268,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.ShowNewOptions = !this.ShowNewOptions;
   }
 
+  /**
+   * Toggles the layer dropdown
+   */
   public ShowLayers() {
     this.ShowLayersDropdown = !this.ShowLayersDropdown;
     if (this.ShowNewOptions === true) {
@@ -1260,10 +1285,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyShared.emit(this.DisplayedJourney);
   }
 
+  /**
+   * Toggles the EditingJourneyTitle boolean
+   */
   public EditJourneyTitle() {
     this.EditingJourneyTitle = true;
   }
 
+  /**
+   *
+   * @param newTitle the new journey's title
+   *
+   * Emits the journey's new title and toggles the EditingJourneyTitle to false
+   */
   public DoneEditingJourneyTitle(newTitle) {
     this.DisplayedJourney.Title = newTitle.value;
     this.EditingJourneyTitle = false;
@@ -1337,7 +1371,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       //focus on the journey input
       this.EditingJourneyTitle = true;
       const input = document.getElementById('JourneyTitleInput');
-      setTimeout(function() {
+      setTimeout(function () {
         input.focus();
       }, 0);
 
@@ -1359,6 +1393,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.changeDetector.detectChanges();
     this.locationInfoService.SetSelectedMarker(activityLocation);
     this.mapService.MapMarkerClickedEvent(this.GoogleInfoWindowRef);
+  }
+
+  public onJourneyChanged(event) {
+    this.JourneyChanged.emit(event);
   }
 
   /**

@@ -10,6 +10,8 @@
       <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.State }}, {{ marker?.locationData?.Country }}</span>
     </div>
     <div class="location-star-info">
+      <!-- so the text doesn't move once it belongs to journey -->
+      <div *ngIf="!BelongsToJourney" id="icon-placeholder"></div> 
       <mat-icon *ngIf="BelongsToJourney">star_border</mat-icon>
       <mat-icon *ngIf="BelongsToJourney" class="material-icons material-icons-outlined disabled-icon">info_outline</mat-icon>
     </div>

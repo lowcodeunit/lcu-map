@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" matTooltip="Share" (click)="ShareClicked()">share</mat-icon>
+        <mat-icon class="center-buttons" (click)="ShareClicked()">share</mat-icon>
       </div>
     </div>
 
@@ -63,9 +63,9 @@
         *ngIf="ShowJourneyLegend && !EditingJourneyTitle">
         chevron_right</mat-icon>
       <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}" (click)="EditJourneyTitle()"
-        *ngIf="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
-      <input class="map-journey-title-edit-input" *ngIf="EditingJourneyTitle" type="text"
-        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" #journeyTitleEdit value="{{DisplayedJourney?.Title}}" />
+        [fxShow]="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
+      <input class="map-journey-title-edit-input" [fxShow]="EditingJourneyTitle" type="text"
+        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" id="JourneyTitleInput" #journeyTitleEdit value="{{DisplayedJourney?.Title}}" />
       <mat-icon class="close-journey-title-chevron" (click)="ShowJourneyLegend = true"
         *ngIf="!ShowJourneyLegend && !EditingJourneyTitle">
         chevron_left</mat-icon>

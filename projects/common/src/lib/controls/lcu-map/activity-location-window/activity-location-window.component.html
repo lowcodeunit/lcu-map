@@ -13,7 +13,7 @@
       <!-- so the text doesn't move once it belongs to journey -->
       <div *ngIf="!BelongsToJourney" id="icon-placeholder"></div> 
       <mat-icon *ngIf="BelongsToJourney && !marker.Favorited" (click)="ToggleFavorited()">star_border</mat-icon>
-      <mat-icon *ngIf="BelongsToJourney && marker.Favorited" (click)="ToggleFavorited()">star_rate</mat-icon>
+      <mat-icon *ngIf="BelongsToJourney && marker.Favorited" (click)="ToggleFavorited()">star</mat-icon>
       <mat-icon *ngIf="BelongsToJourney" class="material-icons material-icons-outlined disabled-icon">info_outline</mat-icon>
     </div>
   </div>

@@ -1091,6 +1091,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param event 
    */
   public addIconClicked(event: ActivityModel) {
+    // console.log("Adding event: ", event)
+    event.locationData.IconImageObject = {scaledSize: {width: 30, height: 30}, url: "./assets/location_on.png"};
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({ message: "add activity", journey: this.DisplayedJourney });
@@ -1332,6 +1334,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         });
         // this.State.Loading = true;
       }
+      //focus on the journey input
+      this.EditingJourneyTitle = true;
+      const input = document.getElementById('JourneyTitleInput');
+      setTimeout(function() {
+        input.focus();
+      }, 0);
 
     }
     // scroll all the way to the right:

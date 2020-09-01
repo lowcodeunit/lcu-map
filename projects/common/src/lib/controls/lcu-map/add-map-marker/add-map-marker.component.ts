@@ -14,8 +14,6 @@ export class AddMapMarkerComponent implements OnInit {
 
   // FIELDS
 
- 
-
   // PROPERTIES
 
   /**
@@ -35,7 +33,10 @@ export class AddMapMarkerComponent implements OnInit {
 
   // CONSTRUCTORS
 
-  constructor(@Inject(MAT_DIALOG_DATA) public passedData: any, private mapConverions: MapConversions, private dialogRef: MatDialogRef<AddMapMarkerComponent>) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public passedData: any,
+    private mapConverions: MapConversions,
+    private dialogRef: MatDialogRef<AddMapMarkerComponent>) { }
 
   // LIFE CYCLE
 
@@ -62,12 +63,13 @@ export class AddMapMarkerComponent implements OnInit {
    */
   public SetMarkerData(): void {
 
-    console.log("Marker icon: ", this.NewMarkerForm.value.icon.Icon)
-    if(this.NewMarkerForm.value.icon.Icon){
+    console.log('Marker icon: ', this.NewMarkerForm.value.icon.Icon);
+    if (this.NewMarkerForm.value.icon.Icon) {
       this.NewMarker.Icon = this.NewMarkerForm.value.icon.Icon;
-      this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList);
-    }
-    else{
+      this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(
+        this.NewMarkerForm.value.icon.IconLookup, this.passedData.iconList
+        );
+    } else {
       // this.NewMarker.Icon = this.DefaultMarker.Name;
       // this.NewMarker.IconImageObject = this.mapConverions.ConvertIconObject(this.DefaultMarker.Name, this.passedData.iconList);
     }
@@ -78,7 +80,7 @@ export class AddMapMarkerComponent implements OnInit {
     this.NewMarker.Longitude = this.passedData.Longitude;
     // this.NewMarker.LayerID = this.passedData.primary_map_id;
   }
-  
+
   /**
    * Closes the mat dialog box
    */

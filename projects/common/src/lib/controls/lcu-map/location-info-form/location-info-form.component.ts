@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
 import { MapMarker } from '../../../models/map-marker.model';
 import { MapConversions } from '../../../utils/conversions';
 import { MarkerInfo } from '../../../models/marker-info.model';
@@ -16,8 +16,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./location-info-form.component.scss']
 })
 
-export class LocationInfoFormComponent implements OnInit {
-  //FIELDS
+export class LocationInfoFormComponent implements OnInit, OnChanges, AfterViewInit {
+  // FIELDS
   /**
    * Incomming MarkerData to display
    */
@@ -44,10 +44,10 @@ export class LocationInfoFormComponent implements OnInit {
   NewMapMarker: EventEmitter<MapMarker>;
 
 
-  //PROPERTIES
+  // PROPERTIES
   /**
- * The set of available marker icons and paths to those icons
- */
+   * The set of available marker icons and paths to those icons
+   */
   public MarkerSet: Array<MarkerInfo>;
 
 
@@ -93,23 +93,24 @@ export class LocationInfoFormComponent implements OnInit {
    */
   public Type: string;
 
-  //public FormView: string;
-  //CONSTRUCTORS
+  // public FormView: string;
+  // CONSTRUCTORS
 
-  constructor(protected mapConversions: MapConversions, 
+  constructor(
+    protected mapConversions: MapConversions,
     private locationInfoService: LocationInfoService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
     this.CloseFooter = new EventEmitter<boolean>();
     this.NewMapMarker = new EventEmitter<MapMarker>();
     this.matIconRegistry.addSvgIcon(
-      "instagram",
-      this.domSanitizer.bypassSecurityTrustResourceUrl("./assets/instagram.svg")
+      'instagram',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('./assets/instagram.svg')
     );
   }
 
 
-  //LIFE CYCLE
+  // LIFE CYCLE
 
   ngOnInit() {
     this.createFormGroup();
@@ -129,12 +130,12 @@ export class LocationInfoFormComponent implements OnInit {
 
   ngAfterViewInit() {
 
-    //this.Marker = this.MarkerData.marker;
+    // this.Marker = this.MarkerData.marker;
     this.MarkerSet = this.MarkerData.mapMarkerSet;
-    this.NewMarkerForm.patchValue({ title: this.Marker.Title })
+    this.NewMarkerForm.patchValue({ title: this.Marker.Title });
     this.NewMarker = new MapMarker(this.MarkerData.marker);
     this.setChosenIconIfExists(this.NewMarker.Icon);
-    //console.log("form group = ", this.NewMarkerForm);
+    // console.log("form group = ", this.NewMarkerForm);
   }
 
   ngOnChanges() {
@@ -147,15 +148,15 @@ export class LocationInfoFormComponent implements OnInit {
     this.InstagramUrl = this.locationInfoService.BuildInstagramUrl(this.NewMarker);
     this.Type = this.locationInfoService.GetType(this.NewMarker);
     this.IsEdit = this.MarkerData.isEdit;
-    this.NewMarkerForm.patchValue({ title: this.Marker.Title })
+    this.NewMarkerForm.patchValue({ title: this.Marker.Title });
   }
-  //API METHODS
+  // API METHODS
 
   /**
    * Change FormView so basic info is diplayed
    */
   public ShowBasicInfo(): void {
-    this.FormView = "basic";
+    this.FormView = 'basic';
   }
 
   /**
@@ -173,28 +174,25 @@ export class LocationInfoFormComponent implements OnInit {
   /**
    * Sets the marker data to the user entered data
    */
-
-
   public SetMarkerData(): void {
     if (!this.IsEdit) {
       this.NewMarker.ID = '';
     }
     // this.NewMarker.LayerID = this.MarkerData.primaryMapId;
     this.NewMarker.Title = this.NewMarkerForm.value.title;
-    if(this.ChosenIcon){
-    this.NewMarker.Icon = this.ChosenIcon.IconLookup;
-    this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
-    }
-    else{
+    if (this.ChosenIcon) {
+      this.NewMarker.Icon = this.ChosenIcon.IconLookup;
+      this.NewMarker.IconImageObject = this.mapConversions.ConvertIconObject(this.ChosenIcon.IconLookup, this.MarkerData.mapMarkerSet);
+    } else {
       this.NewMarker.Icon = this.DefaultMarker.name;
       this.NewMarker.IconImageObject = this.DefaultMarker;
     }
   }
 
   /**
-   * 
+   *
    * @param icon The icon chosen by the user
-   * 
+   *
    * Sets the current ChosenIcon to the icon the user selected
    */
   public SetIcon(icon): void {
@@ -215,9 +213,9 @@ export class LocationInfoFormComponent implements OnInit {
   // }
 
   /**
-   * 
+   *
    * @param iconName The name of the current icon
-   * 
+   *
    * Initially sets the current ChosenIcon to the associated marker for recognition of active status
    */
   protected setChosenIconIfExists(iconName: string): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { MapService } from '../../../services/map.service';
 import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { LocationInfoService } from '../../../services/location-info.service';
@@ -11,12 +11,23 @@ import { Subscription } from 'rxjs';
   templateUrl: './activity-location-window.component.html',
   styleUrls: ['./activity-location-window.component.scss']
 })
-export class ActivityLocationWindowComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnChanges {
 
+  /**
+   * Indicates whether or not the journey being displayed belongs to a journey
+   */
   protected _belongsToJourney: boolean = false;
 
+  /**
+   * The Agm Info Window
+   */
   public infoWindow: AgmInfoWindow;
+
   public mapMarkerClickedSubscription: Subscription;
+
+  /**
+   * The collection of icons (Angular Material Icons) to be displayed as choices for the activity
+   */
   public IconSelection: Array<string> = [
     'location_on',
     'hotel',
@@ -30,6 +41,10 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, After
     'beach_access',
     'golf_course'
   ];
+
+  /**
+   * Indicates whether or not the user is selecting an icon for the activity
+   */
   public IsSelectingIcon: boolean = false;
 
   @ViewChild('notesText', { static: false })
@@ -74,16 +89,6 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, After
         this.infoWindow = infoWindow;
       }
     );
-
-  }
-
-  /**
-   * Angular lifecycle hook that gets called after the view has finished initializing.
-   */
-  public ngAfterViewInit(): void {
-    // if (!this.DefaultMarker) {
-    //   this.DefaultMarker = { name: "lcu-map-default-marker", url: "./assets/lcu-map-default-marker.png", scaledSize: { width: 40, height: 40 } };
-    // }
   }
 
   /**
@@ -98,6 +103,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, After
     }
   }
 
+  /**
+   * Sets the id of the activity whose text box was focused
+   */
   public SetFocused() {
     this.locationInfoService.setHighlightedNotesLocationId(this.marker.ID);
   }
@@ -110,20 +118,38 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, After
     this.mapMarkerClickedSubscription.unsubscribe();
   }
 
+  /**
+   *
+   * @param notesText the notes the user has saved
+   *
+   * Runs when a user clicks off or tabs off a notes text area - saves the notes
+   */
   public SaveNotes(notesText) {
     this.NotesSaved.emit(notesText.value);
     this.locationInfoService.setHighlightedNotesLocationId(null);
   }
 
+  /**
+   * Runs when user clicks the 'add' icon to add a location to the journey
+   */
   public addIconClicked() {
     this.AddIconClicked.emit();
     this.BelongsToJourney = true;
   }
 
+  /**
+   * Shows the widget icon selection so user can choose new icon for activity
+   */
   public ShowWidgetIconSelection() {
     this.IsSelectingIcon = true;
   }
 
+  /**
+   *
+   * @param icon the string of the new icon the user has chosen for the activity
+   *
+   * Saves the newly chosen icon as the activity's icon
+   */
   public OnChoseIcon(icon: string) {
     this.IsSelectingIcon = false;
     this.UserChoseIcon.emit(icon);

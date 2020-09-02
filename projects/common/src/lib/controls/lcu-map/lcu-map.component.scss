@@ -14,6 +14,7 @@ mat-icon {
 #map-section {
     height: 100vh;
     position: relative;
+    overflow-y: hidden;
 
 #map-toolbar{
     height: 40px;
@@ -298,7 +299,7 @@ mat-option {
 
 .map-journey-display-container {
     position: absolute;
-    right: 0;
+    right: -19px;
     top: 40px;
     z-index: 1;
     width: 270px;
@@ -326,7 +327,7 @@ mat-option {
 .more-below-indicator {
     z-index: 200;
     position: fixed;
-    right: 19px;
+    right: 0;
     width: 251px;
     background-color: white;
     color: $primary_dark;

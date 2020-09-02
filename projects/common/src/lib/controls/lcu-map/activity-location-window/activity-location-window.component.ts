@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, EventEmitter, Output, ViewChild, ElementRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output, ViewChild, ElementRef, OnChanges, isDevMode } from '@angular/core';
 import { MapService } from '../../../services/map.service';
 import { AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { LocationInfoService } from '../../../services/location-info.service';
@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./activity-location-window.component.scss']
 })
 export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnChanges {
+
+  // public IsDevModeEnv: boolean;
 
   /**
    * Indicates whether or not the journey being displayed belongs to a journey
@@ -81,7 +83,13 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
     protected locationInfoService: LocationInfoService,
     protected mapConversions: MapConversions,
     protected mapService: MapService
-  ) { }
+  ) { 
+    // if (isDevMode()) {
+    //   this.IsDevModeEnv = true;
+    // } else {
+    //   this.IsDevModeEnv = false;
+    // }
+  }
 
   /**
    * Angular lifecycle hook that gets called on initialization.

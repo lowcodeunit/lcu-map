@@ -306,6 +306,7 @@ mat-option {
     width: 270px;
     max-height: calc(100% - 165px);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .map-journey-title-edit-input {

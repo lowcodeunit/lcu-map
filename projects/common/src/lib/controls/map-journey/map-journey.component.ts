@@ -324,12 +324,14 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
         });
       });
       const firstActivityData = this.Journey.ActivityGroups[0].Activities[0].locationData;
-      this.PanToLocation = {
-        lat: firstActivityData.Latitude,
-        lng: firstActivityData.Longitude,
-        zoom: 6
-      };
-      this.mapService.ForcePan(this.PanToLocation);
+      if (firstActivityData) {
+        this.PanToLocation = {
+          lat: firstActivityData.Latitude,
+          lng: firstActivityData.Longitude,
+          zoom: 6
+        };
+        this.mapService.ForcePan(this.PanToLocation);
+      }
     }
   }
 

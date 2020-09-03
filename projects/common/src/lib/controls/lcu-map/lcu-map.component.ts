@@ -52,6 +52,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected nonEssentialKeys: Array<string>;
 
+  protected defaultLocationData: {zoom: number, lat: number, lng: number} = {zoom: 4, lat:39.741802, lng: -105.070799 };
+
   /**
    * The place id of the location the user clicked on
    *
@@ -902,7 +904,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit({ message: 'notes saved', journey: this.DisplayedJourney, additional: { activity } });
   }
 
-  public ToggleFavorited(event: boolean, marker: ActivityModel){
+  public ToggleFavorited(event: boolean, marker: ActivityModel) {
     let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach((act: ActivityModel) => {
@@ -1797,9 +1799,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.AmblOnLocationArray && this.DisplayedJourney) {
       const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
       const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
-      this.CurrentZoom = 10;
-      this.CurrentLongitude = firstLocation.Longitude;
-      this.CurrentLatitude = firstLocation.Latitude;
+      if (firstLocation) {
+        this.CurrentZoom = 10;
+        this.CurrentLongitude = firstLocation.Longitude;
+        this.CurrentLatitude = firstLocation.Latitude;
+      } else {
+        this.CurrentZoom = this.defaultLocationData.zoom;
+        this.CurrentLongitude = this.defaultLocationData.lng;
+        this.CurrentLatitude = this.defaultLocationData.lat;
+      }
     }
   }
 

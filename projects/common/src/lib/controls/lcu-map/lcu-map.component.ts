@@ -860,9 +860,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
       // console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
       // console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
+      if (childsBottom + 4 > parentsBottom) {
+        // console.log("Bottom arrow should show")
+        this.ShowDownIndicator = true;
+      } else {
+        // console.log("Bottom arrow should NOT show")
+        this.ShowDownIndicator = false;
+      }
 
-
-      if (childsTop - 60 < parentsTop) {// "Top arrow should show"
+      if (childsTop - 40 < parentsTop) {// "Top arrow should show"
         setTimeout(() => {
           this.ShowUpIndicator = true;
         }, 0);
@@ -872,13 +878,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }, 0);
       }
 
-      if (childsBottom + 4 > parentsBottom) {
-        // console.log("Bottom arrow should show")
-        this.ShowDownIndicator = true;
-      } else {
-        // console.log("Bottom arrow should NOT show")
-        this.ShowDownIndicator = false;
-      }
+     
     }
   }
 

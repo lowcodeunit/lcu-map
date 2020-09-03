@@ -1326,9 +1326,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
     if (action === 'day') {
       newGroup = this.getFullDayActivityGroup(dayCount);
+      // console.log('open panels b4', this.OpenPanels);
+
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
       this.updateItinerary();
+      this.OpenPanels.push(this.DisplayedJourney.ActivityGroups.length - 1);
+      this.CurrentPanelOpenState.emit(this.OpenPanels);
+      // console.log('open panels', this.OpenPanels);
+
     } else if (action === 'extras') {
       newGroup = this.getExtrasActivityGroup();
       newGroup.Title = this.getValidOptionsTitle();

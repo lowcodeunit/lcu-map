@@ -126,6 +126,10 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
   public ngOnInit() {
 
   }
+  // ngDoCheck(){
+  //   console.log("open panels map journey: ", this.OpenPanels)
+
+  // }
 
   public ngAfterViewInit() {
     // if(this.MatAccordion){
@@ -142,6 +146,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.ScrollEvent) {
       this.CheckBounds();
     }
+    console.log("open panels map journey: ", this.OpenPanels)
   }
 
   public CheckBounds() {

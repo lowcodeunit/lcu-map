@@ -56,7 +56,7 @@
     <!-- JOURNEY ACTIVITIES -->
     <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
       class="activity-display" (click)="onActivityClickToNavigate(activity)"
-      [ngClass]="{'active-activity': ClickedActivityId === activity.ID}">
+      [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID)}">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>

@@ -126,8 +126,7 @@ $info-window-height: 170px;
 }
 
 .star {
-  // background: url('../../../../assets/star_sprites.png') 0 0;
-  background: url('../../../utils/assets/star_sprites.png') 0 0;
+  background: url('/assets/star_sprites.png') 0 0;
   background-size: 60px;
   background-repeat: no-repeat;
   width: 15px;
@@ -137,6 +136,17 @@ $info-window-height: 170px;
   margin-top: 2px;
   margin-right: 5px;
 }
+// .dev-star {
+//   background: url('../../../../../assets/star_sprites.png') 0 0;
+//   background-size: 60px;
+//   background-repeat: no-repeat;
+//   width: 15px;
+//   height: 15px;
+//   position: absolute;
+//   right: 36px;
+//   margin-top: 2px;
+//   margin-right: 5px;
+// }
 .star-normal {
   background-position-x: -45px;
 

@@ -278,7 +278,7 @@ export class AppComponent implements OnInit {
         Modified: null,
         PartitionKey: "40-105",
         State: "Colorado",
-        Telephone: "",
+        Telephone: "123-123-1233",
         Title: "Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack",
         Town: "Brighton",
         Website: "http://www.yardagrams.com/",

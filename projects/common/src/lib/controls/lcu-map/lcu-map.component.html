@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" matTooltip="Share" (click)="ShareClicked()">share</mat-icon>
+        <mat-icon class="center-buttons" (click)="ShareClicked()">share</mat-icon>
       </div>
     </div>
 
@@ -63,19 +63,30 @@
         *ngIf="ShowJourneyLegend && !EditingJourneyTitle">
         chevron_right</mat-icon>
       <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}" (click)="EditJourneyTitle()"
-        *ngIf="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
-      <input class="map-journey-title-edit-input" *ngIf="EditingJourneyTitle" type="text"
-        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" #journeyTitleEdit value="{{DisplayedJourney?.Title}}"/>
+        [fxShow]="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
+      <input class="map-journey-title-edit-input" [fxShow]="EditingJourneyTitle" type="text"
+        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" id="JourneyTitleInput" #journeyTitleEdit value="{{DisplayedJourney?.Title}}" />
       <mat-icon class="close-journey-title-chevron" (click)="ShowJourneyLegend = true"
         *ngIf="!ShowJourneyLegend && !EditingJourneyTitle">
         chevron_left</mat-icon>
     </div>
-    <div class="map-journey-display" *ngIf="ShowJourneyLegend">
-      <lcu-map-journey [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)" [clicked-activity]="SelectedMarker"
-        [ambl-on-location-array]="AmblOnLocationArray" (activity-location-clicked)="onActivityLocationClicked($event)"
-        (legend-top-icon-clicked)="LegendTopIconClicked($event)" (activity-groups-changed)="ActivityGroupsChanged($event)" 
-        (current-panel-open-state)="OnPanelOpenStateChanged($event)" [open-panel-indexes]="OpenPanels">
-      </lcu-map-journey>
+    <div class="map-journey-display-container" #mapJourneyDisplayContainer>
+      <div class="map-journey-display" *ngIf="ShowJourneyLegend" #mapJourneyDisplay>
+        <lcu-map-journey  [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
+          [clicked-activity]="SelectedMarker" [ambl-on-location-array]="AmblOnLocationArray"
+          (activity-location-clicked)="onActivityLocationClicked($event)"
+          (legend-top-icon-clicked)="LegendTopIconClicked($event)"
+          (activity-groups-changed)="ActivityGroupsChanged($event)"
+          (current-panel-open-state)="OnPanelOpenStateChanged($event)" 
+          [open-panel-indexes]="OpenPanels"
+          (accordion-bounds-change)="CalcBounds($event)"
+          [show-up-indicator]="ShowUpIndicator"
+          [scroll-event]="CheckBounds">
+        </lcu-map-journey>
+      </div>
+    </div>
+    <div [hidden]="!ShowDownIndicator" class="more-indicator more-below-indicator" [ngStyle]="{'top.px': DownIndicatorOffset ? DownIndicatorOffset : 0}">
+      <mat-icon>expand_more</mat-icon>
     </div>
   </div>
   <!-- <hr> -->
@@ -125,32 +136,33 @@
 
   <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
-    <!-- <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
       [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
-      [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'"
-      [zoom]="CurrentZoom" (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)"
-      [usePanning]="true">
-    
+      [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
+      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
+      <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
       <ng-container *ngIf="ActivityLocationList.length > 0">
-      <div id="markers" *ngFor="let marker of ActivityLocationList">
-        <agm-marker *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"
-          [longitude]="marker.locationData.Longitude" [title]="marker.Title" [iconUrl]="marker.LocationObject"
-          (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
+        <div id="markers" *ngFor="let marker of ActivityLocationList">
+          <agm-marker *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"
+            [longitude]="marker.locationData.Longitude" [title]="marker.Title" [iconUrl]="marker.LocationObject"
+            (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
-          <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
-            <lcu-activity-location-window *ngIf="SelectedMarker?.ID === marker.ID" [marker]="marker"
-              [belongs-to-journey]="true" (user-chose-icon)="OnUserChoseIcon($event, marker)"
-              (notes-saved)="NotesSaved($event, marker)">
-            </lcu-activity-location-window>
+            <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
+              <lcu-activity-location-window *ngIf="SelectedMarker?.ID === marker.ID" 
+                [marker]="marker"
+                [belongs-to-journey]="true" 
+                (user-chose-icon)="OnUserChoseIcon($event, marker)"
+                (notes-saved)="NotesSaved($event, marker)"
+                (favorited-changed)="ToggleFavorited($event, marker)">
+              </lcu-activity-location-window>
+              <!-- replace this with new component -->
+              <!-- on click of actloc, call same method (OnMarkerClicked) from ts file and somehow pass in #amblInfoWindow and actLoc info-->
             </agm-info-window>
-        </agm-marker>
-      </div>
-    </ng-container>
-      <agm-marker
-        *ngIf="SelectedLocation"
-        [iconUrl]="SelectedLocation.locationData.IconImageObject" 
-        [latitude]="SelectedLocation.locationData.Latitude"
-        [longitude]="SelectedLocation.locationData.Longitude">
+          </agm-marker>
+        </div>
+      </ng-container>
+      <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.locationData.IconImageObject"
+        [latitude]="SelectedLocation.locationData.Latitude" [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
 
           <lcu-activity-location-window [marker]="SelectedLocation" [belongs-to-journey]="false"
@@ -159,7 +171,7 @@
           </lcu-activity-location-window>
         </agm-info-window>
       </agm-marker>
-    </agm-map> -->
+    </agm-map>
   </div>
   <!-- Footer Menu to display Marker Info -->
   <div class="footer" *ngIf="DisplayFooter && IsMobile">

@@ -7,6 +7,9 @@ p, span, a, div, button {
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
+    position: fixed;
+    width: 252px;
+    z-index: 10;
 
     mat-icon {
         color: white;
@@ -86,7 +89,7 @@ p, span, a, div, button {
     font-weight: 100;
 }
 .star {
-    background: url('../../../../assets/star_sprites.png') 0 0;
+    background: url('../../../../../common/assets/star_sprites.png') 0 0;
     background-size: 60px;
     background-repeat: no-repeat;
     width: 15px;
@@ -135,4 +138,28 @@ p, span, a, div, button {
 
 ::ng-deep .mat-checkbox-inner-container:hover .mat-checkbox-checkmark {
     background-color: $primary_medium;
+}
+
+mat-accordion {
+    display: inline-block;
+    // margin-top: 60px;
+    width: 249px;
+}
+
+.more-indicator {
+    color: $primary_dark;
+}
+
+.more-above-indicator {
+    position: fixed;
+    top: 80px;
+    z-index: 10;
+    background-color: white;
+    width: 252px;
+    text-align: center;
+    height: 20px;
+}
+
+.more-below-indicator {
+
 }

@@ -14,6 +14,8 @@ mat-icon {
 #map-section {
     height: 100vh;
     position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
 
 #map-toolbar{
     height: 40px;
@@ -296,14 +298,15 @@ mat-option {
     cursor: pointer;
 }
 
-.map-journey-display {
+.map-journey-display-container {
     position: absolute;
-    right: 0;
+    right: -19px;
     top: 40px;
     z-index: 1;
     width: 270px;
-    max-height: calc(100% - 150px);
+    max-height: calc(100% - 165px);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .map-journey-title-edit-input {
@@ -321,4 +324,21 @@ mat-option {
     background-color: white;
     border: none;
     font-size: 12pt;
+}
+
+.more-below-indicator {
+    z-index: 200;
+    position: fixed;
+    right: 0;
+    width: 251px;
+    background-color: white;
+    color: $primary_dark;
+    text-align: center;
+    height: 20px;
+    cursor: text;
+
+    mat-icon {
+        font-size: 17pt;
+        cursor: text;
+    }
 }

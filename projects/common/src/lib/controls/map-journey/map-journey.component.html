@@ -9,11 +9,15 @@
 </div>
 
 <!-- MAIN ACCORDION SECTION -->
-<!-- <div class="more-indicator more-above-indicator">
+<div [hidden]="!ShowUpIndicator" class="more-indicator more-above-indicator">
   <mat-icon>expand_less</mat-icon>
-</div> -->
-<mat-accordion [togglePosition]="'before'" [multi]="true" cdkDropList (cdkDropListDropped)="DropGroup($event)">
-
+</div>
+<mat-accordion #matAccordionChild 
+  [ngStyle]="{'margin-top':ShowUpIndicator ? '60px' : '40px' }"
+  [togglePosition]="'before'" 
+  [multi]="true" cdkDropList 
+  (cdkDropListDropped)="DropGroup($event)" >
+  
   <!-- JOURNEY ACTIVITY GROUPS -->
   <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; index as idx"
     [expanded]="OpenPanels.includes(idx)"
@@ -52,7 +56,7 @@
     <!-- JOURNEY ACTIVITIES -->
     <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
       class="activity-display" (click)="onActivityClickToNavigate(activity)"
-      [ngClass]="{'active-activity': ClickedActivityId === activity.ID}">
+      [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID)}">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>

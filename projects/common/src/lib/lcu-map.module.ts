@@ -39,7 +39,11 @@ import { MapJourneyComponent } from './controls/map-journey/map-journey.componen
 import { ActivityLocationWindowComponent, RemoveDashesPipe } from './controls/lcu-map/activity-location-window/activity-location-window.component';
 
 // Need to do this, because .forRoot() fails when in the imports' array (just Angular 10?) - Shannon
-export const AGMCoreExportModule =  AgmCoreModule.forRoot({ apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', libraries: ['places'] });
+export const AGMCoreExportModule =  AgmCoreModule.forRoot(
+  { 
+    apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', 
+    libraries: ['places'] 
+  });
 
 @NgModule({
   declarations: [

@@ -1331,15 +1331,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
     if (action === 'day') {
       newGroup = this.getFullDayActivityGroup(dayCount);
+      // console.log('open panels b4', this.OpenPanels);
+
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
-      this.updateItinerary();
+      this.updateItinerary('add day');
     } else if (action === 'extras') {
       newGroup = this.getExtrasActivityGroup();
       newGroup.Title = this.getValidOptionsTitle();
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
-      this.updateItinerary();
+      this.updateItinerary('add extras');
     } else if (action === 'copy') { // if copying shared itinerary...
       if (this._displayedJourney.Shared) {
         const itinToCopy = this._displayedJourney;
@@ -1544,7 +1546,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CurrentPanelOpenState.emit(event);
   }
 
-  protected updateItinerary() {
+  protected updateItinerary(typeChange: string) {
     this._displayedJourney.ActivityGroups.forEach((group: any) => {
       if (group.Activities.length === 0) {
         if (group.GroupType === 'day') {
@@ -1557,7 +1559,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // updates an itinerary, does not save a new one
     console.log('the itinerary being changed: ', this._displayedJourney);
     // this.itineraryService.UpdateCurrentItinerary(this.DisplayedItinerary);
-    this.JourneyChanged.emit({ message: 'journey changed', journey: this._displayedJourney });
+
+    if(typeChange === 'add day'){
+      this.JourneyChanged.emit({ message: 'add day', journey: this._displayedJourney });
+    }
+    else {
+      this.JourneyChanged.emit({ message: 'journey changed', journey: this._displayedJourney });
+    }
 
     // temporarily comment this out... we will use a save button to save aggregated changes
     // until the new state system is implemented, thereby improving the speed of saving
@@ -1714,6 +1722,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     const regionIndices = this.getLocationRegionIndices(results);
 
     const tempActivity = this.getNewActivity(results.name);
+    console.log("RESULTS: ", results)
     tempActivity.locationData = new MapMarker({
       ID: '',
       Title: results.name,
@@ -1723,6 +1732,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Longitude: this.normalizeLatitudeAndLongitude(results, false),
       Telephone: results.international_phone_number,
       Website: results.website,
+      Address: results.formatted_address,
       Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
         results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
       State: results.address_components[regionIndices.stateIndex] ?

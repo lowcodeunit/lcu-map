@@ -12,10 +12,15 @@ $info-window-height: 170px;
     max-height: $info-window-height !important;
     height: $info-window-height !important;
   }
+  
 
   button.gm-ui-hover-effect {
     display: none !important;
   }
+}
+
+::ng-deep .gm-style .gm-style-iw-t::after{
+  background: $primary_dark;
 }
 
 ::ng-deep.gm-style-iw {

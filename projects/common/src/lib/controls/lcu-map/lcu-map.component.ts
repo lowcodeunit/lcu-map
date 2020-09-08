@@ -1335,17 +1335,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
-      this.updateItinerary();
-      this.OpenPanels.push(this.DisplayedJourney.ActivityGroups.length - 1);
-      this.CurrentPanelOpenState.emit(this.OpenPanels);
-      // console.log('open panels', this.OpenPanels);
-
+      this.updateItinerary('add day');
     } else if (action === 'extras') {
       newGroup = this.getExtrasActivityGroup();
       newGroup.Title = this.getValidOptionsTitle();
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
-      this.updateItinerary();
+      this.updateItinerary('add extras');
     } else if (action === 'copy') { // if copying shared itinerary...
       if (this._displayedJourney.Shared) {
         const itinToCopy = this._displayedJourney;
@@ -1550,7 +1546,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CurrentPanelOpenState.emit(event);
   }
 
-  protected updateItinerary() {
+  protected updateItinerary(typeChange: string) {
     this._displayedJourney.ActivityGroups.forEach((group: any) => {
       if (group.Activities.length === 0) {
         if (group.GroupType === 'day') {
@@ -1563,7 +1559,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // updates an itinerary, does not save a new one
     console.log('the itinerary being changed: ', this._displayedJourney);
     // this.itineraryService.UpdateCurrentItinerary(this.DisplayedItinerary);
-    this.JourneyChanged.emit({ message: 'journey changed', journey: this._displayedJourney });
+
+    if(typeChange === 'add day'){
+      this.JourneyChanged.emit({ message: 'add day', journey: this._displayedJourney });
+    }
+    else {
+      this.JourneyChanged.emit({ message: 'journey changed', journey: this._displayedJourney });
+    }
 
     // temporarily comment this out... we will use a save button to save aggregated changes
     // until the new state system is implemented, thereby improving the speed of saving

@@ -1720,6 +1720,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     const regionIndices = this.getLocationRegionIndices(results);
 
     const tempActivity = this.getNewActivity(results.name);
+    console.log("RESULTS: ", results)
     tempActivity.locationData = new MapMarker({
       ID: '',
       Title: results.name,
@@ -1729,6 +1730,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Longitude: this.normalizeLatitudeAndLongitude(results, false),
       Telephone: results.international_phone_number,
       Website: results.website,
+      Address: results.formatted_address,
       Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
         results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
       State: results.address_components[regionIndices.stateIndex] ?

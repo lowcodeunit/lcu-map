@@ -100,7 +100,7 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
         this.infoWindow = infoWindow;
       }
     );
-
+      console.log("MARKER", this.marker.locationData)
   }
 
   /**

@@ -1,0 +1,165 @@
+@import '../../../../assets/styles/ambl_on-styles';
+
+p, span, a, div, button {
+    @include montserrat_bold;
+}
+
+.map-journey-menu {
+    height: 40px;
+    background-color: $primary_dark;
+    position: fixed;
+    width: 252px;
+    z-index: 10;
+
+    mat-icon {
+        color: white;
+        cursor: pointer;
+    }
+    .disabled-icon{
+        color: $primary_medium;
+    }
+}
+
+.group-expanded-indicator {
+    transform: scale(2);
+    margin-left: 5px;
+    color: $primary_dark;
+}
+
+.mat-expansion-panel {
+    background-color: $accent_light;
+    border-radius: 0;
+}
+
+.mat-expansion-panel-header {
+    padding: 0;
+    margin-right: -5px;
+    height: 35px !important;
+    background-color: $accent_light;
+    color: $primary_dark;
+    border-radius: 0 !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+    background-color: $primary_dark;
+    padding: 0 !important;
+    color: white;
+}
+
+::ng-deep.mat-checkbox-background {
+    background-color: white;
+    border: 1.5px solid $primary_dark;
+}
+::ng-deep.mat-checkbox-ripple {
+    display: none;
+}
+::ng-deep.mat-checkbox-checkmark {
+    background-color: white;
+}
+::ng-deep.mat-checkbox-checkmark-path {
+    stroke: $primary_dark !important;
+}
+.mat-expansion-panel-spacing {
+    margin: 0;
+}
+
+.activity-display {
+    padding: 0px 10px;
+    height: 35px;
+    box-shadow: 0px 0px 1px black;
+    cursor: pointer;
+    display: flex !important;
+}
+
+.activity-display-title {
+    width: 65%;
+}
+.activity-display-location {
+    width: 65%;
+    line-height: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.activity-location-title {
+    font-size: 9pt;
+}
+.activity-location-address {
+    font-size: 6pt;
+    font-weight: 100;
+}
+.star {
+    background: url('../../../../../common/assets/star_sprites.png') 0 0;
+    background-size: 60px;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right: 36px;
+    margin-top: 2px;
+}
+.star-normal {
+    background-position-x: -45px;
+
+    &:hover {
+        background-position-x: -30px;
+    }
+}
+.star-inverted {
+    background-position-x: 0;
+
+    &:hover {
+        background-position-x: -45px;
+    }
+
+}
+.star-favorited {
+    background-position-x: -15px !important;
+}
+
+.active-activity {
+    background-color: $primary_medium;
+}
+
+.activity-display-drag-preview {
+    padding: 0px 10px;
+    height: 35px;
+    box-shadow: 0px 0px 1px black;
+    cursor: pointer;
+    display: flex !important;
+    background-color: $primary_dark;
+    color: white;
+    width: 270px;
+}
+
+.group-drag-preview {
+    width: 270px;
+}
+
+::ng-deep .mat-checkbox-inner-container:hover .mat-checkbox-checkmark {
+    background-color: $primary_medium;
+}
+
+mat-accordion {
+    display: inline-block;
+    // margin-top: 60px;
+    width: 249px;
+}
+
+.more-indicator {
+    color: $primary_dark;
+}
+
+.more-above-indicator {
+    position: fixed;
+    top: 80px;
+    z-index: 10;
+    background-color: white;
+    width: 252px;
+    text-align: center;
+    height: 20px;
+}
+
+.more-below-indicator {
+
+}

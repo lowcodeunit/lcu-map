@@ -1,0 +1,36 @@
+<div fxLayout="column" class="location-info-container" [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">
+
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="container-top" *ngIf="!IsSelectingIcon">
+    <div class="activity-widget-icon">
+      <mat-icon (click)="ShowWidgetIconSelection()">{{ marker?.WidgetIcon }}</mat-icon>
+    </div>
+    <div class="location-data-name-address">
+      <span class="location-data-name">{{ marker?.locationData?.Title }}</span>
+      <span class="location-data-address-line1">{{ marker?.locationData?.Address }}</span>
+      <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.State }}, {{ marker?.locationData?.Country }}</span>
+    </div>
+    <div class="location-star-info"  fxLayout="row" faxLayoutAlign="space-around center">
+      <span *ngIf="BelongsToJourney" class="star"(click)="ToggleFavorited(); $event.stopPropagation()"
+      [ngClass]="marker.Favorited ? 'star-favorited' : 'star-normal'"></span>
+      <mat-icon *ngIf="BelongsToJourney" class="material-icons material-icons-outlined disabled-icon">info_outline</mat-icon>
+    </div>
+  </div>
+
+  <div *ngIf="IsSelectingIcon" class="widget-icon-set">
+    <mat-icon *ngFor="let icon of IconSelection" (click)="OnChoseIcon(icon)">{{ icon }}</mat-icon>
+  </div>
+
+  <div fxLayout="row" class="container-bottom">
+    <div fxLayout="column" fxLayoutAlign="center center" class="location-media-buttons-section">
+      <mat-icon matTooltip="{{marker?.locationData?.Telephone}}"><a href="tel:{{marker?.locationData?.Telephone | RemoveDashes}}"  [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">phone</a></mat-icon>
+      <mat-icon [matTooltip]="marker?.locationData?.Website"><a target="_blank" [href]="marker?.locationData?.Website" [ngClass]="{'inverse-color-scheme': !BelongsToJourney}">language</a></mat-icon>
+    </div>
+    <div *ngIf="BelongsToJourney" class="notes-section">
+      <textarea #notesText placeholder="Notes" rows="6" (blur)="SaveNotes(notesText)" (focus)="SetFocused()" value="{{marker?.Notes}}"></textarea>
+    </div>
+    <div *ngIf="!BelongsToJourney" class="add-button-section" >
+      <mat-icon (click)="addIconClicked()" matTooltip="Add to Journey">add_circle_outline</mat-icon>
+    </div>
+  </div>
+
+</div>

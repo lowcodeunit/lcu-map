@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, InjectionToken } from '@angular/core';
 import { FathymSharedModule, MaterialModule } from '@lcu/common';
-import { AgmCoreModule, InfoWindowManager, MarkerManager } from '@agm/core';
+import { InfoWindowManager, MarkerManager, AgmCoreModule } from '@agm/core';
 import { LcuMapComponent } from './controls/lcu-map/lcu-map.component';
 // import { MatIconModule } from '@angular/material/icon';
 // import { MatDialogModule } from '@angular/material/dialog';
@@ -35,7 +35,15 @@ import { BasicInfoWindowRewriteComponent } from './controls/lcu-map/basic-info-w
 import { MoreInfoWindowComponent } from './controls/lcu-map/more-info-window/more-info-window.component';
 import { CheckBoxSubString } from './utils/pipes/checkbox-substring.pipe';
 import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common';
+import { MapJourneyComponent } from './controls/map-journey/map-journey.component';
+import { ActivityLocationWindowComponent, RemoveDashesPipe } from './controls/lcu-map/activity-location-window/activity-location-window.component';
 
+// Need to do this, because .forRoot() fails when in the imports' array (just Angular 10?) - Shannon
+export const AGMCoreExportModule =  AgmCoreModule.forRoot(
+  { 
+    apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', 
+    libraries: ['places'] 
+  });
 
 @NgModule({
   declarations: [
@@ -50,6 +58,9 @@ import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common
     CheckBoxSubString,
     BasicInfoWindowRewriteComponent,
     MoreInfoWindowComponent,
+    MapJourneyComponent,
+    ActivityLocationWindowComponent,
+    RemoveDashesPipe
     
   ],
   imports: [
@@ -58,7 +69,7 @@ import { LcuProgressCircleModule } from '@lowcodeunit/lcu-progress-circle-common
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAsKh4_TXpYV57SBs7j3b6qFcJUG6fNHoU', libraries: ['places'] }),
+    AGMCoreExportModule,
     HttpClientModule,
     DragDropModule,
     LcuProgressCircleModule

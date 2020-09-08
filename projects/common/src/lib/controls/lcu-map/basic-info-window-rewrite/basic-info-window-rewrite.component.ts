@@ -82,7 +82,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     } else {
       this.newMarker = {
         ID: '',
-        LayerID: '0',
+        // LayerID: '0',
         Title: '',
         Icon: '',
         Latitude: this.marker.Latitude,
@@ -236,7 +236,7 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     if (!this.isEdit) {
       this.newMarker.ID = '';
     }
-    this.newMarker.LayerID = this.marker.LayerID;
+    // this.newMarker.LayerID = this.marker.LayerID;
     this.newMarker.Title = this.newMarkerForm.value.title;
     if (this.chosenIcon) {
       this.newMarker.Icon = this.chosenIcon.IconLookup;

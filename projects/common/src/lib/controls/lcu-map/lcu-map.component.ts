@@ -13,7 +13,6 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SaveMapComponent } from './save-map/save-map.component';
 import { MarkerInfo } from '../../models/marker-info.model';
 import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
@@ -28,10 +27,15 @@ import { Breakpoints, BreakpointState, BreakpointObserver } from '@angular/cdk/l
 import { MarkerData } from '../../models/marker-data.model';
 import { map, startWith } from 'rxjs/operators';
 import { LocationInfoService } from '../../services/location-info.service';
-import { UserLayer } from '../../models/user-layer.model';
+// import { UserLayer } from '../../models/user-layer.model';
 import { UserMap } from '../../models/user-map.model';
 import { MoreInfoWindowComponent } from './more-info-window/more-info-window.component';
 import { IconImageObject } from '../../models/icon-image-object.model';
+// import { ItineraryGenerator } from '../../utils/generators/itinerary.generator';
+import { ItineraryModel } from '../../models/itinerary.model';
+import { ActivityModel } from '../../models/activity.model';
+import { ActivityGroupModel } from '../../models/activity-group.model';
+
 
 @Component({
   selector: 'lcu-map',
@@ -47,6 +51,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * keys that should not trigger a new search
    */
   protected nonEssentialKeys: Array<string>;
+
+  /**
+   * The default lat/lng to show on map
+   */
+  protected defaultLocationData: { zoom: number, lat: number, lng: number } = { zoom: 4, lat: 39.741802, lng: -105.070799 };
 
   /**
    * The place id of the location the user clicked on
@@ -73,6 +82,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   protected expectedDoubleClickElapsedTime: number = 500;
 
+  protected _visibleLocations;
+
   /**
    * The NE and SW lat/lng set of the current map
    */
@@ -94,22 +105,62 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected googlePlacesApiSubscription: Subscription;
 
   /**
+   * The open panels represented by their indexes
+   */
+  protected _openPanels: Array<number> = [];
+
+  /**
    * Subscription for the break point observer(determines the screen size the app is running on)
    */
   protected observerSubscription: Subscription;
+
+  /**
+   * The displayed journey
+   */
+  protected _displayedJourney: any;
+
+  /** The list of locations needed to populate the locations on individual activities */
+  protected _amblOnLocationArray: any;
+
+  /**
+   * Subscription to service that determines where the map should first open up to when accessed via a journey
+   */
+  protected forcePanToSubscription: Subscription;
+
+  /**
+   * Boolean that determines whether to show the indicator at the top of the legend
+   */
+  public ShowUpIndicator: boolean = false;
+
+  /**
+   * Boolean that determines whether to show the indicator at the bottom of the legend
+   */
+  public ShowDownIndicator: boolean = false;
+
+  /**
+   * The height of the legend container
+   */
+  public LegendContainerHeight: number = 0;
+
+  public CheckBounds: boolean;
+
+  /**
+   * Determines where to place the indicator at the bottom of the legend (its 'top' value)
+   */
+  public DownIndicatorOffset: number = 0;
 
   /**
    * boolean value that determines if the MapMarker already exists and is being edited
    */
   public isEdit: boolean;
 
-
-
-
   // PROPERTIES
   // 12 for bottom right & 9 for right bottom
   public ZoomOptions: object = { position: 9 };
 
+  /**
+   * The minimum zoom level (so map can't show too far out)
+   */
   public MinZoom: number = 2;
 
   /**
@@ -128,9 +179,29 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public MarkerData: MarkerData;
 
   /**
+   * Determines whether or not the current info box belongs to the journey or not (determines its display layout)
+   */
+  public BelongsToJourney: boolean = false;
+
+  /**
    * subscribes to map service to find out when legend's top lists button was clicked
    */
   public TopListsSubscription: Subscription;
+
+  /**
+   * The zoom level that determines the zoom level of the map - can be changed
+   */
+  public CurrentZoom: number = 9;
+
+  /**
+   * The value that determines the longitude of the map - can be changed
+   */
+  public CurrentLongitude: number = 0;
+
+  /**
+   * Thevalue that determines the latitude of the map - can be changed
+   */
+  public CurrentLatitude: number = 0;
 
   /**
    * Is true when screen size is small or xs, false otherwise
@@ -171,6 +242,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public SearchMethod: string;
 
   /**
+   * Boolean that indicates whether or not the user is currently editing a journey's title
+   */
+  public EditingJourneyTitle: boolean = false;
+
+  /**
    * The list of choices of location search methods for user to choose
    *
    */
@@ -194,7 +270,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * The current Google location selected to display in legend as highlighted
    */
-  public SelectedLocation: MapMarker;
+  public SelectedLocation: ActivityModel;
 
   /**
    * The current user map marker selected to display Basic info popover
@@ -212,6 +288,21 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ShowSearchBar: boolean = false;
 
   /**
+   * Boolean that determines whether or not to show the map legend
+   */
+  public ShowJourneyLegend: boolean = true;
+
+  /**
+   * Whether or not to show the add menu
+   */
+  public ShowNewOptions: boolean;
+
+  /**
+   * The array of options that are displayed when the + icon is selected
+   */
+  public NewOptions: Array<any>;
+
+  /**
    * The map type (standard, satellite, topographical) - default is standard ('roadmap')
    */
   public CurrentMapViewType: string = 'roadmap';
@@ -221,6 +312,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public CurrentMapModel: UserMap;
 
+  /**
+   * The list of locations that the user should be able to see on the map (may be able to remove this if it's not being used)
+   */
   public _visibleLocationsMasterList: Array<MapMarker>;
 
   /**
@@ -252,6 +346,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * The agmInfoWindow refrenced in the DOM
    */
   public amblInfoWindow: AgmInfoWindow;
+
+  public ActivityLocationList: Array<ActivityModel> = [];
+
   /**
    * The search input box
    */
@@ -264,7 +361,41 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('googleInfoWindow', { static: false })
   public GoogleInfoWindowRef: AgmInfoWindow;
 
-  
+  @ViewChild('mapJourneyDisplayContainer')
+  public MapJourneyDisplayContainer: ElementRef;
+
+  @ViewChild('mapJourneyDisplay')
+  public MapJourneyDisplay: ElementRef;
+
+  @Input('displayed-journey')
+  public set DisplayedJourney(journey: any) {
+    // console.log("journey upon entry: ", journey);
+    this.ActivityLocationList = new Array<ActivityModel>();
+
+    if (!journey) { return; }
+    this._displayedJourney = journey;
+    this._displayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
+        // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
+        this.ActivityLocationList.push(act);
+      });
+    });
+    this.assignDefaultMapConfiguration();
+  }
+
+  public get DisplayedJourney() {
+    return this._displayedJourney;
+  }
+
+  @Input('ambl-on-location-array')
+  public set AmblOnLocationArray(arr) {
+    this._amblOnLocationArray = arr;
+    this.assignDefaultMapConfiguration();
+  }
+  public get AmblOnLocationArray() {
+    return this._amblOnLocationArray;
+  }
 
   /**
    * The array of available map views to be chosen by the user (default is roadmap)
@@ -273,10 +404,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /* tslint:disable-next-line:no-input-rename */
   @Input('map-view-types')
   public MapViewTypes: Array<{}> = [
-    { value: 'roadmap', display: 'Roadmap' },
-    { value: 'hybrid', display: 'Hybrid' },
-    { value: 'satellite', display: 'Satellite' },
-    { value: 'terrain', display: 'Terrain' }
+    { value: 'roadmap', display: 'Standard' },
+    { value: 'hybrid', display: 'Satellite' },
+    { value: 'terrain', display: 'Topographical' }
   ];
 
   /* tslint:disable-next-line:no-input-rename */
@@ -319,17 +449,17 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * Takes a MapMarker passed from the legend and passes it to DisplayMarkerInfo
    */
-  @Input('display-basic-info-window')
-  public set DisplayBasicInfoWindow(val: MapMarker) {
-    if (val) {
-      this.DisplayMarkerInfo(val);
-    }
-  }
+  // @Input('display-basic-info-window')
+  // public set DisplayBasicInfoWindow(val: MapMarker) {
+  //   if (val) {
+  //     this.DisplayMarkerInfo(val);
+  //   }
+  // }
 
-  
+
 
   /**
-   * The default marker in the instance of alocation not having an icon
+   * The default marker in the instance of a location not having an icon
    *
    */
   /** tslint:disable-next-line:no-input-rename */
@@ -341,12 +471,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   @Input('pan-to')
   public set PanTo(value: { lat: number, lng: number, zoom: number }) {
-    this._panTo = value;
-    if (this._currentMapModel) {
-      this._currentMapModel.Latitude = value.lat;
-      this._currentMapModel.Longitude = value.lng;
-      this._currentMapModel.zoom = value.zoom;
-    }
+    // this._panTo = value;
+    // if (this.CurrentLatitude) {
+    //   setTimeout(() => {
+    //     this.CurrentLatitude = value.lat;
+    //     this.CurrentLongitude = value.lng;
+    //     this.CurrentZoom = value.zoom;
+    //   }, 2000);
+    // }
   }
 
   /**
@@ -373,23 +505,23 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._visibleLocationsMasterList;
   }
 
-  public _userLayers;
-  @Input('user-layers')
-  public set UserLayers(value: Array<UserLayer>) {
-    this._userLayers = value;
-  }
-  public get UserLayers() {
-    return this._userLayers;
-  }
+  // public _userLayers;
+  // @Input('user-layers')
+  // public set UserLayers(value: Array<UserLayer>) {
+  //   this._userLayers = value;
+  // }
+  // public get UserLayers() {
+  //   return this._userLayers;
+  // }
 
-  public _selectedUserLayers;
-  @Input('selected-user-layers')
-  public set SelectedUserLayers(value: Array<any>) {
-    this._selectedUserLayers = value;
-  }
-  public get SelectedUserLayers() {
-    return this._selectedUserLayers;
-  }
+  // public _selectedUserLayers;
+  // @Input('selected-user-layers')
+  // public set SelectedUserLayers(value: Array<any>) {
+  //   this._selectedUserLayers = value;
+  // }
+  // public get SelectedUserLayers() {
+  //   return this._selectedUserLayers;
+  // }
 
   /**
    * The set of map markers and image paths that will be used to determine available map markers for current map
@@ -421,7 +553,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return this._currentMapModel;
   }
 
-  protected _visibleLocations;
+  @Input('open-panel-indexes')
+  public set OpenPanels(arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      this._openPanels = arr;
+    }
+  }
+  public get OpenPanels() {
+    return this._openPanels;
+  }
+
   @Input('show-visible-locations')
   public set VisibleLocations(value: Array<any>) {
     this._visibleLocations = value;
@@ -437,6 +578,18 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /* tslint:disable-next-line:no-output-rename */
   @Output('map-saved')
   public MapSaved: EventEmitter<UserMap>;
+
+  @Output('journey-changed')
+  public JourneyChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output('journey-copied')
+  public JourneyCopied: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output('journey-shared')
+  public JourneyShared: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output('legend-top-icon-clicked')
+  public LegendIconClicked: EventEmitter<string> = new EventEmitter();
 
   /**
    * The event emitted when the primary map's location list is altered (the new map is emitted)
@@ -456,7 +609,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('edit-location')
   public EditLocation: EventEmitter<MapMarker>;
 
-  
   @Output('update-excluded-curations')
   public UpdateExcludedCurations: EventEmitter<string>;
 
@@ -479,16 +631,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public EditedLegendLocations: EventEmitter<Array<MapMarker>>;
 
   /* tslint:disable-next-line:no-output-rename */
-  @Output('layer-checked')
-  public LayerChecked: EventEmitter<UserLayer>;
+  // @Output('layer-checked')
+  // public LayerChecked: EventEmitter<UserLayer>;
 
   /* tslint:disable-next-line:no-output-rename */
-  @Output('layer-unchecked')
-  public LayerUnchecked: EventEmitter<UserLayer>;
+  // @Output('layer-unchecked')
+  // public LayerUnchecked: EventEmitter<UserLayer>;
 
   /* tslint:disable-next-line:no-output-rename */
-  @Output('map-bounds-change')
-  public MapBoundsChange: EventEmitter<Array<number>>;
+  // @Output('map-bounds-change')
+  // public MapBoundsChange: EventEmitter<Array<number>>;
 
   /* tslint:disable-next-line:no-output-rename */
   @Output('custom-search-change')
@@ -505,6 +657,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Output('top-lists-button-clicked')
   public TopListsButtonClicked: EventEmitter<any>;
 
+  @Output('current-panel-open-state')
+  public CurrentPanelOpenState: EventEmitter<Array<number>> = new EventEmitter();
+
   constructor(
     protected breakpointObserver: BreakpointObserver,
     protected changeDetector: ChangeDetectorRef,
@@ -517,6 +672,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     protected ngZone: NgZone,
     protected wrapper: GoogleMapsAPIWrapper
   ) {
+    this.forcePanToSubscription = this.mapService.GetForcePanToEvent().subscribe(locInfo => {
+      this.PanTo = locInfo;
+    });
     this.IncludeSaveMapFeature = false;
     this.MapSaved = new EventEmitter(),
       // this.PrimaryMapLocationListChanged = new EventEmitter;
@@ -526,8 +684,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CurrentlyActiveLocations = new Array<MapMarker>();
     // this.CurrentlyActiveLayers = new Array<IndividualMap>();
     this.EditedLegendLocations = new EventEmitter<Array<MapMarker>>();
-    this.LayerChecked = new EventEmitter<UserLayer>();
-    this.LayerUnchecked = new EventEmitter<UserLayer>();
+    // this.LayerChecked = new EventEmitter<UserLayer>();
+    // this.LayerUnchecked = new EventEmitter<UserLayer>();
     this.CustomSearchChange = new EventEmitter<string>();
     this.TopListsButtonClicked = new EventEmitter();
     this.observerSubscription = new Subscription();
@@ -535,15 +693,30 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // this.IconIsHighlighted = false;
     this.AddLocation = new EventEmitter<MapMarker>();
     this.EditLocation = new EventEmitter<MapMarker>();
-    this.MapBoundsChange = new EventEmitter<Array<number>>();
+    // this.MapBoundsChange = new EventEmitter<Array<number>>();
     this.LocationsToDelete = new EventEmitter<Array<MapMarker>>();
     this.LegendMargin = '3px';
     this.DisplayingMoreInfo = false;
     this.nonEssentialKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
+    this.ShowNewOptions = false;
+    this.CheckBounds = false;
+    this.NewOptions = [{
+      display: 'New Day',
+      action: 'day'
+    },
+    {
+      display: 'New Options',
+      action: 'extras'
+    },
+    {
+      display: 'Copy Journey',
+      action: 'copy'
+    },]
   }
 
   public ngOnInit(): void {
-    this.setUpSearchMethods();
+    // this.setUpSearchMethods();
+    this.SearchMethod = 'Google';
     this._visibleLocationsMasterList.forEach(loc => {
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     });
@@ -564,9 +737,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
     this.mapService.InfoWindowClosed.subscribe(
       () => {
+        this.BelongsToJourney = false;
         this.SelectedMarker = null;
         // console.log("setting selectedMarker to NULL");
+        this.locationInfoService.SetSelectedMarker(null);
         this.SelectedLocation = null;
+
       }
     );
 
@@ -577,19 +753,75 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       }
     );
   }
-  public ngAfterViewInit(): void{
+  public ngAfterViewInit(): void {
+    // this.setIndicators();
     // console.log("Default Marker in map= ", this.DefaultMarker)
     if (!this.DefaultMarker) {
       this.DefaultMarker = {
-        name: 'lcu-map-default-marker' ,
-        url: './assets/lcu-map-default-marker.png',
-        scaledSize: {width: 40, height: 40} };
+        name: 'lcu-map-default-marker',
+        url: './assets/location_on.png',
+        scaledSize: { width: 40, height: 40 }
+      };
     }
+    this.LegendContainerHeight = this.MapJourneyDisplayContainer.nativeElement.offsetHeight;
+    this.DownIndicatorOffset = this.LegendContainerHeight + 35;
+    this.changeDetector.detectChanges();
+    this.MapJourneyDisplayContainer.nativeElement.addEventListener('scroll', () => {
+      this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
+      // this.setIndicators();
+      // console.log("Scrolling");
+      // Check the bounds
+      this.CheckBounds = true;
+    });
+    this.MapJourneyDisplayContainer.nativeElement.addEventListener('click', () => {
+      setTimeout(() => {
+        this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
+        // this.setIndicators();
+      }, 220);
+    });
   }
 
+  // protected setIndicators() {
+  // const display = this.MapJourneyDisplayContainer.nativeElement;
+  // let child = document.getElementById("lcuMapJourney").getBoundingClientRect();
+  // let parent = display.getBoundingClientRect();
+
+
+  // console.log('OFFSET HEIGHT: ', display.offsetHeight);
+  // console.log('SCROLL HEIGHT: ', display.scrollHeight);
+  // console.log('OFSSET TOP   : ', display.offsetTop);
+  // console.log('NATIVE ELEMEN: ', this.MapJourneyDisplay);
+  // console.log('Parent        : ', display.childNodes.item(0).getBoundingClientRect());
+  // console.log("Parent: ", parent)
+  // console.log("child = ", child)
+
+  // if(child.top < 40){
+  //   console.log("Top arrow should show")
+  // }
+  // else{
+  //   console.log("Top arrow should NOT show")
+  // }
+
+  // if(child.bottom > parent.bottom){
+  //   console.log("bottom arrow should show")
+  // }
+  // else{
+  //   console.log("Bottm arrow should NOT show")
+  // }
+
+  // const container = this.MapJourneyDisplayContainer.nativeElement;
+  // if (container.offsetHeight < container.scrollHeight) {
+  //   this.ShowUpIndicator = true;
+  //   this.ShowDownIndicator = true;
+  // } else {
+  //   this.ShowUpIndicator = false;
+  //   this.ShowDownIndicator = false;
+  // }
+  // }
   public ngOnChanges(): void {
-    this.CheckForHiddenLocations();
-    this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // this.CheckForHiddenLocations();
+    // this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+    // console.log("activity location list = " , this.ActivityLocationList);
   }
 
   public ngOnDestroy(): void {
@@ -601,6 +833,91 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.markerInfoSubscription) {
       this.markerInfoSubscription.unsubscribe();
     }
+    this.forcePanToSubscription.unsubscribe();
+  }
+
+  /**
+   *
+   * @param event the array of activity groups
+   *
+   * Event that gets emitted when an activity group changes
+   */
+  public ActivityGroupsChanged(event: Array<ActivityGroupModel>) {
+    this.ActivityLocationList = new Array<ActivityModel>();
+    event.forEach((ag: ActivityGroupModel) => {
+      ag.Activities.forEach(act => {
+        this.ActivityLocationList.push(act);
+      });
+    });
+    // console.log("activities to display: ", this.ActivityLocationList);
+  }
+
+  public CalcBounds(childBounds: any) {
+    this.CheckBounds = false;
+    if (this.MapJourneyDisplayContainer) {
+      const parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
+      // console.log("Parent Bounds: ", parentBounds);
+      // console.log("Child Bounds: ", childBounds);
+      const childsTop = Math.round(childBounds.top);
+      const childsBottom = Math.round(childBounds.bottom);
+      const parentsTop = Math.round(parentBounds.top);
+      const parentsBottom = Math.round(parentBounds.bottom);
+
+      // console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
+      // console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
+      if (childsBottom + 4 > parentsBottom) {
+        // console.log("Bottom arrow should show")
+        this.ShowDownIndicator = true;
+      } else {
+        // console.log("Bottom arrow should NOT show")
+        this.ShowDownIndicator = false;
+      }
+
+      if (childsTop - 40 < parentsTop) {// "Top arrow should show"
+        setTimeout(() => {
+          this.ShowUpIndicator = true;
+        }, 0);
+      } else {// "Top arrow should NOT show"
+        setTimeout(() => {
+          this.ShowUpIndicator = false;
+        }, 0);
+      }
+
+     
+    }
+  }
+
+  /**
+   *
+   * @param event the notes to save
+   * @param marker the activity of the notes that changed
+   *
+   * Runs when the user saves notes from the map
+   */
+  public NotesSaved(event, marker) {
+    let activity;
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        if (act.ID === marker.ID) {
+          act.Notes = event;
+          activity = act;
+        }
+      });
+    });
+    this.JourneyChanged.emit({ message: 'notes saved', journey: this.DisplayedJourney, additional: { activity } });
+  }
+
+  public ToggleFavorited(event: boolean, marker: ActivityModel) {
+    let activity;
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach((act: ActivityModel) => {
+        if (act.ID === marker.ID) {
+          act.Favorited = event;
+          activity = act;
+        }
+      });
+    });
+    this.JourneyChanged.emit({ message: 'activity favorited changed', journey: this.DisplayedJourney, additional: { activity } });
   }
 
   /**
@@ -615,32 +932,38 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
 
-  public UpdateExcludedCurationsList(event: string){
-    console.log("emitting: ", event);
+  public UpdateExcludedCurationsList(event: string) {
+    console.log('emitting: ', event);
     this.UpdateExcludedCurations.emit(event);
   }
   /**
    *  Returns an array of strings that represent the titles of layers selected.
    *  Called by the legend to get the layer titles to be displayed in the legend.
    */
-  public GetSelectedUserLayers(): Array<string> {
-    const LayerTitles = new Array<string>();
-    if (this._userLayers) {
-      this._userLayers.forEach(function (layer) {
-        if (this._selectedUserLayers.includes(layer.ID)) {
-          LayerTitles.push(layer.Title);
-        }
-      }, this);
-    }
+  // public GetSelectedUserLayers(): Array<string> {
+  //   const LayerTitles = new Array<string>();
+  //   if (this._userLayers) {
+  //     this._userLayers.forEach(function (layer) {
+  //       if (this._selectedUserLayers.includes(layer.ID)) {
+  //         LayerTitles.push(layer.Title);
+  //       }
+  //     }, this);
+  //   }
 
-    return LayerTitles;
-  }
+  //   return LayerTitles;
+  // }
 
+  /**
+   *
+   * @param event the array of map markers
+   *
+   * Updates the visible locations
+   */
   public UpdateVisibleLocations(event: Array<MapMarker>): void {
     // this._visibleLocationsMasterList = event;
   }
 
-  public CheckForHiddenLocations():void{
+  public CheckForHiddenLocations(): void {
     // console.log("locations before checking if hidden: ", this._visibleLocationsMasterList);
 
     for (let i = 0; i < this._visibleLocationsMasterList.length; i++) {
@@ -686,44 +1009,47 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.LocationsToDelete.emit(event);
   }
 
-  public ToggleLegendMargin(event) {
-    if (event) {
-      this.LegendMargin = '35px';
-    } else {
-      this.LegendMargin = '3px';
-    }
-  }
+  // public ToggleLegendMargin(event) {
+  //   if (event) {
+  //     this.LegendMargin = '35px';
+  //   } else {
+  //     this.LegendMargin = '3px';
+  //   }
+  // }
 
   /**
    * Legend uses this function to take incoming data from child class and sets the according values to allow panning.
    * @param value the value passed in
    */
-  public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
-    if (!value.zoom) {
-      value.zoom = this._currentMapModel.Zoom;
-    }
-    this._panTo = value;
+  // public PanningTo(value: { lat: number, lng: number, zoom: number }): void {
+  //   if (!value.zoom) {
+  //     value.zoom = this._currentMapModel.Zoom;
+  //   }
+  //   this._panTo = value;
 
-    if (this._currentMapModel) {
-      this._currentMapModel.Latitude = value.lat;
-      this._currentMapModel.Longitude = value.lng;
-      this._currentMapModel.Zoom = value.zoom;
-    }
-  }
+  //   if (this._currentMapModel) {
+  //     this._currentMapModel.Latitude = value.lat;
+  //     this._currentMapModel.Longitude = value.lng;
+  //     this._currentMapModel.Zoom = value.zoom;
+  //   }
+  // }
 
   /**
    * Saves the legend order/loactions via event emmiter.
    * @param val the value passed in
    */
-  public EditLegendLocations(val: Array<MapMarker>): void {
-    this.EditedLegendLocations.emit(val);
-  }
+  // public EditLegendLocations(val: Array<MapMarker>): void {
+  //   this.EditedLegendLocations.emit(val);
+  // }
 
   /**
    * Toggles the location search bar hidden / shown.
    */
   public ShowLocationSearchBarClicked(): void {
     this.ShowSearchBar = this.ShowSearchBar === true ? false : true;
+    if (this.ShowNewOptions === true) {
+      this.ShowNewOptions = false;
+    }
   }
 
   /**
@@ -732,6 +1058,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public OnChoseLocation(event): void {
     this.SelectedLocation = null;
+    this.SelectedMarker = null;
+    this.locationInfoService.SetSelectedMarker(null);
     this.changeDetector.detectChanges();
 
     setTimeout(x => { // set timeout to half a second to wait for possibility of double click (mimic Google Maps)
@@ -742,6 +1070,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
           } else {
             console.log('the results are either null or undefined');
+
           }
         });
       }
@@ -765,33 +1094,46 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   /**
    * Activates the dialog for user to enter name of map which will then be 'saved'.
    */
-  public ActivateSaveMapDialog(map): void {
-    const dialogRef = this.dialog.open(SaveMapComponent, {
-      width: '252px',
-      height: '204px',
-      data: {
-        map,
-        mapMarkerSet: this.MapMarkerSet,
-        coordinates: this.currentBounds,
-        userLayer: this.UserLayers.find(layer => layer.Shared === false)
-      }
-    });
-    dialogRef.afterClosed().subscribe((res: any) => {
-      if (res) {
-        if (res) {
-          this.MapSaved.emit(res);
-        }
-      }
-    });
-  }
+  // public ActivateSaveMapDialog(map): void {
+  //   const dialogRef = this.dialog.open(SaveMapComponent, {
+  //     width: '252px',
+  //     height: '204px',
+  //     data: {
+  //       map,
+  //       mapMarkerSet: this.MapMarkerSet,
+  //       coordinates: this.currentBounds,
+  //       // userLayer: this.UserLayers.find(layer => layer.Shared === false)
+  //     }
+  //   });
+  //   dialogRef.afterClosed().subscribe((res: any) => {
+  //     if (res) {
+  //       if (res) {
+  //         this.MapSaved.emit(res);
+  //       }
+  //     }
+  //   });
+  // }
 
   /**
    * Run when user clicks a custom location marker from custom location search.
    */
   public DropdownItemChosen(loc: any): void {
-    this._currentMapModel.Latitude = loc.Latitude;
-    this._currentMapModel.Longitude = loc.Longitude;
-    this.DisplayMarkerInfo(loc);
+    this.CurrentLatitude = loc.Latitude;
+    this.CurrentLongitude = loc.Longitude;
+    // this.DisplayMarkerInfo(loc);
+  }
+  /**
+   * called when the user has selected a new location to add to their journey and adds activity
+   * to the last activity group and give it an order
+   * 
+   * @param event 
+   */
+  public addIconClicked(event: ActivityModel) {
+    // console.log("Adding event: ", event)
+    event.locationData.IconImageObject = { scaledSize: { width: 30, height: 30 }, url: './assets/location_on.png' };
+    event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
+    this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });
   }
 
   /**
@@ -799,96 +1141,96 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    *
    * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked.
    */
-  public LayerClicked(event, layer?: UserLayer): void {
-    // tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
-    // reset and thus those changes are being passed as input to the legend so OnChanges gets called
-    // console.log("layer to toggle: ", layer);
-    const tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
-    this.CurrentlyActiveLocations.forEach(loc => {
-      tempActiveLocations.push(loc);
-    });
-    if (layer) { // (if user clicked a secondary checkbox)
-      if (event.checked === true) { // (if user checked the box)
-        // this.UpdateCurrentlyActiveLayers(layer);
-        this.LayerChecked.emit(layer);
-        // this.CurrentlyActiveLayers.push(layer);
-        // layer.locationList.forEach(loc => {
-        //   tempActiveLocations.push(loc);
-        // });
-        this.CurrentlyActiveLocations = tempActiveLocations;
-      } else { // (if user un-checked the box)
-        this.LayerUnchecked.emit(layer);
-        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
-        // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-        //   return loc.LayerID !== layer.ID;
-        // });
-      }
-    } else { // (if user clicked the primary checkbox)
-      if (event.checked === true) { // (if user checked the box)
-        // this.CurrentlyActiveLayers.push(this._currentMapModel);
-        this.LayerChecked.emit(this._currentMapModel);
+  // public LayerClicked(event, layer?: UserLayer): void {
+  //   // tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
+  //   // reset and thus those changes are being passed as input to the legend so OnChanges gets called
+  //   // console.log("layer to toggle: ", layer);
+  //   const tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
+  //   this.CurrentlyActiveLocations.forEach(loc => {
+  //     tempActiveLocations.push(loc);
+  //   });
+  //   if (layer) { // (if user clicked a secondary checkbox)
+  //     if (event.checked === true) { // (if user checked the box)
+  //       // this.UpdateCurrentlyActiveLayers(layer);
+  //       this.LayerChecked.emit(layer);
+  //       // this.CurrentlyActiveLayers.push(layer);
+  //       // layer.locationList.forEach(loc => {
+  //       //   tempActiveLocations.push(loc);
+  //       // });
+  //       this.CurrentlyActiveLocations = tempActiveLocations;
+  //     } else { // (if user un-checked the box)
+  //       this.LayerUnchecked.emit(layer);
+  //       // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(layer), 1);
+  //       // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+  //       //   return loc.LayerID !== layer.ID;
+  //       // });
+  //     }
+  //   } else { // (if user clicked the primary checkbox)
+  //     if (event.checked === true) { // (if user checked the box)
+  //       // this.CurrentlyActiveLayers.push(this._currentMapModel);
+  //       this.LayerChecked.emit(this._currentMapModel);
 
-        // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
+  //       // this.UpdateCurrentlyActiveLayers(this._currentMapModel);
 
-        // this._currentMapModel.locationList.forEach(loc => {
-        //   tempActiveLocations.push(loc);
-        // });
-        // this.CurrentlyActiveLocations = tempActiveLocations;
-      } else { // (if user un-checked the box)
-        this.LayerUnchecked.emit(this._currentMapModel);
-        // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
-        // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
-        //   return loc.LayerID !== this._currentMapModel.ID;
-        // });
-        // console.log("User unchecked the primary map");
-      }
-    }
+  //       // this._currentMapModel.locationList.forEach(loc => {
+  //       //   tempActiveLocations.push(loc);
+  //       // });
+  //       // this.CurrentlyActiveLocations = tempActiveLocations;
+  //     } else { // (if user un-checked the box)
+  //       this.LayerUnchecked.emit(this._currentMapModel);
+  //       // this.CurrentlyActiveLayers.splice(this.CurrentlyActiveLayers.indexOf(this._currentMapModel), 1);
+  //       // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
+  //       //   return loc.LayerID !== this._currentMapModel.ID;
+  //       // });
+  //       // console.log("User unchecked the primary map");
+  //     }
+  //   }
 
-    this.CurrentlyActiveLocations.forEach(loc => {
-      loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
-    });
-    // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
-    // console.log("Current Map Model: ", this._currentMapModel);
-    // this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
-    // this is just for emitting the current list of active locs (currently displayed locations)
-    setTimeout(x => {
-      // emits the currently visible map markers for use in legend
-      this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    }, 0);
-    this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
+  //   this.CurrentlyActiveLocations.forEach(loc => {
+  //     loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
+  //   });
+  //   // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
+  //   // console.log("Current Map Model: ", this._currentMapModel);
+  //   // this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
+  //   // this is just for emitting the current list of active locs (currently displayed locations)
+  //   setTimeout(x => {
+  //     // emits the currently visible map markers for use in legend
+  //     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
+  //   }, 0);
+  //   this.CustomLocationControl.setValue(''); // to reset the options and update location search real-time
 
-  }
+  // }
 
   /**
    * Sets currentBounds to the map's exact boundary whenever the boundary of the map changes.
    *
    * @param event The event sent every time the boundary of the map changes.
    */
-  public BoundsChange(event): void {
-    this.ShowLayersDropdown = false;
-    if (!event) {
-      return;
-    }
-    this.currentBounds.neLat = event.getNorthEast().lat();
-    this.currentBounds.neLng = event.getNorthEast().lng();
-    this.currentBounds.swLat = event.getSouthWest().lat();
-    this.currentBounds.swLng = event.getSouthWest().lng();
+  // public BoundsChange(event): void {
+  //   this.ShowLayersDropdown = false;
+  //   if (!event) {
+  //     return;
+  //   }
+  //   this.currentBounds.neLat = event.getNorthEast().lat();
+  //   this.currentBounds.neLng = event.getNorthEast().lng();
+  //   this.currentBounds.swLat = event.getSouthWest().lat();
+  //   this.currentBounds.swLng = event.getSouthWest().lng();
 
-    const Bounds: Array<number> = [
-      event.getNorthEast().lat(),
-      event.getNorthEast().lng(),
-      event.getSouthWest().lat(),
-      event.getSouthWest().lng()
-    ];
+  //   const Bounds: Array<number> = [
+  //     event.getNorthEast().lat(),
+  //     event.getNorthEast().lng(),
+  //     event.getSouthWest().lat(),
+  //     event.getSouthWest().lng()
+  //   ];
 
-    this.lastBoundsChangeMillisecond = new Date().getTime();
-    setTimeout(() => {
-      const currentTimeInMillis = new Date().getTime();
-      if (currentTimeInMillis - this.lastBoundsChangeMillisecond > 999) {
-        this.MapBoundsChange.emit(Bounds);
-      }
-    }, 1000);
-  }
+  //   this.lastBoundsChangeMillisecond = new Date().getTime();
+  //   setTimeout(() => {
+  //     const currentTimeInMillis = new Date().getTime();
+  //     if (currentTimeInMillis - this.lastBoundsChangeMillisecond > 999) {
+  //       this.MapBoundsChange.emit(Bounds);
+  //     }
+  //   }, 1000);
+  // }
 
   /**
    * Emits the current value of the custom search bar each time user types something.
@@ -934,6 +1276,143 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (!val) {
       this.locationInfoService.SetSelectedMarker(undefined);
     }
+  }
+  /**
+   * Toggles the add menu
+   */
+  public ShowAddMenu() {
+    this.ShowNewOptions = !this.ShowNewOptions;
+  }
+
+  /**
+   * Toggles the layer dropdown
+   */
+  public ShowLayers() {
+    this.ShowLayersDropdown = !this.ShowLayersDropdown;
+    if (this.ShowNewOptions === true) {
+      this.ShowNewOptions = false;
+    }
+  }
+  /**
+   * called when the share icon in the toolbar is clicked
+   */
+  public ShareClicked() {
+    console.log('Want to share ', this.DisplayedJourney);
+    this.JourneyShared.emit(this.DisplayedJourney);
+  }
+
+  /**
+   * Toggles the EditingJourneyTitle boolean
+   */
+  public EditJourneyTitle() {
+    this.EditingJourneyTitle = true;
+  }
+
+  /**
+   *
+   * @param newTitle the new journey's title
+   *
+   * Emits the journey's new title and toggles the EditingJourneyTitle to false
+   */
+  public DoneEditingJourneyTitle(newTitle) {
+    this.DisplayedJourney.Title = newTitle.value;
+    this.EditingJourneyTitle = false;
+    this.JourneyChanged.emit({ message: 'journey title changed', journey: this.DisplayedJourney });
+  }
+
+  public NewOptionClicked(action: any) {
+    let newGroup;
+    this.ShowNewOptions = false;
+    let dayCount = 0;
+    if (this._displayedJourney.ActivityGroups !== null) {
+      dayCount = this._displayedJourney.ActivityGroups.filter(gr => gr.GroupType === 'day').length;
+    } else {
+      this._displayedJourney.ActivityGroups = [];
+    }
+    if (action === 'day') {
+      newGroup = this.getFullDayActivityGroup(dayCount);
+      this._displayedJourney.ActivityGroups.push(newGroup);
+      this.assignOrder();
+      this.updateItinerary();
+    } else if (action === 'extras') {
+      newGroup = this.getExtrasActivityGroup();
+      newGroup.Title = this.getValidOptionsTitle();
+      this._displayedJourney.ActivityGroups.push(newGroup);
+      this.assignOrder();
+      this.updateItinerary();
+    } else if (action === 'copy') { // if copying shared itinerary...
+      if (this._displayedJourney.Shared) {
+        const itinToCopy = this._displayedJourney;
+        itinToCopy.ID = null;
+
+        itinToCopy.ActivityGroups.forEach(activityGroup => {
+          activityGroup.ID = null;
+          activityGroup.Activities.forEach(activity => {
+            activity.ID = null;
+          });
+        });
+
+        const usernameToAdd: string = itinToCopy.SharedByUsername === '' ? 'user' : itinToCopy.SharedByUsername;
+        itinToCopy.ActivityGroups.forEach((group: ActivityGroupModel) => {
+          group.Activities.forEach((activity: ActivityModel) => {
+            if (activity.Notes !== '') {
+              activity.Notes = usernameToAdd + `: ${activity.Notes}`;
+            }
+          });
+        });
+        this.JourneyCopied.emit(
+          {
+            journey: this._displayedJourney
+          });
+        // this.usersCtxt.AddItinerary(itinToCopy);
+
+
+      } else { // if copying one's own created itinerary...
+        console.log('copying one\'s own itinerary...');
+
+        this.JourneyCopied.emit({
+          journey: new ItineraryModel({
+            ID: null,
+            Title: `${this._displayedJourney.Title} (copy)`,
+            ActivityGroups: this._displayedJourney.ActivityGroups,
+            CreatedDateTime: undefined,
+            Editable: undefined,
+            Shared: undefined,
+            SharedByUserID: undefined,
+            SharedByUsername: undefined
+          })
+        });
+        // this.State.Loading = true;
+      }
+      // focus on the journey input
+      this.EditingJourneyTitle = true;
+      const input = document.getElementById('JourneyTitleInput');
+      setTimeout(function () {
+        input.focus();
+      }, 0);
+
+    }
+    // scroll all the way to the right:
+    // const el = this.AmblActivityGroupList.nativeElement;
+    // setTimeout(() => {
+    //   el.scrollTo({ left: (el.scrollLeft + 264 + el.scrollWidth), behavior: 'smooth' });
+    //   this.setScrollerToCurrentPosition();
+    // }, 0);
+  }
+
+  public onActivityLocationClicked(activityLocation: any) {
+    this.CurrentLatitude = activityLocation.locationData.Latitude;
+    this.CurrentLongitude = activityLocation.locationData.Longitude;
+    this.BelongsToJourney = true;
+    this.SelectedLocation = null;
+    this.SelectedMarker = activityLocation;
+    this.changeDetector.detectChanges();
+    this.locationInfoService.SetSelectedMarker(activityLocation);
+    this.mapService.MapMarkerClickedEvent(this.GoogleInfoWindowRef);
+  }
+
+  public onJourneyChanged(event) {
+    this.JourneyChanged.emit(event);
   }
 
   /**
@@ -985,40 +1464,59 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
-  DisplayMoreInfo(marker: MapMarker): void {
+  public OnUserChoseIcon(event, location) {
+    let activity;
+    this.DisplayedJourney.ActivityGroups.forEach(ag => {
+      ag.Activities.forEach(act => {
+        if (act.ID === location.ID) {
+          act.WidgetIcon = event;
+          activity = act;
+        }
+      });
+    });
+    this.JourneyChanged.emit({ message: 'activity icon changed', journey: this.DisplayedJourney, additional: { activity } });
+  }
+
+  public LegendTopIconClicked(event) {
+    this.LegendIconClicked.emit(event);
+  }
+
+  public DisplayMoreInfo(marker: MapMarker): void {
     this.openMoreInfoDialog(marker);
   }
+
+
 
   /**
    * When a user clicks on an icon it calls this method which opens the BasicInfoWindowComponent.
    *
    * @param marker holds the MapMarker with all its information to be displayed in the basic info window.
    */
-  public DisplayMarkerInfo(marker: MapMarker): void {
+  // public DisplayMarkerInfo(marker: MapMarker): void {
 
-    this.SearchControl.setValue('');
-    this.displayAutocompleteOptions = false;
-    this.ShowSearchBar = false;
-    this.locationInfoService.SetSelectedMarker(marker);
-    this.SelectedLocation = marker;
-    this.changeDetector.detectChanges();
-    this.isEdit = false;
-    const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+  //   this.SearchControl.setValue('');
+  //   this.displayAutocompleteOptions = false;
+  //   this.ShowSearchBar = false;
+  //   this.locationInfoService.SetSelectedMarker(marker);
+  //   this.SelectedLocation = marker;
+  //   this.changeDetector.detectChanges();
+  //   this.isEdit = false;
+  //   // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
 
-    if (marker.LayerID === userLayerID) {
-      this.isEdit = true;
-    }
+  //   // if (marker.LayerID === userLayerID) {
+  //   //   this.isEdit = true;
+  //   // }
 
-    if (this.IsMobile) {
-      this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
-      this.ShowFooter(true);
-    }
-    console.log('displaying marker', marker);
-    this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+  //   if (this.IsMobile) {
+  //     this.MarkerData = new MarkerData(marker, this.MapMarkerSet, this._currentMapModel.ID, this.isEdit);
+  //     this.ShowFooter(true);
+  //   }
+  //   console.log('displaying marker', marker);
+  //   this.OnLocationClicked(this.GoogleInfoWindowRef, this.SelectedLocation);
+  //   this.mapService.MapMarkerClickedEvent(this.amblInfoWindow);
 
-
-    this.zoomInToPoint(marker);
-  }
+  //   // this.zoomInToPoint(marker);
+  // }
 
   /**
    * Attaches a click listener to the map that returns an object that includes the place id.
@@ -1032,6 +1530,122 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       loc.stop(); // stops the event that opens the default G-Maps info window
       this.placeId = loc.placeId;
     });
+  }
+  /**
+   * Assigns order to the activity groups
+   */
+  protected assignOrder() {
+    this._displayedJourney.ActivityGroups.forEach((group, idx) => {
+      group.Order = idx;
+    });
+  }
+
+  public OnPanelOpenStateChanged(event) {
+    this.CurrentPanelOpenState.emit(event);
+  }
+
+  protected updateItinerary() {
+    this._displayedJourney.ActivityGroups.forEach((group: any) => {
+      if (group.Activities.length === 0) {
+        if (group.GroupType === 'day') {
+          group.Activities.push(this.getNewActivity('Good Morning'));
+        } else if (group.GroupType === 'extras') {
+          group.Activities.push(this.getNewActivity('New Location'));
+        }
+      }
+    });
+    // updates an itinerary, does not save a new one
+    console.log('the itinerary being changed: ', this._displayedJourney);
+    // this.itineraryService.UpdateCurrentItinerary(this.DisplayedItinerary);
+    this.JourneyChanged.emit({ message: 'journey changed', journey: this._displayedJourney });
+
+    // temporarily comment this out... we will use a save button to save aggregated changes
+    // until the new state system is implemented, thereby improving the speed of saving
+    // this.State.Loading = true;
+    // this.usersCtxt.EditItinerary(this.DisplayedItinerary);
+  }
+
+
+  protected getBasicDayActivityGroup(dayCount?: number) {
+    return new ActivityGroupModel({
+      Title: `Day ${dayCount + 1}`,
+      CreatedDateTime: new Date(),
+      GroupType: 'day',
+      Checked: false,
+      ID: null,
+      Activities: [
+        this.getNewActivity('Beginning of day', 'hotel'),
+        this.getNewActivity('End of day', 'hotel')
+      ]
+    });
+  }
+
+  protected getNewActivity(title?: string, widgetIcon?: string) {
+    return new ActivityModel({
+      Title: `${title ? title : 'New Location'}`,
+      ID: null,
+      LocationID: null,
+      Notes: '',
+      TransportIcon: '',
+      WidgetIcon: `${widgetIcon ? widgetIcon : 'location_on'}`,
+      Favorited: false,
+      Checked: false
+    });
+  }
+  protected getFullDayActivityGroup(dayCount: number = 0) {
+    return new ActivityGroupModel({
+      Title: `Day ${dayCount + 1}`,
+      CreatedDateTime: new Date(),
+      GroupType: 'day',
+      Checked: false,
+      ID: null,
+      Activities: [
+        this.getNewActivity('Good morning', 'hotel'),
+        this.getNewActivity('Breakfast', 'restaurant'),
+        this.getNewActivity('Lunch', 'restaurant'),
+        this.getNewActivity('Dinner', 'restaurant'),
+        this.getNewActivity('Good night', 'hotel')
+      ]
+    });
+  }
+
+  protected getExtrasActivityGroup() {
+    const object: {
+      Title: string,
+      GroupType: string,
+      Checked: boolean,
+      ID: any,
+      Activities: any
+    } = {
+      Title: 'Options',
+      GroupType: 'extras',
+      Checked: false,
+      ID: null,
+      Activities: [this.getNewActivity()]
+    };
+    return object;
+  }
+
+  protected getValidOptionsTitle() {
+    const validTitle = 'Options';
+    let optionsNumToAssign = 1;
+    let strNum = '';
+    const optionsNumbers: Array<number> = [];
+    this._displayedJourney.ActivityGroups.forEach(group => {
+      if (group.Title.includes('Options (')) {
+        const str = group.Title.substring(9);
+        strNum = '';
+        /*tslint:disable-next-line*/
+        for (let idx = 0; idx < str.length; idx++) {
+          if (!isNaN(Number(str[idx]))) { // if index is a number, add it to the string number
+            strNum += str[idx];
+          }
+          optionsNumbers.push(Number(strNum)); // push number to array
+        }
+        optionsNumToAssign = Math.max(...optionsNumbers) + 1; // add one to the highest number in array and assign to be new title's number
+      }
+    });
+    return `${validTitle} (${optionsNumToAssign})`;
   }
 
   /**
@@ -1099,11 +1713,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
     const regionIndices = this.getLocationRegionIndices(results);
 
-    // Maybe TODO: Make the call to the API and then put the time out here,
-    // only displaying the marker if it's a single click... for performance improvement
-    this.DisplayMarkerInfo(new MapMarker({
+    const tempActivity = this.getNewActivity(results.name);
+    tempActivity.locationData = new MapMarker({
       ID: '',
-      LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
       Title: results.name,
       GoogleLocationName: results.name,
       Icon: results.icon,
@@ -1119,23 +1731,28 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         results.address_components[regionIndices.countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
-      IconImageObject: this.DefaultMarker
-    }));
+      IconImageObject: { scaledSize: { width: 30, height: 30 }, url: './assets/ambl_marker.png' }
+    });
+    this.ShowSearchedLocation(tempActivity);
+
+    // Maybe TODO: Make the call to the API and then put the time out here,
+    // only displaying the marker if it's a single click... for performance improvement
+    // LayerID: this.UserLayers.find(lay => lay.Shared === false).ID,
   }
 
   /**
    * sets up the search methods (if any) on which to search the map
    */
-  protected setUpSearchMethods() {
-    if (this.CustomSearchMethod) { this.SearchMethods.push(this.CustomSearchMethod); }
-    if (this.DisplayGoogleSearchMethod) { this.SearchMethods.push('Google'); }
-    if (this.SearchMethods.length === 0) {
-      this.DisplaySearchOptions = false;
-    } else {
-      this.DisplaySearchOptions = true;
-      this.SearchMethod = this.SearchMethods[0];
-    }
-  }
+  // protected setUpSearchMethods() {
+  //   if (this.CustomSearchMethod) { this.SearchMethods.push(this.CustomSearchMethod); }
+  //   if (this.DisplayGoogleSearchMethod) { this.SearchMethods.push('Google'); }
+  //   if (this.SearchMethods.length === 0) {
+  //     this.DisplaySearchOptions = false;
+  //   } else {
+  //     this.DisplaySearchOptions = true;
+  //     this.SearchMethod = this.SearchMethods[0];
+  //   }
+  // }
 
   /**
    *
@@ -1176,6 +1793,25 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       }
     });
     return regionIndices;
+  }
+
+  /**
+   * Assigns the lat/lng and zoom for the first activity on a journey
+   */
+  protected assignDefaultMapConfiguration() {
+    if (this.AmblOnLocationArray && this.DisplayedJourney) {
+      const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
+      const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
+      if (firstLocation) {
+        this.CurrentZoom = 10;
+        this.CurrentLongitude = firstLocation.Longitude;
+        this.CurrentLatitude = firstLocation.Latitude;
+      } else {
+        this.CurrentZoom = this.defaultLocationData.zoom;
+        this.CurrentLongitude = this.defaultLocationData.lng;
+        this.CurrentLatitude = this.defaultLocationData.lat;
+      }
+    }
   }
 
   /**
@@ -1222,12 +1858,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * Random decimal point are appended due to the fact the AGM uses == to determine current lat/long/zoom.
    * If random decimals are not added then the map will not zoom/pan once user moves the map.
    *
-   * @param value
+   * @param value the point (lat / lng) to pan to
    */
   protected zoomInToPoint(value): void {
-    this._currentMapModel.Latitude = parseFloat(value.Latitude) + (Math.random() / 100000);
-    this._currentMapModel.Longitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    // this._currentMapModel.Zoom = 16 + (Math.random() / 100);
+    this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    this.CurrentZoom = 12;
   }
 
   /**
@@ -1256,14 +1892,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     return photoUrls;
   }
 
-  protected shiftCuratedLayerToTop() {
-    const first = 'Curated';
-    if (this._userLayers && this._userLayers !== undefined) {
-      this._userLayers.sort((layer1, layer2) => {
-        return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
-      });
-    }
-  }
+  // protected shiftCuratedLayerToTop() {
+  //   const first = 'Curated';
+  //   if (this._userLayers && this._userLayers !== undefined) {
+  //     this._userLayers.sort((layer1, layer2) => {
+  //       return layer1.Title === first ? -1 : layer2.Title === first ? 1 : 0;
+  //     });
+  //   }
+  // }
 
   /**
    * Opens the 'More Info' dialog when the button is pressed in the 'Basic Info' info window.
@@ -1285,7 +1921,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       data: {
         marker,
         markerSet: this.MapMarkerSet,
-        layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
+        // layerID: this.UserLayers.find(lay => lay.Shared === false).ID,
         isEdit: this.isEdit
       }
     });
@@ -1300,6 +1936,25 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       }
     );
   }
+  /**
+   * Called when the user selects a location from the google search
+   * @param searchedLocation the activity to search
+   */
+  public ShowSearchedLocation(searchedLocation: ActivityModel) {
+    this.SearchControl.setValue('');
+    this.displayAutocompleteOptions = false;
+    this.ShowSearchBar = false;
+    this.BelongsToJourney = false;
+    this.SelectedLocation = searchedLocation;
+    this.SelectedMarker = searchedLocation.locationData;
+    this.changeDetector.detectChanges();
+
+    this.locationInfoService.SetSelectedMarker(searchedLocation.locationData);
+
+    this.mapService.MapMarkerClickedEvent(this.amblInfoWindow);
+
+    this.zoomInToPoint(searchedLocation.locationData);
+  }
 
   /**
    * Handles the show/hide lifecycle of a selected AMBL-ON Map Marker and initializes the
@@ -1309,13 +1964,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param marker The Map Marker that was selected.
    */
   public OnMarkerClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
+    this.BelongsToJourney = true;
     this.SelectedLocation = null;
     this.SelectedMarker = marker;
     this.isEdit = false;
-    const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
-    if (marker.LayerID === userLayerID) {
-      this.isEdit = true;
-    }
+    // const userLayerID = this.UserLayers.find(layer => layer.Shared === false).ID;
+    // if (marker.LayerID === userLayerID) {
+    //   this.isEdit = true;
+    // }
     this.changeDetector.detectChanges();
 
     this.locationInfoService.SetSelectedMarker(marker);

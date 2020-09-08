@@ -1,3 +1,5 @@
+@import '../../../../assets/styles/ambl_on-styles';
+
 $base-toolbar-height: 0px; //40px
 $icon-offset-top-margin: 11px;
 $search-bar-offset-top: 30px;
@@ -12,6 +14,8 @@ mat-icon {
 #map-section {
     height: 100vh;
     position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
 
 #map-toolbar{
     height: 40px;
@@ -21,6 +25,11 @@ mat-icon {
     top: 0px;
     z-index: 1;
     border-bottom: 2px solid black;
+    @media (max-width:600px){
+        // height:9vh;
+        height: 80px;
+        // left: 0px;
+    }
 }
 
     #ambl-span{
@@ -36,7 +45,6 @@ mat-icon {
 
 
     .icon-list {
-        // height: 6vh;
         // background-color: $toolbar-background-color;
         // opacity: .5;
         height: $base-toolbar-height;
@@ -52,11 +60,18 @@ mat-icon {
     }
 
     .top-icon-set{
-        width: 10%;
+        width: 270px;
         position: absolute;
         right: 0;
         top: 0;
         z-index: 2;
+        
+        mat-icon {
+            color: white;
+            position: absolute;
+            top: 5px;
+        }
+
          @media(min-width:600px){
             position: absolute;
             margin: auto;
@@ -66,13 +81,13 @@ mat-icon {
         width: 50%;
         position: absolute;
         // top: $base-toolbar-height;
-        margin-top: $icon-offset-top-margin *2;
+        margin-top: $icon-offset-top-margin * 4;
         z-index: 1;
         @media(max-width: 600px) {
             position: absolute;
             top: $base-toolbar-height;
             left: 80;
-            margin-top: $icon-offset-top-margin * 2;
+            margin-top: 40px;
         }
         .center-buttons{
             z-index: 1;
@@ -126,15 +141,37 @@ mat-checkbox, mat-radio-button {
         width: 40%;
         margin: auto;
         display: block;
-        margin-top: 10px;
-        border-color: #673ab7;
-        border-radius: 5px;
+        margin-top: -20px;
+        // border: 1px solid $toolbar-background-color;
+        border: none;
+        // border-radius: 5px;
         padding: 10px;
         font-size: 16px;
+        box-shadow: -1px 2px 4px -2px;
+        @include montserrat_bold;
+       
+        color: $primary_dark;
+        // &::selection {
+        //     background-color: $primary_dark;
+        //     color: white;
+        // }
+
+        &:focus{
+            outline: none;
+        }
+
+        // &::placeholder{
+        //     background-color: $primary_dark;
+        //     color: white;
+        //     @include montserrat_bold;
+        //     // font-weight: bolder;
+        //     width:10px !important;
+        //   }
     }
 
     //background: rgba(255, 255, 255, 0.5);
     padding-bottom: 10px;
+   
 }
 
 
@@ -182,11 +219,53 @@ mat-option {
     position: absolute;
     z-index: 1;
     background-color: white;
-    border-radius: 5px;
-    box-shadow: grey 3px 3px 7px;
-    top: 25px;
+    border-radius: 0px;
+    // box-shadow: grey 3px 3px 7px;
+    box-shadow: -1px 2px 1px rgba(0,0,0,0.2);
+    height: 90px;
+    top: 35px;
     color: $toolbar-background-color;
+  
 }
+.new-options-menu {
+    z-index: 1;
+    position: absolute;
+    background-color: white;
+    color: $primary_dark;
+    padding: 0;
+    box-shadow: -1px 2px 1px rgba(0,0,0,0.2);
+    /* center */
+    top: 35px;
+    // left: 0;
+    // right: 323px;
+    width: 150px;
+    margin: auto;
+    mat-list-item { 
+        cursor: pointer;
+        height: 30px;
+        color: $primary_dark;
+        @include montserrat_bold;
+        &:hover {
+            background-color: $primary_light;
+        }
+    }
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color: $toolbar-background-color;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle{
+    background-color: $toolbar-background-color;
+}
+
+::ng-deep .layer-radio-button .mat-radio-label-content{
+    // font-family: $font-family !important;
+    @include montserrat_bold;
+
+}
+
+
 
 .display-none {
     display: none;
@@ -194,6 +273,72 @@ mat-option {
 
 
     
+.open-journey-title-chevron {
+    left: -10px;
+}
+.close-journey-title-chevron {
+    
+}
 
+.map-journey-title {
+    width: 75%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    @include montserrat_bold;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+    cursor: pointer;
+}
 
+.map-journey-display-container {
+    position: absolute;
+    right: -19px;
+    top: 40px;
+    z-index: 1;
+    width: 270px;
+    max-height: calc(100% - 165px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 
+.map-journey-title-edit-input {
+    width: 95%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    @include montserrat_bold;
+    color: $primary_dark;
+    padding: 0 5px;
+    background-color: white;
+    border: none;
+    font-size: 12pt;
+}
+
+.more-below-indicator {
+    z-index: 200;
+    position: fixed;
+    right: 0;
+    width: 251px;
+    background-color: white;
+    color: $primary_dark;
+    text-align: center;
+    height: 20px;
+    cursor: text;
+
+    mat-icon {
+        font-size: 17pt;
+        cursor: text;
+    }
+}

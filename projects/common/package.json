@@ -2,7 +2,7 @@
 	"name": "@lowcodeunit/lcu-map-common",
 	"version": "0.0.1",
 	"peerDependencies": {
-		"@angular/common": "^9.0.5",
-		"@angular/core": "^9.0.5"
+		"@angular/common": "^10.0.8",
+		"@angular/core": "^10.0.8"
 	}
 }

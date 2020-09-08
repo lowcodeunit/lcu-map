@@ -178,7 +178,8 @@ export class LegendComponent implements OnInit, OnChanges {
     this.HiddenListVisible = false;
     this.LegendContentHeight = "93%";
     this.hiddenLocationIds = new Array<any>();
-    this.PreviousSelectedLocation = { ID: '', LayerID: '', Title: '', Latitude: '', Longitude: '', Icon: '' };
+    // LayerID: ''
+    this.PreviousSelectedLocation = { ID: '',  Title: '', Latitude: '', Longitude: '', Icon: '' };
 
   }
 

@@ -1,49 +1,56 @@
 <div id="map-section">
 
-    <mat-toolbar id='map-toolbar' fxLayout="row" fxLayoutAlign="space-between center">
-      </mat-toolbar>
-      <!-- <hr> -->
+  <mat-toolbar id='map-toolbar' fxLayout="row" fxLayoutAlign="space-between center">
+  </mat-toolbar>
+  <!-- <hr> -->
 
   <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center"
     fxLayoutAlign.lt-sm="end center">
 
     <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
-
-      <div *ngIf="DisplaySearchOptions" class="center-buttons mat-icon-divs">
+      <!-- *ngIf="DisplaySearchOptions" -->
+      <div class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
       </div>
 
-      <div *ngIf="IncludeSaveMapFeature" class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" (click)="ActivateSaveMapDialog(map)">add</mat-icon>
+      <div class="center-buttons mat-icon-divs">
+        <mat-icon class="center-buttons" (click)="ShowAddMenu()">add</mat-icon>
+        <mat-list *ngIf="ShowNewOptions" class="new-options-menu">
+          <mat-list-item *ngFor="let option of NewOptions" (click)="NewOptionClicked(option.action)">
+            {{option.display}}
+          </mat-list-item>
+        </mat-list>
       </div>
 
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons layer-element" (click)="ShowLayersDropdown = !ShowLayersDropdown">layers
+        <mat-icon class="center-buttons layer-element material-icons-outlined" (click)="ShowLayers()">layers
         </mat-icon>
         <!-- the menu for the map layers button -->
         <div id="layer-menu" *ngIf="ShowLayersDropdown">
           <mat-radio-group [(ngModel)]="CurrentMapViewType">
-            <mat-radio-button (click)="$event.stopPropagation()" *ngFor="let view of MapViewTypes" [value]="view.value">
+            <mat-radio-button class="layer-radio-button" (click)="$event.stopPropagation()"
+              *ngFor="let view of MapViewTypes" [value]="view.value">
               {{view.display}}</mat-radio-button>
           </mat-radio-group>
-          <mat-divider></mat-divider>
+          <!-- CURATED and USERS LAYERS HERE -->
+          <!-- <mat-divider></mat-divider> -->
           <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
             matTooltip="The markers on your main map... Add markers to this map to be saved."
             matTooltipPosition="before">
             {{_currentMapModel.Title}} (Primary)</mat-checkbox> -->
-          <mat-divider></mat-divider>
-          <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
-            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox>
+          <!-- <mat-divider></mat-divider> -->
+          <!-- <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
+            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox> -->
         </div>
       </div>
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" matTooltip="Share">share</mat-icon>
+        <mat-icon class="center-buttons" (click)="ShareClicked()">share</mat-icon>
       </div>
     </div>
 
     <div class="top-icon-set" fxLayoutAlign="end start">
       <!-- [selected-location]="SelectedMarker" (pan)="PanningTo($event)" -->
-      <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
+      <!-- <lcu-legend class="legend" [ngStyle]="{'margin-top': LegendMargin}" [current-map-model]="_currentMapModel"
         [visible-locations]="_visibleLocationsMasterList" [icon-list]="MapMarkerSet"
         [currently-active-layers]="GetSelectedUserLayers()" [selected-location]="SelectedMarker"
         [excluded-locations]="ExcludedLocations"
@@ -51,7 +58,35 @@
         (display-more-info)="DisplayMoreInfo($event)" (update-visible-locations)="UpdateVisibleLocations($event)"
         (is-legend-open)="ToggleLegendMargin($event)" (edit-legend-locations)="EditLegendLocations($event)"
         (top-list-clicked)="EmitTopListsClick($event)" (update-hidden-curations)="UpdateExcludedCurationsList($event)">
-      </lcu-legend>
+      </lcu-legend> -->
+      <mat-icon class="open-journey-title-chevron" (click)="ShowJourneyLegend = false"
+        *ngIf="ShowJourneyLegend && !EditingJourneyTitle">
+        chevron_right</mat-icon>
+      <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}" (click)="EditJourneyTitle()"
+        [fxShow]="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
+      <input class="map-journey-title-edit-input" [fxShow]="EditingJourneyTitle" type="text"
+        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" id="JourneyTitleInput" #journeyTitleEdit value="{{DisplayedJourney?.Title}}" />
+      <mat-icon class="close-journey-title-chevron" (click)="ShowJourneyLegend = true"
+        *ngIf="!ShowJourneyLegend && !EditingJourneyTitle">
+        chevron_left</mat-icon>
+    </div>
+    <div class="map-journey-display-container" #mapJourneyDisplayContainer>
+      <div class="map-journey-display" *ngIf="ShowJourneyLegend" #mapJourneyDisplay>
+        <lcu-map-journey  [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
+          [clicked-activity]="SelectedMarker" [ambl-on-location-array]="AmblOnLocationArray"
+          (activity-location-clicked)="onActivityLocationClicked($event)"
+          (legend-top-icon-clicked)="LegendTopIconClicked($event)"
+          (activity-groups-changed)="ActivityGroupsChanged($event)"
+          (current-panel-open-state)="OnPanelOpenStateChanged($event)" 
+          [open-panel-indexes]="OpenPanels"
+          (accordion-bounds-change)="CalcBounds($event)"
+          [show-up-indicator]="ShowUpIndicator"
+          [scroll-event]="CheckBounds">
+        </lcu-map-journey>
+      </div>
+    </div>
+    <div [hidden]="!ShowDownIndicator" class="more-indicator more-below-indicator" [ngStyle]="{'top.px': DownIndicatorOffset ? DownIndicatorOffset : 0}">
+      <mat-icon>expand_more</mat-icon>
     </div>
   </div>
   <!-- <hr> -->
@@ -60,11 +95,11 @@
   <div [hidden]="!ShowSearchBar" id="search-bar" class="search-bar-element">
     <!-- the native Google API for POI location search -->
     <div [hidden]="SearchMethod !== 'Google'" class="search-bar-element">
-      <input placeholder="search for Google locations" autocorrect="off" autocapitalize="off" spellcheck="off"
-        type="text" #search [formControl]="SearchControl" class="search-bar-element">
+      <input placeholder="Search" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search
+        [formControl]="SearchControl" class="search-bar-element">
     </div>
     <!-- the custom marker search bar -->
-    <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
+    <!-- <form [hidden]="SearchMethod !== CustomSearchMethod" class="search-bar-element">
       <input type="text" (keyup)="CustomSearchInputChange($event)"
         placeholder="search for {{CustomSearchMethod}} locations" aria-label="Assignee"
         [formControl]="CustomLocationControl" [matAutocomplete]="auto" class="search-bar-element">
@@ -88,41 +123,57 @@
           </span>
         </mat-option>
       </mat-autocomplete>
-    </form>
+    </form> -->
     <!-- the radio buttons for search type (custom markers vs Google POI locations) -->
-    <div class="search-method-radio-group search-bar-element">
+    <!-- <div class="search-method-radio-group search-bar-element">
       <mat-radio-group [(ngModel)]="SearchMethod" class="search-bar-element">
         <mat-radio-button *ngFor="let method of SearchMethods" [value]="method" class="search-bar-element">
           {{method}}
         </mat-radio-button>
       </mat-radio-group>
-    </div>
+    </div> -->
   </div> <!-- END search bar section -->
 
-  <!-- the map -->
+  <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
-    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
-      [mapTypeId]="CurrentMapViewType" (boundsChange)="BoundsChange($event)" #map [latitude]="_currentMapModel.Latitude"
-      [zoomControl]="true" [zoomControlOptions]="ZoomOptions" [longitude]="_currentMapModel.Longitude"
-      [title]="_currentMapModel.Title" [zoom]="_currentMapModel.Zoom" (mapDblClick)="OnMapDoubleClicked($event)"
-      (mapClick)="OnChoseLocation($event)" [usePanning]="true">
+    <agm-map [minZoom]="3" class="map" (mapReady)="OnMapReady($event)"
+      [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude"
+      [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
+      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)">
+    <!-- <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+      [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
+      [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
+      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true"> -->
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
-      <div id="markers" *ngFor="let marker of _visibleLocationsMasterList">
-        <agm-marker *ngIf="marker.IsHidden === false || !marker.IsHidden" [latitude]="marker.Latitude"
-          [longitude]="marker.Longitude" [title]="marker.Title" [iconUrl]="marker.IconImageObject"
-          (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
+        
+      <ng-container *ngIf="ActivityLocationList.length > 0">
+        <div id="markers" *ngFor="let marker of ActivityLocationList">
+          <agm-marker *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"
+            [longitude]="marker.locationData.Longitude" [title]="marker.Title" [iconUrl]="marker.LocationObject"
+            (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 
-          <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
-            <lcu-basic-info-window-rewrite *ngIf="SelectedMarker?.ID === marker.ID" [isEdit]="isEdit" [marker]="marker"
-              [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
-          </agm-info-window>
-        </agm-marker>
-      </div>
-      <agm-marker *ngIf="SelectedLocation && (SelectedLocation.IsHidden === false || !SelectedLocation.IsHidden)" [iconUrl]="SelectedLocation.IconImageObject"
-        [latitude]="SelectedLocation.Latitude" [longitude]="SelectedLocation.Longitude">
+            <agm-info-window #amblInfoWindow [isOpen]="SelectedMarker?.ID === marker.ID">
+              <lcu-activity-location-window *ngIf="SelectedMarker?.ID === marker.ID" 
+                [marker]="marker"
+                [belongs-to-journey]="true" 
+                (user-chose-icon)="OnUserChoseIcon($event, marker)"
+                (notes-saved)="NotesSaved($event, marker)"
+                (favorited-changed)="ToggleFavorited($event, marker)">
+              </lcu-activity-location-window>
+              <!-- replace this with new component -->
+              <!-- on click of actloc, call same method (OnMarkerClicked) from ts file and somehow pass in #amblInfoWindow and actLoc info-->
+            </agm-info-window>
+          </agm-marker>
+        </div>
+      </ng-container>
+      <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.locationData.IconImageObject"
+        [latitude]="SelectedLocation.locationData.Latitude" [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
-          <lcu-basic-info-window-rewrite [marker]="SelectedLocation" [default-marker]="DefaultMarker"
-            [mapMarkerSet]="MapMarkerSet"></lcu-basic-info-window-rewrite>
+
+          <lcu-activity-location-window [marker]="SelectedLocation" [belongs-to-journey]="false"
+            (add-icon-clicked)="addIconClicked(SelectedLocation)">
+
+          </lcu-activity-location-window>
         </agm-info-window>
       </agm-marker>
     </agm-map>

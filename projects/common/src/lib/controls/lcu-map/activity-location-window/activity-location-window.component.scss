@@ -131,7 +131,9 @@ $info-window-height: 170px;
 }
 
 .star {
-  background: url('/assets/star_sprites.png') 0 0;
+  // background: url('../../../../../common/assets/star_sprites.png') 0 0;
+  // background: url('/assets/star_sprites');
+  background: url('../../../../../assets/star_sprites.png');
   background-size: 60px;
   background-repeat: no-repeat;
   width: 15px;

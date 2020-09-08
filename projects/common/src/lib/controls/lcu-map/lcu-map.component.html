@@ -136,11 +136,16 @@
 
   <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
-    <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
+    <agm-map [minZoom]="3" class="map" (mapReady)="OnMapReady($event)"
+      [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude"
+      [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
+      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)">
+    <!-- <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
       [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
       [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
-      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true">
+      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)" [usePanning]="true"> -->
       <!-- <div id="markers" *ngFor="let marker of CurrentlyActiveLocations"> -->
+        
       <ng-container *ngIf="ActivityLocationList.length > 0">
         <div id="markers" *ngFor="let marker of ActivityLocationList">
           <agm-marker *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"

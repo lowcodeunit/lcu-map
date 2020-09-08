@@ -53,6 +53,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected nonEssentialKeys: Array<string>;
 
   /**
+   * The default lat/lng to show on map
+   */
+  protected defaultLocationData: { zoom: number, lat: number, lng: number } = { zoom: 4, lat: 39.741802, lng: -105.070799 };
+
+  /**
    * The place id of the location the user clicked on
    *
    * This will be replaced by a direct call when AGM team puts out fix that allows user's click event
@@ -860,9 +865,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
       // console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
       // console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
+      if (childsBottom + 4 > parentsBottom) {
+        // console.log("Bottom arrow should show")
+        this.ShowDownIndicator = true;
+      } else {
+        // console.log("Bottom arrow should NOT show")
+        this.ShowDownIndicator = false;
+      }
 
-
-      if (childsTop - 60 < parentsTop) {// "Top arrow should show"
+      if (childsTop - 40 < parentsTop) {// "Top arrow should show"
         setTimeout(() => {
           this.ShowUpIndicator = true;
         }, 0);
@@ -872,13 +883,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }, 0);
       }
 
-      if (childsBottom + 4 > parentsBottom) {
-        // console.log("Bottom arrow should show")
-        this.ShowDownIndicator = true;
-      } else {
-        // console.log("Bottom arrow should NOT show")
-        this.ShowDownIndicator = false;
-      }
+     
     }
   }
 
@@ -902,7 +907,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.JourneyChanged.emit({ message: 'notes saved', journey: this.DisplayedJourney, additional: { activity } });
   }
 
-  public ToggleFavorited(event: boolean, marker: ActivityModel){
+  public ToggleFavorited(event: boolean, marker: ActivityModel) {
     let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach((act: ActivityModel) => {
@@ -1797,9 +1802,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (this.AmblOnLocationArray && this.DisplayedJourney) {
       const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
       const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
-      this.CurrentZoom = 10;
-      this.CurrentLongitude = firstLocation.Longitude;
-      this.CurrentLatitude = firstLocation.Latitude;
+      if (firstLocation) {
+        this.CurrentZoom = 10;
+        this.CurrentLongitude = firstLocation.Longitude;
+        this.CurrentLatitude = firstLocation.Latitude;
+      } else {
+        this.CurrentZoom = this.defaultLocationData.zoom;
+        this.CurrentLongitude = this.defaultLocationData.lng;
+        this.CurrentLatitude = this.defaultLocationData.lat;
+      }
     }
   }
 

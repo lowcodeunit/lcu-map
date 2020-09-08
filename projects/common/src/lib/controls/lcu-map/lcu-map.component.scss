@@ -15,6 +15,7 @@ mat-icon {
     height: 100vh;
     position: relative;
     overflow-y: hidden;
+    overflow-x: hidden;
 
 #map-toolbar{
     height: 40px;
@@ -305,6 +306,7 @@ mat-option {
     width: 270px;
     max-height: calc(100% - 165px);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .map-journey-title-edit-input {

@@ -67,19 +67,20 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   @Input('open-panel-indexes')
-  public set OpenPanels(arr) {
-    console.log("open panels input at map journey ", arr)
-    if (Array.isArray(arr) && arr.length > 0) {
-      this._openPanels = [...new Set(arr)];
-      console.log("setting Open Panles to ", this._openPanels)
-    } else {
-      console.log("setting open panels to 0")
-      this._openPanels = [0];
-    }
-  }
-  public get OpenPanels() {
-    return this._openPanels;
-  }
+  // public set OpenPanels(arr) {
+    public OpenPanels: Array<any>;
+    // console.log("open panels input at map journey ", arr)
+    // if (Array.isArray(arr) && arr.length > 0) {
+    //   this._openPanels = [...new Set(arr)];
+    //   console.log("setting Open Panles to ", this._openPanels)
+    // } else {
+    //   console.log("setting open panels to 0")
+    //   this._openPanels = [0];
+    // }
+  // }
+  // public get OpenPanels() {
+  //   return this._openPanels;
+  // }
 
   /**
    * Determines whether or not to display the up arrow on the menu

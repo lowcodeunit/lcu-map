@@ -68,6 +68,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input('open-panel-indexes')
   public set OpenPanels(arr) {
+    console.log("open panels input at map journey ", arr)
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = [...new Set(arr)];
     } else {
@@ -146,7 +147,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.ScrollEvent) {
       this.CheckBounds();
     }
-    console.log("open panels map journey: ", this.OpenPanels)
+    console.log("open panels map journey on changes: ", this.OpenPanels)
   }
 
   public CheckBounds() {
@@ -212,6 +213,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     });
     if (!duplicate) {
       this.DisplayedActivityGroups.push(activityGroup);
+      activityGroup.PanelOpenState = true;
       this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
     }
 
@@ -236,6 +238,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
         this.DisplayedActivityGroups.splice(this.DisplayedActivityGroups.indexOf(ag), 1);
       }
     });
+    activityGroup.PanelOpenState = false;
     this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
     this.OpenPanels.splice(this.OpenPanels.indexOf(idx), 1);
     this.CheckBounds();

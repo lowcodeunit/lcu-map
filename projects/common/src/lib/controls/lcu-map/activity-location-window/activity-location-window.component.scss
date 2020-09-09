@@ -122,6 +122,10 @@ $info-window-height: 170px;
   background-color: white !important;
 }
 
+::ng-deep .gm-style .inverse-color-scheme .gm-style-iw-t::after{
+  background: white !important;
+}
+
 .disabled-icon{
   color: $primary-medium;
 }

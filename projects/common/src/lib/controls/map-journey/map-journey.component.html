@@ -21,8 +21,8 @@
   <!-- JOURNEY ACTIVITY GROUPS -->
   <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; index as idx"
     [expanded]="OpenPanels.includes(idx)"
-    (opened)="activityGroup.PanelOpenState = true; PanelOpened(activityGroup, idx)"
-    (closed)="activityGroup.PanelOpenState = false; PanelClosed(activityGroup, idx)" cdkDropList
+    (opened)="PanelOpened(activityGroup, idx)"
+    (closed)="PanelClosed(activityGroup, idx)" cdkDropList
     id="{{activityGroup.Title}}" [cdkDropListData]="activityGroup.Activities" [cdkDropListConnectedTo]="DropListArray"
     (cdkDropListDropped)="DropActivity($event)">
     <mat-expansion-panel-header>

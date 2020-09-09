@@ -163,6 +163,7 @@ export class AppComponent implements OnInit {
   public OpenPanels: Array<number> = [0];
 
   public OnPanelOpenStateChanged(event) {
+    console.log("Changing OpenPanels to ", event)
     this.OpenPanels = event;
   }
 

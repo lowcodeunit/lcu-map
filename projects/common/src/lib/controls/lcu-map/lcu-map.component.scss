@@ -342,3 +342,13 @@ mat-option {
         cursor: text;
     }
 }
+
+
+.basicInfoWindow ::ng-deep .gm-style .gm-style-iw-t::after{
+    background: white !important;
+  }
+
+.belongsToJourney ::ng-deep .gm-style .gm-style-iw-t::after{
+    background: $toolbar-background-color !important;
+}
+ 

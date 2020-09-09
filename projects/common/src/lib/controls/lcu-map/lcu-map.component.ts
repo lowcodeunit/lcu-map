@@ -557,6 +557,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public set OpenPanels(arr) {
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = arr;
+      // console.log("open panels input at lcu map = ", this._openPanels);
     }
   }
   public get OpenPanels() {
@@ -933,7 +934,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
 
   public UpdateExcludedCurationsList(event: string) {
-    console.log('emitting: ', event);
+    // console.log('emitting: ', event);
     this.UpdateExcludedCurations.emit(event);
   }
   /**
@@ -1297,7 +1298,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * called when the share icon in the toolbar is clicked
    */
   public ShareClicked() {
-    console.log('Want to share ', this.DisplayedJourney);
+    // console.log('Want to share ', this.DisplayedJourney);
     this.JourneyShared.emit(this.DisplayedJourney);
   }
 
@@ -1332,17 +1333,22 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (action === 'day') {
       newGroup = this.getFullDayActivityGroup(dayCount);
       // console.log('open panels b4', this.OpenPanels);
-
       this._displayedJourney.ActivityGroups.push(newGroup);
+      this._openPanels.push(this._displayedJourney.ActivityGroups.length -1);
+      // console.log("Open panels now after adding day:", this._openPanels);
+      this.OnPanelOpenStateChanged(this.OpenPanels);
+      this.changeDetector.detectChanges();
       this.assignOrder();
       this.updateItinerary('add day');
-    } else if (action === 'extras') {
+    } 
+    else if (action === 'extras') {
       newGroup = this.getExtrasActivityGroup();
       newGroup.Title = this.getValidOptionsTitle();
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
       this.updateItinerary('add extras');
-    } else if (action === 'copy') { // if copying shared itinerary...
+    } 
+    else if (action === 'copy') { // if copying shared itinerary...
       if (this._displayedJourney.Shared) {
         const itinToCopy = this._displayedJourney;
         itinToCopy.ID = null;
@@ -1543,7 +1549,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public OnPanelOpenStateChanged(event) {
+    // console.log("emitting from lcu map", event);
     this.CurrentPanelOpenState.emit(event);
+
   }
 
   protected updateItinerary(typeChange: string) {

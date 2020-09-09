@@ -72,6 +72,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = [...new Set(arr)];
     } else {
+      console.log("setting open panels to 0")
       this._openPanels = [0];
     }
   }
@@ -205,6 +206,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
    * Runs when a user clicks the tile to open a panel
    */
   public PanelOpened(activityGroup: any, idx: number) {
+    console.log("panel opened getting called: ", activityGroup, " ", idx)
     let duplicate = false;
     this.DisplayedActivityGroups.forEach(ag => {
       if (ag.ID === activityGroup.ID) {
@@ -233,6 +235,8 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
    * Runs when a user clicks the tile to close a panel
    */
   public PanelClosed(activityGroup: any, idx: number) {
+    console.log("panel closed getting called: ", activityGroup, " ", idx)
+
     this.DisplayedActivityGroups.forEach(ag => {
       if (ag.ID === activityGroup.ID) {
         this.DisplayedActivityGroups.splice(this.DisplayedActivityGroups.indexOf(ag), 1);
@@ -311,6 +315,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
    * Emits the current state of which panels are open
    */
   protected emitPanelOpenState() {
+    console.log("emitting panel open from map journey: ", this.OpenPanels)
     this.CurrentPanelOpenState.emit(this.OpenPanels);
   }
 

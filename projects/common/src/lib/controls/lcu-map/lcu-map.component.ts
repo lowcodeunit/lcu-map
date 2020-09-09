@@ -1549,7 +1549,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public OnPanelOpenStateChanged(event) {
-    console.log("On Panel OpenState Changed", event);
+    console.log("emitting from lcu map", event);
     this.CurrentPanelOpenState.emit(event);
 
   }

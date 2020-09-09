@@ -71,6 +71,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     console.log("open panels input at map journey ", arr)
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = [...new Set(arr)];
+      console.log("setting Open Panles to ", this._openPanels)
     } else {
       console.log("setting open panels to 0")
       this._openPanels = [0];

@@ -19,10 +19,6 @@ $info-window-height: 170px;
   }
 }
 
-::ng-deep .gm-style .gm-style-iw-t::after{
-  background: $primary_dark;
-}
-
 ::ng-deep.gm-style-iw {
   max-height: $info-window-height !important;
   height: $info-window-height !important;
@@ -122,9 +118,9 @@ $info-window-height: 170px;
   background-color: white !important;
 }
 
-::ng-deep .gm-style .inverse-color-scheme .gm-style-iw-t::after{
-  background: white !important;
-}
+// .inverse-color-scheme ::ng-deep .gm-style .gm-style-iw-t::after{
+//   background: white !important;
+// }
 
 .disabled-icon{
   color: $primary-medium;

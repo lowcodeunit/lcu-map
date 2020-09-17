@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MarkerInfo } from '../../models/marker-info.model';
-import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager, AgmMap, AgmStreetViewControl } from '@agm/core';
+import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
 import { MapConversions } from '../../utils/conversions';
 import { FormControl } from '@angular/forms';
@@ -366,9 +366,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @ViewChild('mapJourneyDisplay')
   public MapJourneyDisplay: ElementRef;
-
-  @ViewChild('agmStreetView')
-  public AgmStreetView: AgmStreetViewControl;
 
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
@@ -759,7 +756,6 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     );
   }
   public ngAfterViewInit(): void {
-    this.AgmStreetView.position = "LEFT_TOP";
 
     // this.setIndicators();
     // console.log("Default Marker in map= ", this.DefaultMarker)

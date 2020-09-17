@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MarkerInfo } from '../../models/marker-info.model';
-import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager } from '@agm/core';
+import { GoogleMapsAPIWrapper, AgmInfoWindow, InfoWindowManager, AgmMap, AgmStreetViewControl } from '@agm/core';
 import { MapMarker } from '../../models/map-marker.model';
 import { MapConversions } from '../../utils/conversions';
 import { FormControl } from '@angular/forms';
@@ -367,6 +367,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('mapJourneyDisplay')
   public MapJourneyDisplay: ElementRef;
 
+  @ViewChild('agmStreetView')
+  public AgmStreetView: AgmStreetViewControl;
+
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
     // console.log("journey upon entry: ", journey);
@@ -713,6 +716,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       display: 'Copy Journey',
       action: 'copy'
     },]
+    
   }
 
   public ngOnInit(): void {
@@ -755,6 +759,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     );
   }
   public ngAfterViewInit(): void {
+    this.AgmStreetView.position = "LEFT_TOP";
+
     // this.setIndicators();
     // console.log("Default Marker in map= ", this.DefaultMarker)
     if (!this.DefaultMarker) {
@@ -835,6 +841,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.markerInfoSubscription.unsubscribe();
     }
     this.forcePanToSubscription.unsubscribe();
+  }
+
+  public onMapReady(map?: google.maps.Map ){
+  
+    if(map)
+    map.setOptions({
+      streetViewControl: false,
+      zoomControl: false,
+      fullscreenControl: false
+    });
   }
 
   /**

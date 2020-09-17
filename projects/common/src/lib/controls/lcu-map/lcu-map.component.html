@@ -136,12 +136,20 @@
 
   <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
-    <agm-map [minZoom]="3" class="map" 
+    <agm-map  class="map" #map
+      #agmStreetView
       [ngClass]="BelongsToJourney === true ? 'belongsToJourney' : 'basicInfoWindow'" 
+      [minZoom]="3"
+      [mapTypeId]="CurrentMapViewType"  
+      [latitude]="CurrentLatitude"
+      [longitude]="CurrentLongitude" 
+      [title]="'Journey'" 
+      [zoom]="CurrentZoom"
+
       (mapReady)="OnMapReady($event)"
-      [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude"
-      [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
-      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)">
+      (mapDblClick)="OnMapDoubleClicked($event)" 
+      (mapClick)="OnChoseLocation($event)"
+      (mapReady)="onMapReady($event)">
     <!-- <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
       [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
       [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"

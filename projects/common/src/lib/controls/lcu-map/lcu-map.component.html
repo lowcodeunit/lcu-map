@@ -136,10 +136,20 @@
 
   <!-- the map (boundsChange)="BoundsChange($event)"-->
   <div class="agm-map-container">
-    <agm-map [minZoom]="3" class="map" (mapReady)="OnMapReady($event)"
-      [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude"
-      [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
-      (mapDblClick)="OnMapDoubleClicked($event)" (mapClick)="OnChoseLocation($event)">
+    <agm-map  class="map" #map
+      #agmStreetView
+      [ngClass]="BelongsToJourney === true ? 'belongsToJourney' : 'basicInfoWindow'" 
+      [minZoom]="3"
+      [mapTypeId]="CurrentMapViewType"  
+      [latitude]="CurrentLatitude"
+      [longitude]="CurrentLongitude" 
+      [title]="'Journey'" 
+      [zoom]="CurrentZoom"
+
+      (mapReady)="OnMapReady($event)"
+      (mapDblClick)="OnMapDoubleClicked($event)" 
+      (mapClick)="OnChoseLocation($event)"
+      (mapReady)="onMapReady($event)">
     <!-- <agm-map [minZoom]="3" class="map" [streetViewControl]="false" (mapReady)="OnMapReady($event)"
       [mapTypeId]="CurrentMapViewType" #map [latitude]="CurrentLatitude" [zoomControl]="true"
       [zoomControlOptions]="ZoomOptions" [longitude]="CurrentLongitude" [title]="'Journey'" [zoom]="CurrentZoom"
@@ -148,7 +158,7 @@
         
       <ng-container *ngIf="ActivityLocationList.length > 0">
         <div id="markers" *ngFor="let marker of ActivityLocationList">
-          <agm-marker *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"
+          <agm-marker class="AgmMarker" *ngIf="marker.locationData" [latitude]="marker.locationData.Latitude"
             [longitude]="marker.locationData.Longitude" [title]="marker.Title" [iconUrl]="marker.LocationObject"
             (markerClick)="OnMarkerClicked(amblInfoWindow, marker)">
 

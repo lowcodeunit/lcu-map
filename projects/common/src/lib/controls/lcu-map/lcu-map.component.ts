@@ -1393,7 +1393,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
         this.JourneyCopied.emit({
           journey: new ItineraryModel({
-            ID: null,
+            ID: "00000000-0000-0000-0000-000000000000",
             Title: `${this._displayedJourney.Title} (copy)`,
             ActivityGroups: this._displayedJourney.ActivityGroups,
             CreatedDateTime: undefined,
@@ -1601,7 +1601,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       Activities: [
         this.getNewActivity('Beginning of day', 'hotel'),
         this.getNewActivity('End of day', 'hotel')
@@ -1612,7 +1612,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected getNewActivity(title?: string, widgetIcon?: string) {
     return new ActivityModel({
       Title: `${title ? title : 'New Location'}`,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       LocationID: null,
       Notes: '',
       TransportIcon: '',
@@ -1627,7 +1627,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       Activities: [
         this.getNewActivity('Good morning', 'hotel'),
         this.getNewActivity('Breakfast', 'restaurant'),
@@ -1649,7 +1649,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Title: 'Options',
       GroupType: 'extras',
       Checked: false,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       Activities: [this.getNewActivity()]
     };
     return object;

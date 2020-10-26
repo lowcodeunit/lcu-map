@@ -304,7 +304,7 @@ mat-option {
     top: 40px;
     z-index: 1;
     width: 270px;
-    max-height: calc(100% - 165px);
+    max-height: calc(100% - 55px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -342,3 +342,13 @@ mat-option {
         cursor: text;
     }
 }
+
+
+.basicInfoWindow ::ng-deep .gm-style .gm-style-iw-t::after{
+    background: white !important;
+  }
+
+.belongsToJourney ::ng-deep .gm-style .gm-style-iw-t::after{
+    background: $toolbar-background-color !important;
+}
+ 

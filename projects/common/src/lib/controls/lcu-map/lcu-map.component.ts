@@ -557,6 +557,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public set OpenPanels(arr) {
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = arr;
+      // console.log("open panels input at lcu map = ", this._openPanels);
     }
   }
   public get OpenPanels() {
@@ -712,6 +713,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       display: 'Copy Journey',
       action: 'copy'
     },]
+    
   }
 
   public ngOnInit(): void {
@@ -754,6 +756,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     );
   }
   public ngAfterViewInit(): void {
+
     // this.setIndicators();
     // console.log("Default Marker in map= ", this.DefaultMarker)
     if (!this.DefaultMarker) {
@@ -834,6 +837,16 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       this.markerInfoSubscription.unsubscribe();
     }
     this.forcePanToSubscription.unsubscribe();
+  }
+
+  public onMapReady(map?: google.maps.Map ){
+  
+    if(map)
+    map.setOptions({
+      streetViewControl: false,
+      zoomControl: false,
+      fullscreenControl: false
+    });
   }
 
   /**
@@ -933,7 +946,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
 
   public UpdateExcludedCurationsList(event: string) {
-    console.log('emitting: ', event);
+    // console.log('emitting: ', event);
     this.UpdateExcludedCurations.emit(event);
   }
   /**
@@ -1130,6 +1143,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public addIconClicked(event: ActivityModel) {
     // console.log("Adding event: ", event)
+    this.BelongsToJourney = true;
     event.locationData.IconImageObject = { scaledSize: { width: 30, height: 30 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
@@ -1297,7 +1311,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * called when the share icon in the toolbar is clicked
    */
   public ShareClicked() {
-    console.log('Want to share ', this.DisplayedJourney);
+    // console.log('Want to share ', this.DisplayedJourney);
     this.JourneyShared.emit(this.DisplayedJourney);
   }
 
@@ -1332,17 +1346,22 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     if (action === 'day') {
       newGroup = this.getFullDayActivityGroup(dayCount);
       // console.log('open panels b4', this.OpenPanels);
-
       this._displayedJourney.ActivityGroups.push(newGroup);
+      this._openPanels.push(this._displayedJourney.ActivityGroups.length -1);
+      // console.log("Open panels now after adding day:", this._openPanels);
+      this.OnPanelOpenStateChanged(this.OpenPanels);
+      this.changeDetector.detectChanges();
       this.assignOrder();
       this.updateItinerary('add day');
-    } else if (action === 'extras') {
+    } 
+    else if (action === 'extras') {
       newGroup = this.getExtrasActivityGroup();
       newGroup.Title = this.getValidOptionsTitle();
       this._displayedJourney.ActivityGroups.push(newGroup);
       this.assignOrder();
       this.updateItinerary('add extras');
-    } else if (action === 'copy') { // if copying shared itinerary...
+    } 
+    else if (action === 'copy') { // if copying shared itinerary...
       if (this._displayedJourney.Shared) {
         const itinToCopy = this._displayedJourney;
         itinToCopy.ID = null;
@@ -1374,7 +1393,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
         this.JourneyCopied.emit({
           journey: new ItineraryModel({
-            ID: null,
+            ID: "00000000-0000-0000-0000-000000000000",
             Title: `${this._displayedJourney.Title} (copy)`,
             ActivityGroups: this._displayedJourney.ActivityGroups,
             CreatedDateTime: undefined,
@@ -1543,7 +1562,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public OnPanelOpenStateChanged(event) {
+    // console.log("emitting from lcu map", event);
     this.CurrentPanelOpenState.emit(event);
+
   }
 
   protected updateItinerary(typeChange: string) {
@@ -1580,7 +1601,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       Activities: [
         this.getNewActivity('Beginning of day', 'hotel'),
         this.getNewActivity('End of day', 'hotel')
@@ -1591,7 +1612,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected getNewActivity(title?: string, widgetIcon?: string) {
     return new ActivityModel({
       Title: `${title ? title : 'New Location'}`,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       LocationID: null,
       Notes: '',
       TransportIcon: '',
@@ -1606,7 +1627,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       Activities: [
         this.getNewActivity('Good morning', 'hotel'),
         this.getNewActivity('Breakfast', 'restaurant'),
@@ -1628,7 +1649,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Title: 'Options',
       GroupType: 'extras',
       Checked: false,
-      ID: null,
+      ID: "00000000-0000-0000-0000-000000000000",
       Activities: [this.getNewActivity()]
     };
     return object;

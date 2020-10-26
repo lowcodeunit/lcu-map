@@ -67,16 +67,20 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   @Input('open-panel-indexes')
-  public set OpenPanels(arr) {
-    if (Array.isArray(arr) && arr.length > 0) {
-      this._openPanels = [...new Set(arr)];
-    } else {
-      this._openPanels = [0];
-    }
-  }
-  public get OpenPanels() {
-    return this._openPanels;
-  }
+  // public set OpenPanels(arr) {
+    public OpenPanels: Array<any>;
+    // console.log("open panels input at map journey ", arr)
+    // if (Array.isArray(arr) && arr.length > 0) {
+    //   this._openPanels = [...new Set(arr)];
+    //   console.log("setting Open Panles to ", this._openPanels)
+    // } else {
+    //   console.log("setting open panels to 0")
+    //   this._openPanels = [0];
+    // }
+  // }
+  // public get OpenPanels() {
+  //   return this._openPanels;
+  // }
 
   /**
    * Determines whether or not to display the up arrow on the menu
@@ -146,7 +150,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.ScrollEvent) {
       this.CheckBounds();
     }
-    console.log("open panels map journey: ", this.OpenPanels)
+    // console.log("open panels map journey on changes: ", this.OpenPanels)
   }
 
   public CheckBounds() {
@@ -204,6 +208,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
    * Runs when a user clicks the tile to open a panel
    */
   public PanelOpened(activityGroup: any, idx: number) {
+    // console.log("panel opened getting called: ", activityGroup, " ", idx)
     let duplicate = false;
     this.DisplayedActivityGroups.forEach(ag => {
       if (ag.ID === activityGroup.ID) {
@@ -212,6 +217,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     });
     if (!duplicate) {
       this.DisplayedActivityGroups.push(activityGroup);
+      activityGroup.PanelOpenState = true;
       this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
     }
 
@@ -231,11 +237,14 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
    * Runs when a user clicks the tile to close a panel
    */
   public PanelClosed(activityGroup: any, idx: number) {
+    // console.log("panel closed getting called: ", activityGroup, " ", idx)
+
     this.DisplayedActivityGroups.forEach(ag => {
       if (ag.ID === activityGroup.ID) {
         this.DisplayedActivityGroups.splice(this.DisplayedActivityGroups.indexOf(ag), 1);
       }
     });
+    activityGroup.PanelOpenState = false;
     this.ActivityGroupsChanged.emit(this.DisplayedActivityGroups);
     this.OpenPanels.splice(this.OpenPanels.indexOf(idx), 1);
     this.CheckBounds();
@@ -308,6 +317,7 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
    * Emits the current state of which panels are open
    */
   protected emitPanelOpenState() {
+    // console.log("emitting panel open from map journey: ", this.OpenPanels)
     this.CurrentPanelOpenState.emit(this.OpenPanels);
   }
 

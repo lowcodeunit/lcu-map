@@ -62,10 +62,22 @@
       <mat-icon class="open-journey-title-chevron" (click)="ShowJourneyLegend = false"
         *ngIf="ShowJourneyLegend && !EditingJourneyTitle">
         chevron_right</mat-icon>
-      <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}" (click)="EditJourneyTitle()"
-        [fxShow]="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
-      <input class="map-journey-title-edit-input" [fxShow]="EditingJourneyTitle" type="text"
-        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" id="JourneyTitleInput" #journeyTitleEdit value="{{DisplayedJourney?.Title}}" />
+      <span 
+        class="map-journey-title" 
+        matTooltip="{{DisplayedJourney?.Title}}" 
+        (click)="EditJourneyTitle()"
+        [fxShow]="!EditingJourneyTitle">
+        {{ DisplayedJourney?.Title | uppercase }}
+      </span>
+      <input 
+        class="map-journey-title-edit-input" 
+        [fxShow]="EditingJourneyTitle" 
+        type="text"
+        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" 
+        id="JourneyTitleInput" 
+        #journeyTitleEdit 
+        (click)="journeyTitleEdit.select()"
+        value="{{DisplayedJourney?.Title}}" />
       <mat-icon class="close-journey-title-chevron" (click)="ShowJourneyLegend = true"
         *ngIf="!ShowJourneyLegend && !EditingJourneyTitle">
         chevron_left</mat-icon>

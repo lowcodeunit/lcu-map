@@ -367,6 +367,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('mapJourneyDisplay')
   public MapJourneyDisplay: ElementRef;
 
+  @ViewChild('journeyTitleEdit') JourneyTitleEdit: ElementRef;
+
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
     // console.log("journey upon entry: ", journey);
@@ -1320,6 +1322,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public EditJourneyTitle() {
     this.EditingJourneyTitle = true;
+
+    setTimeout(() => {
+      this.JourneyTitleEdit.nativeElement.select();
+    }, 0);
   }
 
   /**

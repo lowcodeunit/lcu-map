@@ -9,6 +9,14 @@ p, span, a, div, button {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+@mixin activity-display-base(){
+    padding: 0px 10px;
+    height: 35px;
+    box-shadow: 0px 0px 1px black;
+    cursor: pointer;
+    display: flex !important;
+    background-color: $primary_dark;
+}
 
 .map-journey-menu {
     height: 40px;
@@ -47,7 +55,7 @@ p, span, a, div, button {
 }
 
 ::ng-deep .mat-expansion-panel-body {
-    // background-color: $primary_dark;
+    background-color: $primary_dark;
     padding: 0 !important;
     color: white;
 }
@@ -71,14 +79,15 @@ p, span, a, div, button {
 
 
 .activity-display {
-    padding: 0px 10px;
-    height: 35px;
-    box-shadow: 0px 0px 1px black;
-    cursor: pointer;
-    display: flex !important;
+    @include activity-display-base(); 
+
     &:hover {
         background-color: $primary_medium;
     }
+}
+
+.activity-display-icon-hover{
+   @include activity-display-base(); 
 }
 
 

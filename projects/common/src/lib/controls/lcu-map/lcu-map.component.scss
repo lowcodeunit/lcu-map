@@ -346,9 +346,13 @@ mat-option {
 
 .basicInfoWindow ::ng-deep .gm-style .gm-style-iw-t::after{
     background: white !important;
+    border-left: 2px solid $primary_dark;
+    border-bottom: 2px solid $primary_dark;
   }
 
 .belongsToJourney ::ng-deep .gm-style .gm-style-iw-t::after{
     background: $toolbar-background-color !important;
+    border-left: 2px solid $primary_dark;
+    border-bottom: 2px solid $primary_dark;
 }
  

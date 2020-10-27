@@ -54,22 +54,38 @@
     <!-- END GROUP DRAG PREVIEW -->
 
     <!-- JOURNEY ACTIVITIES -->
-    <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
-      class="activity-display" (click)="onActivityClickToNavigate(activity)"
-      [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID)}">
+    <div cdkDrag 
+      *ngFor="let activity of activityGroup.Activities" 
+      fxLayout="row" 
+      fxLayoutGap="10px"
+      fxLayoutAlign="space-between center"
+      class='activity-display' 
+      (click)="onActivityClickToNavigate(activity)"
+      [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID),
+      'activity-display': !IconHoverState,
+      'activity-display-icon-hover': IconHoverState}">
       <span>
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
+      
       <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
-      <div *ngIf="activity.locationData" class="activity-display-location">
+
+      <div 
+        *ngIf="activity.locationData" 
+        class="activity-display-location"
+        fxLayout="column">
         <span class="activity-location-title">{{ activity.locationData.Title }}</span>
-        <br />
         <span class="activity-location-address">
-          <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
-            {{ activity.locationData.Country }}</span>
+          <span>
+            {{ activity.locationData.Town }}, 
+            {{ activity.locationData.State }},
+            {{ activity.locationData.Country }} 
+          </span>
         </span>
       </div>
-      <div>
+      <div class="icon-container"
+      (mouseenter)="IconHover(true)"
+      (mouseleave)="IconHover(false)" >
         <span *ngIf="OpenPanels.includes(idx)" class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
           [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
@@ -83,8 +99,8 @@
           <span>
             <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
           </span>
-          <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
-          <div *ngIf="activity.locationData" class="activity-display-location">
+          <span class="activity-display-title">{{ activity.Title }}</span>
+          <div  class="activity-display-location">
             <span class="activity-location-title">{{ activity.locationData.Title }}</span>
             <br />
             <span class="activity-location-address">

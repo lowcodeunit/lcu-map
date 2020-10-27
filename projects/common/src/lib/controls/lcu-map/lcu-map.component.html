@@ -4,45 +4,74 @@
   </mat-toolbar>
   <!-- <hr> -->
 
-  <div class="icon-list" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center"
+  <div 
+    class="icon-list" 
+    fxLayout="row" 
+    fxLayout.lt-sm="column" 
+    fxLayoutAlign="center center"
     fxLayoutAlign.lt-sm="end center">
 
-    <div class="bottom-icon-set" fxLayoutAlign="center center" fxLayoutAlign.lt-sm="end center">
+    <div 
+      class="bottom-icon-set" 
+      fxLayoutAlign="center center" 
+      fxLayoutAlign.lt-sm="end center">
       <!-- *ngIf="DisplaySearchOptions" -->
       <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons search-bar-element" (click)="ShowLocationSearchBarClicked()">search</mat-icon>
-      </div>
-
-      <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons" (click)="ShowAddMenu()">add</mat-icon>
-        <mat-list *ngIf="ShowNewOptions" class="new-options-menu">
-          <mat-list-item *ngFor="let option of NewOptions" (click)="NewOptionClicked(option.action)">
-            {{option.display}}
-          </mat-list-item>
-        </mat-list>
-      </div>
-
-      <div class="center-buttons mat-icon-divs">
-        <mat-icon class="center-buttons layer-element material-icons-outlined" (click)="ShowLayers()">layers
+        <mat-icon 
+          class="center-buttons search-bar-element" 
+          (click)="ShowLocationSearchBarClicked()">
+          search
         </mat-icon>
-        <!-- the menu for the map layers button -->
-        <div id="layer-menu" *ngIf="ShowLayersDropdown">
-          <mat-radio-group [(ngModel)]="CurrentMapViewType">
-            <mat-radio-button class="layer-radio-button" (click)="$event.stopPropagation()"
-              *ngFor="let view of MapViewTypes" [value]="view.value">
-              {{view.display}}</mat-radio-button>
-          </mat-radio-group>
-          <!-- CURATED and USERS LAYERS HERE -->
-          <!-- <mat-divider></mat-divider> -->
-          <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
-            matTooltip="The markers on your main map... Add markers to this map to be saved."
-            matTooltipPosition="before">
-            {{_currentMapModel.Title}} (Primary)</mat-checkbox> -->
-          <!-- <mat-divider></mat-divider> -->
-          <!-- <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
-            (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox> -->
+      </div>
+
+      <div 
+        class="center-buttons mat-icon-divs">
+        <mat-icon 
+          class="center-buttons" 
+          (click)="ShowAddMenu()">
+          add
+        </mat-icon>
+        <div fxLayoutAlign="center" *ngIf="ShowNewOptions"><!--center dropdown under icon-->
+          <mat-list class="new-options-menu">
+            <mat-list-item *ngFor="let option of NewOptions" (click)="NewOptionClicked(option.action)">
+              {{option.display}}
+            </mat-list-item>
+          </mat-list>
         </div>
       </div>
+
+      <div 
+        fxFlexLayout="center"
+        class="center-buttons mat-icon-divs">
+        <mat-icon 
+          class="center-buttons layer-element material-icons-outlined" 
+          (click)="ShowLayers()">
+          layers
+        </mat-icon>
+        <!-- the menu for the map layers button -->
+        <div 
+          fxLayoutAlign="center" 
+          style="background-color: rgb(30, 210, 60);" 
+          *ngIf="ShowLayersDropdown">
+          <div id="layer-menu"> <!--center dropdown under icon-->
+            <mat-radio-group [(ngModel)]="CurrentMapViewType">
+              <mat-radio-button class="layer-radio-button" (click)="$event.stopPropagation()"
+                *ngFor="let view of MapViewTypes" [value]="view.value">
+                {{view.display}}
+              </mat-radio-button>
+            </mat-radio-group>
+            <!-- CURATED and USERS LAYERS HERE -->
+            <!-- <mat-divider></mat-divider> -->
+            <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="LayerClicked($event)" [checked]="PrimaryChecked"
+              matTooltip="The markers on your main map... Add markers to this map to be saved."
+              matTooltipPosition="before">
+              {{_currentMapModel.Title}} (Primary)</mat-checkbox> -->
+            <!-- <mat-divider></mat-divider> -->
+            <!-- <mat-checkbox *ngFor="let layer of _userLayers" [checked]="_selectedUserLayers.includes(layer.ID)"
+              (click)="$event.stopPropagation()" (change)="LayerClicked($event, layer)">{{ layer.Title }}</mat-checkbox> -->
+          </div>
+        </div>
+    </div>
       <div class="center-buttons mat-icon-divs">
         <mat-icon class="center-buttons" (click)="ShareClicked()">share</mat-icon>
       </div>
@@ -62,10 +91,22 @@
       <mat-icon class="open-journey-title-chevron" (click)="ShowJourneyLegend = false"
         *ngIf="ShowJourneyLegend && !EditingJourneyTitle">
         chevron_right</mat-icon>
-      <span class="map-journey-title" matTooltip="{{DisplayedJourney?.Title}}" (click)="EditJourneyTitle()"
-        [fxShow]="!EditingJourneyTitle">{{ DisplayedJourney?.Title | uppercase }}</span>
-      <input class="map-journey-title-edit-input" [fxShow]="EditingJourneyTitle" type="text"
-        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" id="JourneyTitleInput" #journeyTitleEdit value="{{DisplayedJourney?.Title}}" />
+      <span 
+        class="map-journey-title" 
+        matTooltip="{{DisplayedJourney?.Title}}" 
+        (click)="EditJourneyTitle()"
+        [fxShow]="!EditingJourneyTitle">
+        {{ DisplayedJourney?.Title | uppercase }}
+      </span>
+      <input 
+        class="map-journey-title-edit-input" 
+        [fxShow]="EditingJourneyTitle" 
+        type="text"
+        (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" 
+        id="JourneyTitleInput" 
+        #journeyTitleEdit 
+        (click)="journeyTitleEdit.select()"
+        value="{{DisplayedJourney?.Title}}" />
       <mat-icon class="close-journey-title-chevron" (click)="ShowJourneyLegend = true"
         *ngIf="!ShowJourneyLegend && !EditingJourneyTitle">
         chevron_left</mat-icon>

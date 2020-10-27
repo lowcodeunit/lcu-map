@@ -114,6 +114,11 @@ mat-icon {
     background-color: transparent;
 }
 
+/* helps to center icons in parent container*/
+mat-icon {
+    width: auto;
+}
+
 mat-icon, .mat-icon-divs {
     cursor: pointer;
     padding-left: 5%; //75px

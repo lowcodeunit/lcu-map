@@ -4,6 +4,12 @@ p, span, a, div, button {
     @include montserrat_bold;
 }
 
+@mixin text-overflow() {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
@@ -70,19 +76,9 @@ p, span, a, div, button {
     box-shadow: 0px 0px 1px black;
     cursor: pointer;
     display: flex !important;
-    background-color: $primary_dark;
-    &:hover{
+    &:hover {
         background-color: $primary_medium;
     }
-     
-}
-.activity-display-icon-hover{
-    padding: 0px 10px;
-    height: 35px;
-    box-shadow: 0px 0px 1px black;
-    cursor: pointer;
-    display: flex !important;
-    background-color: $primary_dark;
 }
 
 
@@ -92,17 +88,20 @@ p, span, a, div, button {
 .activity-display-location {
     width: 75%;
     line-height: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include text-overflow();
 }
 .activity-location-title {
     font-size: 9pt;
+    margin-right: 20px;
+    @include text-overflow();
 }
 .activity-location-address {
     font-size: 6pt;
     font-weight: 100;
+    margin-right: 20px;
+    @include text-overflow();
 }
+
 .star {
     background: url('../../../../../common/assets/star_sprites.png') 0 0;
     background-size: 60px;

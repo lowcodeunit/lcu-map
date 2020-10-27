@@ -6,6 +6,7 @@ $info-window-height: 170px;
   border-radius: 0 !important;
   padding: 0 !important;
   width: 250px;
+  box-shadow: none;
 
   .gm-style-iw-d {
     overflow: hidden !important;
@@ -29,6 +30,7 @@ $info-window-height: 170px;
   @include montserrat_bold;
   color: white;
   border-radius: 2px;
+  border: 2px solid $primary_dark;
   height: $info-window-height;
   
 
@@ -114,6 +116,11 @@ $info-window-height: 170px;
 }
 
 .inverse-color-scheme {
+  color: $primary_dark !important;
+  background-color: white !important;
+  border: 2px solid $primary_dark;
+}
+.inverse-color-scheme-icons {
   color: $primary_dark !important;
   background-color: white !important;
 }

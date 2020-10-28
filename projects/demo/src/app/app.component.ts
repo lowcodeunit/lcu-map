@@ -269,7 +269,6 @@ export class AppComponent implements OnInit {
         Deletable: false,
         GoogleLocationName: "Jardigrams Jardigrams Wabbajack Wabbajack",
         ID: "012ff50f-55eb-433f-bddb-e81dc56ef502",
-        Icon: "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
         Instagram: "",
         IsHidden: false,
         Latitude: 40.993355,
@@ -283,7 +282,8 @@ export class AppComponent implements OnInit {
         Title: "Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack",
         Town: "Brighton",
         Website: "http://www.yardagrams.com/",
-        ZipCode: "80602"
+        ZipCode: "80602",
+        Icon: "golf_course"
       },
       {
         Accolades: null,
@@ -357,7 +357,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morningz",
               TransportIcon: "",
-              WidgetIcon: "restaurant"
+              WidgetIcon: "location_on"
             },
             {
               Checked: false,
@@ -391,7 +391,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "beach_access"
             },
           ],
           'Checked': true,
@@ -423,7 +423,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "golf_course"
             },
             {
               Checked: true,
@@ -440,7 +440,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "local_bar"
             },
             {
               Checked: true,
@@ -457,7 +457,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "local_cafe"
             },
             {
               Checked: true,
@@ -474,7 +474,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "local_see"
             },
             {
               Checked: true,
@@ -491,7 +491,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "location_on"
             },
             {
               Checked: true,
@@ -508,7 +508,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "music_note"
             },
             {
               Checked: true,
@@ -525,7 +525,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "palette"
             },
             {
               Checked: true,
@@ -542,7 +542,7 @@ export class AppComponent implements OnInit {
               PartitionKey: "Activity|G",
               Title: "Good morning",
               TransportIcon: "",
-              WidgetIcon: "hotel"
+              WidgetIcon: "terrain"
             },
             {
               Checked: false,

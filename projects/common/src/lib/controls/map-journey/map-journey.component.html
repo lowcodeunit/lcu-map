@@ -20,13 +20,16 @@
   
   <!-- JOURNEY ACTIVITY GROUPS -->
   <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; index as idx"
-    [expanded]="OpenPanels.includes(idx)"
+    cdkDropList
+    id="{{activityGroup.Title}}"  
     (opened)="PanelOpened(activityGroup, idx)"
-    (closed)="PanelClosed(activityGroup, idx)" cdkDropList
-    id="{{activityGroup.Title}}" [cdkDropListData]="activityGroup.Activities" [cdkDropListConnectedTo]="DropListArray"
+    (closed)="PanelClosed(activityGroup, idx)" 
+    [expanded]="OpenPanels.includes(idx)"
+    [cdkDropListData]="activityGroup.Activities" 
+    [cdkDropListConnectedTo]="DropListArray"
     (cdkDropListDropped)="DropActivity($event)">
     <mat-expansion-panel-header>
-      <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-panel-title fxLayout="row" fxLayoutAlign="space-between start">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
         <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
         <div class="group-title">{{ activityGroup.Title | uppercase }}</div>
@@ -54,7 +57,8 @@
     <!-- END GROUP DRAG PREVIEW -->
 
     <!-- JOURNEY ACTIVITIES -->
-    <div cdkDrag 
+    <div 
+      cdkDrag 
       *ngFor="let activity of activityGroup.Activities" 
       fxLayout="row" 
       fxLayoutGap="10px"
@@ -63,15 +67,12 @@
       (click)="onActivityClickToNavigate(activity)"
       [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID),
       'activity-display': !IconHoverState,
-      'activity-display-icon-hover': IconHoverState,
-      'selected-activity': activity.Checked}">
-      <span class="widget-icon">
+      'activity-display-icon-hover': IconHoverState}">
+      <span fxFlex="10" class="widget-icon">
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
-      
       <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
-
-      <div 
+      <div fxFlex
         *ngIf="activity.locationData" 
         class="activity-display-location"
         fxLayout="column">
@@ -84,7 +85,12 @@
           </span>
         </span>
       </div>
-      <div class="icon-container"
+      <div 
+        class="icon-container"
+        fxFlex="18"
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        fxLayoutGap="10px"
       (mouseenter)="IconHover(true)"
       (mouseleave)="IconHover(false)" >
         <span *ngIf="OpenPanels.includes(idx)" 

@@ -48,7 +48,7 @@ $info-window-height: 170px;
   }
 
   .container-top {
-    padding: 8px 12px;
+    padding: 8px 12px 8px 5px;
 
     .location-star-info {
       
@@ -60,7 +60,7 @@ $info-window-height: 170px;
     .location-data-name-address {
       width: 50%;
       position: absolute;
-      right: 73px;
+      right: 90px;
 
       .location-data-name {
         display: block;
@@ -87,14 +87,14 @@ $info-window-height: 170px;
   .container-bottom {
 
     .location-media-buttons-section {
-      padding: 0 12px;
+      padding: 0px 0px 0px 5px;
       mat-icon{
         font-size: 17px;
       }
 
       a {
         text-decoration: none;
-        color: white;
+        color: $primary_light;
       }
     }
 
@@ -108,7 +108,7 @@ $info-window-height: 170px;
     }
 
     .add-button-section {
-      width: 64%;
+      width: 75%;
       height: 100px;
       position: relative;
      
@@ -129,12 +129,12 @@ $info-window-height: 170px;
 
 .inverse-color-scheme {
   color: $primary_dark !important;
-  background-color: white !important;
+  background-color: $primary_light !important;
   border: 2px solid $primary_dark;
 }
 .inverse-color-scheme-icons {
   color: $primary_dark !important;
-  background-color: white !important;
+  background-color: $primary_light !important;
 }
 
 // .inverse-color-scheme ::ng-deep .gm-style .gm-style-iw-t::after{
@@ -142,7 +142,7 @@ $info-window-height: 170px;
 // }
 
 .disabled-icon{
-  color: $primary-medium;
+  color: $primary_medium;
 }
 #icon-placeholder{
   width: 48px;

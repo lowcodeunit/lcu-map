@@ -3,7 +3,8 @@
   <div fxLayout="row" fxLayoutAlign="space-between center" class="container-top" *ngIf="!IsSelectingIcon">
     <div class="activity-widget-icon">
       <mat-icon *ngIf="BelongsToJourney" class="icon-selection" (click)="ShowWidgetIconSelection()">{{ marker?.WidgetIcon }}</mat-icon>
-      <mat-icon *ngIf="!BelongsToJourney" >{{ marker?.WidgetIcon }}</mat-icon>
+      <!-- <mat-icon *ngIf="!BelongsToJourney" >{{ marker?.WidgetIcon }}</mat-icon> -->
+      <img *ngIf="!BelongsToJourney" src="./assets/amblon_marker_gradient.png" alt="ambl_on_marker" width="13" height="17">
 
     </div>
     <div class="location-data-name-address">

@@ -353,7 +353,7 @@ mat-option {
 
 
 .basicInfoWindow ::ng-deep .gm-style .gm-style-iw-t::after{
-    background: white !important;
+    background: $primary_light !important;
     border-left: 2px solid $primary_dark;
     border-bottom: 2px solid $primary_dark;
   }

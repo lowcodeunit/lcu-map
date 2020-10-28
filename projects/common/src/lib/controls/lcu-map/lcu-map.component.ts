@@ -1779,7 +1779,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         results.address_components[regionIndices.countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
-      IconImageObject: { scaledSize: { width: 30, height: 30 }, url: './assets/ambl_marker.png' }
+      IconImageObject: { scaledSize: { width: 13, height: 17 }, url: './assets/amblon_marker_gradient.png' }
     });
     this.ShowSearchedLocation(tempActivity);
 

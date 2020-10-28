@@ -32,7 +32,7 @@
       <mat-panel-title fxLayout="row" fxLayoutAlign="space-between start">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
         <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
-        <div>{{ activityGroup.Title | uppercase }}</div>
+        <div class="group-title">{{ activityGroup.Title | uppercase }}</div>
         <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
           (click)="$event.stopPropagation();">
         </mat-checkbox>
@@ -67,8 +67,14 @@
       (click)="onActivityClickToNavigate(activity)"
       [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID),
       'activity-display': !IconHoverState,
+<<<<<<< HEAD
       'activity-display-icon-hover': IconHoverState}">
       <span fxFlex="10">
+=======
+      'activity-display-icon-hover': IconHoverState,
+      'selected-activity': activity.Checked}">
+      <span class="widget-icon">
+>>>>>>> integration
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
       <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
@@ -85,6 +91,7 @@
           </span>
         </span>
       </div>
+<<<<<<< HEAD
 
 
 
@@ -108,13 +115,26 @@
           (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();">
         </mat-checkbox>
+=======
+      <div class="icon-container"
+      (mouseenter)="IconHover(true)"
+      (mouseleave)="IconHover(false)" >
+        <span *ngIf="OpenPanels.includes(idx)" 
+        class="star" 
+        (click)="onFavoritedClick(activity); $event.stopPropagation()"
+        [ngClass]="{'star-favorited' : activity.Favorited, 
+                    'star-normal': !activity.Favorited,
+                    'star-inverted': activity.Checked}"></span>
+        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
+          (click)="$event.stopPropagation();"></mat-checkbox>
+>>>>>>> integration
       </div>
 
 
       <!-- ACTIVITY DRAG PREVIEW BEGIN -->
       <div *cdkDragPreview>
         <div class="activity-display-drag-preview" fxLayout="row" fxLayoutAlign="space-between center">
-          <span>
+          <span class="widget-icon">
             <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
           </span>
           <span class="activity-display-title">{{ activity.Title }}</span>

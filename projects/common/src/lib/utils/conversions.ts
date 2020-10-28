@@ -18,7 +18,7 @@ export class MapConversions {
     if (!markerSet || markerSet.length === 0) {
       return;
     }
-    const markerObject: IconImageObject = new IconImageObject('', { width: 40, height: 40 } );
+    const markerObject: IconImageObject = new IconImageObject('', { width: 17, height: 17 } );
     // markerObject.url = '';
     // markerObject.scaledSize = { width: 40, height: 40 };
     markerSet.forEach(marker => {

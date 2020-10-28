@@ -67,14 +67,8 @@
       (click)="onActivityClickToNavigate(activity)"
       [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID),
       'activity-display': !IconHoverState,
-<<<<<<< HEAD
       'activity-display-icon-hover': IconHoverState}">
-      <span fxFlex="10">
-=======
-      'activity-display-icon-hover': IconHoverState,
-      'selected-activity': activity.Checked}">
-      <span class="widget-icon">
->>>>>>> integration
+      <span fxFlex="10" class="widget-icon">
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
       <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
@@ -91,32 +85,12 @@
           </span>
         </span>
       </div>
-<<<<<<< HEAD
-
-
-
-
       <div 
-        style="background-color: burlywood;"
+        class="icon-container"
         fxFlex="18"
         fxLayout="row"
         fxLayoutAlign="end center"
         fxLayoutGap="10px"
-        class="icon-container" 
-        (mouseenter)="IconHover(true)"
-        (mouseleave)="IconHover(false)" >
-        <span *ngIf="OpenPanels.includes(idx)" 
-              class="star" 
-              (click)="onFavoritedClick(activity); $event.stopPropagation()"
-              [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'">
-        </span>
-        <mat-checkbox 
-          [checked]="activity.Checked" 
-          (change)="OnActivityCheckChange($event, activity);"
-          (click)="$event.stopPropagation();">
-        </mat-checkbox>
-=======
-      <div class="icon-container"
       (mouseenter)="IconHover(true)"
       (mouseleave)="IconHover(false)" >
         <span *ngIf="OpenPanels.includes(idx)" 
@@ -127,7 +101,6 @@
                     'star-inverted': activity.Checked}"></span>
         <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();"></mat-checkbox>
->>>>>>> integration
       </div>
 
 

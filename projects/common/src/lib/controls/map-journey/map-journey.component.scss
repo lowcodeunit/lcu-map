@@ -81,6 +81,7 @@ p, span, a, div, button {
 }
 ::ng-deep.mat-checkbox-checkmark-path {
     stroke: $primary_dark !important;
+    stroke-width: 4px !important;
 }
 .mat-expansion-panel-spacing {
     margin: 0;

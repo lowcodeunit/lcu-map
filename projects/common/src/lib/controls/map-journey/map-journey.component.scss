@@ -15,14 +15,13 @@ p, span, a, div, button {
     box-shadow: 0px 0px 1px black;
     cursor: pointer;
     display: flex !important;
-    background-color: $primary_dark;
 }
 
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
     position: fixed;
-    width: 252px;
+    width: 269px;
     z-index: 10;
 
     mat-icon {
@@ -40,15 +39,21 @@ p, span, a, div, button {
     color: $primary_dark;
 }
 
+.group-title{
+    color: $primary_dark;
+}
+
 .mat-expansion-panel {
     background-color: $accent_light;
     border-radius: 0;
+    // width: 266px;
 }
 
 .mat-expansion-panel-header {
     padding: 0;
     margin-right: -5px;
     height: 35px !important;
+    width: 275px;
     background-color: $accent_light;
     color: $primary_dark;
     border-radius: 0 !important;
@@ -80,6 +85,8 @@ p, span, a, div, button {
 
 .activity-display {
     @include activity-display-base(); 
+    background-color: $primary_dark;
+
 
     &:hover {
         background-color: $primary_medium;
@@ -88,6 +95,20 @@ p, span, a, div, button {
 
 .activity-display-icon-hover{
    @include activity-display-base(); 
+   background-color: $primary_dark;
+
+}
+.selected-activity{
+    @include activity-display-base(); 
+    background-color: $primary_light;
+    color: $primary_dark;
+    border:1px solid $primary_dark;
+
+}
+.widget-icon{
+    mat-icon{
+        font-size: 17px;
+    }
 }
 
 
@@ -166,7 +187,7 @@ p, span, a, div, button {
 mat-accordion {
     display: inline-block;
     // margin-top: 60px;
-    width: 249px;
+    width: 269px;
 }
 
 .more-indicator {
@@ -178,11 +199,8 @@ mat-accordion {
     top: 80px;
     z-index: 10;
     background-color: white;
-    width: 252px;
+    width: 267px;
     text-align: center;
     height: 20px;
 }
 
-.more-below-indicator {
-
-}

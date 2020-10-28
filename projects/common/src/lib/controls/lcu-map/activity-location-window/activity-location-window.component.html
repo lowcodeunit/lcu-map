@@ -2,7 +2,9 @@
 
   <div fxLayout="row" fxLayoutAlign="space-between center" class="container-top" *ngIf="!IsSelectingIcon">
     <div class="activity-widget-icon">
-      <mat-icon (click)="ShowWidgetIconSelection()">{{ marker?.WidgetIcon }}</mat-icon>
+      <mat-icon *ngIf="BelongsToJourney" class="icon-selection" (click)="ShowWidgetIconSelection()">{{ marker?.WidgetIcon }}</mat-icon>
+      <mat-icon *ngIf="!BelongsToJourney" >{{ marker?.WidgetIcon }}</mat-icon>
+
     </div>
     <div class="location-data-name-address">
       <span class="location-data-name">{{ marker?.locationData?.Title }}</span>

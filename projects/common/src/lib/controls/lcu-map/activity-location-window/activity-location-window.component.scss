@@ -24,7 +24,11 @@ $info-window-height: 170px;
   max-height: $info-window-height !important;
   height: $info-window-height !important;
 }
-
+.activity-widget-icon{
+  mat-icon{
+    font-size: 17px;
+  }
+}
 .location-info-container {
   background-color: $primary_dark;
   @include montserrat_bold;
@@ -39,6 +43,7 @@ $info-window-height: 170px;
     
     mat-icon {
       width: 22px;
+      font-size:17px;
     }
   }
 
@@ -75,10 +80,17 @@ $info-window-height: 170px;
     }
   }
 
+  .icon-selection{
+    cursor: pointer;
+  }
+
   .container-bottom {
 
     .location-media-buttons-section {
       padding: 0 12px;
+      mat-icon{
+        font-size: 17px;
+      }
 
       a {
         text-decoration: none;

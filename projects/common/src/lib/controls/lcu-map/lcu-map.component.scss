@@ -5,7 +5,7 @@ $icon-offset-top-margin: 11px;
 $search-bar-offset-top: 30px;
 $toolbar-background-color:  #877d96; //#877d96 
 // $hr-border-height: 4px;
-$toolbar-hover-color: #FF9753;
+$toolbar-hover-color: $primary_medium;
 
 mat-icon {
     font-size: 30px;
@@ -69,7 +69,10 @@ mat-icon {
         mat-icon {
             color: white;
             position: absolute;
-            top: 5px;
+            font-size: 40px;
+            &:hover{
+                color: $primary_medium;
+            }
         }
 
          @media(min-width:600px){
@@ -286,7 +289,7 @@ mat-option {
 }
 
 .map-journey-title {
-    width: 75%;
+    width: 65%;
     text-align: center;
     position: absolute;
     left: 0;
@@ -308,9 +311,9 @@ mat-option {
     right: -19px;
     top: 40px;
     z-index: 1;
-    width: 270px;
+    width: 288px;
     max-height: calc(100% - 55px);
-    overflow-y: scroll;
+    // overflow-y: scroll;
     overflow-x: hidden;
 }
 
@@ -335,7 +338,7 @@ mat-option {
     z-index: 200;
     position: fixed;
     right: 0;
-    width: 251px;
+    width: 269px;
     background-color: white;
     color: $primary_dark;
     text-align: center;

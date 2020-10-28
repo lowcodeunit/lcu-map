@@ -378,7 +378,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
-        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
+        act.LocationObject = { scaledSize: { height: 17, width: 17 }, url: `./assets/${act.WidgetIcon}.png` };
         // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
         this.ActivityLocationList.push(act);
       });
@@ -1146,7 +1146,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public addIconClicked(event: ActivityModel) {
     // console.log("Adding event: ", event)
     this.BelongsToJourney = true;
-    event.locationData.IconImageObject = { scaledSize: { width: 30, height: 30 }, url: './assets/location_on.png' };
+    event.locationData.IconImageObject = { scaledSize: { width: 17, height: 17 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });

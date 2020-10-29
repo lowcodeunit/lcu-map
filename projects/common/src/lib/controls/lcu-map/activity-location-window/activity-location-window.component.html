@@ -7,7 +7,7 @@
       <img *ngIf="!BelongsToJourney" src="./assets/amblon_marker_gradient.png" alt="ambl_on_marker" width="13" height="17">
 
     </div>
-    <div class="location-data-name-address">
+    <div class="location-data-name-address" [ngClass]="{'location-data-name-address-inverse': !BelongsToJourney}">
       <span class="location-data-name">{{ marker?.locationData?.Title }}</span>
       <span class="location-data-address-line1">{{ marker?.locationData?.Address }}</span>
       <!-- <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.State }}, {{ marker?.locationData?.Country }}</span> -->

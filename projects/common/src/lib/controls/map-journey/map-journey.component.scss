@@ -67,7 +67,7 @@ p, span, a, div, button {
 
 ::ng-deep.mat-checkbox-background {
     background-color: white;
-    border: 1.5px solid $primary_dark;
+    border: 1px solid $primary_dark;
     
     // padding-top: 10px !important;
     // margin-top: 10px !important;
@@ -91,7 +91,6 @@ p, span, a, div, button {
 .activity-display {
     @include activity-display-base(); 
     background-color: $primary_dark;
-
 
     &:hover {
         background-color: $primary_medium;
@@ -187,6 +186,11 @@ p, span, a, div, button {
 
 ::ng-deep .mat-checkbox-inner-container:hover .mat-checkbox-checkmark {
     background-color: $primary_medium;
+}
+
+::ng-deep .mat-checkbox-inner-container {
+    width: 13px !important;
+    height: 13px !important;
 }
 
 mat-accordion {

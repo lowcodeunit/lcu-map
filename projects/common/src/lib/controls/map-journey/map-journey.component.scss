@@ -105,8 +105,8 @@ p, span, a, div, button {
 }
 .selected-activity{
     @include activity-display-base(); 
-    background-color: $primary_light;
-    color: $primary_dark;
+    background-color: $primary_light !important;
+    color: $primary_dark !important;
     border:1px solid $primary_dark;
 
 }

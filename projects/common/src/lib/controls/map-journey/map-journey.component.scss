@@ -4,11 +4,25 @@ p, span, a, div, button {
     @include montserrat_bold;
 }
 
+@mixin text-overflow() {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+@mixin activity-display-base(){
+    padding: 0px 10px;
+    height: 35px;
+    box-shadow: 0px 0px 1px black;
+    cursor: pointer;
+    display: flex !important;
+    width: 264px;
+}
+
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
     position: fixed;
-    width: 252px;
+    width: 264px;
     z-index: 10;
 
     mat-icon {
@@ -26,18 +40,28 @@ p, span, a, div, button {
     color: $primary_dark;
 }
 
+.group-title{
+    color: $primary_dark;
+}
+
 .mat-expansion-panel {
     background-color: $accent_light;
     border-radius: 0;
+    // width: 266px;
 }
 
 .mat-expansion-panel-header {
     padding: 0;
     margin-right: -5px;
     height: 35px !important;
+    width: 270px;
     background-color: $accent_light;
     color: $primary_dark;
     border-radius: 0 !important;
+}
+
+.mat-expansion-panel-header-checked{
+    background-color: $primary_medium !important;
 }
 
 ::ng-deep .mat-expansion-panel-body {
@@ -48,8 +72,9 @@ p, span, a, div, button {
 
 ::ng-deep.mat-checkbox-background {
     background-color: white;
-    border: 1.5px solid $primary_dark;
+    border: 1px solid $primary_dark;
 }
+
 ::ng-deep.mat-checkbox-ripple {
     display: none;
 }
@@ -58,18 +83,43 @@ p, span, a, div, button {
 }
 ::ng-deep.mat-checkbox-checkmark-path {
     stroke: $primary_dark !important;
+    stroke-width: 4px !important;
 }
 .mat-expansion-panel-spacing {
     margin: 0;
 }
 
+
 .activity-display {
-    padding: 0px 10px;
-    height: 35px;
-    box-shadow: 0px 0px 1px black;
-    cursor: pointer;
-    display: flex !important;
+    @include activity-display-base(); 
+    background-color: $primary_dark;
+
+    &:hover {
+        background-color: $primary_medium;
+    }
 }
+
+.activity-display-icon-hover{
+   @include activity-display-base(); 
+   background-color: $primary_dark;
+
+}
+.selected-activity{
+    @include activity-display-base(); 
+    background-color: $primary_light !important;
+    color: $primary_dark !important;
+    border:1px solid $primary_dark;
+    &:hover{
+        background-color: $primary_medium !important;
+    }
+
+}
+.widget-icon{
+    mat-icon{
+        font-size: 17px;
+    }
+}
+
 
 .activity-display-title {
     width: 65%;
@@ -77,26 +127,29 @@ p, span, a, div, button {
 .activity-display-location {
     width: 75%;
     line-height: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include text-overflow();
 }
 .activity-location-title {
     font-size: 9pt;
+    // margin-right: 25px;
+    @include text-overflow();
 }
 .activity-location-address {
     font-size: 6pt;
     font-weight: 100;
+    margin-right: 20px;
+    @include text-overflow();
 }
+
 .star {
     background: url('../../../../../common/assets/star_sprites.png') 0 0;
     background-size: 60px;
     background-repeat: no-repeat;
     width: 15px;
     height: 15px;
-    position: absolute;
-    right: 36px;
-    margin-top: 2px;
+    // position: absolute;
+    // right: 36px;
+    // margin-top: 2px;
 }
 .star-normal {
     background-position-x: -45px;
@@ -140,10 +193,15 @@ p, span, a, div, button {
     background-color: $primary_medium;
 }
 
+::ng-deep .mat-checkbox-inner-container {
+    width: 13px !important;
+    height: 13px !important;
+}
+
 mat-accordion {
     display: inline-block;
     // margin-top: 60px;
-    width: 249px;
+    width: 269px;
 }
 
 .more-indicator {
@@ -155,11 +213,8 @@ mat-accordion {
     top: 80px;
     z-index: 10;
     background-color: white;
-    width: 252px;
+    width: 265px;
     text-align: center;
     height: 20px;
 }
 
-.more-below-indicator {
-
-}

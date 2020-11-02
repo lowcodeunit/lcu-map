@@ -367,16 +367,29 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @ViewChild('mapJourneyDisplay')
   public MapJourneyDisplay: ElementRef;
 
+  @ViewChild('journeyTitleEdit') JourneyTitleEdit: ElementRef;
+
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
-    // console.log("journey upon entry: ", journey);
+    console.log("journey upon entry: ", journey);
     this.ActivityLocationList = new Array<ActivityModel>();
 
     if (!journey) { return; }
     this._displayedJourney = journey;
     this._displayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
-        act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `./assets/${act.WidgetIcon}.png` };
+        if( act.WidgetIcon === 'local_see'){
+          act.LocationObject = { scaledSize: { width: 20, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
+        }
+        else if(act.WidgetIcon === 'hotel' || act.WidgetIcon === 'terrain' ){
+          act.LocationObject = { scaledSize: { width: 24, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
+        }
+        else if(act.WidgetIcon === 'golf_course' || act.WidgetIcon === 'location_on'|| act.WidgetIcon === 'music_note'|| act.WidgetIcon === 'restaurant'){
+          act.LocationObject = { scaledSize: { width: 17, height: 20 }, url: `./assets/${act.WidgetIcon}.png` };
+        }
+        else{
+          act.LocationObject = { scaledSize: { width: 17, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
+        }
         // act.LocationObject = { scaledSize: { height: 30, width: 30 }, url: `../../../../assets/${act.WidgetIcon}.png` };
         this.ActivityLocationList.push(act);
       });
@@ -1144,7 +1157,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public addIconClicked(event: ActivityModel) {
     // console.log("Adding event: ", event)
     this.BelongsToJourney = true;
-    event.locationData.IconImageObject = { scaledSize: { width: 30, height: 30 }, url: './assets/location_on.png' };
+    event.locationData.IconImageObject = { scaledSize: { width: 17, height: 22 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });
@@ -1320,6 +1333,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public EditJourneyTitle() {
     this.EditingJourneyTitle = true;
+
+    setTimeout(() => {
+      this.JourneyTitleEdit.nativeElement.select();
+    }, 0);
   }
 
   /**
@@ -1762,7 +1779,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         results.address_components[regionIndices.countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
-      IconImageObject: { scaledSize: { width: 30, height: 30 }, url: './assets/ambl_marker.png' }
+      IconImageObject: { scaledSize: { width: 13, height: 17 }, url: './assets/amblon_marker_gradient.png' }
     });
     this.ShowSearchedLocation(tempActivity);
 

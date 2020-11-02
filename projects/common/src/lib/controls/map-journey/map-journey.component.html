@@ -20,17 +20,23 @@
   
   <!-- JOURNEY ACTIVITY GROUPS -->
   <mat-expansion-panel cdkDrag hideToggle *ngFor="let activityGroup of Journey?.ActivityGroups; index as idx"
-    [expanded]="OpenPanels.includes(idx)"
+    cdkDropList
+    id="{{activityGroup.Title}}"  
     (opened)="PanelOpened(activityGroup, idx)"
-    (closed)="PanelClosed(activityGroup, idx)" cdkDropList
-    id="{{activityGroup.Title}}" [cdkDropListData]="activityGroup.Activities" [cdkDropListConnectedTo]="DropListArray"
+    (closed)="PanelClosed(activityGroup, idx)" 
+    [expanded]="OpenPanels.includes(idx)"
+    [cdkDropListData]="activityGroup.Activities" 
+    [cdkDropListConnectedTo]="DropListArray"
     (cdkDropListDropped)="DropActivity($event)">
-    <mat-expansion-panel-header>
-      <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-expansion-panel-header
+    [ngClass]="{'mat-expansion-panel-header-checked': activityGroup.Checked}"    >
+      <mat-panel-title fxLayout="row" fxLayoutAlign="space-between start">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
         <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
-        <div>{{ activityGroup.Title | uppercase }}</div>
-        <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
+        <div class="group-title">{{ activityGroup.Title | uppercase }}</div>
+        <mat-checkbox 
+          [checked]="activityGroup.Checked" 
+          (change)="OnAGCheckChange($event, activityGroup)"
           (click)="$event.stopPropagation();">
         </mat-checkbox>
       </mat-panel-title>
@@ -44,7 +50,9 @@
             <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
             <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
             <div>{{ activityGroup.Title | uppercase }}</div>
-            <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
+            <mat-checkbox 
+              [checked]="activityGroup.Checked" 
+              (change)="OnAGCheckChange($event, activityGroup)"
               (click)="$event.stopPropagation();">
             </mat-checkbox>
           </mat-panel-title>
@@ -54,50 +62,96 @@
     <!-- END GROUP DRAG PREVIEW -->
 
     <!-- JOURNEY ACTIVITIES -->
-    <div cdkDrag *ngFor="let activity of activityGroup.Activities" fxLayout="row" fxLayoutAlign="space-between center"
-      class="activity-display" (click)="onActivityClickToNavigate(activity)"
-      [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID)}">
-      <span>
+    <div 
+      cdkDrag 
+      *ngFor="let activity of activityGroup.Activities" 
+      fxLayout="row" 
+      fxLayoutGap="10px"
+      fxLayoutAlign="space-between center"
+      class='activity-display' 
+      (click)="onActivityClickToNavigate(activity)"
+      [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID),
+      'activity-display': !IconHoverState,
+      'activity-display-icon-hover': IconHoverState,
+      'selected-activity': activity.Checked}">
+      <span fxFlex="10" class="widget-icon">
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
       <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
-      <div *ngIf="activity.locationData" class="activity-display-location">
+      <div fxFlex
+        *ngIf="activity.locationData" 
+        class="activity-display-location"
+        fxLayout="column"
+        matTooltip="{{activity.Title}}"
+        >
         <span class="activity-location-title">{{ activity.locationData.Title }}</span>
-        <br />
         <span class="activity-location-address">
-          <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
-            {{ activity.locationData.Country }}</span>
+          <span>
+            {{ activity.locationData.Town }}, 
+            {{ activity.locationData.State }},
+            {{ activity.locationData.Country }} 
+          </span>
         </span>
       </div>
-      <div>
-        <span *ngIf="OpenPanels.includes(idx)" class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
-          [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
-        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
+      <div 
+        class="icon-container"
+        fxFlex="18"
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        fxLayoutGap="10px"
+      (mouseenter)="IconHover(true)"
+      (mouseleave)="IconHover(false)" >
+        <span *ngIf="OpenPanels.includes(idx)" 
+        class="star" 
+        (click)="onFavoritedClick(activity); $event.stopPropagation()"
+        [ngClass]="{'star-favorited' : activity.Favorited, 
+                    'star-normal': !activity.Favorited,
+                    'star-inverted': activity.Checked}"></span>
+        <mat-checkbox 
+          [checked]="activity.Checked" 
+          (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();"></mat-checkbox>
       </div>
 
 
       <!-- ACTIVITY DRAG PREVIEW BEGIN -->
       <div *cdkDragPreview>
-        <div class="activity-display-drag-preview" fxLayout="row" fxLayoutAlign="space-between center">
-          <span>
+        <div class="activity-display-drag-preview" 
+            [ngClass]="{'selected-activity': activity.Checked}"
+            fxLayout="row" 
+            fxLayoutAlign="space-between center">
+          <span class="widget-icon">
             <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
           </span>
-          <span *ngIf="!activity.locationData" class="activity-display-title">{{ activity.Title }}</span>
-          <div *ngIf="activity.locationData" class="activity-display-location">
-            <span class="activity-location-title">{{ activity.locationData.Title }}</span>
-            <br />
-            <span class="activity-location-address">
-              <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
-                {{ activity.locationData.Country }}</span>
-            </span>
-          </div>
-          <div>
-            <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
-              [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
-            <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
-              (click)="$event.stopPropagation();"></mat-checkbox>
-          </div>
+          <!-- <span class="activity-display-title">{{ activity.Title }}</span> -->
+          <div fxFlex
+        *ngIf="activity.locationData" 
+        class="activity-display-location"
+        fxLayout="column">
+        <span class="activity-location-title">{{ activity.locationData.Title }}</span>
+        <span class="activity-location-address">
+          <span>
+            {{ activity.locationData.Town }}, 
+            {{ activity.locationData.State }},
+            {{ activity.locationData.Country }} 
+          </span>
+        </span>
+      </div>
+      <div 
+      class="icon-container"
+      fxFlex="18"
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutGap="10px"
+     >
+      <span *ngIf="OpenPanels.includes(idx)" 
+      class="star" 
+      
+      [ngClass]="{'star-favorited' : activity.Favorited, 
+                  'star-normal': !activity.Favorited,
+                  'star-inverted': activity.Checked}"></span>
+      <mat-checkbox [checked]="activity.Checked"></mat-checkbox>
+    </div>
         </div>
       </div>
       <!-- ACTIVITY DRAG PREVIEW END -->

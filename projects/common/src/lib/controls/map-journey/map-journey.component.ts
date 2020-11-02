@@ -33,6 +33,8 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
   public DropListArray: Array<string> = [];
   public PanToLocation: { lat: number, lng: number, zoom: number };
   public DisplayedActivityGroups: Array<ActivityGroupModel>;
+  public IconHoverState:boolean = false;
+  public ActivityHoverId: string;
 
   @Input('clicked-activity')
   public set ClickedActivity(activity: any) {
@@ -153,6 +155,19 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     // console.log("open panels map journey on changes: ", this.OpenPanels)
   }
 
+  public IconHover(hover: boolean){
+  //   if(hover === true){
+  //     this.ActivityHoverId = activity.ID;
+  // }
+  // else{
+  //   this.ActivityHoverId = null;
+  // }
+  this.IconHoverState = hover;
+  // console.log("activity: ", activity, "Hover state = ", hover);
+
+
+  }
+
   public CheckBounds() {
 
     if (this.MatAccordion) {
@@ -166,8 +181,12 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  public OnAGCheckChange(event, ag) {
+  public OnAGCheckChange(event, ag: ActivityGroupModel) {
     ag.Checked = event.checked;
+    ag.Activities.forEach(act=>{
+      act.Checked = event.checked;
+    })
+
     this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey, { group: ag });
   }
 

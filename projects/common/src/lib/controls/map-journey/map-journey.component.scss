@@ -65,6 +65,11 @@ p, span, a, div, button {
     color: white;
 }
 
+::ng-deep .mat-checkbox-inner-container {
+    width: 13px !important;
+    height: 13px !important;
+}
+
 ::ng-deep.mat-checkbox-background {
     background-color: white;
     border: 1.5px solid $primary_dark;
@@ -137,6 +142,10 @@ p, span, a, div, button {
     @include text-overflow();
 }
 
+.icon-container {
+    // background-color: salmon;
+}
+
 .star {
     background: url('../../../../../common/assets/star_sprites.png') 0 0;
     background-size: 60px;
@@ -145,7 +154,7 @@ p, span, a, div, button {
     height: 15px;
     // position: absolute;
     // right: 36px;
-    // margin-top: 2px;
+    margin-top: 2px;
 }
 .star-normal {
     background-position-x: -45px;

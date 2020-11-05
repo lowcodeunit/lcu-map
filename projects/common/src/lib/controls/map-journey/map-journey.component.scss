@@ -15,13 +15,14 @@ p, span, a, div, button {
     box-shadow: 0px 0px 1px black;
     cursor: pointer;
     display: flex !important;
+    width: 264px;
 }
 
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
     position: fixed;
-    width: 269px;
+    width: 264px;
     z-index: 10;
 
     mat-icon {
@@ -53,10 +54,14 @@ p, span, a, div, button {
     padding: 0;
     margin-right: -5px;
     height: 35px !important;
-    width: 275px;
+    width: 270px;
     background-color: $accent_light;
     color: $primary_dark;
     border-radius: 0 !important;
+}
+
+.mat-expansion-panel-header-checked{
+    background-color: $primary_medium !important;
 }
 
 ::ng-deep .mat-expansion-panel-body {
@@ -65,12 +70,14 @@ p, span, a, div, button {
     color: white;
 }
 
+::ng-deep .mat-checkbox-inner-container {
+    width: 13px !important;
+    height: 13px !important;
+}
+
 ::ng-deep.mat-checkbox-background {
     background-color: white;
     border: 1px solid $primary_dark;
-    
-    // padding-top: 10px !important;
-    // margin-top: 10px !important;
 }
 
 ::ng-deep.mat-checkbox-ripple {
@@ -107,6 +114,9 @@ p, span, a, div, button {
     background-color: $primary_light !important;
     color: $primary_dark !important;
     border:1px solid $primary_dark;
+    &:hover{
+        background-color: $primary_medium !important;
+    }
 
 }
 .widget-icon{
@@ -136,6 +146,10 @@ p, span, a, div, button {
     @include text-overflow();
 }
 
+.icon-container {
+    // background-color: salmon;
+}
+
 .star {
     background: url('../../../../../common/assets/star_sprites.png') 0 0;
     background-size: 60px;
@@ -144,7 +158,7 @@ p, span, a, div, button {
     height: 15px;
     // position: absolute;
     // right: 36px;
-    // margin-top: 2px;
+    margin-top: 2px;
 }
 .star-normal {
     background-position-x: -45px;
@@ -208,7 +222,7 @@ mat-accordion {
     top: 80px;
     z-index: 10;
     background-color: white;
-    width: 267px;
+    width: 265px;
     text-align: center;
     height: 20px;
 }

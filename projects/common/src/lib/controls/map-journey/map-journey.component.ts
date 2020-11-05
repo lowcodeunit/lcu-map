@@ -181,8 +181,12 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  public OnAGCheckChange(event, ag) {
+  public OnAGCheckChange(event, ag: ActivityGroupModel) {
     ag.Checked = event.checked;
+    ag.Activities.forEach(act=>{
+      act.Checked = event.checked;
+    })
+
     this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey, { group: ag });
   }
 

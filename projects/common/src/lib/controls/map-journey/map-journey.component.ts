@@ -156,15 +156,9 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   public IconHover(hover: boolean){
-  //   if(hover === true){
-  //     this.ActivityHoverId = activity.ID;
-  // }
-  // else{
-  //   this.ActivityHoverId = null;
-  // }
+  
   this.IconHoverState = hover;
-  // console.log("activity: ", activity, "Hover state = ", hover);
-
+  console.log("ICON HOSTATE: ", this.IconHoverState);
 
   }
 

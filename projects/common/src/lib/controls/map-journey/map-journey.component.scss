@@ -18,6 +18,15 @@ p, span, a, div, button {
     width: 264px;
 }
 
+@mixin star-sprite() {
+    background: url('../../../../../common/assets/star_sprites.png') 0 0;
+    background-size: 60px;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    margin-top: 2px;
+}
+
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
@@ -106,17 +115,25 @@ p, span, a, div, button {
 
 .activity-display-icon-hover{
    @include activity-display-base(); 
-   background-color: $primary_dark;
+   background-color: $primary_dark !important;
 
 }
 .selected-activity{
     @include activity-display-base(); 
-    background-color: $primary_light !important;
+    background-color: white !important;
     color: $primary_dark !important;
     border:1px solid $primary_dark;
     &:hover{
         background-color: $primary_medium !important;
     }
+
+}
+
+.selected-activity-icon-hover{
+    @include activity-display-base(); 
+    background-color: white !important;
+    color: $primary_dark !important;
+    border:1px solid $primary_dark;
 
 }
 .widget-icon{
@@ -136,6 +153,7 @@ p, span, a, div, button {
 }
 .activity-location-title {
     font-size: 9pt;
+    height: 13px;
     // margin-right: 25px;
     @include text-overflow();
 }
@@ -147,36 +165,48 @@ p, span, a, div, button {
 }
 
 .icon-container {
-    // background-color: salmon;
+    height: 100%;
 }
 
-.star {
-    background: url('../../../../../common/assets/star_sprites.png') 0 0;
-    background-size: 60px;
-    background-repeat: no-repeat;
-    width: 15px;
-    height: 15px;
-    // position: absolute;
-    // right: 36px;
-    margin-top: 2px;
-}
+
+// .star-inverted-hover{
+//     background: url('../../../../../common/assets/selectedHoverStar.png') 0 0;
+//     background-size: 60px;
+//     background-repeat: no-repeat;
+//     width: 15px;
+//     height: 15px;
+//     // position: absolute;
+//     // right: 36px;
+//     margin-top: 2px;
+// }
+
 .star-normal {
+    @include star-sprite();
     background-position-x: -45px;
 
     &:hover {
         background-position-x: -30px;
     }
 }
+
+.star-favorited {
+    @include star-sprite();
+    background-position-x: -15px !important;
+}
+
 .star-inverted {
+    @include star-sprite();
     background-position-x: 0;
 
     &:hover {
-        background-position-x: -45px;
+    background-image: url('../../../../../common/assets/selectedHoverStar.png') !important;
+    background-size: 15px;
+    background-position: 0%;
+    width: 15px;
+    height: 15px;
+    margin-top: 1px !important;
     }
 
-}
-.star-favorited {
-    background-position-x: -15px !important;
 }
 
 .active-activity {

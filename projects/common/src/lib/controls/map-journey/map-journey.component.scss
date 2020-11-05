@@ -168,18 +168,6 @@ p, span, a, div, button {
     height: 100%;
 }
 
-
-// .star-inverted-hover{
-//     background: url('../../../../../common/assets/selectedHoverStar.png') 0 0;
-//     background-size: 60px;
-//     background-repeat: no-repeat;
-//     width: 15px;
-//     height: 15px;
-//     // position: absolute;
-//     // right: 36px;
-//     margin-top: 2px;
-// }
-
 .star-normal {
     @include star-sprite();
     background-position-x: -45px;

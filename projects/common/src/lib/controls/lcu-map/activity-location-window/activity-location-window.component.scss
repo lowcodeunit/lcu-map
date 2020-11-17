@@ -59,19 +59,24 @@ $info-window-height: 170px;
     }
 
     .location-data-name-address {
-      width: 50%;
+      width: 65%;
       position: absolute;
-      right: 90px;
+      right: 52px;
 
       .location-data-name {
         display: block;
         font-size: 8pt;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        // white-space: nowrap;
+        // overflow: hidden;
+        width:155px;
+        // text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: unset;
+        margin-top: 9px;
       }
       .location-data-address-line1 {
         display: block;
+        width:155px;
         font-size: 6pt;
       }
       .location-data-address-line2 {
@@ -105,6 +110,7 @@ $info-window-height: 170px;
       textarea {
         width: 90%;
         border-radius: 2px;
+        margin-top:7px;
       }
     }
 
@@ -130,12 +136,12 @@ $info-window-height: 170px;
 
 .inverse-color-scheme {
   color: $primary_dark !important;
-  background-color: $primary_light !important;
+  background-color: white !important;
   border: 2px solid $primary_dark;
 }
 .inverse-color-scheme-icons {
   color: $primary_dark !important;
-  background-color: $primary_light !important;
+  background-color: white !important;
 }
 
 // .inverse-color-scheme ::ng-deep .gm-style .gm-style-iw-t::after{
@@ -150,7 +156,7 @@ $info-window-height: 170px;
   height: 24px;
 }
 .location-data-name-address-inverse{
-  margin-top: 9px;
+  // margin-top: 9px;
 }
 
 .star {

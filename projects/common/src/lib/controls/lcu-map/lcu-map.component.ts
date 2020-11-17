@@ -384,8 +384,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         else if(act.WidgetIcon === 'hotel' || act.WidgetIcon === 'terrain' ){
           act.LocationObject = { scaledSize: { width: 24, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
         }
-        else if(act.WidgetIcon === 'golf_course' || act.WidgetIcon === 'location_on'|| act.WidgetIcon === 'music_note'|| act.WidgetIcon === 'restaurant'){
+        else if(act.WidgetIcon === 'golf_course' || act.WidgetIcon === 'music_note'|| act.WidgetIcon === 'restaurant'){
           act.LocationObject = { scaledSize: { width: 17, height: 20 }, url: `./assets/${act.WidgetIcon}.png` };
+        }
+        else if(act.WidgetIcon === 'location_on'){
+          act.LocationObject = { scaledSize: { width: 17, height: 23 }, url: `./assets/${act.WidgetIcon}.png` };
         }
         else{
           act.LocationObject = { scaledSize: { width: 17, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
@@ -1157,7 +1160,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public addIconClicked(event: ActivityModel) {
     // console.log("Adding event: ", event)
     this.BelongsToJourney = true;
-    event.locationData.IconImageObject = { scaledSize: { width: 17, height: 22 }, url: './assets/location_on.png' };
+    event.locationData.IconImageObject = { scaledSize: { width: 17, height: 23 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });

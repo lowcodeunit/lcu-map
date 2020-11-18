@@ -318,6 +318,7 @@ mat-option {
 }
 
 .map-journey-title-edit-input {
+    border-radius: 5px;
     width: 95%;
     text-align: center;
     position: absolute;
@@ -332,6 +333,14 @@ mat-option {
     background-color: white;
     border: none;
     font-size: 12pt;
+    height: 25px;
+    &::selection {
+        background-color: $primary_dark;
+        color: white;
+    }
+    &:focus {
+        outline: none;
+    }
 }
 
 .more-below-indicator {

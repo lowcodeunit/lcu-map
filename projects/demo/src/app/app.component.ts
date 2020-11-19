@@ -279,12 +279,13 @@ export class AppComponent implements OnInit {
         PartitionKey: "40-105",
         State: "Colorado",
         Telephone: "123-123-1233",
-        Title: "Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack Wabbajack",
+        Title: "Wabbajack Wabbajack",
         Town: "Brighton",
         Website: "http://www.yardagrams.com/",
         ZipCode: "80602",
         Icon: "golf_course"
       },
+      
       {
         Accolades: null,
         Address: "East 163rd Court",
@@ -292,7 +293,7 @@ export class AppComponent implements OnInit {
         Created: null,
         Deletable: false,
         GoogleLocationName: "Yardagrams",
-        ID: "012ff50f-55eb-433f-bddb-e81dc56ef503",
+        ID: "012ff50f-55eb-433f-bddb-e81dc56ef501",
         Icon: "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
         Instagram: "",
         IsHidden: false,
@@ -301,7 +302,7 @@ export class AppComponent implements OnInit {
         Longitude: -104.85542,
         Lookup: "39.993355|-104.85542",
         Modified: null,
-        PartitionKey: "40-105",
+        PartitionKey: "40-109",
         State: "Colorado",
         Telephone: "",
         Title: "Yardagrams2",

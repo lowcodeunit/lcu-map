@@ -1773,7 +1773,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Longitude: this.normalizeLatitudeAndLongitude(results, false),
       Telephone: results.international_phone_number,
       Website: results.website,
-      Address: results.formatted_address,
+      ZipCode: results.address_components[regionIndices.zipcode] ?
+        results.address_components[regionIndices.zipcode].long_name : '',
+      Address: results.address_components[regionIndices.streetNumber] ?
+      ` ${results.address_components[regionIndices.streetNumber].long_name}` : '',
       Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
         results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
       State: results.address_components[regionIndices.stateIndex] ?
@@ -1784,6 +1787,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Type: results.types,
       IconImageObject: { scaledSize: { width: 13, height: 17 }, url: './assets/amblon_marker_gradient.png' }
     });
+    tempActivity.locationData.Address += results.address_components[regionIndices.streetName] ?
+    ` ${results.address_components[regionIndices.streetName].short_name}` : '';
+
     this.ShowSearchedLocation(tempActivity);
 
     // Maybe TODO: Make the call to the API and then put the time out here,
@@ -1815,14 +1821,20 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     const regionIndices = {
       twnCtyTwnshpIndex: -1,
       stateIndex: -1,
-      countryIndex: -1
+      countryIndex: -1,
+      zipcode: -1,
+      streetNumber: -1,
+      streetName: -1
     };
     const typeValues = {
       town: 'locality',
       township: 'administrative_area_level_3',
       county: 'administrative_area_level_2',
       state: 'administrative_area_level_1',
-      country: 'country'
+      country: 'country',
+      zipcode: 'postal_code',
+      streetNumber: 'street_number',
+      streetName: 'route'
     };
     googleResults.address_components.forEach((comp, idx) => {
       if (comp.types.length > 0) {
@@ -1840,6 +1852,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }
         if (comp.types.includes(typeValues.country)) {
           regionIndices.countryIndex = idx;
+        }
+        if (comp.types.includes(typeValues.zipcode)) {
+          regionIndices.zipcode = idx;
+        }
+        if (comp.types.includes(typeValues.streetNumber)) {
+          regionIndices.streetNumber = idx;
+        }
+        if (comp.types.includes(typeValues.streetName)) {
+          regionIndices.streetName = idx;
         }
       }
     });

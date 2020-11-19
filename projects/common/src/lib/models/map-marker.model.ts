@@ -47,6 +47,11 @@ export class MapMarker {
     public Town?: string;
 
     /**
+     * Optional zipcode associated with location
+     */
+    public ZipCode?: string;
+
+    /**
      * Optional state associated with location
      */
     public State?: string;
@@ -154,6 +159,7 @@ export class MapMarker {
         this.IconUrl = icon.IconUrl;
         this.OrderIndex = icon.OrderIndex;
         this.Address = icon.Address;
+        this.ZipCode = icon.ZipCode;
         this.Reservations = icon.Reservations;
         this.Menu = icon.Menu;
         this.Awards = icon.Awards;

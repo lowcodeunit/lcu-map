@@ -1,6 +1,10 @@
 @import '../../../../../assets/styles/ambl_on-styles';
 
-$info-window-height: 170px;
+$info-window-height: 190px; //170px
+// @mixin info-window {
+//   height: auto;
+//   min-height: $info-window-height;
+// }
 
 ::ng-deep .gm-style .gm-style-iw-c {
   border-radius: 0 !important;
@@ -32,11 +36,16 @@ $info-window-height: 170px;
 }
 .location-info-container {
   background-color: $primary_dark;
+  // @include info-window();
   @include montserrat_bold;
   color: white;
   border-radius: 2px;
   border: 2px solid $primary_dark;
-  height: $info-window-height;
+  // height: auto;
+  min-height: $info-window-height;
+  
+  
+  // padding-top:10px;
   
 
   .widget-icon-set {
@@ -50,6 +59,8 @@ $info-window-height: 170px;
 
   .container-top {
     padding: 8px 12px 8px 5px;
+    height:auto;
+    min-height:50px;
 
     .location-star-info {
       
@@ -62,6 +73,8 @@ $info-window-height: 170px;
       width: 65%;
       position: absolute;
       right: 52px;
+      height:auto;
+      min-height:50px;
 
       .location-data-name {
         display: block;
@@ -72,7 +85,7 @@ $info-window-height: 170px;
         // text-overflow: ellipsis;
         word-wrap: break-word;
         white-space: unset;
-        margin-top: 9px;
+        margin-top: 20px; //9px
       }
       .location-data-address-line1 {
         display: block;
@@ -80,6 +93,10 @@ $info-window-height: 170px;
         font-size: 6pt;
       }
       .location-data-address-line2 {
+        display: block;
+        font-size: 6pt;
+      }
+      .location-data-address-line3{
         display: block;
         font-size: 6pt;
       }
@@ -110,7 +127,7 @@ $info-window-height: 170px;
       textarea {
         width: 90%;
         border-radius: 2px;
-        margin-top:7px;
+        margin-top:20px;
       }
     }
 

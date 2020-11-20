@@ -220,7 +220,10 @@
         [latitude]="SelectedLocation.locationData.Latitude" [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
 
-          <lcu-activity-location-window [marker]="SelectedLocation" [belongs-to-journey]="false"
+          <lcu-activity-location-window 
+            [marker]="SelectedLocation" 
+            [belongs-to-journey]="false"
+            (user-chose-icon)="OnUserChoseIcon($event, marker)"
             (add-icon-clicked)="addIconClicked(SelectedLocation)">
 
           </lcu-activity-location-window>

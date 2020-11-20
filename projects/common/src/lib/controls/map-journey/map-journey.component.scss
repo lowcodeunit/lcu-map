@@ -15,13 +15,23 @@ p, span, a, div, button {
     box-shadow: 0px 0px 1px black;
     cursor: pointer;
     display: flex !important;
+    width: 264px;
+}
+
+@mixin star-sprite() {
+    background: url('../../../../../common/assets/star_sprites.png') 0 0;
+    background-size: 60px;
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    margin-top: 2px;
 }
 
 .map-journey-menu {
     height: 40px;
     background-color: $primary_dark;
     position: fixed;
-    width: 269px;
+    width: 264px;
     z-index: 10;
 
     mat-icon {
@@ -53,10 +63,14 @@ p, span, a, div, button {
     padding: 0;
     margin-right: -5px;
     height: 35px !important;
-    width: 275px;
+    width: 270px;
     background-color: $accent_light;
     color: $primary_dark;
     border-radius: 0 !important;
+}
+
+.mat-expansion-panel-header-checked{
+    background-color: $primary_medium !important;
 }
 
 ::ng-deep .mat-expansion-panel-body {
@@ -72,10 +86,7 @@ p, span, a, div, button {
 
 ::ng-deep.mat-checkbox-background {
     background-color: white;
-    border: 1.5px solid $primary_dark;
-    
-    // padding-top: 10px !important;
-    // margin-top: 10px !important;
+    border: 1px solid $primary_dark;
 }
 
 ::ng-deep.mat-checkbox-ripple {
@@ -97,7 +108,6 @@ p, span, a, div, button {
     @include activity-display-base(); 
     background-color: $primary_dark;
 
-
     &:hover {
         background-color: $primary_medium;
     }
@@ -105,13 +115,24 @@ p, span, a, div, button {
 
 .activity-display-icon-hover{
    @include activity-display-base(); 
-   background-color: $primary_dark;
+   background-color: $primary_dark !important;
 
 }
 .selected-activity{
     @include activity-display-base(); 
-    background-color: $primary_light;
-    color: $primary_dark;
+    background-color: white !important;
+    color: $primary_dark !important;
+    border:1px solid $primary_dark;
+    &:hover{
+        background-color: $primary_medium !important;
+    }
+
+}
+
+.selected-activity-icon-hover{
+    @include activity-display-base(); 
+    background-color: white !important;
+    color: $primary_dark !important;
     border:1px solid $primary_dark;
 
 }
@@ -132,6 +153,7 @@ p, span, a, div, button {
 }
 .activity-location-title {
     font-size: 9pt;
+    height: 13px;
     // margin-right: 25px;
     @include text-overflow();
 }
@@ -143,36 +165,36 @@ p, span, a, div, button {
 }
 
 .icon-container {
-    // background-color: salmon;
+    height: 100%;
 }
 
-.star {
-    background: url('../../../../../common/assets/star_sprites.png') 0 0;
-    background-size: 60px;
-    background-repeat: no-repeat;
-    width: 15px;
-    height: 15px;
-    // position: absolute;
-    // right: 36px;
-    margin-top: 2px;
-}
 .star-normal {
+    @include star-sprite();
     background-position-x: -45px;
 
     &:hover {
         background-position-x: -30px;
     }
 }
+
+.star-favorited {
+    @include star-sprite();
+    background-position-x: -15px !important;
+}
+
 .star-inverted {
+    @include star-sprite();
     background-position-x: 0;
 
     &:hover {
-        background-position-x: -45px;
+    background-image: url('../../../../../common/assets/selectedHoverStar.png') !important;
+    background-size: 15px;
+    background-position: 0%;
+    width: 15px;
+    height: 15px;
+    margin-top: 1px !important;
     }
 
-}
-.star-favorited {
-    background-position-x: -15px !important;
 }
 
 .active-activity {
@@ -198,6 +220,11 @@ p, span, a, div, button {
     background-color: $primary_medium;
 }
 
+::ng-deep .mat-checkbox-inner-container {
+    width: 13px !important;
+    height: 13px !important;
+}
+
 mat-accordion {
     display: inline-block;
     // margin-top: 60px;
@@ -213,7 +240,7 @@ mat-accordion {
     top: 80px;
     z-index: 10;
     background-color: white;
-    width: 267px;
+    width: 265px;
     text-align: center;
     height: 20px;
 }

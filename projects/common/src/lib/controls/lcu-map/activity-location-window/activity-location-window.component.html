@@ -3,13 +3,16 @@
   <div fxLayout="row" fxLayoutAlign="space-between center" class="container-top" *ngIf="!IsSelectingIcon">
     <div class="activity-widget-icon">
       <mat-icon *ngIf="BelongsToJourney" class="icon-selection" (click)="ShowWidgetIconSelection()">{{ marker?.WidgetIcon }}</mat-icon>
-      <mat-icon *ngIf="!BelongsToJourney" >{{ marker?.WidgetIcon }}</mat-icon>
+      <!-- <mat-icon *ngIf="!BelongsToJourney" >{{ marker?.WidgetIcon }}</mat-icon> -->
+      <img *ngIf="!BelongsToJourney" src="./assets/amblon_marker_gradient.png" alt="ambl_on_marker" width="13" height="17">
 
     </div>
-    <div class="location-data-name-address">
+    <div class="location-data-name-address" [ngClass]="{'location-data-name-address-inverse': !BelongsToJourney}">
       <span class="location-data-name">{{ marker?.locationData?.Title }}</span>
       <span class="location-data-address-line1">{{ marker?.locationData?.Address }}</span>
-      <!-- <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.State }}, {{ marker?.locationData?.Country }}</span> -->
+      <span class="location-data-address-line2">{{ marker?.locationData?.Town }}, {{ marker?.locationData?.ZipCode }}, {{ marker?.locationData?.State }}</span>
+      <span class="location-data-address-line3">{{ marker?.locationData?.Country }}</span>
+
     </div>
     <div class="location-star-info"  fxLayout="row" faxLayoutAlign="space-around center">
       <span *ngIf="BelongsToJourney" class="star"(click)="ToggleFavorited(); $event.stopPropagation()"

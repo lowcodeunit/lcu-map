@@ -276,6 +276,7 @@ export class AppComponent implements OnInit {
         Longitude: -103.85542,
         Lookup: '39.993355|-103.85542',
         Modified: null,
+<<<<<<< HEAD
         PartitionKey: '40-105',
         State: 'Colorado',
         Telephone: '123-123-1233',
@@ -284,23 +285,42 @@ export class AppComponent implements OnInit {
         Website: 'http://www.yardagrams.com/',
         ZipCode: '80602',
         Icon: 'golf_course'
+=======
+        PartitionKey: "40-105",
+        State: "Colorado",
+        Telephone: "123-123-1233",
+        Title: "Wabbajack Wabbajack",
+        Town: "Brighton",
+        Website: "http://www.yardagrams.com/",
+        ZipCode: "80602",
+        Icon: "golf_course"
+>>>>>>> integration
       },
+      
       {
         Accolades: null,
         Address: 'East 163rd Court',
         Country: 'United States',
         Created: null,
         Deletable: false,
+<<<<<<< HEAD
         GoogleLocationName: 'Yardagrams',
         ID: '012ff50f-55eb-433f-bddb-e81dc56ef503',
         Icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png',
         Instagram: '',
+=======
+        GoogleLocationName: "Yardagrams",
+        ID: "012ff50f-55eb-433f-bddb-e81dc56ef501",
+        Icon: "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
+        Instagram: "",
+>>>>>>> integration
         IsHidden: false,
         Latitude: 39.993355,
         LayerID: '00000000-0000-0000-0000-000000000000',
         Longitude: -104.85542,
         Lookup: '39.993355|-104.85542',
         Modified: null,
+<<<<<<< HEAD
         PartitionKey: '40-105',
         State: 'Colorado',
         Telephone: '',
@@ -308,6 +328,15 @@ export class AppComponent implements OnInit {
         Town: 'Brighton',
         Website: 'http://www.yardagrams.com/',
         ZipCode: '80602'
+=======
+        PartitionKey: "40-109",
+        State: "Colorado",
+        Telephone: "",
+        Title: "Yardagrams2",
+        Town: "Brighton",
+        Website: "http://www.yardagrams.com/",
+        ZipCode: "80602"
+>>>>>>> integration
       },
       {
         Accolades: null,

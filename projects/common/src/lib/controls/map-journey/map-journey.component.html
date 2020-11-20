@@ -28,12 +28,15 @@
     [cdkDropListData]="activityGroup.Activities" 
     [cdkDropListConnectedTo]="DropListArray"
     (cdkDropListDropped)="DropActivity($event)">
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header
+    [ngClass]="{'mat-expansion-panel-header-checked': activityGroup.Checked}"    >
       <mat-panel-title fxLayout="row" fxLayoutAlign="space-between start">
         <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
         <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
         <div class="group-title">{{ activityGroup.Title | uppercase }}</div>
-        <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
+        <mat-checkbox 
+          [checked]="activityGroup.Checked" 
+          (change)="OnAGCheckChange($event, activityGroup)"
           (click)="$event.stopPropagation();">
         </mat-checkbox>
       </mat-panel-title>
@@ -47,7 +50,9 @@
             <mat-icon class="group-expanded-indicator" *ngIf="!activityGroup.PanelOpenState">arrow_right</mat-icon>
             <mat-icon class="group-expanded-indicator" *ngIf="activityGroup.PanelOpenState">arrow_drop_down</mat-icon>
             <div>{{ activityGroup.Title | uppercase }}</div>
-            <mat-checkbox [checked]="activityGroup.Checked" (change)="OnAGCheckChange($event, activityGroup)"
+            <mat-checkbox 
+              [checked]="activityGroup.Checked" 
+              (change)="OnAGCheckChange($event, activityGroup)"
               (click)="$event.stopPropagation();">
             </mat-checkbox>
           </mat-panel-title>
@@ -67,7 +72,9 @@
       (click)="onActivityClickToNavigate(activity)"
       [ngClass]="{'active-activity': ClickedActivityId && (ClickedActivityId  === activity.ID),
       'activity-display': !IconHoverState,
-      'activity-display-icon-hover': IconHoverState}">
+      'selected-activity-icon-hover': activity.Checked && IconHoverState,
+      'activity-display-icon-hover': IconHoverState && !activity.Checked,
+      'selected-activity': activity.Checked && !IconHoverState }">
       <span fxFlex="10" class="widget-icon">
         <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
       </span>
@@ -75,7 +82,9 @@
       <div fxFlex
         *ngIf="activity.locationData" 
         class="activity-display-location"
-        fxLayout="column">
+        fxLayout="column"
+        matTooltip="{{activity.Title}}"
+        >
         <span class="activity-location-title">{{ activity.locationData.Title }}</span>
         <span class="activity-location-address">
           <span>
@@ -93,38 +102,56 @@
         fxLayoutGap="10px"
       (mouseenter)="IconHover(true)"
       (mouseleave)="IconHover(false)" >
+
+      <!-- class="star"  -->
         <span *ngIf="OpenPanels.includes(idx)" 
-        class="star" 
         (click)="onFavoritedClick(activity); $event.stopPropagation()"
         [ngClass]="{'star-favorited' : activity.Favorited, 
-                    'star-normal': !activity.Favorited,
-                    'star-inverted': activity.Checked}"></span>
-        <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
+                    'star-normal': !activity.Favorited && !activity.Checked,
+                    'star-inverted': activity.Checked && !activity.Favorited}"></span>
+        <mat-checkbox 
+          [checked]="activity.Checked" 
+          (change)="OnActivityCheckChange($event, activity);"
           (click)="$event.stopPropagation();"></mat-checkbox>
       </div>
 
 
       <!-- ACTIVITY DRAG PREVIEW BEGIN -->
       <div *cdkDragPreview>
-        <div class="activity-display-drag-preview" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="activity-display-drag-preview" 
+            [ngClass]="{'selected-activity': activity.Checked}"
+            fxLayout="row" 
+            fxLayoutAlign="space-between center">
           <span class="widget-icon">
             <mat-icon>{{ activity.WidgetIcon }}</mat-icon>
           </span>
-          <span class="activity-display-title">{{ activity.Title }}</span>
-          <div  class="activity-display-location">
-            <span class="activity-location-title">{{ activity.locationData.Title }}</span>
-            <br />
-            <span class="activity-location-address">
-              <span>{{ activity.locationData.Town }}, {{ activity.locationData.State }},
-                {{ activity.locationData.Country }}</span>
-            </span>
-          </div>
-          <div>
-            <span class="star" (click)="onFavoritedClick(activity); $event.stopPropagation()"
-              [ngClass]="activity.Favorited ? 'star-favorited' : 'star-normal'"></span>
-            <mat-checkbox [checked]="activity.Checked" (change)="OnActivityCheckChange($event, activity);"
-              (click)="$event.stopPropagation();"></mat-checkbox>
-          </div>
+          <!-- <span class="activity-display-title">{{ activity.Title }}</span> -->
+          <div fxFlex
+        *ngIf="activity.locationData" 
+        class="activity-display-location"
+        fxLayout="column">
+        <span class="activity-location-title">{{ activity.locationData.Title }}</span>
+        <span class="activity-location-address">
+          <span>
+            {{ activity.locationData.Town }}, 
+            {{ activity.locationData.State }},
+            {{ activity.locationData.Country }} 
+          </span>
+        </span>
+      </div>
+      <div 
+      class="icon-container"
+      fxFlex="18"
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutGap="10px"
+     >
+     <span *ngIf="OpenPanels.includes(idx)" 
+     [ngClass]="{'star-favorited' : activity.Favorited, 
+                 'star-normal': !activity.Favorited && !activity.Checked,
+                 'star-inverted': activity.Checked && !activity.Favorited}"></span>
+      <mat-checkbox [checked]="activity.Checked"></mat-checkbox>
+    </div>
         </div>
       </div>
       <!-- ACTIVITY DRAG PREVIEW END -->

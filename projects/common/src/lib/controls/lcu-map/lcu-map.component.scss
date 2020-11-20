@@ -24,7 +24,7 @@ mat-icon {
     position: absolute;
     top: 0px;
     z-index: 1;
-    border-bottom: 2px solid black;
+    // border-bottom: 2px solid black;
     @media (max-width:600px){
         // height:9vh;
         height: 80px;
@@ -311,13 +311,14 @@ mat-option {
     right: -19px;
     top: 40px;
     z-index: 1;
-    width: 288px;
+    width: 283px;
     max-height: calc(100% - 55px);
     // overflow-y: scroll;
     overflow-x: hidden;
 }
 
 .map-journey-title-edit-input {
+    border-radius: 5px;
     width: 95%;
     text-align: center;
     position: absolute;
@@ -332,13 +333,21 @@ mat-option {
     background-color: white;
     border: none;
     font-size: 12pt;
+    height: 25px;
+    &::selection {
+        background-color: $primary_dark;
+        color: white;
+    }
+    &:focus {
+        outline: none;
+    }
 }
 
 .more-below-indicator {
     z-index: 200;
     position: fixed;
     right: 0;
-    width: 269px;
+    width: 265px;
     background-color: white;
     color: $primary_dark;
     text-align: center;

@@ -385,8 +385,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         else if(act.WidgetIcon === 'hotel' || act.WidgetIcon === 'terrain' ){
           act.LocationObject = { scaledSize: { width: 24, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
         }
-        else if(act.WidgetIcon === 'golf_course' || act.WidgetIcon === 'location_on'|| act.WidgetIcon === 'music_note'|| act.WidgetIcon === 'restaurant'){
+        else if(act.WidgetIcon === 'golf_course' || act.WidgetIcon === 'music_note'|| act.WidgetIcon === 'restaurant'){
           act.LocationObject = { scaledSize: { width: 17, height: 20 }, url: `./assets/${act.WidgetIcon}.png` };
+        }
+        else if(act.WidgetIcon === 'location_on'){
+          act.LocationObject = { scaledSize: { width: 17, height: 23 }, url: `./assets/${act.WidgetIcon}.png` };
         }
         else{
           act.LocationObject = { scaledSize: { width: 17, height: 17 }, url: `./assets/${act.WidgetIcon}.png` };
@@ -1158,7 +1161,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public addIconClicked(event: ActivityModel) {
     // console.log("Adding event: ", event)
     this.BelongsToJourney = true;
-    event.locationData.IconImageObject = { scaledSize: { width: 17, height: 22 }, url: './assets/location_on.png' };
+    event.locationData.IconImageObject = { scaledSize: { width: 17, height: 23 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });
@@ -1774,7 +1777,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Longitude: this.normalizeLatitudeAndLongitude(results, false),
       Telephone: results.international_phone_number,
       Website: results.website,
-      Address: results.formatted_address,
+      ZipCode: results.address_components[regionIndices.zipcode] ?
+        results.address_components[regionIndices.zipcode].long_name : '',
+      Address: results.address_components[regionIndices.streetNumber] ?
+      ` ${results.address_components[regionIndices.streetNumber].long_name}` : '',
       Town: results.address_components[regionIndices.twnCtyTwnshpIndex] ?
         results.address_components[regionIndices.twnCtyTwnshpIndex].long_name : '',
       State: results.address_components[regionIndices.stateIndex] ?
@@ -1783,8 +1789,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         results.address_components[regionIndices.countryIndex].long_name : '',
       Photos: this.buildPhotoArray(results.photos),
       Type: results.types,
-      IconImageObject: { scaledSize: { width: 30, height: 30 }, url: './assets/ambl_marker.png' }
+      IconImageObject: { scaledSize: { width: 13, height: 17 }, url: './assets/amblon_marker_gradient.png' }
     });
+    tempActivity.locationData.Address += results.address_components[regionIndices.streetName] ?
+    ` ${results.address_components[regionIndices.streetName].short_name}` : '';
+
     this.ShowSearchedLocation(tempActivity);
 
     // Maybe TODO: Make the call to the API and then put the time out here,
@@ -1816,14 +1825,20 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     const regionIndices = {
       twnCtyTwnshpIndex: -1,
       stateIndex: -1,
-      countryIndex: -1
+      countryIndex: -1,
+      zipcode: -1,
+      streetNumber: -1,
+      streetName: -1
     };
     const typeValues = {
       town: 'locality',
       township: 'administrative_area_level_3',
       county: 'administrative_area_level_2',
       state: 'administrative_area_level_1',
-      country: 'country'
+      country: 'country',
+      zipcode: 'postal_code',
+      streetNumber: 'street_number',
+      streetName: 'route'
     };
     googleResults.address_components.forEach((comp, idx) => {
       if (comp.types.length > 0) {
@@ -1841,6 +1856,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         }
         if (comp.types.includes(typeValues.country)) {
           regionIndices.countryIndex = idx;
+        }
+        if (comp.types.includes(typeValues.zipcode)) {
+          regionIndices.zipcode = idx;
+        }
+        if (comp.types.includes(typeValues.streetNumber)) {
+          regionIndices.streetNumber = idx;
+        }
+        if (comp.types.includes(typeValues.streetName)) {
+          regionIndices.streetName = idx;
         }
       }
     });

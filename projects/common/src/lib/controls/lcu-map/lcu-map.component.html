@@ -103,6 +103,7 @@
         [fxShow]="EditingJourneyTitle" 
         type="text"
         (blur)="DoneEditingJourneyTitle(journeyTitleEdit)" 
+        (keyup.enter)="DoneEditingJourneyTitle(journeyTitleEdit)"
         id="JourneyTitleInput" 
         #journeyTitleEdit 
         (click)="journeyTitleEdit.select()"

@@ -1,6 +1,10 @@
 @import '../../../../../assets/styles/ambl_on-styles';
 
-$info-window-height: 170px;
+$info-window-height: 190px; //170px
+// @mixin info-window {
+//   height: auto;
+//   min-height: $info-window-height;
+// }
 
 ::ng-deep .gm-style .gm-style-iw-c {
   border-radius: 0 !important;
@@ -25,17 +29,23 @@ $info-window-height: 170px;
   height: $info-window-height !important;
 }
 .activity-widget-icon{
+  margin-top: 2px;
   mat-icon{
     font-size: 17px;
   }
 }
 .location-info-container {
   background-color: $primary_dark;
+  // @include info-window();
   @include montserrat_bold;
   color: white;
   border-radius: 2px;
   border: 2px solid $primary_dark;
-  height: $info-window-height;
+  // height: auto;
+  min-height: $info-window-height;
+  
+  
+  // padding-top:10px;
   
 
   .widget-icon-set {
@@ -48,7 +58,9 @@ $info-window-height: 170px;
   }
 
   .container-top {
-    padding: 8px 12px;
+    padding: 8px 12px 8px 5px;
+    height:auto;
+    min-height:50px;
 
     .location-star-info {
       
@@ -58,22 +70,33 @@ $info-window-height: 170px;
     }
 
     .location-data-name-address {
-      width: 50%;
+      width: 65%;
       position: absolute;
-      right: 73px;
+      right: 52px;
+      height:auto;
+      min-height:50px;
 
       .location-data-name {
         display: block;
         font-size: 8pt;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        // white-space: nowrap;
+        // overflow: hidden;
+        width:155px;
+        // text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: unset;
+        margin-top: 20px; //9px
       }
       .location-data-address-line1 {
         display: block;
+        width:155px;
         font-size: 6pt;
       }
       .location-data-address-line2 {
+        display: block;
+        font-size: 6pt;
+      }
+      .location-data-address-line3{
         display: block;
         font-size: 6pt;
       }
@@ -87,14 +110,14 @@ $info-window-height: 170px;
   .container-bottom {
 
     .location-media-buttons-section {
-      padding: 0 12px;
+      padding: 0px 0px 0px 5px;
       mat-icon{
         font-size: 17px;
       }
 
       a {
         text-decoration: none;
-        color: white;
+        color: $primary_light;
       }
     }
 
@@ -104,11 +127,12 @@ $info-window-height: 170px;
       textarea {
         width: 90%;
         border-radius: 2px;
+        margin-top:20px;
       }
     }
 
     .add-button-section {
-      width: 64%;
+      width: 80%;
       height: 100px;
       position: relative;
      
@@ -142,11 +166,14 @@ $info-window-height: 170px;
 // }
 
 .disabled-icon{
-  color: $primary-medium;
+  color: $primary_medium;
 }
 #icon-placeholder{
   width: 48px;
   height: 24px;
+}
+.location-data-name-address-inverse{
+  // margin-top: 9px;
 }
 
 .star {
@@ -159,7 +186,7 @@ $info-window-height: 170px;
   height: 15px;
   position: absolute;
   right: 36px;
-  margin-top: 2px;
+  margin-top: 1px;
   margin-right: 5px;
 }
 // .dev-star {

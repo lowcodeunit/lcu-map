@@ -156,15 +156,9 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   public IconHover(hover: boolean){
-  //   if(hover === true){
-  //     this.ActivityHoverId = activity.ID;
-  // }
-  // else{
-  //   this.ActivityHoverId = null;
-  // }
+  
   this.IconHoverState = hover;
-  // console.log("activity: ", activity, "Hover state = ", hover);
-
+  console.log("ICON HOSTATE: ", this.IconHoverState);
 
   }
 
@@ -181,8 +175,12 @@ export class MapJourneyComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  public OnAGCheckChange(event, ag) {
+  public OnAGCheckChange(event, ag: ActivityGroupModel) {
     ag.Checked = event.checked;
+    ag.Activities.forEach(act=>{
+      act.Checked = event.checked;
+    })
+
     this.normalizeAndEmitJourney('activity group checked/unchecked', this.Journey, { group: ag });
   }
 

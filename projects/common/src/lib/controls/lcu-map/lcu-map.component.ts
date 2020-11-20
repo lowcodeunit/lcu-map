@@ -35,6 +35,7 @@ import { IconImageObject } from '../../models/icon-image-object.model';
 import { ItineraryModel } from '../../models/itinerary.model';
 import { ActivityModel } from '../../models/activity.model';
 import { ActivityGroupModel } from '../../models/activity-group.model';
+import { debug } from 'console';
 
 
 @Component({
@@ -1505,12 +1506,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
-  public OnUserChoseIcon(event, location) {
+  public OnUserChoseIcon(icon: string, location: any) {
     let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
-        if (act.ID === location.ID) {
-          act.WidgetIcon = event;
+        if (act.ID && !location) {
+          act.WidgetIcon = icon;
+        }
+        if (location && (act.ID === location.ID)) {
+          act.WidgetIcon = icon;
           activity = act;
         }
       });

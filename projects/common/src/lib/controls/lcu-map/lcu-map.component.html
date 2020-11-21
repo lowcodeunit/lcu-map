@@ -224,7 +224,7 @@
           <lcu-activity-location-window 
             [marker]="SelectedLocation" 
             [belongs-to-journey]="false"
-            (user-chose-icon)="OnUserChoseIcon($event, marker)"
+            (user-chose-icon)="OnUserChoseIcon($event, null)"
             (add-icon-clicked)="addIconClicked(SelectedLocation)">
 
           </lcu-activity-location-window>

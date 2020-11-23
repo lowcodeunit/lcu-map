@@ -1310,7 +1310,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   public UpdateCurrentZoom(event: number){
     this.CurrentZoom = event;
-    console.log("updating zoom: ", event)
+    // console.log("updating zoom: ", event)
   }
 
   /**

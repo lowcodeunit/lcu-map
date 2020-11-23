@@ -1959,7 +1959,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
     // console.log("current lat: ", this.CurrentLatitude)
     // console.log("current long: ", this.CurrentLongitude)
-
+console.log("zoom to point: ", this.CurrentZoom);
     if(this.CurrentZoom < 12){
       this.CurrentZoom = 12;
     }

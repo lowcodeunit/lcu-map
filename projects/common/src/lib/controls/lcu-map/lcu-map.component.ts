@@ -399,7 +399,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.ActivityLocationList.push(act);
       });
     });
-    this.assignDefaultMapConfiguration();
+    // this.assignDefaultMapConfiguration();
   }
 
   public get DisplayedJourney() {
@@ -409,7 +409,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Input('ambl-on-location-array')
   public set AmblOnLocationArray(arr) {
     this._amblOnLocationArray = arr;
-    this.assignDefaultMapConfiguration();
+    // this.assignDefaultMapConfiguration();
   }
   public get AmblOnLocationArray() {
     return this._amblOnLocationArray;
@@ -741,6 +741,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
+    this.assignDefaultMapConfiguration();
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.resetMapCheckedState();
@@ -1088,6 +1089,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param event The event passed in upon user clicking the map.
    */
   public OnChoseLocation(event): void {
+    console.log('on chose location: ', event);
     this.SelectedLocation = null;
     this.SelectedMarker = null;
     this.locationInfoService.SetSelectedMarker(null);
@@ -1098,7 +1100,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
         this.googlePlacesApiSubscription = this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res && res.result !== undefined) {
+            console.log('calling google place details: ', res.results);
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
+            
           } else {
             console.log('the results are either null or undefined');
 

@@ -114,8 +114,11 @@
     </div>
     <div class="map-journey-display-container" #mapJourneyDisplayContainer>
       <div class="map-journey-display" *ngIf="ShowJourneyLegend" #mapJourneyDisplay>
-        <lcu-map-journey  [journey]="DisplayedJourney" (journey-changed)="onJourneyChanged($event)"
-          [clicked-activity]="SelectedMarker" [ambl-on-location-array]="AmblOnLocationArray"
+        <lcu-map-journey  
+          [journey]="DisplayedJourney" 
+          (journey-changed)="onJourneyChanged($event)"
+          [clicked-activity]="SelectedMarker" 
+          [ambl-on-location-array]="AmblOnLocationArray"
           (activity-location-clicked)="onActivityLocationClicked($event)"
           (legend-top-icon-clicked)="LegendTopIconClicked($event)"
           (activity-groups-changed)="ActivityGroupsChanged($event)"
@@ -224,9 +227,8 @@
           <lcu-activity-location-window 
             [marker]="SelectedLocation" 
             [belongs-to-journey]="false"
-            (user-chose-icon)="OnUserChoseIcon($event, null)"
+            (user-chose-icon)="OnUserChoseIcon($event, SelectedLocation)"
             (add-icon-clicked)="addIconClicked(SelectedLocation)">
-
           </lcu-activity-location-window>
         </agm-info-window>
       </agm-marker>

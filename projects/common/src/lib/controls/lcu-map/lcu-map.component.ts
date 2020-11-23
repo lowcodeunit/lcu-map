@@ -1090,6 +1090,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public OnChoseLocation(event): void {
     console.log('on chose location: ', event);
+    
     this.SelectedLocation = null;
     this.SelectedMarker = null;
     this.locationInfoService.SetSelectedMarker(null);
@@ -1102,6 +1103,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
           if (res && res.result !== undefined) {
             console.log('calling google place details: ', res.results);
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
+            
             
           } else {
             console.log('the results are either null or undefined');
@@ -1169,6 +1171,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     event.locationData.IconImageObject = { scaledSize: { width: 17, height: 23 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    console.log("current lat at save: ", this.CurrentLatitude);
+    console.log('Current long at save: ', this.CurrentLongitude);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });
   }
 
@@ -1878,6 +1882,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * Assigns the lat/lng and zoom for the first activity on a journey
    */
   protected assignDefaultMapConfiguration() {
+    console.log("Default Map Config getting called")
     if (this.AmblOnLocationArray && this.DisplayedJourney) {
       const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
       const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
@@ -1942,6 +1947,9 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected zoomInToPoint(value): void {
     this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
     this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    console.log("current lat: ", this.CurrentLatitude)
+    console.log("current long: ", this.CurrentLongitude)
+
     this.CurrentZoom = 12;
   }
 

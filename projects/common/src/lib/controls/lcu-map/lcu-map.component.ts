@@ -1520,7 +1520,11 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
 
-        if (act.ID === location.ID) {
+        // if (act.ID === location.ID) {
+        //   act.WidgetIcon = icon;
+        //   activity = act;
+        // }
+        if (act.Title === location.Title) {
           act.WidgetIcon = icon;
           activity = act;
         }
@@ -1643,7 +1647,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected getNewActivity(title?: string, widgetIcon?: string) {
     return new ActivityModel({
       Title: `${title ? title : 'New Location'}`,
-      ID: '00000000-0000-0000-0000-000000000000' + Guid.Create()['value'],
+      ID: '00000000-0000-0000-0000-000000000000',
       LocationID: null,
       Notes: '',
       TransportIcon: '',

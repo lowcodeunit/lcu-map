@@ -190,6 +190,8 @@
       [longitude]="CurrentLongitude"  
       [zoom]="CurrentZoom"
 
+
+      (zoomChange)="UpdateCurrentZoom($event)"
       (mapReady)="OnMapReady($event)"
       (mapDblClick)="OnMapDoubleClicked($event)" 
       (mapClick)="OnChoseLocation($event)"

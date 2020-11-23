@@ -1171,8 +1171,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     event.locationData.IconImageObject = { scaledSize: { width: 17, height: 23 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
-    console.log("current lat at save: ", this.CurrentLatitude);
-    console.log('Current long at save: ', this.CurrentLongitude);
+    // console.log("current lat at save: ", this.CurrentLatitude);
+    // console.log('Current long at save: ', this.CurrentLongitude);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });
   }
 
@@ -1305,6 +1305,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    */
   public DisplayFn(marker?: MapMarker): string | undefined {
     return marker ? marker.Title : undefined;
+  }
+
+
+  public UpdateCurrentZoom(event: number){
+    this.CurrentZoom = event;
+    console.log("updating zoom: ", event)
   }
 
   /**
@@ -1947,10 +1953,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected zoomInToPoint(value): void {
     this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
     this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    console.log("current lat: ", this.CurrentLatitude)
-    console.log("current long: ", this.CurrentLongitude)
+    // console.log("current lat: ", this.CurrentLatitude)
+    // console.log("current long: ", this.CurrentLongitude)
 
-    this.CurrentZoom = 12;
+    if(this.CurrentZoom < 12){
+      this.CurrentZoom = 12;
+    }
+
   }
 
   /**

@@ -36,6 +36,7 @@ import { ItineraryModel } from '../../models/itinerary.model';
 import { ActivityModel } from '../../models/activity.model';
 import { ActivityGroupModel } from '../../models/activity-group.model';
 import { debug } from 'console';
+import { Guid } from '@lcu/common';
 
 
 @Component({
@@ -372,7 +373,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   @Input('displayed-journey')
   public set DisplayedJourney(journey: any) {
-    console.log("journey upon entry: ", journey);
+    console.log('journey upon entry: ', journey);
     this.ActivityLocationList = new Array<ActivityModel>();
 
     if (!journey) { return; }
@@ -574,7 +575,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public set OpenPanels(arr) {
     if (Array.isArray(arr) && arr.length > 0) {
       this._openPanels = arr;
-      // console.log("open panels input at lcu map = ", this._openPanels);
+      // console.log('open panels input at lcu map = ', this._openPanels);
     }
   }
   public get OpenPanels() {
@@ -758,7 +759,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       () => {
         this.BelongsToJourney = false;
         this.SelectedMarker = null;
-        // console.log("setting selectedMarker to NULL");
+        // console.log('setting selectedMarker to NULL');
         this.locationInfoService.SetSelectedMarker(null);
         this.SelectedLocation = null;
 
@@ -775,7 +776,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ngAfterViewInit(): void {
 
     // this.setIndicators();
-    // console.log("Default Marker in map= ", this.DefaultMarker)
+    // console.log('Default Marker in map= ', this.DefaultMarker)
     if (!this.DefaultMarker) {
       this.DefaultMarker = {
         name: 'lcu-map-default-marker',
@@ -789,7 +790,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.MapJourneyDisplayContainer.nativeElement.addEventListener('scroll', () => {
       this.DownIndicatorOffset = this.MapJourneyDisplayContainer.nativeElement.offsetHeight + 35;
       // this.setIndicators();
-      // console.log("Scrolling");
+      // console.log('Scrolling');
       // Check the bounds
       this.CheckBounds = true;
     });
@@ -803,7 +804,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   // protected setIndicators() {
   // const display = this.MapJourneyDisplayContainer.nativeElement;
-  // let child = document.getElementById("lcuMapJourney").getBoundingClientRect();
+  // let child = document.getElementById('lcuMapJourney').getBoundingClientRect();
   // let parent = display.getBoundingClientRect();
 
 
@@ -812,21 +813,21 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   // console.log('OFSSET TOP   : ', display.offsetTop);
   // console.log('NATIVE ELEMEN: ', this.MapJourneyDisplay);
   // console.log('Parent        : ', display.childNodes.item(0).getBoundingClientRect());
-  // console.log("Parent: ", parent)
-  // console.log("child = ", child)
+  // console.log('Parent: ', parent)
+  // console.log('child = ', child)
 
   // if(child.top < 40){
-  //   console.log("Top arrow should show")
+  //   console.log('Top arrow should show')
   // }
   // else{
-  //   console.log("Top arrow should NOT show")
+  //   console.log('Top arrow should NOT show')
   // }
 
   // if(child.bottom > parent.bottom){
-  //   console.log("bottom arrow should show")
+  //   console.log('bottom arrow should show')
   // }
   // else{
-  //   console.log("Bottm arrow should NOT show")
+  //   console.log('Bottm arrow should NOT show')
   // }
 
   // const container = this.MapJourneyDisplayContainer.nativeElement;
@@ -841,7 +842,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public ngOnChanges(): void {
     // this.CheckForHiddenLocations();
     // this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
-    // console.log("activity location list = " , this.ActivityLocationList);
+    // console.log('activity location list = ' , this.ActivityLocationList);
   }
 
   public ngOnDestroy(): void {
@@ -879,35 +880,35 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.ActivityLocationList.push(act);
       });
     });
-    // console.log("activities to display: ", this.ActivityLocationList);
+    // console.log('activities to display: ', this.ActivityLocationList);
   }
 
   public CalcBounds(childBounds: any) {
     this.CheckBounds = false;
     if (this.MapJourneyDisplayContainer) {
       const parentBounds = this.MapJourneyDisplayContainer.nativeElement.getBoundingClientRect();
-      // console.log("Parent Bounds: ", parentBounds);
-      // console.log("Child Bounds: ", childBounds);
+      // console.log('Parent Bounds: ', parentBounds);
+      // console.log('Child Bounds: ', childBounds);
       const childsTop = Math.round(childBounds.top);
       const childsBottom = Math.round(childBounds.bottom);
       const parentsTop = Math.round(parentBounds.top);
       const parentsBottom = Math.round(parentBounds.bottom);
 
-      // console.log("Childs Rounded Top: ", childsTop, "Childs Rounded bottom: ", childsBottom);
-      // console.log("Parents Rounded Top: ", parentsTop, "Parents Rounded bottom: ", parentsBottom);
+      // console.log('Childs Rounded Top: ', childsTop, 'Childs Rounded bottom: ', childsBottom);
+      // console.log('Parents Rounded Top: ', parentsTop, 'Parents Rounded bottom: ', parentsBottom);
       if (childsBottom + 4 > parentsBottom) {
-        // console.log("Bottom arrow should show")
+        // console.log('Bottom arrow should show')
         this.ShowDownIndicator = true;
       } else {
-        // console.log("Bottom arrow should NOT show")
+        // console.log('Bottom arrow should NOT show')
         this.ShowDownIndicator = false;
       }
 
-      if (childsTop - 40 < parentsTop) {// "Top arrow should show"
+      if (childsTop - 40 < parentsTop) {// 'Top arrow should show'
         setTimeout(() => {
           this.ShowUpIndicator = true;
         }, 0);
-      } else {// "Top arrow should NOT show"
+      } else {// 'Top arrow should NOT show'
         setTimeout(() => {
           this.ShowUpIndicator = false;
         }, 0);
@@ -994,15 +995,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public CheckForHiddenLocations(): void {
-    // console.log("locations before checking if hidden: ", this._visibleLocationsMasterList);
+    // console.log('locations before checking if hidden: ', this._visibleLocationsMasterList);
 
     for (let i = 0; i < this._visibleLocationsMasterList.length; i++) {
       if (this.ExcludedLocations.includes(this._visibleLocationsMasterList[i].ID)) {
-        // console.log("IsHidden is false but ID is in hiddenLocationIds array")
+        // console.log('IsHidden is false but ID is in hiddenLocationIds array')
         this._visibleLocationsMasterList[i].IsHidden = true;
       }
     }
-    // console.log("locations after checking if hidden: ", this._visibleLocationsMasterList);
+    // console.log('locations after checking if hidden: ', this._visibleLocationsMasterList);
   }
 
   public EmitTopListsClick(event: string): void {
@@ -1023,15 +1024,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
   //     if (LayerId.length === 0) {
   //       this.CurrentlyActiveLayers.push(layer);
-  //       // console.log("adding layer: ", layer);
+  //       // console.log('adding layer: ', layer);
   //       //this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
   //     }
   //     else {
-  //       // console.log(LayerId[0], " Already exists");
+  //       // console.log(LayerId[0], ' Already exists');
   //     }
   //   }
   //   else {
-  //     // console.log("Layer =", layer);
+  //     // console.log('Layer =', layer);
   //   }
   // }
 
@@ -1118,7 +1119,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.isDoubleClick = true;
     setTimeout(x => {
       this.isDoubleClick = false;
-    }, 500); // about after enough time it takes to zoom, turn off the "double-clicked" flag
+    }, 500); // about after enough time it takes to zoom, turn off the 'double-clicked' flag
   }
 
   /**
@@ -1159,7 +1160,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param event 
    */
   public addIconClicked(event: ActivityModel) {
-    // console.log("Adding event: ", event)
+    // console.log('Adding event: ', event)
     this.BelongsToJourney = true;
     event.locationData.IconImageObject = { scaledSize: { width: 17, height: 23 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
@@ -1168,14 +1169,14 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   /**
-   * Displays / hides the map markers of the chosen layer (map) in the "layers" dropdown.
+   * Displays / hides the map markers of the chosen layer (map) in the 'layers' dropdown.
    *
-   * @param layer The layer (map) configuration sent in when a "layer" checkbox is checked/unchecked.
+   * @param layer The layer (map) configuration sent in when a 'layer' checkbox is checked/unchecked.
    */
   // public LayerClicked(event, layer?: UserLayer): void {
   //   // tempActiveLoactions and the forEach are necessary so that the CurrentlyActiveLocations is
   //   // reset and thus those changes are being passed as input to the legend so OnChanges gets called
-  //   // console.log("layer to toggle: ", layer);
+  //   // console.log('layer to toggle: ', layer);
   //   const tempActiveLocations: Array<MapMarker> = new Array<MapMarker>();
   //   this.CurrentlyActiveLocations.forEach(loc => {
   //     tempActiveLocations.push(loc);
@@ -1213,15 +1214,15 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   //       // this.CurrentlyActiveLocations = this.CurrentlyActiveLocations.filter(loc => {
   //       //   return loc.LayerID !== this._currentMapModel.ID;
   //       // });
-  //       // console.log("User unchecked the primary map");
+  //       // console.log('User unchecked the primary map');
   //     }
   //   }
 
   //   this.CurrentlyActiveLocations.forEach(loc => {
   //     loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
   //   });
-  //   // console.log("Currently Active Layers: ", this.CurrentlyActiveLayers);
-  //   // console.log("Current Map Model: ", this._currentMapModel);
+  //   // console.log('Currently Active Layers: ', this.CurrentlyActiveLayers);
+  //   // console.log('Current Map Model: ', this._currentMapModel);
   //   // this.mapService.SetCurrentlyActiveLayers(this.CurrentlyActiveLayers);
   //   // this is just for emitting the current list of active locs (currently displayed locations)
   //   setTimeout(x => {
@@ -1369,7 +1370,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       // console.log('open panels b4', this.OpenPanels);
       this._displayedJourney.ActivityGroups.push(newGroup);
       this._openPanels.push(this._displayedJourney.ActivityGroups.length -1);
-      // console.log("Open panels now after adding day:", this._openPanels);
+      // console.log('Open panels now after adding day:', this._openPanels);
       this.OnPanelOpenStateChanged(this.OpenPanels);
       this.changeDetector.detectChanges();
       this.assignOrder();
@@ -1414,7 +1415,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
         this.JourneyCopied.emit({
           journey: new ItineraryModel({
-            ID: "00000000-0000-0000-0000-000000000000",
+            ID: '00000000-0000-0000-0000-000000000000',
             Title: `${this._displayedJourney.Title} (copy)`,
             ActivityGroups: this._displayedJourney.ActivityGroups,
             CreatedDateTime: undefined,
@@ -1506,14 +1507,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     }
   }
 
-  public OnUserChoseIcon(icon: string, location: any) {
+  public OnUserChoseIcon(icon: string, location: ActivityModel) {
     let activity;
     this.DisplayedJourney.ActivityGroups.forEach(ag => {
       ag.Activities.forEach(act => {
-        if (act.ID && !location) {
-          act.WidgetIcon = icon;
-        }
-        if (location && (act.ID === location.ID)) {
+
+        if (act.ID === location.ID) {
           act.WidgetIcon = icon;
           activity = act;
         }
@@ -1586,7 +1585,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   }
 
   public OnPanelOpenStateChanged(event) {
-    // console.log("emitting from lcu map", event);
+    // console.log('emitting from lcu map', event);
     this.CurrentPanelOpenState.emit(event);
 
   }
@@ -1625,7 +1624,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
-      ID: "00000000-0000-0000-0000-000000000000",
+      ID: '00000000-0000-0000-0000-000000000000',
       Activities: [
         this.getNewActivity('Beginning of day', 'hotel'),
         this.getNewActivity('End of day', 'hotel')
@@ -1636,7 +1635,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   protected getNewActivity(title?: string, widgetIcon?: string) {
     return new ActivityModel({
       Title: `${title ? title : 'New Location'}`,
-      ID: "00000000-0000-0000-0000-000000000000",
+      ID: '00000000-0000-0000-0000-000000000000' + Guid.Create()['value'],
       LocationID: null,
       Notes: '',
       TransportIcon: '',
@@ -1651,7 +1650,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       CreatedDateTime: new Date(),
       GroupType: 'day',
       Checked: false,
-      ID: "00000000-0000-0000-0000-000000000000",
+      ID: '00000000-0000-0000-0000-000000000000',
       Activities: [
         this.getNewActivity('Good morning', 'hotel'),
         this.getNewActivity('Breakfast', 'restaurant'),
@@ -1673,7 +1672,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       Title: 'Options',
       GroupType: 'extras',
       Checked: false,
-      ID: "00000000-0000-0000-0000-000000000000",
+      ID: '00000000-0000-0000-0000-000000000000',
       Activities: [this.getNewActivity()]
     };
     return object;
@@ -1767,7 +1766,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     const regionIndices = this.getLocationRegionIndices(results);
 
     const tempActivity = this.getNewActivity(results.name);
-    console.log("RESULTS: ", results)
+    console.log('RESULTS: ', results)
     tempActivity.locationData = new MapMarker({
       ID: '',
       Title: results.name,
@@ -2051,7 +2050,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     this.changeDetector.detectChanges();
 
     this.locationInfoService.SetSelectedMarker(marker);
-    // console.log("infoWindow: ", infoWindow);
+    // console.log('infoWindow: ', infoWindow);
     this.mapService.MapMarkerClickedEvent(infoWindow);
 
   }
@@ -2064,7 +2063,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param marker The Map Marker that was selected.
    */
   public OnLocationClicked(infoWindow: AgmInfoWindow, marker: MapMarker): void {
-    // console.log("setting selected marker to null")
+    // console.log('setting selected marker to null')
     this.SelectedMarker = null;
     this.changeDetector.detectChanges();
     this.mapService.MapMarkerClickedEvent(infoWindow);

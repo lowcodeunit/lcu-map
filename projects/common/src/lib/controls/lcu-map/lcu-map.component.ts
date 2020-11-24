@@ -1313,6 +1313,13 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     // console.log("updating zoom: ", event)
   }
 
+  // public UpdateCenterCoords(event: any){
+    // console.log("COORDS: ", event)
+
+    // this.CurrentLatitude = event.lat;
+    // this.CurrentLongitude = event.lng;
+  // }
+
   /**
    *
    * @param val Toggles the displayFooter property to true or false.
@@ -1953,10 +1960,12 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * If random decimals are not added then the map will not zoom/pan once user moves the map.
    *
    * @param value the point (lat / lng) to pan to
+   * 
+   * commented out due to Mox not wanting it to recenter
    */
   protected zoomInToPoint(value): void {
-    this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
-    this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    // this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    // this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
     // console.log("current lat: ", this.CurrentLatitude)
     // console.log("current long: ", this.CurrentLongitude)
 console.log("zoom to point: ", this.CurrentZoom);

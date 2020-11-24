@@ -1964,8 +1964,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * commented out due to Mox not wanting it to recenter
    */
   protected zoomInToPoint(value): void {
-    // this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
-    // this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
     // console.log("current lat: ", this.CurrentLatitude)
     // console.log("current long: ", this.CurrentLongitude)
 console.log("zoom to point: ", this.CurrentZoom);

@@ -105,9 +105,9 @@ export class BasicInfoWindowRewriteComponent implements OnInit, OnDestroy, After
     // this.initProgressCircle();
     //console.log("Default Marker in biw= ", this.DefaultMarker)
 
-    if(!this.DefaultMarker){
-      this.DefaultMarker = {name:"lcu-map-default-marker", url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};
-    }
+    // if(!this.DefaultMarker){
+    //   this.DefaultMarker = {name:"lcu-map-default-marker", url:"./assets/lcu-map-default-marker.png", scaledSize:{width: 40, height: 40}};
+    // }
   }
 
   /**

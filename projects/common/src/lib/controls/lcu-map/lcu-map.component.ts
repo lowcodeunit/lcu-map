@@ -399,7 +399,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
         this.ActivityLocationList.push(act);
       });
     });
-    this.assignDefaultMapConfiguration();
+    // this.assignDefaultMapConfiguration();
   }
 
   public get DisplayedJourney() {
@@ -409,7 +409,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   @Input('ambl-on-location-array')
   public set AmblOnLocationArray(arr) {
     this._amblOnLocationArray = arr;
-    this.assignDefaultMapConfiguration();
+    // this.assignDefaultMapConfiguration();
   }
   public get AmblOnLocationArray() {
     return this._amblOnLocationArray;
@@ -741,6 +741,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
       loc.IconImageObject = this.mapConversions.ConvertIconObject(loc.Icon, this.MapMarkerSet);
     });
     this.currentBounds = { neLat: 0, neLng: 0, swLat: 0, swLng: 0 };
+    this.assignDefaultMapConfiguration();
     this.runAutocompleteSearchPrep(); // set up the listener for the location search box
     this.VisibleLocationListChanged.emit(this.CurrentlyActiveLocations);
     // this.resetMapCheckedState();
@@ -1088,6 +1089,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param event The event passed in upon user clicking the map.
    */
   public OnChoseLocation(event): void {
+    console.log('on chose location: ', event);
+    
     this.SelectedLocation = null;
     this.SelectedMarker = null;
     this.locationInfoService.SetSelectedMarker(null);
@@ -1098,7 +1101,10 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
 
         this.googlePlacesApiSubscription = this.mapService.GetPlaceDetails(this.placeId).subscribe((res: any) => {
           if (res && res.result !== undefined) {
+            console.log('calling google place details: ', res.results);
             this.callDisplayMarkerWithGooglePlaceDetails(res.result);
+            
+            
           } else {
             console.log('the results are either null or undefined');
 
@@ -1165,6 +1171,8 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
     event.locationData.IconImageObject = { scaledSize: { width: 17, height: 23 }, url: './assets/location_on.png' };
     event.Order = this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.length;
     this.DisplayedJourney.ActivityGroups[this.DisplayedJourney.ActivityGroups.length - 1].Activities.push(event);
+    // console.log("current lat at save: ", this.CurrentLatitude);
+    // console.log('Current long at save: ', this.CurrentLongitude);
     this.JourneyChanged.emit({ message: 'add activity', journey: this.DisplayedJourney });
   }
 
@@ -1298,6 +1306,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
   public DisplayFn(marker?: MapMarker): string | undefined {
     return marker ? marker.Title : undefined;
   }
+
+
+  public UpdateCurrentZoom(event: number){
+    this.CurrentZoom = event;
+    // console.log("updating zoom: ", event)
+  }
+
+  // public UpdateCenterCoords(event: any){
+    // console.log("COORDS: ", event)
+
+    // this.CurrentLatitude = event.lat;
+    // this.CurrentLongitude = event.lng;
+  // }
 
   /**
    *
@@ -1878,6 +1899,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * Assigns the lat/lng and zoom for the first activity on a journey
    */
   protected assignDefaultMapConfiguration() {
+    console.log("Default Map Config getting called")
     if (this.AmblOnLocationArray && this.DisplayedJourney) {
       const firstActivity = this.DisplayedJourney.ActivityGroups[0].Activities[0];
       const firstLocation = this.AmblOnLocationArray.find(loc => loc.ID === firstActivity.LocationID);
@@ -1938,11 +1960,19 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * If random decimals are not added then the map will not zoom/pan once user moves the map.
    *
    * @param value the point (lat / lng) to pan to
+   * 
+   * commented out due to Mox not wanting it to recenter
    */
   protected zoomInToPoint(value): void {
-    this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
-    this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
-    this.CurrentZoom = 12;
+    // this.CurrentLatitude = parseFloat(value.Latitude) + (Math.random() / 100000);
+    // this.CurrentLongitude = parseFloat(value.Longitude) + (Math.random() / 100000);
+    // console.log("current lat: ", this.CurrentLatitude)
+    // console.log("current long: ", this.CurrentLongitude)
+console.log("zoom to point: ", this.CurrentZoom);
+    if(this.CurrentZoom < 12){
+      this.CurrentZoom = 12;
+    }
+
   }
 
   /**

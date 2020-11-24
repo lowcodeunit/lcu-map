@@ -52,7 +52,15 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
   @ViewChild('notesText', { static: false })
   public NotesInput: ElementRef;
 
-  @Input() public marker: ActivityModel;
+  protected _marker: ActivityModel;
+  @Input('marker')
+  public set marker(val: ActivityModel) {
+    this._marker = val;
+  }
+
+  public get marker(): ActivityModel {
+    return this._marker;
+  }
 
   @Input('belongs-to-journey')
   public set BelongsToJourney(val: boolean) {

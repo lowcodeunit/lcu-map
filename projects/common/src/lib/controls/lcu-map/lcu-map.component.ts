@@ -1088,7 +1088,7 @@ export class LcuMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewI
    * @param event The event passed in upon user clicking the map.
    */
   public OnChoseLocation(event): void {
-    console.log('on chose location: ', event);
+    // console.log('on chose location: ', event);
     
     this.SelectedLocation = null;
     this.SelectedMarker = null;

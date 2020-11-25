@@ -225,7 +225,7 @@
       <agm-marker *ngIf="SelectedLocation" [iconUrl]="SelectedLocation.locationData.IconImageObject"
         [latitude]="SelectedLocation.locationData.Latitude" [longitude]="SelectedLocation.locationData.Longitude">
         <agm-info-window #googleInfoWindow [isOpen]="SelectedLocation !== null">
-
+          <pre>{{SelectedLocation.WidgetIcon | json}}</pre>
           <lcu-activity-location-window 
             [marker]="SelectedLocation" 
             [belongs-to-journey]="false"

@@ -165,9 +165,9 @@ export class ActivityLocationWindowComponent implements OnInit, OnDestroy, OnCha
   public OnChoseIcon(icon: string) {
     this.IsSelectingIcon = false;
     this.UserChoseIcon.emit(icon);
-    console.log("icon: ", this.marker.WidgetIcon)
+    // console.log("icon: ", this.marker.WidgetIcon)
     this.marker.WidgetIcon = icon;
-    console.log("icon sstring: ", icon)
+    // console.log("icon sstring: ", icon)
   }
 
   public ToggleFavorited(){
